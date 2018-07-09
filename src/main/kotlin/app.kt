@@ -1,5 +1,3 @@
-package demo
-
 fun getGreeting(): String {
     val words = mutableListOf<String>()
     words.add("Hello,")
