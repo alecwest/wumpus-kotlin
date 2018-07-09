@@ -1,4 +1,6 @@
 build
+lib
+out
 .gradle
 .idea
 *.iml
