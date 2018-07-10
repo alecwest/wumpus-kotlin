@@ -1,10 +1,11 @@
 package world
 
-import kotlin.test.assertEquals
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
 
 class WorldTest {
-    @Test fun addRoomContent() {
+    @Test
+    fun addRoomContent() {
         assertEquals("Hello, world!", "Hello, world!")
     }
 }
