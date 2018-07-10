@@ -1,6 +1,6 @@
 package world
 
-import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
 class RoomTest {
@@ -25,5 +25,11 @@ class RoomTest {
     fun `remove content from room`() {
         room.removeRoomContent(RoomContent.BREEZE)
         assertEquals(initialSize - 1, room.roomContent.size)
+    }
+
+    @Test
+    fun `check room for content`() {
+        assertTrue(room.hasRoomContent(RoomContent.BREEZE))
+        assertFalse(room.hasRoomContent(RoomContent.GLITTER))
     }
 }

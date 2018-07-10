@@ -20,7 +20,7 @@ class Room(var roomContent: ArrayList<RoomContent>) {
         }
     }
 
-    private fun hasRoomContent(content: RoomContent): Boolean {
+    fun hasRoomContent(content: RoomContent): Boolean {
         return roomContent.contains(content)
     }
 }
