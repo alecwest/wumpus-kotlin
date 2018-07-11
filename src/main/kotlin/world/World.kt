@@ -31,7 +31,7 @@ package world
  *
  * Start:
  *      1. Server creates empty world (initialized to one room)
- *      2. Server reads dimension number from file and sets dimension
+ *      2. Server reads size number from file and sets size
  *      3. Server reads coordinates of room and the list of RoomContents assigned to that room
  *      4. Server adds each RoomContent to room with given coordinates
  *      5. World updates room and any adjacent rooms that should have related content
@@ -41,11 +41,11 @@ package world
  *          C. Rooms that are not yet visited are still updated. That way when the client considers that room as an option,
  *          they already know about any effects that have been applied to that room
  */
-class World(private val dimension: Int) {
+class World(private val size: Int) {
     private var rooms: ArrayList<Room> = arrayListOf()
 
     init {
-        for (i in 0..dimension){
+        for (i in 0..size){
             rooms.add(Room(arrayListOf()))
         }
     }
@@ -63,6 +63,6 @@ class World(private val dimension: Int) {
     }
 
     fun getRoomIndex(x: Int, y: Int): Int {
-        return y * dimension + x
+        return y * size + x
     }
 }
