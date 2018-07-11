@@ -1,5 +1,7 @@
 package world
 
+import world.effect.Util.Companion.getAssociatedWorldEffects
+import world.effect.WorldEffect
 import java.awt.Point
 
 /**
@@ -54,6 +56,13 @@ class World(private val size: Int) {
 
     fun addRoomContent(point: Point, content: RoomContent) {
         rooms[getRoomIndex(point)].addRoomContent(content)
+        addWorldEffects(point, getAssociatedWorldEffects(content))
+    }
+
+    private fun addWorldEffects(point: Point, worldEffects: ArrayList<WorldEffect>) {
+        for (worldEffect in worldEffects) {
+            worldEffect.applyEffect(this, point)
+        }
     }
 
     fun removeRoomContent(point: Point, content: RoomContent) {
