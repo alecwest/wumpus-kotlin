@@ -44,5 +44,6 @@ class WorldTest {
         assertEquals(1, world.getRoomIndex(1, 0))
         assertEquals(2, world.getRoomIndex(0, 1))
         assertEquals(3, world.getRoomIndex(1, 1))
+        assertEquals(-1, world.getRoomIndex(2, 1))
     }
 }

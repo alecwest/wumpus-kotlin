@@ -63,6 +63,10 @@ class World(private val size: Int) {
     }
 
     fun getRoomIndex(x: Int, y: Int): Int {
-        return y * size + x
+        var result = y * size + x
+        if (result > size * size - 1) {
+            result = -1
+        }
+        return result
     }
 }
