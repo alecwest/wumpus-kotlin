@@ -1,5 +1,7 @@
 package world
 
+import java.awt.Point
+
 /**
  * Notes:
  * Both the server and the client should be able to utilize one world class
@@ -50,20 +52,20 @@ class World(private val size: Int) {
         }
     }
 
-    fun addRoomContent(x: Int, y: Int, content: RoomContent) {
-        rooms[getRoomIndex(x, y)].addRoomContent(content)
+    fun addRoomContent(point: Point, content: RoomContent) {
+        rooms[getRoomIndex(point)].addRoomContent(content)
     }
 
-    fun removeRoomContent(x: Int, y: Int, content: RoomContent) {
-        rooms[getRoomIndex(x, y)].removeRoomContent(content)
+    fun removeRoomContent(point: Point, content: RoomContent) {
+        rooms[getRoomIndex(point)].removeRoomContent(content)
     }
 
-    fun hasRoomContent(x: Int, y: Int, content: RoomContent): Boolean {
-        return rooms[getRoomIndex(x, y)].hasRoomContent(content)
+    fun hasRoomContent(point: Point, content: RoomContent): Boolean {
+        return rooms[getRoomIndex(point)].hasRoomContent(content)
     }
 
-    fun getRoomIndex(x: Int, y: Int): Int {
-        var result = y * size + x
+    fun getRoomIndex(point: Point): Int {
+        var result = point.y * size + point.x
         if (result > size * size - 1) {
             result = -1
         }
