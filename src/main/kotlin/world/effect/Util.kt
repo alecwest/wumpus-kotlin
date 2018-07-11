@@ -3,7 +3,7 @@ package world.effect
 import world.RoomContent
 
 class Util {
-    fun getAssociatedWorldEffect(roomContent: RoomContent) {
+    fun getAssociatedWorldEffects(roomContent: RoomContent): ArrayList<WorldEffect> {
         when(roomContent) {
             RoomContent.BLOCKADE -> TODO()
             RoomContent.BREEZE -> TODO()
