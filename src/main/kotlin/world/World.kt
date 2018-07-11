@@ -8,6 +8,7 @@ package world
  * or procedural generation. The world info will include the following:
  *      Size of the world (one digit, since the main.world will be square)
  *      List of coordinates for each type of obstacle (no particular order needed), that don't go out of bounds.
+ *          Coordinates start at (0,0) at the bottom left, like any graph
  *      Coordinate for player to start at. This point will have no obstacles or content in it.
  *
  * The client, on the other hand, will attempt to establish itself as a player in this new world by contacting the
@@ -43,6 +44,26 @@ class World(var rooms: ArrayList<Room>) {
 
     fun getRoomIndex(x: Int, y: Int): Int {
         return y * getWorldDimension() + x
+    }
+
+    fun setWorldDimension(dimension: Int) {
+        if(dimension > getWorldDimension()) {
+            increaseWorldDimension(dimension)
+        } else if (dimension < getWorldDimension()) {
+            decreaseWorldDimension(dimension)
+        }
+    }
+
+    private fun increaseWorldDimension(dimension: Int) {
+        for(i in rooms.size..(dimension * dimension)) {
+            rooms.add(Room(arrayListOf()))
+        }
+    }
+
+    private fun decreaseWorldDimension(dimension: Int) {
+        while(getWorldDimension() > dimension) {
+            rooms.removeAt(dimension * dimension)
+        }
     }
 
     fun getWorldDimension(): Int {

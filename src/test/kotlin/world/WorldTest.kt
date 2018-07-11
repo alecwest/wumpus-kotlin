@@ -38,6 +38,20 @@ class WorldTest {
     }
 
     @Test
+    fun `increase dimensions of world`() {
+        val newDimension = 4
+        world.setWorldDimension(newDimension)
+        assertEquals(newDimension, world.getWorldDimension())
+    }
+
+    @Test
+    fun `decrease dimensions of world`() {
+        val newDimension = 1
+        world.setWorldDimension(newDimension)
+        assertEquals(newDimension, world.getWorldDimension())
+    }
+
+    @Test
     fun `get dimensions of world`() {
         assertEquals(2, world.getWorldDimension())
     }
