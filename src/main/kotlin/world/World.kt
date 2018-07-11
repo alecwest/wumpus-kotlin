@@ -6,18 +6,18 @@ package world
  *
  * When the game starts, the server creates a world and fills in its contents either via a file
  * or procedural generation. The world info will include the following:
- *      Size of the world (one digit, since the main.world will be square)
+ *      Size of the world (one digit, since the world will be square)
  *      List of coordinates for each type of obstacle (no particular order needed), that don't go out of bounds.
  *          Coordinates start at (0,0) at the bottom left, like any graph
  *      Coordinate for player to start at. This point will have no obstacles or content in it.
  *
  * The client, on the other hand, will attempt to establish itself as a player in this new world by contacting the
  * server. Upon success, the client creates a new world for itself with only knowledge of the following:
- *      No known size (the map is a 1x1 square)
+ *      Size and starting location on map is unknown.
+ *          Map fully "exists" but client doesn't know rooms outside of the starting room
+ *          For visual effect, rooms that are not yet visited will not be printed.
  *      Dimensions of the world are always square
  *      The starting space is guaranteed safe
- *      NOTE: The client's world will be changing as it discovers new rooms, which means its perception of coordinates
- *      will not align with the server's.
  *
  * The World class simply acts as an aggregate for all known/accumulated knowledge of each room, whether it's for the
  * server or the client. When the player makes a move, they will declare there move to the server, who then queries its
@@ -28,8 +28,28 @@ package world
  * there may be a frequent need to update the array based on changes in the known size of the map, thus altering
  * their understanding of coordinates for each room. The client will need to make sure they do not lose or damage what
  * knowledge they already have in doing this.
+ *
+ * Start:
+ *      1. Server creates empty world (initialized to one room)
+ *      2. Server reads dimension number from file and sets dimension
+ *      3. Server reads coordinates of room and the list of RoomContents assigned to that room
+ *      4. Server adds each RoomContent to room with given coordinates
+ *      5. World updates room and any adjacent rooms that should have related content
+ *          A. Each RoomContent has an associated list of WorldEffects (None, AddAdjacent, AddDiagonal, AddOn)
+ *          B. Each WorldEffect implements a method applyEffect(x, y, world) that returns a world with the effect
+ *          applied appropriately around/on the coordinates
+ *          C. Rooms that are not yet visited are still updated. That way when the client considers that room as an option,
+ *          they already know about any effects that have been applied to that room
  */
-class World(var rooms: ArrayList<Room>) {
+class World(private val dimension: Int) {
+    private var rooms: ArrayList<Room> = arrayListOf()
+
+    init {
+        for (i in 0..dimension){
+            rooms.add(Room(arrayListOf()))
+        }
+    }
+
     fun addRoomContent(x: Int, y: Int, content: RoomContent) {
         rooms[getRoomIndex(x, y)].addRoomContent(content)
     }
@@ -43,30 +63,6 @@ class World(var rooms: ArrayList<Room>) {
     }
 
     fun getRoomIndex(x: Int, y: Int): Int {
-        return y * getWorldDimension() + x
-    }
-
-    fun setWorldDimension(dimension: Int) {
-        if(dimension > getWorldDimension()) {
-            increaseWorldDimension(dimension)
-        } else if (dimension < getWorldDimension()) {
-            decreaseWorldDimension(dimension)
-        }
-    }
-
-    private fun increaseWorldDimension(dimension: Int) {
-        for(i in rooms.size..(dimension * dimension)) {
-            rooms.add(Room(arrayListOf()))
-        }
-    }
-
-    private fun decreaseWorldDimension(dimension: Int) {
-        while(getWorldDimension() > dimension) {
-            rooms.removeAt(dimension * dimension)
-        }
-    }
-
-    fun getWorldDimension(): Int {
-        return Math.sqrt(rooms.size.toDouble()).toInt()
+        return y * dimension + x
     }
 }
