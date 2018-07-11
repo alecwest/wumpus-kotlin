@@ -28,16 +28,24 @@ package world
  * their understanding of coordinates for each room. The client will need to make sure they do not lose or damage what
  * knowledge they already have in doing this.
  */
-class World(var world: ArrayList<Room>) {
+class World(var rooms: ArrayList<Room>) {
     fun addRoomContent(x: Int, y: Int, content: RoomContent) {
-        world[getRoomIndex(x, y)].addRoomContent(content)
+        rooms[getRoomIndex(x, y)].addRoomContent(content)
     }
 
-    private fun getRoomIndex(x: Int, y: Int): Int {
-        return x * getWorldDimension() + y - 1
+    fun removeRoomContent(x: Int, y: Int, content: RoomContent) {
+        rooms[getRoomIndex(x, y)].removeRoomContent(content)
     }
 
-    private fun getWorldDimension(): Int {
-        return Math.sqrt(world.size.toDouble()).toInt()
+    fun hasRoomContent(x: Int, y: Int, content: RoomContent): Boolean {
+        return rooms[getRoomIndex(x, y)].hasRoomContent(content)
+    }
+
+    fun getRoomIndex(x: Int, y: Int): Int {
+        return y * getWorldDimension() + x
+    }
+
+    fun getWorldDimension(): Int {
+        return Math.sqrt(rooms.size.toDouble()).toInt()
     }
 }

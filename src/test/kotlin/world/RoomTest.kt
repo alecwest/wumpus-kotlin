@@ -2,18 +2,11 @@ package world
 
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
+import world.Util.Companion.createRoom
 
 class RoomTest {
-    private var room: Room
-    private val initialSize: Int
-
-    init {
-        var roomContent: ArrayList<RoomContent> = ArrayList()
-        roomContent.add(RoomContent.BREEZE)
-        roomContent.add(RoomContent.STENCH)
-        room = Room(roomContent)
-        initialSize = room.roomContent.size
-    }
+    private val room: Room = createRoom()
+    private val initialSize: Int = room.roomContent.size
 
     @Test
     fun `add content to room`() {
