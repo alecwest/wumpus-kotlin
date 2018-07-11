@@ -2,12 +2,21 @@ package world
 
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
-import world.Util.Companion.createRoom
 
 // TODO use @ParameterizedTest and @MethodSource
 class WorldTest {
-    private val world: World = World(arrayListOf(createRoom(arrayListOf()), createRoom(),
-                createRoom(arrayListOf()), createRoom()))
+    private val size: Int = 2
+    private val world: World = World(size)
+
+    init {
+        world.addRoomContent(size - 1, size - 1, RoomContent.STENCH)
+        world.addRoomContent(size - 1, size - 1, RoomContent.BREEZE)
+    }
+
+    @Test
+    fun `verify world init`() {
+        assertEquals(size * size, world.rooms.size)
+    }
 
     @Test
     fun `add content to room`() {
@@ -35,24 +44,5 @@ class WorldTest {
         assertEquals(1, world.getRoomIndex(1, 0))
         assertEquals(2, world.getRoomIndex(0, 1))
         assertEquals(3, world.getRoomIndex(1, 1))
-    }
-
-    @Test
-    fun `increase dimensions of world`() {
-        val newDimension = 4
-        world.setWorldDimension(newDimension)
-        assertEquals(newDimension, world.getWorldDimension())
-    }
-
-    @Test
-    fun `decrease dimensions of world`() {
-        val newDimension = 1
-        world.setWorldDimension(newDimension)
-        assertEquals(newDimension, world.getWorldDimension())
-    }
-
-    @Test
-    fun `get dimensions of world`() {
-        assertEquals(2, world.getWorldDimension())
     }
 }

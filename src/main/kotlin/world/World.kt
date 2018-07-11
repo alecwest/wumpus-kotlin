@@ -42,10 +42,10 @@ package world
  *          they already know about any effects that have been applied to that room
  */
 class World(private val size: Int) {
-    private var rooms: ArrayList<Room> = arrayListOf()
+    var rooms: ArrayList<Room> = arrayListOf()
 
     init {
-        for (i in 0..size){
+        for (i in 0..size + 1){
             rooms.add(Room(arrayListOf()))
         }
     }
