@@ -5,22 +5,20 @@ import world.RoomContent
 class Util {
     companion object {
         fun getAssociatedWorldEffects(roomContent: RoomContent): ArrayList<WorldEffect> {
-            val worldEffects: ArrayList<WorldEffect>
-            when(roomContent) {
-                RoomContent.BLOCKADE -> worldEffects = arrayListOf()
-                RoomContent.BREEZE -> worldEffects = arrayListOf()
-                RoomContent.BUMP -> worldEffects = arrayListOf()
-                RoomContent.FOOD -> worldEffects = arrayListOf()
-                RoomContent.GLITTER -> worldEffects = arrayListOf()
-                RoomContent.GOLD -> worldEffects = arrayListOf()
-                RoomContent.MOO -> worldEffects = arrayListOf()
-                RoomContent.PIT -> worldEffects = arrayListOf()
-                RoomContent.STENCH -> worldEffects = arrayListOf()
-                RoomContent.SUPMUW_EVIL -> worldEffects = arrayListOf()
-                RoomContent.SUPMUW -> worldEffects = arrayListOf()
-                RoomContent.WUMPUS -> worldEffects = arrayListOf()
+            return when(roomContent) {
+                RoomContent.BLOCKADE -> arrayListOf(NoEffect())
+                RoomContent.BREEZE -> arrayListOf(NoEffect())
+                RoomContent.BUMP -> arrayListOf(NoEffect())
+                RoomContent.FOOD -> arrayListOf(NoEffect())
+                RoomContent.GLITTER -> arrayListOf(NoEffect())
+                RoomContent.GOLD -> arrayListOf(AddHereEffect())
+                RoomContent.MOO -> arrayListOf(NoEffect())
+                RoomContent.PIT -> arrayListOf(AddAdjacentEffect())
+                RoomContent.STENCH -> arrayListOf(NoEffect())
+                RoomContent.SUPMUW_EVIL -> arrayListOf(AddAdjacentEffect(), AddDiagonalEffect())
+                RoomContent.SUPMUW -> arrayListOf(AddAdjacentEffect(), AddDiagonalEffect(), AddHereEffect())
+                RoomContent.WUMPUS -> arrayListOf(AddAdjacentEffect())
             }
-            return worldEffects
         }
     }
 }
