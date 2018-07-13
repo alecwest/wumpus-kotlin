@@ -1,7 +1,6 @@
 package world
 
-import world.effect.Util.Companion.getAssociatedWorldEffects
-import world.effect.WorldEffect
+import world.effect.*
 import java.awt.Point
 
 /**
@@ -79,5 +78,24 @@ class World(private val size: Int) {
             result = -1
         }
         return result
+    }
+
+    private fun getAssociatedWorldEffects(roomContent: RoomContent): ArrayList<WorldEffect> {
+        return when(roomContent) {
+            RoomContent.BLOCKADE -> arrayListOf(NoEffect())
+            RoomContent.BREEZE -> arrayListOf(NoEffect())
+            RoomContent.BUMP -> arrayListOf(NoEffect())
+            RoomContent.FOOD -> arrayListOf(NoEffect())
+            RoomContent.GLITTER -> arrayListOf(NoEffect())
+            RoomContent.GOLD -> arrayListOf(AddHereEffect(RoomContent.GLITTER))
+            RoomContent.MOO -> arrayListOf(NoEffect())
+            RoomContent.PIT -> arrayListOf(AddAdjacentEffect(RoomContent.BREEZE))
+            RoomContent.STENCH -> arrayListOf(NoEffect())
+            RoomContent.SUPMUW_EVIL -> arrayListOf(AddAdjacentEffect(RoomContent.MOO),
+                    AddDiagonalEffect(RoomContent.MOO))
+            RoomContent.SUPMUW -> arrayListOf(AddAdjacentEffect(RoomContent.MOO),
+                    AddDiagonalEffect(RoomContent.MOO), AddHereEffect(RoomContent.FOOD))
+            RoomContent.WUMPUS -> arrayListOf(AddAdjacentEffect(RoomContent.STENCH))
+        }
     }
 }
