@@ -29,10 +29,13 @@ class WorldTest {
         }
     }
 
-    private fun validAddRoomContentProvider() = Stream.of(
-            ValidRoomContentTestData(arrayListOf(), arrayListOf(RoomContent.GOLD), arrayListOf(RoomContent.GOLD, RoomContent.GLITTER)),
-            ValidRoomContentTestData(arrayListOf(), arrayListOf(RoomContent.MOO), arrayListOf(RoomContent.MOO))
-    )
+    companion object {
+        @JvmStatic
+        fun validAddRoomContentProvider() = Stream.of(
+                ValidRoomContentTestData(arrayListOf(), arrayListOf(RoomContent.GOLD), arrayListOf(RoomContent.GOLD, RoomContent.GLITTER)),
+                ValidRoomContentTestData(arrayListOf(), arrayListOf(RoomContent.MOO), arrayListOf(RoomContent.MOO))
+        )
+    }
 
 
     @Test
