@@ -33,8 +33,8 @@ import java.awt.Point
  * knowledge they already have in doing this.
  *
  * Start:
- *      1. Server creates empty world (initialized to one room)
- *      2. Server reads size number from file and sets size
+ *      1. Server reads size number from file and sets size
+ *      2. Server creates empty world (initialized to size requested in file)
  *      3. Server reads coordinates of room and the list of RoomContents assigned to that room
  *      4. Server adds each RoomContent to room with given coordinates
  *      5. World updates room and any adjacent rooms that should have related content
@@ -56,6 +56,25 @@ class World(private val size: Int) {
     fun addRoomContent(point: Point, content: RoomContent) {
         rooms[getRoomIndex(point)].addRoomContent(content)
         addWorldEffects(point, getAssociatedWorldEffects(content))
+    }
+
+    private fun getAssociatedWorldEffects(roomContent: RoomContent): ArrayList<WorldEffect> {
+        return when(roomContent) {
+            RoomContent.BLOCKADE -> arrayListOf(NoEffect())
+            RoomContent.BREEZE -> arrayListOf(NoEffect())
+            RoomContent.BUMP -> arrayListOf(NoEffect())
+            RoomContent.FOOD -> arrayListOf(NoEffect())
+            RoomContent.GLITTER -> arrayListOf(NoEffect())
+            RoomContent.GOLD -> arrayListOf(AddHereEffect(RoomContent.GLITTER))
+            RoomContent.MOO -> arrayListOf(NoEffect())
+            RoomContent.PIT -> arrayListOf(AddAdjacentEffect(RoomContent.BREEZE))
+            RoomContent.STENCH -> arrayListOf(NoEffect())
+            RoomContent.SUPMUW_EVIL -> arrayListOf(AddAdjacentEffect(RoomContent.MOO),
+                    AddDiagonalEffect(RoomContent.MOO))
+            RoomContent.SUPMUW -> arrayListOf(AddAdjacentEffect(RoomContent.MOO),
+                    AddDiagonalEffect(RoomContent.MOO), AddHereEffect(RoomContent.FOOD))
+            RoomContent.WUMPUS -> arrayListOf(AddAdjacentEffect(RoomContent.STENCH))
+        }
     }
 
     private fun addWorldEffects(point: Point, worldEffects: ArrayList<WorldEffect>) {
@@ -82,24 +101,5 @@ class World(private val size: Int) {
             result = -1
         }
         return result
-    }
-
-    private fun getAssociatedWorldEffects(roomContent: RoomContent): ArrayList<WorldEffect> {
-        return when(roomContent) {
-            RoomContent.BLOCKADE -> arrayListOf(NoEffect())
-            RoomContent.BREEZE -> arrayListOf(NoEffect())
-            RoomContent.BUMP -> arrayListOf(NoEffect())
-            RoomContent.FOOD -> arrayListOf(NoEffect())
-            RoomContent.GLITTER -> arrayListOf(NoEffect())
-            RoomContent.GOLD -> arrayListOf(AddHereEffect(RoomContent.GLITTER))
-            RoomContent.MOO -> arrayListOf(NoEffect())
-            RoomContent.PIT -> arrayListOf(AddAdjacentEffect(RoomContent.BREEZE))
-            RoomContent.STENCH -> arrayListOf(NoEffect())
-            RoomContent.SUPMUW_EVIL -> arrayListOf(AddAdjacentEffect(RoomContent.MOO),
-                    AddDiagonalEffect(RoomContent.MOO))
-            RoomContent.SUPMUW -> arrayListOf(AddAdjacentEffect(RoomContent.MOO),
-                    AddDiagonalEffect(RoomContent.MOO), AddHereEffect(RoomContent.FOOD))
-            RoomContent.WUMPUS -> arrayListOf(AddAdjacentEffect(RoomContent.STENCH))
-        }
     }
 }
