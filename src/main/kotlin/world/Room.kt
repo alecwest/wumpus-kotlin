@@ -23,4 +23,8 @@ class Room(var roomContent: ArrayList<RoomContent>) {
     fun hasRoomContent(content: RoomContent): Boolean {
         return roomContent.contains(content)
     }
+
+    fun isEmpty(): Boolean {
+        return roomContent.size == 0
+    }
 }

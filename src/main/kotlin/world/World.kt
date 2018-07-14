@@ -72,6 +72,10 @@ class World(private val size: Int) {
         return rooms[getRoomIndex(point)].hasRoomContent(content)
     }
 
+    fun roomIsEmpty(point: Point): Boolean {
+        return rooms[getRoomIndex(point)].isEmpty()
+    }
+
     fun getRoomIndex(point: Point): Int {
         var result = point.y * size + point.x
         if (result > size * size - 1) {
