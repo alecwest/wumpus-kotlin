@@ -28,7 +28,7 @@ class Room(var roomContent: ArrayList<RoomContent>) {
         return roomContent.size == 0
     }
 
-    fun printSmallRoom(): String {
+    fun getSmallRoomString(): String {
         var roomString: String = """
              -------
             |x x x x
