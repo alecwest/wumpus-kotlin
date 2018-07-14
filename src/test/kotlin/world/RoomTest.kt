@@ -31,4 +31,12 @@ class RoomTest {
         val emptyRoom = Room(arrayListOf())
         assertTrue(emptyRoom.isEmpty())
     }
+
+    @Test
+    fun `print small room`() {
+        val smallRoomString = room.printSmallRoom()
+        assertFalse(smallRoomString.contains("x"))
+        assertTrue(smallRoomString.contains(RoomContent.BREEZE.toCharRepresentation()))
+        assertTrue(smallRoomString.contains(RoomContent.STENCH.toCharRepresentation()))
+    }
 }

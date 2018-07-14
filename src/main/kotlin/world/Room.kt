@@ -27,4 +27,18 @@ class Room(var roomContent: ArrayList<RoomContent>) {
     fun isEmpty(): Boolean {
         return roomContent.size == 0
     }
+
+    fun printSmallRoom(): String {
+        var roomString: String = """
+             -------
+            |x x x x
+            |x x x x
+            |x x x x
+        """.trimIndent()
+        for (content in roomContent) {
+            roomString = roomString.replaceFirst(
+                    "x", content.toCharRepresentation())
+        }
+        return roomString.replace("x", " ")
+    }
 }

@@ -19,3 +19,20 @@ enum class RoomContent {
     SUPMUW,
     WUMPUS
 }
+
+fun RoomContent.toCharRepresentation(): String {
+    return when(this){
+        RoomContent.BLOCKADE -> "X"
+        RoomContent.BREEZE -> "="
+        RoomContent.BUMP -> " "
+        RoomContent.FOOD -> "F"
+        RoomContent.GLITTER -> "*"
+        RoomContent.GOLD -> "G"
+        RoomContent.MOO -> "!"
+        RoomContent.PIT -> "O"
+        RoomContent.STENCH -> "~"
+        RoomContent.SUPMUW_EVIL -> "E"
+        RoomContent.SUPMUW -> "S"
+        RoomContent.WUMPUS -> "W"
+    }
+}
