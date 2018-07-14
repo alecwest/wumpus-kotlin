@@ -1,0 +1,23 @@
+package world.effect
+
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Test
+import util.adjacents
+import util.diagonals
+import world.RoomContent
+import world.World
+import java.awt.Point
+
+class AddDiagonalEffectTest {
+    private val world: World = World(3)
+    private val pointToAddTo: Point = Point(1, 1)
+
+    @Test
+    fun `add moo effect to surrounding rooms`() {
+        world.addRoomContent(pointToAddTo, RoomContent.SUPMUW)
+        for (point in pointToAddTo.adjacents() + pointToAddTo.diagonals()) {
+            println(point.x.toString() + " " + point.y.toString())
+            assertTrue(world.hasRoomContent(point, RoomContent.MOO))
+        }
+    }
+}

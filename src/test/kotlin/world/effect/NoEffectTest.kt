@@ -16,7 +16,6 @@ class NoEffectTest {
     fun `add no effect to rooms`() {
         world.addRoomContent(pointToAddTo, RoomContent.BLOCKADE)
         for(point in pointToAddTo.adjacents() + pointToAddTo.diagonals()) {
-            println(point.x.toString() + " " + point.y.toString())
             assertTrue(world.roomIsEmpty(point))
         }
     }
