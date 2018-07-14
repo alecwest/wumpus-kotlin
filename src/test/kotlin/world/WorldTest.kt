@@ -9,17 +9,19 @@ import java.util.stream.Stream
 
 // TODO use @ParameterizedTest and @MethodSource
 class WorldTest {
+    private val world: World = World(2)
+
     @Test
     fun `verify world init`() {
-        val world = World(2)
+        val world2 = World(3)
         assertEquals(4, world.rooms.size)
+        assertEquals(9, world2.rooms.size)
     }
 
 
     @ParameterizedTest
     @MethodSource("validAddRoomContentProvider")
     fun `add content to room`(testData: ValidRoomContentTestData) {
-        val world = World(2)
         for (roomContent in testData.contentToAddOrRemove) {
             world.addRoomContent(Point(1, 1), roomContent)
         }
@@ -40,7 +42,6 @@ class WorldTest {
 
     @Test
     fun `remove content from room`() {
-        val world = World(2)
         world.addRoomContent(Point(1, 1), RoomContent.BREEZE)
         world.addRoomContent(Point(1, 1), RoomContent.STENCH)
 
@@ -51,7 +52,6 @@ class WorldTest {
 
     @Test
     fun `check room for content`() {
-        val world = World(2)
         world.addRoomContent(Point(1, 1), RoomContent.BREEZE)
         world.addRoomContent(Point(1, 1), RoomContent.STENCH)
 
@@ -60,8 +60,13 @@ class WorldTest {
     }
 
     @Test
+    fun `check room is empty`() {
+        assertTrue(world.roomIsEmpty(Point(0, 0)))
+        assertTrue(world.roomIsEmpty(Point(0, 1)))
+    }
+
+    @Test
     fun `get index of room`() {
-        val world = World(2)
         assertEquals(0, world.getRoomIndex(Point(0, 0)))
         assertEquals(1, world.getRoomIndex(Point(1, 0)))
         assertEquals(2, world.getRoomIndex(Point(0, 1)))

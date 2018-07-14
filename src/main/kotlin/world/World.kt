@@ -48,7 +48,7 @@ class World(private val size: Int) {
     var rooms: ArrayList<Room> = arrayListOf()
 
     init {
-        for (i in 0..size + 1){
+        for (i in 0..(size * size - 1)){
             rooms.add(Room(arrayListOf()))
         }
     }
