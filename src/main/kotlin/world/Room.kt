@@ -31,9 +31,10 @@ class Room(var roomContent: ArrayList<RoomContent>) {
     fun getSmallRoomString(): String {
         var roomString: String = """
              -------
-            |x x x x
-            |x x x x
-            |x x x x
+            |x x x x|
+            |x x x x|
+            |x x x x|
+             -------
         """.trimIndent()
         for (content in roomContent) {
             roomString = roomString.replaceFirst(
