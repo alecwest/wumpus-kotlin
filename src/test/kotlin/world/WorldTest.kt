@@ -73,6 +73,12 @@ class WorldTest {
         assertEquals(3, world.getRoomIndex(Point(1, 1)))
         assertEquals(-1, world.getRoomIndex(Point(2, 1)))
     }
+
+    @Test
+    fun `ensure exactly size * 5 lines in world map string`() {
+        assertTrue(world.getWorldMap()
+                .contains("""^([^\n]*\n){${world.size * 5}}$""".toRegex()))
+    }
 }
 
 data class ValidRoomContentTestData (

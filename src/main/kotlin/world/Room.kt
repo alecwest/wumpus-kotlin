@@ -34,8 +34,7 @@ class Room(var roomContent: ArrayList<RoomContent>) {
             |x x x x|
             |x x x x|
             |x x x x|
-             -------
-        """.trimIndent()
+             -------""".trimIndent()
         for (content in roomContent) {
             roomString = roomString.replaceFirst(
                     "x", content.toCharRepresentation())

@@ -18,7 +18,9 @@ import java.awt.Point
  * server. Upon success, the client creates a new world for itself with only knowledge of the following:
  *      Size and starting location on map is unknown.
  *          Map fully "exists" but client doesn't know rooms outside of the starting room
- *          For visual effect, rooms that are not yet visited will not be printed.
+ *          For visual effect, rooms that are not yet visited will not be printed. (How?)
+ *              Client keeps track of rooms it has visited and what it knows/thinks about each
+ *              The list of visited rooms will be passed to a printRooms function
  *      Dimensions of the world are always square
  *      The starting space is guaranteed safe
  *
@@ -44,7 +46,7 @@ import java.awt.Point
  *          C. Rooms that are not yet visited are still updated. That way when the client considers that room as an option,
  *          they already know about any effects that have been applied to that room
  */
-class World(private val size: Int) {
+class World(val size: Int) {
     var rooms: ArrayList<Room> = arrayListOf()
 
     init {
@@ -99,6 +101,35 @@ class World(private val size: Int) {
         var result = point.y * size + point.x
         if (result > size * size - 1) {
             result = -1
+        }
+        return result
+    }
+
+    /**
+     * If the server asks for the world map, it needs to show the full map
+     * If the client asks for the world map, it needs to show only the rooms that were explored
+     *      The world doesn't need to keep track of this, and the client won't have direct access to a world object(?)
+     *      The server tracks what rooms have been explored by the client, so when they request a world map,
+     *      they are given one with all not-yet-visited rooms blacked out.
+     */
+    fun getLimitedWorldMap(visitedRooms: ArrayList<Point>) {
+        val visitedIndices = arrayListOf<Int>()
+        for (visitedRoom in visitedRooms) {
+            visitedIndices.add(getRoomIndex(visitedRoom))
+        }
+        for (room in rooms) {
+            if (rooms.indexOf(room) in visitedIndices) {
+                room.getSmallRoomString()
+            }
+        }
+    }
+
+    fun getWorldMap(): String {
+        var result = ""
+        for (i in rooms.size-1 downTo 0) {
+            if(i % size == 0) {
+                result += "Room\nA\nA\nA\nA\n"
+            }
         }
         return result
     }
