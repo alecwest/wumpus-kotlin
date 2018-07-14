@@ -13,10 +13,9 @@ class AddDiagonalEffectTest {
     private val pointToAddTo: Point = Point(1, 1)
 
     @Test
-    fun `add moo effect to surrounding rooms`() {
+    fun `add moo to surrounding rooms as effect of supmuw`() {
         world.addRoomContent(pointToAddTo, RoomContent.SUPMUW)
         for (point in pointToAddTo.adjacents() + pointToAddTo.diagonals()) {
-            println(point.x.toString() + " " + point.y.toString())
             assertTrue(world.hasRoomContent(point, RoomContent.MOO))
         }
     }

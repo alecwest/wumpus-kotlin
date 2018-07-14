@@ -13,7 +13,7 @@ class NoEffectTest {
     private val pointToAddTo: Point = Point(1, 1)
 
     @Test
-    fun `add no effect to rooms`() {
+    fun `add nothing to rooms as effect of blockade`() {
         world.addRoomContent(pointToAddTo, RoomContent.BLOCKADE)
         for(point in pointToAddTo.adjacents() + pointToAddTo.diagonals()) {
             assertTrue(world.roomIsEmpty(point))

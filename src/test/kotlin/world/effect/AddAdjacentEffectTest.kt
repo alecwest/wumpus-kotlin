@@ -13,7 +13,7 @@ class AddAdjacentEffectTest {
     private val pointToAddTo: Point = Point(1, 1)
 
     @Test
-    fun `add adjacent breeze effect to rooms`() {
+    fun `add breeze to adjacent rooms as effect of pit`() {
         world.addRoomContent(pointToAddTo, RoomContent.PIT)
         for (point in pointToAddTo.adjacents()) {
             assertTrue(world.hasRoomContent(point, RoomContent.BREEZE))
