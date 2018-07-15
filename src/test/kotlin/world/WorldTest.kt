@@ -9,13 +9,13 @@ import java.util.stream.Stream
 
 // TODO use @ParameterizedTest and @MethodSource
 class WorldTest {
-    private val world: World = World(2)
+    private val world: World = World(4)
 
     @Test
     fun `verify world init`() {
         val world2 = World(3)
-        assertEquals(4, world.rooms.size)
-        assertEquals(9, world2.rooms.size)
+        assertEquals(world.size * world.size, world.rooms.size)
+        assertEquals(world2.size * world2.size, world2.rooms.size)
     }
 
 
@@ -69,9 +69,10 @@ class WorldTest {
     fun `get index of room`() {
         assertEquals(0, world.getRoomIndex(Point(0, 0)))
         assertEquals(1, world.getRoomIndex(Point(1, 0)))
-        assertEquals(2, world.getRoomIndex(Point(0, 1)))
-        assertEquals(3, world.getRoomIndex(Point(1, 1)))
-        assertEquals(-1, world.getRoomIndex(Point(2, 1)))
+        assertEquals(4, world.getRoomIndex(Point(0, 1)))
+        assertEquals(5, world.getRoomIndex(Point(1, 1)))
+        assertEquals(-1, world.getRoomIndex(Point(4, 1)))
+        assertEquals(-1, world.getRoomIndex(Point(1, 4)))
     }
 
     @Test
