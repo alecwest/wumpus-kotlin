@@ -45,6 +45,20 @@ import java.awt.Point
  *          applied appropriately around/on the coordinates
  *          C. Rooms that are not yet visited are still updated. That way when the client considers that room as an option,
  *          they already know about any effects that have been applied to that room
+ *      6. When server is ready, it will begin receiving requests from clients for a connection
+ *      7. Client starts up and initializes a player and connection request
+ *      8. Server responds with a session id, world size, and the starting room information (empty room)
+ *          A. The agent should not have any information about the coordinates of the point
+ *              I.  Let the agent use an empty world and assume its starting point is the bottom left.
+ *                  As it travels, it will attempt to go beyond the map boundaries, and if successful, all rooms are
+ *                  shifted in the opposite direction.
+ *                  This will require also updating their knowledge on what content exists at which coordinates
+ *              II. Let the agent create a graph of the world.
+ *                  I'm less familiar with these, but it may be faster / more efficient since shifting won't be needed.
+ *      9. Client sends movement request -> move(sessionId, direction)
+ *      10. Server sends success -> success(sessionId, roomContent, playerState); or failure ->
+ *          fail(sessionId, roomContent, playerState, reason(probably also room content))
+ *      11. Client responds to success or failure by updating room positions, knowledge, and whether or not it's alive
  */
 class World(val size: Int) {
     var rooms: ArrayList<Room> = arrayListOf()
@@ -108,22 +122,8 @@ class World(val size: Int) {
     /**
      * If the server asks for the world map, it needs to show the full map
      * If the client asks for the world map, it needs to show only the rooms that were explored
-     *      The world doesn't need to keep track of this, and the client won't have direct access to a world object(?)
-     *      The server tracks what rooms have been explored by the client, so when they request a world map,
-     *      they are given one with all not-yet-visited rooms blacked out.
+     *      The client will have their own empty map that they'll be building over time.
      */
-    fun getLimitedWorldMap(visitedRooms: ArrayList<Point>) {
-        val visitedIndices = arrayListOf<Int>()
-        for (visitedRoom in visitedRooms) {
-            visitedIndices.add(getRoomIndex(visitedRoom))
-        }
-        for (room in rooms) {
-            if (rooms.indexOf(room) in visitedIndices) {
-                room.getSmallRoomString()
-            }
-        }
-    }
-
     fun getWorldMap(): String {
         var result = ""
         for (i in rooms.size-1 downTo 0) {
