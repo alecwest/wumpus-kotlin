@@ -113,7 +113,7 @@ class World(val size: Int) {
 
     fun getRoomIndex(point: Point): Int {
         var result = point.y * size + point.x
-        if (result > size * size - 1) {
+        if (point.x >= size || result > size * size - 1) {
             result = -1
         }
         return result
