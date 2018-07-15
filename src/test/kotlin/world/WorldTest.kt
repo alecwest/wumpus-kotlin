@@ -39,7 +39,6 @@ class WorldTest {
         )
     }
 
-
     @Test
     fun `remove content from room`() {
         world.addRoomContent(Point(1, 1), RoomContent.BREEZE)
@@ -71,8 +70,14 @@ class WorldTest {
         assertEquals(1, world.getRoomIndex(Point(1, 0)))
         assertEquals(4, world.getRoomIndex(Point(0, 1)))
         assertEquals(5, world.getRoomIndex(Point(1, 1)))
+    }
+
+    @Test
+    fun `get out of range indices`() {
         assertEquals(-1, world.getRoomIndex(Point(4, 1)))
         assertEquals(-1, world.getRoomIndex(Point(1, 4)))
+        assertEquals(-1, world.getRoomIndex(Point(-1, 4)))
+        assertEquals(-1, world.getRoomIndex(Point(1, -1)))
     }
 
     @Test

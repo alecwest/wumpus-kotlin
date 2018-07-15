@@ -21,9 +21,11 @@ apply plugin: 'org.junit.platform.gradle.plugin'
 
 dependencies {
   compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+  compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 
   testCompile "org.junit.jupiter:junit-jupiter-api:$junit_version"
   testCompile "org.junit.jupiter:junit-jupiter-params:$junit_version"
+  testCompile "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
 
   runtime "org.junit.jupiter:junit-jupiter-engine:$junit_version"
   runtime "org.junit.platform:junit-platform-console:$junit_platform_version"

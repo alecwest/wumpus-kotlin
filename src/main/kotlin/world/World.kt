@@ -2,6 +2,7 @@ package world
 
 import world.effect.*
 import java.awt.Point
+import java.util.logging.Logger
 
 /**
  * Notes:
@@ -61,6 +62,7 @@ import java.awt.Point
  *      11. Client responds to success or failure by updating room positions, knowledge, and whether or not it's alive
  */
 class World(val size: Int) {
+    private val log = Logger.getLogger(World::class.qualifiedName)
     var rooms: ArrayList<Room> = arrayListOf()
 
     init {
@@ -70,8 +72,12 @@ class World(val size: Int) {
     }
 
     fun addRoomContent(point: Point, content: RoomContent) {
-        rooms[getRoomIndex(point)].addRoomContent(content)
-        addWorldEffects(point, getAssociatedWorldEffects(content))
+        try {
+            rooms[getRoomIndex(point)].addRoomContent(content)
+            addWorldEffects(point, getAssociatedWorldEffects(content))
+        } catch (e: ArrayIndexOutOfBoundsException) {
+            log.info("Content %s was not added to out-of-bounds room.".format(content.toString()))
+        }
     }
 
     private fun getAssociatedWorldEffects(roomContent: RoomContent): ArrayList<WorldEffect> {
@@ -113,7 +119,7 @@ class World(val size: Int) {
 
     fun getRoomIndex(point: Point): Int {
         var result = point.y * size + point.x
-        if (point.x >= size || result > size * size - 1) {
+        if (point.x < 0 || point.y < 0 || point.x >= size || result > size * size - 1) {
             result = -1
         }
         return result
