@@ -110,6 +110,15 @@ class WorldTest {
         assertEquals(world.size * 5, world.getWorldMap()
                 .split("""([^\n]*\n)""".toRegex()).size)
     }
+
+    @Test
+    fun `check for room content in world map`() {
+        world.addRoomContent(Point(2, 2), RoomContent.PIT)
+        val target1 = RoomContent.PIT.toCharRepresentation()
+        val target2 = RoomContent.BREEZE.toCharRepresentation()
+        assertEquals(1, world.getWorldMap().split("""([^${target1}]*${target1})""".toRegex()).size - 1)
+        assertEquals(4, world.getWorldMap().split("""([^${target2}]*${target2})""".toRegex()).size - 1)
+    }
 }
 
 data class ValidRoomContentTestData (

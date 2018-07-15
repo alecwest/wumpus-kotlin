@@ -156,13 +156,16 @@ class World(val size: Int) {
                     .toMutableList()
             when {
                 i % size == size - 1 -> row = splitSmallRoomString
-                i % size == 0 -> result.add(row.joinToString(separator = "\n"))
-                else -> for (partialRoom in splitSmallRoomString) {
-                    row[splitSmallRoomString.indexOf(partialRoom)] += partialRoom
+                else -> {
+                    for (j in 0 until splitSmallRoomString.size) {
+                        row[j] += splitSmallRoomString[j]
+                    }
+                    if (i % size == 0) {
+                        result.add(row.joinToString(separator = "\n"))
+                    }
                 }
             }
         }
-        print(result.joinToString(separator = "\n"))
         return result.joinToString(separator = "\n")
     }
 }

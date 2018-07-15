@@ -29,12 +29,7 @@ class Room(var roomContent: ArrayList<RoomContent>) {
     }
 
     fun getSmallRoomString(): String {
-        var roomString: String = """
-             -------
-            |x x x x|
-            |x x x x|
-            |x x x x|
-             -------""".trimIndent()
+        var roomString: String = " ------- \n|x x x x|\n|x x x x|\n|x x x x|\n ------- "
         for (content in roomContent) {
             roomString = roomString.replaceFirst(
                     "x", content.toCharRepresentation())
