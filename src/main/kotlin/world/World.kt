@@ -159,4 +159,8 @@ class World(val size: Int) {
         }
         return result.joinToString(separator = "\n")
     }
+
+    fun getNumberRooms(): Int {
+        return rooms.size
+    }
 }
