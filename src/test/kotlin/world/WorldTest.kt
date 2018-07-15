@@ -71,6 +71,12 @@ class WorldTest {
     }
 
     @Test
+    fun `check out-of-bounds room for content`() {
+        assertFalse(world.hasRoomContent(Point(-1, 1), RoomContent.STENCH))
+        assertFalse(world.hasRoomContent(Point(2, -4), RoomContent.SUPMUW))
+    }
+
+    @Test
     fun `check room is empty`() {
         assertTrue(world.roomIsEmpty(Point(0, 0)))
         assertTrue(world.roomIsEmpty(Point(0, 1)))
