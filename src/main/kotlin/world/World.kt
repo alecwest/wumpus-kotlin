@@ -158,7 +158,7 @@ class World(val size: Int) {
                 i % size == size - 1 -> row = splitSmallRoomString
                 else -> {
                     for (j in 0 until splitSmallRoomString.size) {
-                        row[j] += splitSmallRoomString[j]
+                        row[j] = splitSmallRoomString[j] + row[j]
                     }
                     if (i % size == 0) {
                         result.add(row.joinToString(separator = "\n"))
