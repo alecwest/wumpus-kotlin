@@ -139,15 +139,6 @@ class World(val size: Int) {
         return result
     }
 
-    /**
-     * If the server asks for the world map, it needs to show the full map
-     * If the client asks for the world map, it needs to show only the rooms that were explored
-     *      The client will have their own empty map that they'll be building over time.
-     */
-    /**
-     * Each row is an array index that will eventually be joined together as one long string
-     * Rows are initially split into size-5 arrays, one line per index
-     */
     fun getWorldMap(): String {
         var result: MutableList<String> = mutableListOf()
         var row: MutableList<String> = mutableListOf()
