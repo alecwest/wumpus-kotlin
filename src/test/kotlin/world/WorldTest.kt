@@ -131,6 +131,16 @@ class WorldTest {
         assertContains(worldMap, target1, 1)
         assertContains(worldMap, target2, 3)
     }
+
+    @Test
+    fun `check for room content when added out of bounds`() {
+        world.addRoomContent(Point(-1,0), RoomContent.WUMPUS)
+        val worldMap = world.getWorldMap()
+        val target1 = RoomContent.WUMPUS.toCharRepresentation()
+        val target2 = RoomContent.STENCH.toCharRepresentation()
+        assertContains(worldMap, target1, 0)
+        assertContains(worldMap, target2, 0)
+    }
 }
 
 data class ValidRoomContentTestData (
