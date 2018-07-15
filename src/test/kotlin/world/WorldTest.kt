@@ -107,8 +107,8 @@ class WorldTest {
 
     @Test
     fun `ensure exactly size * 5 lines in world map string`() {
-        assertTrue(world.getWorldMap()
-                .contains("""^([^\n]*\n){${world.size * 5}}$""".toRegex()))
+        assertEquals(world.size * 5, world.getWorldMap()
+                .split("""([^\n]*\n)""".toRegex()).size)
     }
 }
 

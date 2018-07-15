@@ -144,13 +144,25 @@ class World(val size: Int) {
      * If the client asks for the world map, it needs to show only the rooms that were explored
      *      The client will have their own empty map that they'll be building over time.
      */
+    /**
+     * Each row is an array index that will eventually be joined together as one long string
+     * Rows are initially split into size-5 arrays, one line per index
+     */
     fun getWorldMap(): String {
-        var result = ""
+        var result: MutableList<String> = mutableListOf()
+        var row: MutableList<String> = mutableListOf()
         for (i in rooms.size-1 downTo 0) {
-            if(i % size == 0) {
-                result += "Room\nA\nA\nA\nA\n"
+            val splitSmallRoomString = rooms[i].getSmallRoomString().split("\n")
+                    .toMutableList()
+            when {
+                i % size == size - 1 -> row = splitSmallRoomString
+                i % size == 0 -> result.add(row.joinToString(separator = "\n"))
+                else -> for (partialRoom in splitSmallRoomString) {
+                    row[splitSmallRoomString.indexOf(partialRoom)] += partialRoom
+                }
             }
         }
-        return result
+        print(result.joinToString(separator = "\n"))
+        return result.joinToString(separator = "\n")
     }
 }
