@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
+import world.Util.Companion.assertContains
 import java.awt.Point
 import java.util.stream.Stream
 
@@ -114,10 +115,21 @@ class WorldTest {
     @Test
     fun `check for room content in world map`() {
         world.addRoomContent(Point(2, 2), RoomContent.PIT)
+        val worldMap = world.getWorldMap()
         val target1 = RoomContent.PIT.toCharRepresentation()
         val target2 = RoomContent.BREEZE.toCharRepresentation()
-        assertEquals(1, world.getWorldMap().split("""([^${target1}]*${target1})""".toRegex()).size - 1)
-        assertEquals(4, world.getWorldMap().split("""([^${target2}]*${target2})""".toRegex()).size - 1)
+        assertContains(worldMap, target1, 1)
+        assertContains(worldMap, target2, 4)
+    }
+
+    @Test
+    fun `check for room content on world map edge`() {
+        world.addRoomContent(Point(0, 0), RoomContent.SUPMUW_EVIL)
+        val worldMap = world.getWorldMap()
+        val target1 = RoomContent.SUPMUW_EVIL.toCharRepresentation()
+        val target2 = RoomContent.MOO.toCharRepresentation()
+        assertContains(worldMap, target1, 1)
+        assertContains(worldMap, target2, 3)
     }
 }
 
