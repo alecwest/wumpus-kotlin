@@ -106,7 +106,11 @@ class World(val size: Int) {
     }
 
     fun removeRoomContent(point: Point, content: RoomContent) {
-        rooms[getRoomIndex(point)].removeRoomContent(content)
+        try {
+            rooms[getRoomIndex(point)].removeRoomContent(content)
+        } catch (e: ArrayIndexOutOfBoundsException) {
+            log.info("Content %s was not removed from out-of-bounds room.".format(content.toString()))
+        }
     }
 
     fun hasRoomContent(point: Point, content: RoomContent): Boolean {
