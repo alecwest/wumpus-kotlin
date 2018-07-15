@@ -83,6 +83,12 @@ class WorldTest {
     }
 
     @Test
+    fun `check out-of-bounds room is empty`() {
+        assertTrue(world.roomIsEmpty(Point(-1, 1)))
+        assertTrue(world.roomIsEmpty(Point(2, -4)))
+    }
+
+    @Test
     fun `get index of room`() {
         assertEquals(0, world.getRoomIndex(Point(0, 0)))
         assertEquals(1, world.getRoomIndex(Point(1, 0)))
