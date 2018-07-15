@@ -114,7 +114,12 @@ class World(val size: Int) {
     }
 
     fun hasRoomContent(point: Point, content: RoomContent): Boolean {
-        return rooms[getRoomIndex(point)].hasRoomContent(content)
+        return try {
+            rooms[getRoomIndex(point)].hasRoomContent(content)
+        } catch (e: ArrayIndexOutOfBoundsException) {
+            log.info("Content %s cannot exist in out-of-bounds room.".format(content))
+            false
+        }
     }
 
     fun roomIsEmpty(point: Point): Boolean {
