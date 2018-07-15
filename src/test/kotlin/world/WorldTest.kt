@@ -56,6 +56,12 @@ class WorldTest {
     }
 
     @Test
+    fun `remove content from out-of-bounds room`() {
+        world.removeRoomContent(Point(-1, 1), RoomContent.STENCH)
+        world.removeRoomContent(Point(2, -4), RoomContent.SUPMUW)
+    }
+
+    @Test
     fun `check room for content`() {
         world.addRoomContent(Point(1, 1), RoomContent.BREEZE)
         world.addRoomContent(Point(1, 1), RoomContent.STENCH)
