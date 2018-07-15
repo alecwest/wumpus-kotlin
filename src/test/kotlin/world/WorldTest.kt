@@ -78,8 +78,9 @@ class WorldTest {
 
     @Test
     fun `check room is empty`() {
+        world.addRoomContent(Point(1, 1), RoomContent.BREEZE)
         assertTrue(world.roomIsEmpty(Point(0, 0)))
-        assertTrue(world.roomIsEmpty(Point(0, 1)))
+        assertFalse(world.roomIsEmpty(Point(1, 1)))
     }
 
     @Test

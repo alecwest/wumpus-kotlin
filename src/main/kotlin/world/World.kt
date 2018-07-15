@@ -123,7 +123,12 @@ class World(val size: Int) {
     }
 
     fun roomIsEmpty(point: Point): Boolean {
-        return rooms[getRoomIndex(point)].isEmpty()
+        return try {
+            rooms[getRoomIndex(point)].isEmpty()
+        } catch (e: ArrayIndexOutOfBoundsException) {
+            log.info("Out of bounds room is empty.")
+            true
+        }
     }
 
     fun getRoomIndex(point: Point): Int {
