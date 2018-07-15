@@ -15,8 +15,8 @@ class WorldTest {
     @Test
     fun `verify world init`() {
         val world2 = World(3)
-        assertEquals(world.size * world.size, world.rooms.size)
-        assertEquals(world2.size * world2.size, world2.rooms.size)
+        assertEquals(world.size * world.size, world.getNumberRooms())
+        assertEquals(world2.size * world2.size, world2.getNumberRooms())
     }
 
 

@@ -142,7 +142,7 @@ class World(val size: Int) {
     fun getWorldMap(): String {
         var result: MutableList<String> = mutableListOf()
         var row: MutableList<String> = mutableListOf()
-        for (i in rooms.size-1 downTo 0) {
+        for (i in getNumberRooms() - 1 downTo 0) {
             val splitSmallRoomString = rooms[i].getSmallRoomString().split("\n")
                     .toMutableList()
             when {
