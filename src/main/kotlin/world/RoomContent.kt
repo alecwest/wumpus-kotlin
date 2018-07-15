@@ -36,3 +36,21 @@ fun RoomContent.toCharRepresentation(): String {
         RoomContent.WUMPUS -> "W"
     }
 }
+
+fun String.toRoomContent(): RoomContent {
+    return when(this) {
+        "X" -> RoomContent.BLOCKADE
+        "=" -> RoomContent.BREEZE
+        " " -> RoomContent.BUMP
+        "F" -> RoomContent.FOOD
+        "*" -> RoomContent.GLITTER
+        "G" -> RoomContent.GOLD
+        "!" -> RoomContent.MOO
+        "O" -> RoomContent.PIT
+        "~" -> RoomContent.STENCH
+        "E" -> RoomContent.SUPMUW_EVIL
+        "S" -> RoomContent.SUPMUW
+        "W" -> RoomContent.WUMPUS
+        else -> throw Exception("Cannot convert %s to a RoomContent value".format(this))
+    }
+}
