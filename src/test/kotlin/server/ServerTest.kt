@@ -3,7 +3,6 @@ package server
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-// TODO need test to verify world content matches what's in the json file
 class ServerTest {
     @Test
     fun `server generates world from world size only`() {
