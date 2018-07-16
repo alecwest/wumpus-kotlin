@@ -7,7 +7,7 @@ package world
  *      A room only contains information on what exists inside it.
  *      It is up to the client to determine any "status" or "inferences" about any room.
  */
-class Room(var roomContent: ArrayList<RoomContent>) {
+class Room(private var roomContent: ArrayList<RoomContent>) {
     fun addRoomContent(content: RoomContent) {
         if (!hasRoomContent(content)) {
             roomContent.add(content)
@@ -22,6 +22,10 @@ class Room(var roomContent: ArrayList<RoomContent>) {
 
     fun hasRoomContent(content: RoomContent): Boolean {
         return roomContent.contains(content)
+    }
+
+    fun getAmountOfContent(): Int {
+        return roomContent.size
     }
 
     fun isEmpty(): Boolean {

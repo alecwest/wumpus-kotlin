@@ -6,18 +6,18 @@ import world.Util.Companion.createRoom
 
 class RoomTest {
     private val room: Room = createRoom()
-    private val initialSize: Int = room.roomContent.size
+    private val initialSize: Int = room.getAmountOfContent()
 
     @Test
     fun `add content to room`() {
         room.addRoomContent(RoomContent.GLITTER)
-        assertEquals(initialSize + 1, room.roomContent.size)
+        assertEquals(initialSize + 1, room.getAmountOfContent())
     }
 
     @Test
     fun `remove content from room`() {
         room.removeRoomContent(RoomContent.BREEZE)
-        assertEquals(initialSize - 1, room.roomContent.size)
+        assertEquals(initialSize - 1, room.getAmountOfContent())
     }
 
     @Test
