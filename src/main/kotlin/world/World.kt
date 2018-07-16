@@ -63,7 +63,7 @@ import java.util.logging.Logger
  */
 class World(val size: Int) {
     private val log = Logger.getLogger(World::class.qualifiedName)
-    var rooms: ArrayList<Room> = arrayListOf()
+    private var rooms: ArrayList<Room> = arrayListOf()
 
     init {
         for (i in 0..(size * size - 1)){
@@ -158,6 +158,10 @@ class World(val size: Int) {
             }
         }
         return result.joinToString(separator = "\n")
+    }
+
+    fun getRoom(point: Point): Room {
+        return rooms[getRoomIndex(point)]
     }
 
     fun getNumberRooms(): Int {
