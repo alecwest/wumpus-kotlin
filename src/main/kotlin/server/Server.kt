@@ -7,7 +7,7 @@ import java.util.*
 /**
  * GameState is an observable object that exists in the server
  *      When the client wants to take an action, they call to the server (using the command
- *      pattern (MoveCommand, ShootCommand, GrabCommand, etc)), which forwards the command
+ *      pattern (Command, ShootCommand, GrabCommand, etc)), which forwards the command
  *      to the game state.
  *      The gameState executes the command, which can update data such as:
  *          Location of the player
