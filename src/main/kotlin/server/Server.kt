@@ -16,11 +16,7 @@ import java.util.*
  *      The gameState returns a state for the server to process and update the client with:
  *          ...
  */
-class Server(private val fileName: String = "", private val worldSize: Int = 10): Observer {
-    override fun update(o: Observable?, arg: Any?) {
-
-    }
-
+class Server(private val fileName: String = "", private val worldSize: Int = 10) {
     private val world: World = if (fileName.isBlank()) {
         World(worldSize)
     } else {
