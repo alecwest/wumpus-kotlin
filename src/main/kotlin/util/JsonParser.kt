@@ -1,31 +1,27 @@
 package util
 
-import com.beust.klaxon.JsonReader
-import com.beust.klaxon.Klaxon
-import server.Server
+import com.beust.klaxon.*
 import world.World
 import world.toRoomContent
 import java.awt.Point
 import java.io.FileReader
-import java.io.Reader
 
 class JsonParser {
+    data class Data(val x: Int, val y: Int, val content: List<String>)
+
     companion object {
         fun buildFromJsonFile(fileName: String): World {
-            return buildFromJson(JsonReader(FileReader(fileName)))
-        }
-
-        fun buildFromJson(reader: Reader): World {
-            val jsonReader = JsonReader(reader)
+            val jsonReader = JsonReader(FileReader(fileName))
             val klaxon = Klaxon()
             var world = World(0)
+
             jsonReader.use {
                 it.beginObject {
                     while (it.hasNext()) {
                         val readName = it.nextName()
                         when (readName) {
                             "world-size" -> world = World(it.nextInt())
-                            "data" -> parseDataArray(klaxon, it, world)
+                            "data" -> world.parseDataArray(klaxon, it)
                         }
                     }
                 }
@@ -33,14 +29,14 @@ class JsonParser {
             return world
         }
 
-        private fun parseDataArray(klaxon: Klaxon, reader: JsonReader, world: World) {
+        private fun World.parseDataArray(klaxon: Klaxon, reader: JsonReader) {
             reader.beginArray {
                 while (reader.hasNext()) {
-                    val data = klaxon.parse<Server.Data>(reader)
+                    val data = klaxon.parse<Data>(reader)
                     if (data != null) {
                         for (contentChar in data.content) {
                             val roomContent = contentChar.toRoomContent()
-                            world.addRoomContent(Point(data.x, data.y), roomContent)
+                            this.addRoomContent(Point(data.x, data.y), roomContent)
                         }
                     }
                 }
