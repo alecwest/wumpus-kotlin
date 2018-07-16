@@ -15,8 +15,8 @@ class WorldTest {
     @Test
     fun `verify world init`() {
         val world2 = World(3)
-        assertEquals(world.size * world.size, world.getNumberRooms())
-        assertEquals(world2.size * world2.size, world2.getNumberRooms())
+        assertEquals(world.getSize() * world.getSize(), world.getNumberRooms())
+        assertEquals(world2.getSize() * world2.getSize(), world2.getNumberRooms())
     }
 
 
@@ -108,7 +108,7 @@ class WorldTest {
 
     @Test
     fun `ensure exactly size * 5 lines in world map string`() {
-        assertEquals(world.size * 5, world.getWorldMap()
+        assertEquals(world.getSize() * 5, world.getWorldMap()
                 .split("""([^\n]*\n)""".toRegex()).size)
     }
 

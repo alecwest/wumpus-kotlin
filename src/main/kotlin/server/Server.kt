@@ -13,7 +13,7 @@ class Server(private val fileName: String = "", private val worldSize: Int = 10)
     }
 
     fun getWorldSize(): Int {
-        return world.size
+        return world.getSize()
     }
 
     fun getNumberRooms(): Int {
