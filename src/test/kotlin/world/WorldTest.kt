@@ -26,7 +26,7 @@ class WorldTest {
         for (roomContent in testData.contentToAddOrRemove) {
             world.addRoomContent(Point(1, 1), roomContent)
         }
-        assertEquals(testData.finalContent.size, world.getRoom(Point(1, 1)).getAmountOfContent())
+        assertEquals(testData.finalContent.size, world.getAmountOfContentInRoom(Point(1, 1)))
         for (roomContent in testData.finalContent) {
             assertTrue(world.hasRoomContent(Point(1, 1), roomContent))
         }
@@ -51,9 +51,9 @@ class WorldTest {
         world.addRoomContent(Point(1, 1), RoomContent.BREEZE)
         world.addRoomContent(Point(1, 1), RoomContent.STENCH)
 
-        val initialNumberItems = world.getRoom(Point(1, 1)).getAmountOfContent()
+        val initialNumberItems = world.getAmountOfContentInRoom(Point(1, 1))
         world.removeRoomContent(Point(1, 1), RoomContent.BREEZE)
-        assertEquals(initialNumberItems - 1, world.getRoom(Point(1, 1)).getAmountOfContent())
+        assertEquals(initialNumberItems - 1, world.getAmountOfContentInRoom(Point(1, 1)))
     }
 
     @Test

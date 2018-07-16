@@ -167,4 +167,9 @@ class World(val size: Int) {
     fun getNumberRooms(): Int {
         return rooms.size
     }
+
+    fun getAmountOfContentInRoom(point: Point): Int {
+        val room = getRoom(point)
+        return room.getAmountOfContent()
+    }
 }
