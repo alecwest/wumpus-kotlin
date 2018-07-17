@@ -1,7 +1,7 @@
 fun getGreeting(): String {
     val words = mutableListOf<String>()
     words.add("Hello,")
-    words.add("world!")
+    words.add("game.world!")
 
     return words.joinToString(separator = " ")
 }

@@ -1,8 +1,8 @@
 package util
 
 import com.beust.klaxon.*
-import world.World
-import world.toRoomContent
+import game.world.World
+import game.world.toRoomContent
 import java.awt.Point
 import java.io.FileReader
 
@@ -20,7 +20,7 @@ class JsonParser {
                     while (it.hasNext()) {
                         val readName = it.nextName()
                         when (readName) {
-                            "world-size" -> world = World(it.nextInt())
+                            "game.world-size" -> world = World(it.nextInt())
                             "data" -> world.parseDataArray(klaxon, it)
                         }
                     }

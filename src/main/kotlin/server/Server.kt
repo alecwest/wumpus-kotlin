@@ -1,7 +1,7 @@
 package server
 
 import util.JsonParser.Companion.buildFromJsonFile
-import world.World
+import game.world.World
 import java.util.*
 
 /**
@@ -10,8 +10,8 @@ import java.util.*
  *      pattern (MoveCommand, ShootCommand, GrabCommand, etc)), which forwards the command
  *      to the game state.
  *      The gameState executes the command, which can update data such as:
- *          Location of the player
- *          State of the player (inventory, health, etc)
+ *          Location of the game.player
+ *          State of the game.player (inventory, health, etc)
  *          State of the game (In Progress, Over, Goal Achieved, etc.)
  *      The gameState returns a state for the server to process and update the client with:
  *          ...

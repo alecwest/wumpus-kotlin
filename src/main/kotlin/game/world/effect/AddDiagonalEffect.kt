@@ -1,8 +1,8 @@
-package world.effect
+package game.world.effect
 
 import util.diagonals
-import world.RoomContent
-import world.World
+import game.world.RoomContent
+import game.world.World
 import java.awt.Point
 
 class AddDiagonalEffect(private val roomContent: RoomContent): WorldEffect {

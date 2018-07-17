@@ -1,9 +1,9 @@
-package world
+package game.world
 
 /**
  * Some features of the Room that will differ from the c++ implementation:
  *      Rooms cannot know their coordinates. This knowledge shouldn't be passed down to a Room.
- *      Rooms cannot know the world size as well as the number of rooms in the world.
+ *      Rooms cannot know the game.world size as well as the number of rooms in the game.world.
  *      A room only contains information on what exists inside it.
  *      It is up to the client to determine any "status" or "inferences" about any room.
  */
