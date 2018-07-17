@@ -1,4 +1,4 @@
-package world
+package game.world
 
 /**
  * Changes:

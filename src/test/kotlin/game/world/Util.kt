@@ -1,4 +1,4 @@
-package world
+package game.world
 
 import org.junit.jupiter.api.Assertions.assertEquals
 

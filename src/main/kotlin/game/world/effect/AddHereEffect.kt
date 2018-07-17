@@ -1,7 +1,7 @@
-package world.effect
+package game.world.effect
 
-import world.RoomContent
-import world.World
+import game.world.RoomContent
+import game.world.World
 import java.awt.Point
 
 class AddHereEffect(private val roomContent: RoomContent): WorldEffect {

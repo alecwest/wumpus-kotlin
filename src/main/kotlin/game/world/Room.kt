@@ -1,4 +1,4 @@
-package world
+package game.world
 
 /**
  * Some features of the Room that will differ from the c++ implementation:

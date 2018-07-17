@@ -1,6 +1,6 @@
-package world
+package game.world
 
-import world.effect.*
+import game.world.effect.*
 import java.awt.Point
 import java.util.logging.Logger
 

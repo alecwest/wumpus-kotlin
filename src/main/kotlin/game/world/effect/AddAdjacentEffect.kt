@@ -1,8 +1,8 @@
-package world.effect
+package game.world.effect
 
 import util.adjacents
-import world.RoomContent
-import world.World
+import game.world.RoomContent
+import game.world.World
 import java.awt.Point
 
 class AddAdjacentEffect(private val roomContent: RoomContent): WorldEffect {

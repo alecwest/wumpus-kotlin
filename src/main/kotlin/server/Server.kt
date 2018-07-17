@@ -1,7 +1,7 @@
 package server
 
 import util.JsonParser.Companion.buildFromJsonFile
-import world.World
+import game.world.World
 import java.util.*
 
 /**

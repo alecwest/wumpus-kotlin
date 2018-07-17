@@ -1,8 +1,8 @@
 package util
 
 import com.beust.klaxon.*
-import world.World
-import world.toRoomContent
+import game.world.World
+import game.world.toRoomContent
 import java.awt.Point
 import java.io.FileReader
 

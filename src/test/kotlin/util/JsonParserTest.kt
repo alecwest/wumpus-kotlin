@@ -3,7 +3,7 @@ package util
 import org.junit.jupiter.api.Test
 import java.awt.Point
 import kotlin.test.assertTrue
-import world.RoomContent
+import game.world.RoomContent
 
 class JsonParserTest {
     @Test
