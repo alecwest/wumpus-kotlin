@@ -20,7 +20,7 @@ class JsonParser {
                     while (it.hasNext()) {
                         val readName = it.nextName()
                         when (readName) {
-                            "game.world-size" -> world = World(it.nextInt())
+                            "world-size" -> world = World(it.nextInt())
                             "data" -> world.parseDataArray(klaxon, it)
                         }
                     }
