@@ -13,9 +13,9 @@ import java.util.logging.Logger
  *      Size of the world (one digit, since the world will be square)
  *      List of coordinates for each type of obstacle (no particular order needed), that don't go out of bounds.
  *          Coordinates start at (0,0) at the bottom left, like any graph
- *      Coordinate for game.player to start at. This point will have no obstacles or content in it.
+ *      Coordinate for player to start at. This point will have no obstacles or content in it.
  *
- * The client, on the other hand, will attempt to establish itself as a game.player in this new world by contacting the
+ * The client, on the other hand, will attempt to establish itself as a player in this new world by contacting the
  * server. Upon success, the client creates a new world for itself with only knowledge of the following:
  *      Size and starting location on map is unknown.
  *          Map fully "exists" but client doesn't know rooms outside of the starting room
@@ -26,7 +26,7 @@ import java.util.logging.Logger
  *      The starting space is guaranteed safe
  *
  * The World class simply acts as an aggregate for all known/accumulated knowledge of each room, whether it's for the
- * server or the client. When the game.player makes a move, they will declare there move to the server, who then queries its
+ * server or the client. When the player makes a move, they will declare there move to the server, who then queries its
  * own world instance for what exists in the target room. Upon return of this information, the server will pass it on
  * to the client, who then is able to update their own world instance.
  *
@@ -47,7 +47,7 @@ import java.util.logging.Logger
  *          C. Rooms that are not yet visited are still updated. That way when the client considers that room as an option,
  *          they already know about any effects that have been applied to that room
  *      6. When server is ready, it will begin receiving requests from clients for a connection
- *      7. Client starts up and initializes a game.player and connection request
+ *      7. Client starts up and initializes a player and connection request
  *      8. Server responds with a session id, world size, and the starting room information (empty room)
  *          A. The agent should not have any information about the coordinates of the point
  *              I.  Let the agent use an empty world and assume its starting point is the bottom left.
