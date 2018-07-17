@@ -6,29 +6,29 @@ import java.util.logging.Logger
 
 /**
  * Notes:
- * Both the server and the client should be able to utilize one game.world class
+ * Both the server and the client should be able to utilize one world class
  *
- * When the game starts, the server creates a game.world and fills in its contents either via a file
- * or procedural generation. The game.world info will include the following:
- *      Size of the game.world (one digit, since the game.world will be square)
+ * When the game starts, the server creates a world and fills in its contents either via a file
+ * or procedural generation. The world info will include the following:
+ *      Size of the world (one digit, since the world will be square)
  *      List of coordinates for each type of obstacle (no particular order needed), that don't go out of bounds.
  *          Coordinates start at (0,0) at the bottom left, like any graph
  *      Coordinate for game.player to start at. This point will have no obstacles or content in it.
  *
- * The client, on the other hand, will attempt to establish itself as a game.player in this new game.world by contacting the
- * server. Upon success, the client creates a new game.world for itself with only knowledge of the following:
+ * The client, on the other hand, will attempt to establish itself as a game.player in this new world by contacting the
+ * server. Upon success, the client creates a new world for itself with only knowledge of the following:
  *      Size and starting location on map is unknown.
  *          Map fully "exists" but client doesn't know rooms outside of the starting room
  *          For visual effect, rooms that are not yet visited will not be printed. (How?)
  *              Client keeps track of rooms it has visited and what it knows/thinks about each
  *              The list of visited rooms will be passed to a printRooms function
- *      Dimensions of the game.world are always square
+ *      Dimensions of the world are always square
  *      The starting space is guaranteed safe
  *
  * The World class simply acts as an aggregate for all known/accumulated knowledge of each room, whether it's for the
  * server or the client. When the game.player makes a move, they will declare there move to the server, who then queries its
- * own game.world instance for what exists in the target room. Upon return of this information, the server will pass it on
- * to the client, who then is able to update their own game.world instance.
+ * own world instance for what exists in the target room. Upon return of this information, the server will pass it on
+ * to the client, who then is able to update their own world instance.
  *
  * Storage of room knowledge should be contained in arraylist of rooms. For the server, this is easy. For the client,
  * there may be a frequent need to update the array based on changes in the known size of the map, thus altering
@@ -37,24 +37,24 @@ import java.util.logging.Logger
  *
  * Start:
  *      1. Server reads size number from file and sets size
- *      2. Server creates empty game.world (initialized to size requested in file)
+ *      2. Server creates empty world (initialized to size requested in file)
  *      3. Server reads coordinates of room and the list of RoomContents assigned to that room
  *      4. Server adds each RoomContent to room with given coordinates
  *      5. World updates room and any adjacent rooms that should have related content
  *          A. Each RoomContent has an associated list of WorldEffects (None, AddAdjacent, AddDiagonal, AddOn)
- *          B. Each WorldEffect implements a method applyEffect(x, y, game.world) that returns a game.world with the effect
+ *          B. Each WorldEffect implements a method applyEffect(x, y, world) that returns a world with the effect
  *          applied appropriately around/on the coordinates
  *          C. Rooms that are not yet visited are still updated. That way when the client considers that room as an option,
  *          they already know about any effects that have been applied to that room
  *      6. When server is ready, it will begin receiving requests from clients for a connection
  *      7. Client starts up and initializes a game.player and connection request
- *      8. Server responds with a session id, game.world size, and the starting room information (empty room)
+ *      8. Server responds with a session id, world size, and the starting room information (empty room)
  *          A. The agent should not have any information about the coordinates of the point
- *              I.  Let the agent use an empty game.world and assume its starting point is the bottom left.
+ *              I.  Let the agent use an empty world and assume its starting point is the bottom left.
  *                  As it travels, it will attempt to go beyond the map boundaries, and if successful, all rooms are
  *                  shifted in the opposite direction.
  *                  This will require also updating their knowledge on what content exists at which coordinates
- *              II. Let the agent create a graph of the game.world.
+ *              II. Let the agent create a graph of the world.
  *                  I'm less familiar with these, but it may be faster / more efficient since shifting won't be needed.
  *      9. Client sends movement request -> move(sessionId, direction)
  *      10. Server sends success -> success(sessionId, roomContent, playerState); or failure ->
