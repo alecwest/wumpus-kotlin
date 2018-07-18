@@ -16,12 +16,14 @@ data class Player(var playerState: PlayerState) {
     fun getNumberOf(item: Inventory) = getInventory().getOrDefault(item, 0)
 }
 
-data class PlayerState(val alive: Boolean, val location: Point, val facing: Direction,
-                       val inventory: PlayerInventory) {
+data class PlayerState(val alive: Boolean = true, val location: Point = Point(0, 0),
+                       val facing: Direction = Direction.NORTH,
+                       val inventory: PlayerInventory = PlayerInventory(
+                               mapOf(Inventory.ARROW to 1))) {
     fun getInventory() = inventory.inventory
 }
 
-data class PlayerInventory(val inventory: Map<Inventory, Int>)
+data class PlayerInventory(val inventory: Map<Inventory, Int> = mapOf())
 
 
 enum class Inventory {
