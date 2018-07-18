@@ -1,5 +1,6 @@
 package game.player
 
+import util.Direction
 import java.awt.Point
 
 /**
@@ -9,12 +10,14 @@ import java.awt.Point
 data class Player(var playerState: PlayerState) {
     fun isAlive() = playerState.alive
     fun getLocation() = playerState.location
+    fun getDirection() = playerState.facing
     fun getInventory() = playerState.getInventory()
     fun hasItem(item: Inventory) = getNumberOf(item) > 0
     fun getNumberOf(item: Inventory) = getInventory().getOrDefault(item, 0)
 }
 
-data class PlayerState(val alive: Boolean, val location: Point, val inventory: PlayerInventory) {
+data class PlayerState(val alive: Boolean, val location: Point, val facing: Direction,
+                       val inventory: PlayerInventory) {
     fun getInventory() = inventory.inventory
 }
 
