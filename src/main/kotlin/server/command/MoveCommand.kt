@@ -1,9 +1,8 @@
 package server.command
 
-import world.World
+import game.Game
 
-//TODO pass Game object
-class MoveCommand(world: World): Command {
+class MoveCommand(val game: Game): Command {
     override fun execute() {
 
     }
