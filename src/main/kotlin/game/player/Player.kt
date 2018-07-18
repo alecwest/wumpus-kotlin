@@ -7,7 +7,7 @@ import java.awt.Point
  * Player keeps track of all player attributes and is to be accessed through the game class
  * only by the server.
  */
-data class Player(var playerState: PlayerState) {
+data class Player(var playerState: PlayerState = PlayerState()) {
     fun isAlive() = playerState.alive
     fun getLocation() = playerState.location
     fun getDirection() = playerState.facing
