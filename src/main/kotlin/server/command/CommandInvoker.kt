@@ -1,6 +1,6 @@
 package server.command
 
-class MoveInvoker {
+class CommandInvoker {
     private var command: Command? = null
 
     fun setCommand(command: Command) {
