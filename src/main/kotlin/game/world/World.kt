@@ -61,7 +61,7 @@ import java.util.logging.Logger
  *          fail(sessionId, roomContent, playerState, reason(probably also room content))
  *      11. Client responds to success or failure by updating room positions, knowledge, and whether or not it's alive
  */
-class World(private val size: Int) {
+class World(private val size: Int = 10) {
     private val log = Logger.getLogger(World::class.qualifiedName)
     private var rooms: ArrayList<Room> = arrayListOf()
 
@@ -144,7 +144,7 @@ class World(private val size: Int) {
     }
 
     fun getWorldMap(): String {
-        var result: MutableList<String> = mutableListOf()
+        val result: MutableList<String> = mutableListOf()
         var row: MutableList<String> = mutableListOf()
         for (i in getNumberRooms() - 1 downTo 0) {
             val splitSmallRoomString = rooms[i].getSmallRoomString().split("\n")
