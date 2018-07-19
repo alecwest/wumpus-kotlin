@@ -1,6 +1,7 @@
 package game.player
 
 import util.Direction
+import util.copyThis
 import java.awt.Point
 
 /**
@@ -21,10 +22,15 @@ data class PlayerState(val alive: Boolean = true, val location: Point = Point(0,
                        val inventory: PlayerInventory = PlayerInventory(
                                mapOf(Inventory.ARROW to 1))) {
     fun getInventory() = inventory.inventory
+
+    fun copyThis(alive: Boolean = this.alive, location: Point = this.location.copyThis(),
+                         facing: Direction = this.facing, inventory: PlayerInventory = this.inventory.copyThis())
+            = PlayerState(alive, location, facing, inventory)
 }
 
 data class PlayerInventory(val inventory: Map<Inventory, Int> = mapOf())
 
+fun PlayerInventory.copyThis(inventory: Map<Inventory, Int> = this.inventory) = PlayerInventory(inventory)
 
 enum class Inventory {
     ARROW,

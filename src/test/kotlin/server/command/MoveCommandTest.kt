@@ -8,6 +8,7 @@ import game.player.PlayerState
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
+import util.Direction
 import java.awt.Point
 import java.util.stream.Stream
 
@@ -17,13 +18,15 @@ internal class MoveCommandTest {
     @MethodSource("validMoveCommandTestDataProvider")
     fun `execute move commands`(testData: ValidMoveCommandTestData) {
         testData.command.execute()
-        assertTrue(testData.expectedPoint == initialGame.gameState.player.getLocation())
+        assertEquals(testData.expectedPoint, initialGame.gameState.player.getLocation())
+        // Verify the rest of the player state is maintained
+        assertEquals(Direction.SOUTH, initialGame.gameState.player.getDirection())
     }
 
     companion object {
         private val initialGame = Game(GameState(player =
             Player(playerState =
-                PlayerState(location = Point(2, 2)))))
+                PlayerState(location = Point(2, 2), facing = Direction.SOUTH))))
 
         // TODO initialGame is not initialized at the start of every test, so these must run in succession to pass
         @JvmStatic

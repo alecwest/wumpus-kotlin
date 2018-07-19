@@ -6,6 +6,7 @@ import util.west
 
 class MoveWestCommand(val game: Game): Command {
     override fun execute() {
-        game.gameState.player.playerState = PlayerState(location = game.gameState.player.getLocation().west())
+        game.gameState.player.playerState = game.gameState.player.playerState.copyThis(
+                location = game.gameState.player.getLocation().west())
     }
 }
