@@ -7,7 +7,7 @@ package game.world
  *      A room only contains information on what exists inside it.
  *      It is up to the client to determine any "status" or "inferences" about any room.
  */
-class Room(private var roomContent: ArrayList<RoomContent>) {
+class Room(val roomContent: ArrayList<RoomContent>) {
     fun addRoomContent(content: RoomContent) {
         if (!hasRoomContent(content)) {
             roomContent.add(content)

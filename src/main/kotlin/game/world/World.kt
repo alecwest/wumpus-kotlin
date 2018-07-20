@@ -61,13 +61,19 @@ import java.util.logging.Logger
  *          fail(sessionId, roomContent, playerState, reason(probably also room content))
  *      11. Client responds to success or failure by updating room positions, knowledge, and whether or not it's alive
  */
-class World(private val size: Int = 10) {
+class World(private val size: Int = 10, private val roomsToAdd: Map<Point, Room> = mapOf()) {
     private val log = Logger.getLogger(World::class.qualifiedName)
-    private var rooms: ArrayList<Room> = arrayListOf()
+    private val rooms: ArrayList<Room> = arrayListOf()
 
     init {
         for (i in 0..(size * size - 1)){
             rooms.add(Room(arrayListOf()))
+        }
+        for (room in roomsToAdd) {
+            val index = getRoomIndex(room.key)
+            for (content in room.value.roomContent) {
+                rooms[index].addRoomContent(content)
+            }
         }
     }
 

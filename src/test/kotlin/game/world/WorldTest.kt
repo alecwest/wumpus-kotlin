@@ -7,6 +7,7 @@ import org.junit.jupiter.params.provider.MethodSource
 import game.world.Util.Companion.assertContains
 import java.awt.Point
 import java.util.stream.Stream
+import kotlin.test.assertTrue
 
 // TODO use @ParameterizedTest and @MethodSource
 class WorldTest {
@@ -19,6 +20,14 @@ class WorldTest {
         assertEquals(world2.getSize() * world2.getSize(), world2.getNumberRooms())
     }
 
+    @Test
+    fun `verify world init with roomsToAdd`() {
+        val world2 = World(size = 5, roomsToAdd =
+            mapOf(Point(2, 2) to Room(arrayListOf(RoomContent.BREEZE, RoomContent.PIT))))
+        assertEquals(2, world2.getAmountOfContentInRoom(Point(2, 2)))
+        assertTrue(world2.hasRoomContent(Point(2, 2), RoomContent.BREEZE))
+        assertTrue(world2.hasRoomContent(Point(2, 2), RoomContent.PIT))
+    }
 
     @ParameterizedTest
     @MethodSource("validAddRoomContentProvider")
