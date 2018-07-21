@@ -1,5 +1,6 @@
 package game.player
 
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
 import util.Direction
@@ -35,6 +36,16 @@ class PlayerTest {
         assertEquals(testData.numArrow, testData.givenPlayer.getNumberOf(InventoryItem.ARROW))
         assertEquals(testData.numFood, testData.givenPlayer.getNumberOf(InventoryItem.FOOD))
         assertEquals(testData.numGold, testData.givenPlayer.getNumberOf(InventoryItem.GOLD))
+    }
+
+    @Test
+    fun `check player adds to inventory`() {
+        val player = Player()
+        player.addToInventory(InventoryItem.ARROW)
+        assertEquals(2, player.getNumberOf(InventoryItem.ARROW))
+        assertEquals(0, player.getNumberOf(InventoryItem.FOOD))
+        player.addToInventory(InventoryItem.FOOD)
+        assertEquals(1, player.getNumberOf(InventoryItem.FOOD))
     }
 
     companion object {

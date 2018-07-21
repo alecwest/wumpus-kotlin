@@ -11,7 +11,7 @@ import java.util.*
  *      to the game state.
  *      The gameState executes the command, which can update data such as:
  *          Location of the player
- *          State of the player (inventoryItem, health, etc)
+ *          State of the player (inventoryItems, health, etc)
  *          State of the game (In Progress, Over, Goal Achieved, etc.)
  *      The gameState returns a state for the server to process and update the client with:
  *          ...

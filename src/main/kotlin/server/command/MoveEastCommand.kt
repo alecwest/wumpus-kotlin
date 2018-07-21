@@ -1,7 +1,6 @@
 package server.command
 
 import game.Game
-import game.player.PlayerState
 import util.east
 
 class MoveEastCommand(val game: Game): Command {
