@@ -24,17 +24,17 @@ class PlayerTest {
     @ParameterizedTest
     @MethodSource("validPlayerTestDataProvider")
     fun `check player has inventory`(testData: ValidPlayerTestData) {
-        assertEquals(testData.hasArrow, testData.givenPlayer.hasItem(Inventory.ARROW))
-        assertEquals(testData.hasFood, testData.givenPlayer.hasItem(Inventory.FOOD))
-        assertEquals(testData.hasGold, testData.givenPlayer.hasItem(Inventory.GOLD))
+        assertEquals(testData.hasArrow, testData.givenPlayer.hasItem(InventoryItem.ARROW))
+        assertEquals(testData.hasFood, testData.givenPlayer.hasItem(InventoryItem.FOOD))
+        assertEquals(testData.hasGold, testData.givenPlayer.hasItem(InventoryItem.GOLD))
     }
 
     @ParameterizedTest
     @MethodSource("validPlayerTestDataProvider")
     fun `check player number items in inventory`(testData: ValidPlayerTestData) {
-        assertEquals(testData.numArrow, testData.givenPlayer.getNumberOf(Inventory.ARROW))
-        assertEquals(testData.numFood, testData.givenPlayer.getNumberOf(Inventory.FOOD))
-        assertEquals(testData.numGold, testData.givenPlayer.getNumberOf(Inventory.GOLD))
+        assertEquals(testData.numArrow, testData.givenPlayer.getNumberOf(InventoryItem.ARROW))
+        assertEquals(testData.numFood, testData.givenPlayer.getNumberOf(InventoryItem.FOOD))
+        assertEquals(testData.numGold, testData.givenPlayer.getNumberOf(InventoryItem.GOLD))
     }
 
     companion object {
@@ -42,8 +42,8 @@ class PlayerTest {
         fun validPlayerTestDataProvider() = Stream.of(
                 ValidPlayerTestData(Player(PlayerState(alive = true,
                         location = Point(1, 3), facing = Direction.NORTH,
-                        inventory = PlayerInventory(mapOf(Inventory.ARROW to 1,
-                                Inventory.FOOD to 2, Inventory.GOLD to 3)))),
+                        inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 1,
+                                InventoryItem.FOOD to 2, InventoryItem.GOLD to 3)))),
                         expectedAlive = true, expectedLocation = Point(1, 3),
                         expectedDirection = Direction.NORTH,
                         hasArrow = true, hasFood = true, hasGold = true,

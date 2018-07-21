@@ -13,26 +13,26 @@ data class Player(var playerState: PlayerState = PlayerState()) {
     fun getLocation() = playerState.location
     fun getDirection() = playerState.facing
     fun getInventory() = playerState.getInventory()
-    fun hasItem(item: Inventory) = getNumberOf(item) > 0
-    fun getNumberOf(item: Inventory) = getInventory().getOrDefault(item, 0)
+    fun hasItem(item: InventoryItem) = getNumberOf(item) > 0
+    fun getNumberOf(item: InventoryItem) = getInventory().getOrDefault(item, 0)
 }
 
 data class PlayerState(val alive: Boolean = true, val location: Point = Point(0, 0),
                        val facing: Direction = Direction.NORTH,
                        val inventory: PlayerInventory = PlayerInventory(
-                               mapOf(Inventory.ARROW to 1))) {
-    fun getInventory() = inventory.inventory
+                               mapOf(InventoryItem.ARROW to 1))) {
+    fun getInventory() = inventory.inventoryItem
 
     fun copyThis(alive: Boolean = this.alive, location: Point = this.location.copyThis(),
                          facing: Direction = this.facing, inventory: PlayerInventory = this.inventory.copyThis())
             = PlayerState(alive, location, facing, inventory)
 }
 
-data class PlayerInventory(val inventory: Map<Inventory, Int> = mapOf())
+data class PlayerInventory(val inventoryItem: Map<InventoryItem, Int> = mapOf())
 
-fun PlayerInventory.copyThis(inventory: Map<Inventory, Int> = this.inventory) = PlayerInventory(inventory)
+fun PlayerInventory.copyThis(inventoryItem: Map<InventoryItem, Int> = this.inventoryItem) = PlayerInventory(inventoryItem)
 
-enum class Inventory {
+enum class InventoryItem {
     ARROW,
     FOOD,
     GOLD,
