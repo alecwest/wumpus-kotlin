@@ -29,7 +29,7 @@ class GrabCommandTest {
 
     companion object {
         private val initialGame = Game(GameState(world = World(roomsToAdd =
-            mapOf(Point(2, 2) to Room(arrayListOf(RoomContent.SUPMUW, RoomContent.FOOD)))),
+            mapOf(Point(2, 2) to Room(arrayListOf(RoomContent.GOLD, RoomContent.FOOD)))),
             player = Player(playerState =
             PlayerState(location = Point(2, 2), facing = Direction.SOUTH,
             inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 2))))))
@@ -38,7 +38,8 @@ class GrabCommandTest {
         @JvmStatic
         fun validGrabCommandTestDataProvider() = Stream.of(
                 ValidGrabCommandTestData(initialGame, GrabFoodCommand(initialGame), PlayerInventory(mapOf(InventoryItem.ARROW to 2, InventoryItem.FOOD to 1))),
-                ValidGrabCommandTestData(initialGame, GrabFoodCommand(initialGame), PlayerInventory(mapOf(InventoryItem.ARROW to 2, InventoryItem.FOOD to 2)))
+                ValidGrabCommandTestData(initialGame, GrabFoodCommand(initialGame), PlayerInventory(mapOf(InventoryItem.ARROW to 2, InventoryItem.FOOD to 2))),
+                ValidGrabCommandTestData(initialGame, GrabGoldCommand(initialGame), PlayerInventory(mapOf(InventoryItem.ARROW to 2, InventoryItem.FOOD to 2, InventoryItem.GOLD to 1)))
         )
     }
 }
