@@ -2,9 +2,7 @@ package game.world
 
 import game.world.effect.*
 import java.awt.Point
-import java.lang.Math.sqrt
 import java.util.logging.Logger
-import kotlin.math.sqrt
 
 /**
  * Notes:
