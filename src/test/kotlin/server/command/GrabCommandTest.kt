@@ -9,6 +9,7 @@ import game.player.PlayerState
 import game.world.Room
 import game.world.RoomContent
 import game.world.World
+import game.world.WorldState
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.params.ParameterizedTest
@@ -31,8 +32,9 @@ class GrabCommandTest {
 
     companion object {
         private val testPoint = Point(2, 2)
-        private val initialGame = Game(GameState(world = World(roomsToAdd =
-            mapOf(testPoint to Room(arrayListOf(RoomContent.GOLD, RoomContent.FOOD)))),
+        private val initialGame = Game(GameState(world = World(
+            WorldState(roomsToAdd =
+            mapOf(testPoint to Room(arrayListOf(RoomContent.GOLD, RoomContent.FOOD))))),
             player = Player(playerState =
             PlayerState(location = testPoint, facing = Direction.SOUTH,
             inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 2))))))

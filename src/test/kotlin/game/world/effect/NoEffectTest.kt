@@ -6,10 +6,11 @@ import util.adjacents
 import util.diagonals
 import game.world.RoomContent
 import game.world.World
+import game.world.WorldState
 import java.awt.Point
 
 class NoEffectTest {
-    private val world: World = World(3)
+    private val world: World = World(WorldState(3))
     private val pointToAddTo: Point = Point(1, 1)
 
     @Test

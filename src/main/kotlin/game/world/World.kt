@@ -61,12 +61,26 @@ import java.util.logging.Logger
  *          fail(sessionId, roomContent, playerState, reason(probably also room content))
  *      11. Client responds to success or failure by updating room positions, knowledge, and whether or not it's alive
  */
-class World(private val size: Int = 10, private val roomsToAdd: Map<Point, Room> = mapOf()) {
+data class World(private var worldState: WorldState = WorldState()) {
+    fun getSize() = worldState.getSize()
+    fun addRoomContent(point: Point, content: RoomContent) = worldState.addRoomContent(point, content)
+    fun removeRoomContent(point: Point, content: RoomContent) = worldState.removeRoomContent(point, content)
+    fun hasRoomContent(point: Point, content: RoomContent) = worldState.hasRoomContent(point, content)
+    fun roomIsEmpty(point: Point) = worldState.roomIsEmpty(point)
+    fun getRoomIndex(point: Point) = worldState.getRoomIndex(point)
+    fun getWorldMap() = worldState.getWorldMap()
+    fun getRoom(point: Point) = worldState.getRoom(point)
+    fun getNumberRooms() = worldState.getNumberRooms()
+    fun getAmountOfContentInRoom(point: Point) = worldState.getAmountOfContentInRoom(point)
+}
+
+data class WorldState(private val size: Int = 10,
+                      private val roomsToAdd: Map<Point, Room> = mapOf()) {
     private val log = Logger.getLogger(World::class.qualifiedName)
     private val rooms: ArrayList<Room> = arrayListOf()
 
     init {
-        for (i in 0..(size * size - 1)){
+        for (i in 0..(size * size - 1)) {
             rooms.add(Room(arrayListOf()))
         }
         for (room in roomsToAdd) {
@@ -91,7 +105,7 @@ class World(private val size: Int = 10, private val roomsToAdd: Map<Point, Room>
     }
 
     private fun getAssociatedWorldEffects(roomContent: RoomContent): ArrayList<WorldEffect> {
-        return when(roomContent) {
+        return when (roomContent) {
             RoomContent.BLOCKADE -> arrayListOf(NoEffect())
             RoomContent.BREEZE -> arrayListOf(NoEffect())
             RoomContent.BUMP -> arrayListOf(NoEffect())

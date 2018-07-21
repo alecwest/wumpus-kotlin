@@ -1,8 +1,8 @@
 package game.world.effect
 
-import game.world.World
+import game.world.WorldState
 import java.awt.Point
 
 interface WorldEffect {
-    fun applyEffect(world: World, point: Point)
+    fun applyEffect(worldState: WorldState, point: Point)
 }

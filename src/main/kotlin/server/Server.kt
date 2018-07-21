@@ -2,6 +2,7 @@ package server
 
 import util.JsonParser.Companion.buildFromJsonFile
 import game.world.World
+import game.world.WorldState
 import java.util.*
 
 /**
@@ -18,7 +19,7 @@ import java.util.*
  */
 class Server(private val fileName: String = "", private val worldSize: Int = 10) {
     private val world: World = if (fileName.isBlank()) {
-        World(worldSize)
+        World(worldState = WorldState(size = worldSize))
     } else {
         buildFromJsonFile(fileName)
     }
