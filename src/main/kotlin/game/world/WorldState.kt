@@ -8,10 +8,6 @@ data class WorldState(private val rooms: ArrayList<Room> = arrayListOf()) {
     private val log = Logger.getLogger(WorldState::class.qualifiedName)
     private val size = sqrt(rooms.size.toFloat()).toInt()
 
-
-    fun copyThis(rooms: ArrayList<Room> = arrayListOf()) =
-            WorldState(rooms)
-
     fun getRooms() = rooms
 
     fun hasRoomContent(point: Point, content: RoomContent): Boolean {
@@ -73,4 +69,7 @@ data class WorldState(private val rooms: ArrayList<Room> = arrayListOf()) {
         val room = getRoom(point)
         return room.getAmountOfContent()
     }
+
+    fun copyThis(rooms: ArrayList<Room> = arrayListOf()) =
+            WorldState(rooms)
 }
