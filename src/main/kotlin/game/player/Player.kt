@@ -19,9 +19,9 @@ data class Player(var playerState: PlayerState = PlayerState()) {
     fun getNumberOf(item: InventoryItem) = getInventory().getOrDefault(item, 0)
 
     fun addToInventory(inventoryItem: InventoryItem) {
-        val newMap = playerState.inventory.inventoryItems.toMutableMap()
-        if (inventoryItem in playerState.inventory.inventoryItems.keys) {
-            newMap[inventoryItem] = playerState.inventory.inventoryItems.getValue(inventoryItem) + 1
+        val newMap = playerState.getInventory().toMutableMap()
+        if (inventoryItem in playerState.getInventory().keys) {
+            newMap[inventoryItem] = playerState.getInventory().getValue(inventoryItem) + 1
         } else {
             newMap[inventoryItem] = 1
         }
@@ -29,13 +29,29 @@ data class Player(var playerState: PlayerState = PlayerState()) {
     }
 
     fun removeFromInventory(inventoryItem: InventoryItem) {
-        val newMap = playerState.inventory.inventoryItems.toMutableMap()
+        val newMap = playerState.getInventory().toMutableMap()
         if (getNumberOf(inventoryItem) > 0) {
             newMap[inventoryItem] = newMap.getValue(inventoryItem) - 1
         } else {
             log.info("Item %s was not removed from inventory that doesn't contain it".format(inventoryItem.toString()))
         }
         playerState = playerState.copyThis(inventory = PlayerInventory(newMap.toMap()))
+    }
+
+    fun setAlive(alive: Boolean) {
+        playerState = playerState.copyThis(alive = alive)
+    }
+
+    fun setLocation(location: Point) {
+        playerState = playerState.copyThis(location = location)
+    }
+
+    fun setFacing(direction: Direction) {
+        playerState = playerState.copyThis(facing = direction)
+    }
+
+    fun setInventory(inventory: PlayerInventory) {
+        playerState = playerState.copyThis(inventory = inventory)
     }
 }
 

@@ -9,6 +9,8 @@ import java.util.stream.Stream
 import kotlin.test.assertEquals
 
 class PlayerTest {
+    private val player = Player()
+
     @ParameterizedTest
     @MethodSource("validPlayerTestDataProvider")
     fun `check player is alive`(testData: ValidPlayerTestData) {
@@ -38,25 +40,6 @@ class PlayerTest {
         assertEquals(testData.numGold, testData.givenPlayer.getNumberOf(InventoryItem.GOLD))
     }
 
-    @Test
-    fun `check player adds to inventory`() {
-        val player = Player()
-        player.addToInventory(InventoryItem.ARROW)
-        assertEquals(2, player.getNumberOf(InventoryItem.ARROW))
-        assertEquals(0, player.getNumberOf(InventoryItem.FOOD))
-        player.addToInventory(InventoryItem.FOOD)
-        assertEquals(1, player.getNumberOf(InventoryItem.FOOD))
-    }
-
-     @Test
-    fun `check player removes from inventory`() {
-        val player = Player()
-        player.removeFromInventory(InventoryItem.ARROW)
-        assertEquals(0, player.getNumberOf(InventoryItem.ARROW))
-        player.removeFromInventory(InventoryItem.FOOD)
-        assertEquals(0, player.getNumberOf(InventoryItem.FOOD))
-    }
-
     companion object {
         @JvmStatic
         fun validPlayerTestDataProvider() = Stream.of(
@@ -74,8 +57,56 @@ class PlayerTest {
                         expectedAlive = false, expectedLocation = Point(4, 6),
                         expectedDirection = Direction.WEST,
                         hasArrow = false, hasFood = false, hasGold = false,
-                        numArrow = 0, numFood = 0, numGold = 0)
+                        numArrow = 0, numFood = 0, numGold = 0),
+                ValidPlayerTestData(Player(),
+                        expectedAlive = true, expectedLocation = Point(0, 0),
+                        expectedDirection = Direction.NORTH,
+                        hasArrow = true, hasFood = false, hasGold = false,
+                        numArrow = 1, numFood = 0, numGold = 0)
         )
+    }
+
+    @Test
+    fun `check player adds to inventory`() {
+        assertEquals(1, player.getNumberOf(InventoryItem.ARROW))
+        player.addToInventory(InventoryItem.ARROW)
+        assertEquals(2, player.getNumberOf(InventoryItem.ARROW))
+        assertEquals(0, player.getNumberOf(InventoryItem.FOOD))
+        player.addToInventory(InventoryItem.FOOD)
+        assertEquals(1, player.getNumberOf(InventoryItem.FOOD))
+    }
+
+    @Test
+    fun `check player removes from inventory`() {
+        assertEquals(1, player.getNumberOf(InventoryItem.ARROW))
+        player.removeFromInventory(InventoryItem.ARROW)
+        assertEquals(0, player.getNumberOf(InventoryItem.ARROW))
+        player.removeFromInventory(InventoryItem.FOOD)
+        assertEquals(0, player.getNumberOf(InventoryItem.FOOD))
+    }
+
+    @Test
+    fun `check player dead`() {
+        player.setAlive(false)
+        assertEquals(false, player.isAlive())
+    }
+
+    @Test
+    fun `check player location`() {
+        player.setLocation(Point(2, 3))
+        assertEquals(Point(2, 3), player.getLocation())
+    }
+
+    @Test
+    fun `check player facing`() {
+        player.setFacing(Direction.WEST)
+        assertEquals(Direction.WEST, player.getDirection())
+    }
+
+    @Test
+    fun `check player inventory`() {
+        player.setInventory(PlayerInventory(mapOf(InventoryItem.GOLD to 12)))
+        assertEquals(mapOf(InventoryItem.GOLD to 12), player.getInventory())
     }
 }
 
