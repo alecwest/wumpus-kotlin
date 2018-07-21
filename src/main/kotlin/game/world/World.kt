@@ -2,7 +2,9 @@ package game.world
 
 import game.world.effect.*
 import java.awt.Point
+import java.lang.Math.sqrt
 import java.util.logging.Logger
+import kotlin.math.sqrt
 
 /**
  * Notes:
@@ -61,47 +63,29 @@ import java.util.logging.Logger
  *          fail(sessionId, roomContent, playerState, reason(probably also room content))
  *      11. Client responds to success or failure by updating room positions, knowledge, and whether or not it's alive
  */
-data class World(private var worldState: WorldState = WorldState()) {
-    fun getSize() = worldState.getSize()
-    fun addRoomContent(point: Point, content: RoomContent) = worldState.addRoomContent(point, content)
-    fun removeRoomContent(point: Point, content: RoomContent) = worldState.removeRoomContent(point, content)
-    fun hasRoomContent(point: Point, content: RoomContent) = worldState.hasRoomContent(point, content)
-    fun roomIsEmpty(point: Point) = worldState.roomIsEmpty(point)
-    fun getRoomIndex(point: Point) = worldState.getRoomIndex(point)
-    fun getWorldMap() = worldState.getWorldMap()
-    fun getRoom(point: Point) = worldState.getRoom(point)
-    fun getNumberRooms() = worldState.getNumberRooms()
-    fun getAmountOfContentInRoom(point: Point) = worldState.getAmountOfContentInRoom(point)
-}
-
-data class WorldState(private val size: Int = 10,
-                      private val roomsToAdd: Map<Point, Room> = mapOf()) {
+data class World(private var size: Int = 10) {
     private val log = Logger.getLogger(World::class.qualifiedName)
-    private val rooms: ArrayList<Room> = arrayListOf()
+
+    private var worldState: WorldState = WorldState()
 
     init {
+        val worldRooms = arrayListOf<Room>()
         for (i in 0..(size * size - 1)) {
-            rooms.add(Room(arrayListOf()))
+            worldRooms.add(Room(arrayListOf()))
         }
-        for (room in roomsToAdd) {
-            val index = getRoomIndex(room.key)
-            for (content in room.value.roomContent) {
-                rooms[index].addRoomContent(content)
-            }
-        }
+        worldState = worldState.copyThis(rooms = worldRooms)
     }
 
-    fun getSize(): Int {
-        return size
-    }
-
+    fun getSize() = size
     fun addRoomContent(point: Point, content: RoomContent) {
-        try {
-            rooms[getRoomIndex(point)].addRoomContent(content)
-            addWorldEffects(point, getAssociatedWorldEffects(content))
-        } catch (e: ArrayIndexOutOfBoundsException) {
-            log.info("Content %s was not added to out-of-bounds room.".format(content.toString()))
-        }
+        worldState = worldState.copyThis(rooms = worldState.getRooms().apply {
+            try {
+                this[getRoomIndex(point)].addRoomContent(content)
+                addWorldEffects(point, getAssociatedWorldEffects(content))
+            } catch (e: ArrayIndexOutOfBoundsException) {
+                log.info("Content %s was not added to out-of-bounds room.".format(content.toString()))
+            }
+        })
     }
 
     private fun getAssociatedWorldEffects(roomContent: RoomContent): ArrayList<WorldEffect> {
@@ -130,12 +114,33 @@ data class WorldState(private val size: Int = 10,
     }
 
     fun removeRoomContent(point: Point, content: RoomContent) {
-        try {
-            rooms[getRoomIndex(point)].removeRoomContent(content)
-        } catch (e: ArrayIndexOutOfBoundsException) {
-            log.info("Content %s was not removed from out-of-bounds room.".format(content.toString()))
-        }
+        worldState = worldState.copyThis(rooms = worldState.getRooms().apply {
+            try {
+                this[getRoomIndex(point)].removeRoomContent(content)
+            } catch (e: ArrayIndexOutOfBoundsException) {
+                log.info("Content %s was not removed from out-of-bounds room.".format(content.toString()))
+            }
+        })
     }
+
+    fun hasRoomContent(point: Point, content: RoomContent) = worldState.hasRoomContent(point, content)
+    fun roomIsEmpty(point: Point) = worldState.roomIsEmpty(point)
+    fun getRoomIndex(point: Point) = worldState.getRoomIndex(point)
+    fun getWorldMap() = worldState.getWorldMap()
+    fun getRoom(point: Point) = worldState.getRoom(point)
+    fun getNumberRooms() = worldState.getNumberRooms()
+    fun getAmountOfContentInRoom(point: Point) = worldState.getAmountOfContentInRoom(point)
+}
+
+data class WorldState(private val rooms: ArrayList<Room> = arrayListOf()) {
+    private val log = Logger.getLogger(WorldState::class.qualifiedName)
+    private val size = sqrt(rooms.size.toFloat()).toInt()
+
+
+    fun copyThis(rooms: ArrayList<Room> = arrayListOf()) =
+            WorldState(rooms)
+
+    fun getRooms() = rooms
 
     fun hasRoomContent(point: Point, content: RoomContent): Boolean {
         return try {

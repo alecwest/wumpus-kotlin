@@ -1,10 +1,10 @@
 package game.world.effect
 
-import game.world.WorldState
+import game.world.World
 import java.awt.Point
 
 class NoEffect: WorldEffect {
-    override fun applyEffect(worldState: WorldState, point: Point) {
+    override fun applyEffect(world: World, point: Point) {
         // Do nothing
     }
 }

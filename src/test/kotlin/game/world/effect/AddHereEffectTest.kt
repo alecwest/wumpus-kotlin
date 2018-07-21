@@ -8,7 +8,7 @@ import game.world.WorldState
 import java.awt.Point
 
 class AddHereEffectTest {
-    private val world: World = World(WorldState(3))
+    private val world: World = World(3)
     private val pointToAddTo: Point = Point(1, 1)
 
     @Test

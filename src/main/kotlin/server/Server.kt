@@ -19,7 +19,7 @@ import java.util.*
  */
 class Server(private val fileName: String = "", private val worldSize: Int = 10) {
     private val world: World = if (fileName.isBlank()) {
-        World(worldState = WorldState(size = worldSize))
+        World(size = worldSize)
     } else {
         buildFromJsonFile(fileName)
     }

@@ -11,22 +11,13 @@ import kotlin.test.assertTrue
 
 // TODO use @ParameterizedTest and @MethodSource
 class WorldTest {
-    private val world: World = World(WorldState(4))
+    private val world: World = World(4)
 
     @Test
     fun `verify world init`() {
-        val world2 = World(WorldState(3))
+        val world2 = World(3)
         assertEquals(world.getSize() * world.getSize(), world.getNumberRooms())
         assertEquals(world2.getSize() * world2.getSize(), world2.getNumberRooms())
-    }
-
-    @Test
-    fun `verify world init with roomsToAdd`() {
-        val world2 = World(WorldState(size = 5, roomsToAdd =
-            mapOf(Point(2, 2) to Room(arrayListOf(RoomContent.BREEZE, RoomContent.PIT)))))
-        assertEquals(2, world2.getAmountOfContentInRoom(Point(2, 2)))
-        assertTrue(world2.hasRoomContent(Point(2, 2), RoomContent.BREEZE))
-        assertTrue(world2.hasRoomContent(Point(2, 2), RoomContent.PIT))
     }
 
     @ParameterizedTest

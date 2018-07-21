@@ -14,14 +14,14 @@ class JsonParser {
         fun buildFromJsonFile(fileName: String): World {
             val jsonReader = JsonReader(FileReader(fileName))
             val klaxon = Klaxon()
-            var world = World(WorldState(0))
+            var world = World(0)
 
             jsonReader.use {
                 it.beginObject {
                     while (it.hasNext()) {
                         val readName = it.nextName()
                         when (readName) {
-                            "world-size" -> world = World(WorldState(it.nextInt()))
+                            "world-size" -> world = World(it.nextInt())
                             "data" -> world.parseDataArray(klaxon, it)
                         }
                     }
