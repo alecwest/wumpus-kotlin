@@ -6,10 +6,10 @@ import game.world.RoomContent
 
 class GrabFoodCommand(val game: Game): Command {
     override fun execute() {
-        val playerLocation = game.gameState.player.getLocation()
-        if (game.gameState.world.hasRoomContent(playerLocation, RoomContent.FOOD)) {
-            game.gameState.player.addToInventory(InventoryItem.FOOD)
-            game.gameState.world.removeRoomContent(playerLocation, RoomContent.FOOD)
+        val playerLocation = game.getGameState().player.getLocation()
+        if (game.getGameState().world.hasRoomContent(playerLocation, RoomContent.FOOD)) {
+            game.getGameState().player.addToInventory(InventoryItem.FOOD)
+            game.getGameState().world.removeRoomContent(playerLocation, RoomContent.FOOD)
         }
     }
 

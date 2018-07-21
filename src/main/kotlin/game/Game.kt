@@ -9,7 +9,8 @@ import java.awt.Point
 /**
  * Game facilitates interactions between a world and its player
  */
-data class Game(val gameState: GameState = GameState()) {
+data class Game(private val gameState: GameState = GameState()) {
+    fun getGameState() = gameState
     fun gameOver() = gameState.gameOver()
 }
 

@@ -18,9 +18,9 @@ internal class MoveCommandTest {
     @MethodSource("validMoveCommandTestDataProvider")
     fun `execute move commands`(testData: ValidMoveCommandTestData) {
         testData.command.execute()
-        assertEquals(testData.expectedPoint, initialGame.gameState.player.getLocation())
+        assertEquals(testData.expectedPoint, initialGame.getGameState().player.getLocation())
         // Verify the rest of the player state is maintained
-        assertEquals(Direction.SOUTH, initialGame.gameState.player.getDirection())
+        assertEquals(Direction.SOUTH, initialGame.getGameState().player.getDirection())
     }
 
     companion object {
