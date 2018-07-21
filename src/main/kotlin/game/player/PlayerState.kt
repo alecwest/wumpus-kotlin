@@ -20,16 +20,3 @@ data class PlayerState(private val alive: Boolean = true,
                  inventory: PlayerInventory = this.inventory.copyThis())
             = PlayerState(alive, location, facing, inventory)
 }
-
-data class PlayerInventory(private val inventoryItems: Map<InventoryItem, Int> = mapOf()) {
-    fun getInventory() = inventoryItems
-    fun copyThis(inventoryItem: Map<InventoryItem, Int> =
-                         this.getInventory()) = PlayerInventory(inventoryItem)
-}
-
-
-enum class InventoryItem {
-    ARROW,
-    FOOD,
-    GOLD,
-}
