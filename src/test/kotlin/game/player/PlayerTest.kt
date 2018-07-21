@@ -48,6 +48,15 @@ class PlayerTest {
         assertEquals(1, player.getNumberOf(InventoryItem.FOOD))
     }
 
+     @Test
+    fun `check player removes from inventory`() {
+        val player = Player()
+        player.removeFromInventory(InventoryItem.ARROW)
+        assertEquals(0, player.getNumberOf(InventoryItem.ARROW))
+        player.removeFromInventory(InventoryItem.FOOD)
+        assertEquals(0, player.getNumberOf(InventoryItem.FOOD))
+    }
+
     companion object {
         @JvmStatic
         fun validPlayerTestDataProvider() = Stream.of(
