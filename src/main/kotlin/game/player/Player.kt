@@ -11,9 +11,9 @@ import java.util.logging.Logger
  */
 data class Player(var playerState: PlayerState = PlayerState()) {
     private val log = Logger.getLogger(Player::class.qualifiedName)
-    fun isAlive() = playerState.alive
-    fun getLocation() = playerState.location
-    fun getDirection() = playerState.facing
+    fun isAlive() = playerState.getAlive()
+    fun getLocation() = playerState.getLocation()
+    fun getDirection() = playerState.getFacing()
     fun getInventory() = playerState.getInventory()
     fun hasItem(item: InventoryItem) = getNumberOf(item) > 0
     fun getNumberOf(item: InventoryItem) = getInventory().getOrDefault(item, 0)
@@ -55,10 +55,14 @@ data class Player(var playerState: PlayerState = PlayerState()) {
     }
 }
 
-data class PlayerState(val alive: Boolean = true, val location: Point = Point(0, 0),
-                       val facing: Direction = Direction.NORTH,
-                       val inventory: PlayerInventory = PlayerInventory(
+data class PlayerState(private val alive: Boolean = true,
+                       private val location: Point = Point(0, 0),
+                       private val facing: Direction = Direction.NORTH,
+                       private val inventory: PlayerInventory = PlayerInventory(
                                mapOf(InventoryItem.ARROW to 1))) {
+    fun getAlive() = alive
+    fun getLocation() = location
+    fun getFacing() = facing
     fun getInventory() = inventory.inventoryItems
 
     fun copyThis(alive: Boolean = this.alive, location: Point = this.location.copyThis(),
