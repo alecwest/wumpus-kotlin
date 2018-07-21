@@ -69,7 +69,7 @@ data class World(private var size: Int = 10) {
     init {
         val worldRooms = arrayListOf<Room>()
         for (i in 0..(size * size - 1)) {
-            worldRooms.add(Room(arrayListOf()))
+            worldRooms.add(Room())
         }
         worldState = worldState.copyThis(rooms = worldRooms)
     }

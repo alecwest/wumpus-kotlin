@@ -28,7 +28,7 @@ class RoomTest {
 
     @Test
     fun `check room is empty`() {
-        val emptyRoom = Room(arrayListOf())
+        val emptyRoom = Room()
         assertTrue(emptyRoom.isEmpty())
     }
 
