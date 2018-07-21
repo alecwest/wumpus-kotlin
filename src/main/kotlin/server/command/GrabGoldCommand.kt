@@ -6,10 +6,10 @@ import game.world.RoomContent
 
 class GrabGoldCommand(val game: Game): Command {
     override fun execute() {
-        val playerLocation = game.getGameState().player.getLocation()
-        if (game.getGameState().world.hasRoomContent(playerLocation, RoomContent.GOLD)) {
-            game.getGameState().player.addToInventory(InventoryItem.GOLD)
-            game.getGameState().world.removeRoomContent(playerLocation, RoomContent.GOLD)
+        val playerLocation = game.getPlayerLocation()
+        if (game.getGameWorld().hasRoomContent(playerLocation, RoomContent.GOLD)) {
+            game.addToPlayerInventory(InventoryItem.GOLD)
+            game.getGameWorld().removeRoomContent(playerLocation, RoomContent.GOLD)
         }
     }
 }

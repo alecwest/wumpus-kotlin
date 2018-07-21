@@ -11,7 +11,7 @@ import java.util.logging.Logger
  */
 data class Player(private var playerState: PlayerState = PlayerState()) {
     private val log = Logger.getLogger(Player::class.qualifiedName)
-    fun isAlive() = playerState.getAlive()
+    fun isAlive() = playerState.isAlive()
     fun getLocation() = playerState.getLocation()
     fun getDirection() = playerState.getFacing()
     fun getInventory() = playerState.getInventory()
@@ -60,7 +60,7 @@ data class PlayerState(private val alive: Boolean = true,
                        private val facing: Direction = Direction.NORTH,
                        private val inventory: PlayerInventory = PlayerInventory(
                                mapOf(InventoryItem.ARROW to 1))) {
-    fun getAlive() = alive
+    fun isAlive() = alive
     fun getLocation() = location
     fun getFacing() = facing
     fun getInventory() = inventory.getInventory()

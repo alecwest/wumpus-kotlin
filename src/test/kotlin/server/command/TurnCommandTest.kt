@@ -16,9 +16,9 @@ internal class TurnCommandTest {
     @MethodSource("validTurnCommandTestDataProvider")
     fun `execute turn commands`(testData: ValidTurnCommandTestData) {
         testData.command.execute()
-        assertEquals(testData.expectedDirection, initialGame.getGameState().player.getDirection())
+        assertEquals(testData.expectedDirection, initialGame.getPlayerDirection())
         // Verify the rest of the player state is maintained
-        assertEquals(Point(2, 2), initialGame.getGameState().player.getLocation())
+        assertEquals(Point(2, 2), initialGame.getPlayerLocation())
     }
 
     companion object {

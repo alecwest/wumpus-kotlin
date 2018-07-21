@@ -23,10 +23,10 @@ class GrabCommandTest {
     fun `execute grab command`(testData: ValidGrabCommandTestData) {
         testData.command.execute()
         assertEquals(testData.expectedInventory.getInventory(),
-                initialGame.getGameState().player.getInventory())
+                initialGame.getPlayerInventory())
         // Verify the rest of the player state is maintained
-        assertEquals(Direction.SOUTH, initialGame.getGameState().player.getDirection())
-        assertFalse(initialGame.getGameState().world.hasRoomContent(testPoint, testData.lostWorldContent))
+        assertEquals(Direction.SOUTH, initialGame.getPlayerDirection())
+        assertFalse(initialGame.getGameWorld().hasRoomContent(testPoint, testData.lostWorldContent))
     }
 
     companion object {
