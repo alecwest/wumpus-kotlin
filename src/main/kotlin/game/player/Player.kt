@@ -25,7 +25,7 @@ data class Player(var playerState: PlayerState = PlayerState()) {
         } else {
             newMap[inventoryItem] = 1
         }
-        playerState = PlayerState(inventory = PlayerInventory(newMap.toMap()))
+        playerState = playerState.copyThis(inventory = PlayerInventory(newMap.toMap()))
     }
 
     fun removeFromInventory(inventoryItem: InventoryItem) {
@@ -35,7 +35,7 @@ data class Player(var playerState: PlayerState = PlayerState()) {
         } else {
             log.info("Item %s was not removed from inventory that doesn't contain it".format(inventoryItem.toString()))
         }
-        playerState = PlayerState(inventory = PlayerInventory(newMap.toMap()))
+        playerState = playerState.copyThis(inventory = PlayerInventory(newMap.toMap()))
     }
 }
 
