@@ -9,7 +9,7 @@ import game.player.PlayerState
 import game.world.Room
 import game.world.RoomContent
 import game.world.World
-import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
 import util.Direction
@@ -21,10 +21,10 @@ class GrabCommandTest {
     @MethodSource("validGrabCommandTestDataProvider")
     fun `execute grab command`(testData: ValidGrabCommandTestData) {
         testData.command.execute()
-        Assertions.assertEquals(testData.expectedInventory.inventoryItems,
+        assertEquals(testData.expectedInventory.inventoryItems,
                 initialGame.gameState.player.getInventory())
         // Verify the rest of the player state is maintained
-        Assertions.assertEquals(Direction.SOUTH, initialGame.gameState.player.getDirection())
+        assertEquals(Direction.SOUTH, initialGame.gameState.player.getDirection())
     }
 
     companion object {
