@@ -2,7 +2,7 @@ package game.world
 
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
-import game.world.Util.Companion.createRoom
+import Helpers.Companion.createRoom
 
 class RoomTest {
     private val room: Room = createRoom()

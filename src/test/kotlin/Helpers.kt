@@ -1,8 +1,8 @@
-package game.world
-
+import game.world.Room
+import game.world.RoomContent
 import org.junit.jupiter.api.Assertions.assertEquals
 
-class Util {
+class Helpers {
     companion object {
         fun createRoom(roomContent: ArrayList<RoomContent>
                        = arrayListOf(RoomContent.BREEZE, RoomContent.STENCH)): Room {

@@ -4,10 +4,9 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
-import game.world.Util.Companion.assertContains
+import Helpers.Companion.assertContains
 import java.awt.Point
 import java.util.stream.Stream
-import kotlin.test.assertTrue
 
 // TODO use @ParameterizedTest and @MethodSource
 class WorldTest {
