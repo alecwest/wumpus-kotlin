@@ -30,25 +30,3 @@ data class Game(private val gameState: GameState = GameState()) {
     fun setPlayerDirection(direction: Direction) = gameState.setPlayerFacing(direction)
     fun setPlayerInventory(inventory: PlayerInventory) = gameState.setPlayerInventory(inventory)
 }
-
-
-data class GameState(private val active: Boolean = true,
-                     private val world: World = World(),
-                     private val player: Player = Player()) {
-    fun getActive() = active
-    fun gameOver() = !active
-
-    fun getWorld() = world
-
-    fun getPlayer() = player
-    fun isPlayerAlive() = player.isAlive()
-    fun getPlayerLocation() = player.getLocation()
-    fun getPlayerDirection() = player.getDirection()
-    fun getPlayerInventory() = player.getInventory()
-    fun addToPlayerInventory(inventoryItem: InventoryItem) = player.addToInventory(inventoryItem)
-    fun removeFromPlayerInventory(inventoryItem: InventoryItem) = player.removeFromInventory(inventoryItem)
-    fun setPlayerAlive(alive: Boolean) = player.setAlive(alive)
-    fun setPlayerLocation(location: Point) = player.setLocation(location)
-    fun setPlayerFacing(direction: Direction) = player.setFacing(direction)
-    fun setPlayerInventory(inventory: PlayerInventory) = player.setInventory(inventory)
-}
