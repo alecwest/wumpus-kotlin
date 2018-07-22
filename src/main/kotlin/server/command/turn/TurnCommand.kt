@@ -4,7 +4,7 @@ import game.Game
 import server.command.Command
 import util.Direction
 
-class TurnCommand(private val game: Game, private val targetDirection: Direction): Command {
+class TurnCommand(private val targetDirection: Direction): Command {
     override fun execute() {
         val currentDirection = game.getPlayerDirection()
         when(targetDirection) {

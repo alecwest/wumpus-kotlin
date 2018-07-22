@@ -4,7 +4,7 @@ import game.Game
 import server.command.Command
 import util.Direction
 
-class MoveCommand(private val game: Game, private val direction: Direction): Command {
+class MoveCommand(override var game: Game, private val direction: Direction): Command {
     override fun execute() {
         when(direction) {
             Direction.NORTH -> MoveNorthCommand(game).execute()

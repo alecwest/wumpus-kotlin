@@ -1,13 +1,13 @@
 package server.command
 
 class CommandInvoker {
-    private var command: Command? = null
-
-    fun setCommand(command: Command) {
-        this.command = command
-    }
+    var command: Command
+        get() = command
+        set(value) {
+            command = value
+        }
 
     fun performAction() {
-        command?.execute()
+        command.execute()
     }
 }

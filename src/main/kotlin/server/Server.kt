@@ -3,6 +3,8 @@ package server
 import game.Game
 import game.GameState
 import game.world.World
+import server.command.Command
+import server.command.CommandInvoker
 import util.JsonParser.Companion.buildFromJsonFile
 
 /**
@@ -18,6 +20,7 @@ import util.JsonParser.Companion.buildFromJsonFile
  *          ...
  */
 class Server(private val fileName: String = "", private val worldSize: Int = 10) {
+    private val commandInvoker = CommandInvoker()
     private val game: Game = if (fileName.isBlank()) {
         Game(GameState(world = World(size = worldSize)))
     } else {
@@ -30,6 +33,11 @@ class Server(private val fileName: String = "", private val worldSize: Int = 10)
 
     fun getNumberRooms(): Int {
         return game.getNumberRooms()
+    }
+
+    fun makeMove(command: Command) {
+        commandInvoker.command = command
+        commandInvoker.performAction()
     }
 }
 
