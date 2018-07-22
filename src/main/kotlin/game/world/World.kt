@@ -90,6 +90,7 @@ data class World(private var size: Int = 10) {
 
     private fun getAssociatedWorldEffects(roomContent: RoomContent): ArrayList<WorldEffect> {
         return when (roomContent) {
+            RoomContent.ARROW -> arrayListOf(NoEffect())
             RoomContent.BLOCKADE -> arrayListOf(NoEffect())
             RoomContent.BREEZE -> arrayListOf(NoEffect())
             RoomContent.BUMP -> arrayListOf(NoEffect())
