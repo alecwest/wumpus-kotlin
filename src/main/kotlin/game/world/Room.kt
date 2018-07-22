@@ -7,7 +7,7 @@ package game.world
  *      A room only contains information on what exists inside it.
  *      It is up to the client to determine any "status" or "inferences" about any room.
  */
-class Room(private var roomContent: ArrayList<RoomContent>) {
+class Room(private val roomContent: ArrayList<RoomContent> = arrayListOf()) {
     fun addRoomContent(content: RoomContent) {
         if (!hasRoomContent(content)) {
             roomContent.add(content)
@@ -33,7 +33,7 @@ class Room(private var roomContent: ArrayList<RoomContent>) {
     }
 
     fun getSmallRoomString(): String {
-        var roomString: String = " ------- \n|x x x x|\n|x x x x|\n|x x x x|\n ------- "
+        var roomString = " ------- \n|x x x x|\n|x x x x|\n|x x x x|\n ------- "
         for (content in roomContent) {
             roomString = roomString.replaceFirst(
                     "x", content.toCharRepresentation())

@@ -6,6 +6,7 @@ package game.world
  *      and inventory which will be used to render the agent appropriately on the map.
  */
 enum class RoomContent {
+    ARROW,
     BLOCKADE,
     BREEZE,
     BUMP,
@@ -22,6 +23,7 @@ enum class RoomContent {
 
 fun RoomContent.toCharRepresentation(): String {
     return when(this){
+        RoomContent.ARROW -> "A"
         RoomContent.BLOCKADE -> "X"
         RoomContent.BREEZE -> "="
         RoomContent.BUMP -> " "
@@ -39,6 +41,7 @@ fun RoomContent.toCharRepresentation(): String {
 
 fun String.toRoomContent(): RoomContent {
     return when(this) {
+        "A" -> RoomContent.ARROW
         "X" -> RoomContent.BLOCKADE
         "=" -> RoomContent.BREEZE
         " " -> RoomContent.BUMP

@@ -41,3 +41,5 @@ fun Point.adjacents(): ArrayList<Point> {
 fun Point.diagonals(): ArrayList<Point> {
     return arrayListOf(northEast(), northWest(), southEast(), southWest())
 }
+
+fun Point.copyThis(x: Int = this.x, y: Int = this.y) = Point(x, y)

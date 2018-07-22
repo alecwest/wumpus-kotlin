@@ -6,6 +6,7 @@ import util.adjacents
 import util.diagonals
 import game.world.RoomContent
 import game.world.World
+import game.world.WorldState
 import java.awt.Point
 
 class AddDiagonalEffectTest {

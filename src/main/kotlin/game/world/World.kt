@@ -61,31 +61,36 @@ import java.util.logging.Logger
  *          fail(sessionId, roomContent, playerState, reason(probably also room content))
  *      11. Client responds to success or failure by updating room positions, knowledge, and whether or not it's alive
  */
-class World(private val size: Int = 10) {
+data class World(private var size: Int = 10) {
     private val log = Logger.getLogger(World::class.qualifiedName)
-    private var rooms: ArrayList<Room> = arrayListOf()
+
+    private var worldState: WorldState = WorldState()
 
     init {
-        for (i in 0..(size * size - 1)){
-            rooms.add(Room(arrayListOf()))
+        val worldRooms = arrayListOf<Room>()
+        for (i in 0..(size * size - 1)) {
+            worldRooms.add(Room())
         }
+        worldState = worldState.copyThis(rooms = worldRooms)
     }
 
-    fun getSize(): Int {
-        return size
-    }
+    fun getSize() = size
+    fun getRooms() = worldState.getRooms()
 
     fun addRoomContent(point: Point, content: RoomContent) {
-        try {
-            rooms[getRoomIndex(point)].addRoomContent(content)
-            addWorldEffects(point, getAssociatedWorldEffects(content))
-        } catch (e: ArrayIndexOutOfBoundsException) {
-            log.info("Content %s was not added to out-of-bounds room.".format(content.toString()))
-        }
+        worldState = worldState.copyThis(rooms = worldState.getRooms().apply {
+            try {
+                this[getRoomIndex(point)].addRoomContent(content)
+                addWorldEffects(point, getAssociatedWorldEffects(content))
+            } catch (e: ArrayIndexOutOfBoundsException) {
+                log.info("Content %s was not added to out-of-bounds room.".format(content.toString()))
+            }
+        })
     }
 
     private fun getAssociatedWorldEffects(roomContent: RoomContent): ArrayList<WorldEffect> {
-        return when(roomContent) {
+        return when (roomContent) {
+            RoomContent.ARROW -> arrayListOf(NoEffect())
             RoomContent.BLOCKADE -> arrayListOf(NoEffect())
             RoomContent.BREEZE -> arrayListOf(NoEffect())
             RoomContent.BUMP -> arrayListOf(NoEffect())
@@ -110,70 +115,20 @@ class World(private val size: Int = 10) {
     }
 
     fun removeRoomContent(point: Point, content: RoomContent) {
-        try {
-            rooms[getRoomIndex(point)].removeRoomContent(content)
-        } catch (e: ArrayIndexOutOfBoundsException) {
-            log.info("Content %s was not removed from out-of-bounds room.".format(content.toString()))
-        }
-    }
-
-    fun hasRoomContent(point: Point, content: RoomContent): Boolean {
-        return try {
-            rooms[getRoomIndex(point)].hasRoomContent(content)
-        } catch (e: ArrayIndexOutOfBoundsException) {
-            log.info("Content %s cannot exist in out-of-bounds room.".format(content))
-            false
-        }
-    }
-
-    fun roomIsEmpty(point: Point): Boolean {
-        return try {
-            rooms[getRoomIndex(point)].isEmpty()
-        } catch (e: ArrayIndexOutOfBoundsException) {
-            log.info("Out of bounds room is empty.")
-            true
-        }
-    }
-
-    fun getRoomIndex(point: Point): Int {
-        var result = point.y * size + point.x
-        if (point.x < 0 || point.y < 0 || point.x >= size || result > size * size - 1) {
-            result = -1
-        }
-        return result
-    }
-
-    fun getWorldMap(): String {
-        val result: MutableList<String> = mutableListOf()
-        var row: MutableList<String> = mutableListOf()
-        for (i in getNumberRooms() - 1 downTo 0) {
-            val splitSmallRoomString = rooms[i].getSmallRoomString().split("\n")
-                    .toMutableList()
-            when {
-                i % size == size - 1 -> row = splitSmallRoomString
-                else -> {
-                    for (j in 0 until splitSmallRoomString.size) {
-                        row[j] = splitSmallRoomString[j] + row[j]
-                    }
-                    if (i % size == 0) {
-                        result.add(row.joinToString(separator = "\n"))
-                    }
-                }
+        worldState = worldState.copyThis(rooms = worldState.getRooms().apply {
+            try {
+                this[getRoomIndex(point)].removeRoomContent(content)
+            } catch (e: ArrayIndexOutOfBoundsException) {
+                log.info("Content %s was not removed from out-of-bounds room.".format(content.toString()))
             }
-        }
-        return result.joinToString(separator = "\n")
+        })
     }
 
-    fun getRoom(point: Point): Room {
-        return rooms[getRoomIndex(point)]
-    }
-
-    fun getNumberRooms(): Int {
-        return rooms.size
-    }
-
-    fun getAmountOfContentInRoom(point: Point): Int {
-        val room = getRoom(point)
-        return room.getAmountOfContent()
-    }
+    fun hasRoomContent(point: Point, content: RoomContent) = worldState.hasRoomContent(point, content)
+    fun roomIsEmpty(point: Point) = worldState.roomIsEmpty(point)
+    fun getRoomIndex(point: Point) = worldState.getRoomIndex(point)
+    fun getWorldMap() = worldState.getWorldMap()
+    fun getRoom(point: Point) = worldState.getRoom(point)
+    fun getNumberRooms() = worldState.getNumberRooms()
+    fun getAmountOfContentInRoom(point: Point) = worldState.getAmountOfContentInRoom(point)
 }

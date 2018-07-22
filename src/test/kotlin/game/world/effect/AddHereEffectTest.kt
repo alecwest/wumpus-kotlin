@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import game.world.RoomContent
 import game.world.World
+import game.world.WorldState
 import java.awt.Point
 
 class AddHereEffectTest {
