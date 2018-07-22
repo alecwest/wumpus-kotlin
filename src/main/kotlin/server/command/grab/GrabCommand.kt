@@ -1,7 +1,8 @@
-package server.command
+package server.command.grab
 
 import game.Game
 import game.player.InventoryItem
+import server.command.Command
 
 class GrabCommand(private val game: Game, private val inventoryItem: InventoryItem): Command {
     override fun execute() {

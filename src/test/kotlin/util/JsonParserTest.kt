@@ -2,8 +2,8 @@ package util
 
 import org.junit.jupiter.api.Test
 import java.awt.Point
-import kotlin.test.assertTrue
 import game.world.RoomContent
+import org.junit.jupiter.api.Assertions.assertTrue
 
 class JsonParserTest {
     @Test

@@ -1,8 +1,9 @@
-package server.command
+package server.command.grab
 
 import game.Game
 import game.player.InventoryItem
 import game.world.RoomContent
+import server.command.Command
 
 class GrabGoldCommand(val game: Game): Command {
     override fun execute() {

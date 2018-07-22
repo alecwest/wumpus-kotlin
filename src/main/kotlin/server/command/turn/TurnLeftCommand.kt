@@ -1,6 +1,7 @@
-package server.command
+package server.command.turn
 
 import game.Game
+import server.command.Command
 import util.left
 
 class TurnLeftCommand(val game: Game): Command {
