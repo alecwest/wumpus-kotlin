@@ -27,6 +27,17 @@ data class Game(private var gameState: GameState = GameState()) {
     fun getNumberRooms() = gameState.getNumberRooms()
     fun getAmountOfContentInRoom(point: Point) = gameState.getAmountOfContentInRoom(point)
 
+    fun addToRoom(point: Point, roomContent: RoomContent) {
+        val newWorld = gameState.getWorld()
+        newWorld.addRoomContent(point, roomContent)
+        gameState = gameState.copyThis(world = newWorld)
+    }
+
+    fun removeFromRoom(point: Point, roomContent: RoomContent) {
+        val newWorld = gameState.getWorld()
+        newWorld.removeRoomContent(point, roomContent)
+        gameState = gameState.copyThis(world = newWorld)
+    }
 
     fun getPlayer() = gameState.getPlayer()
     fun isPlayerAlive() = gameState.isPlayerAlive()

@@ -93,6 +93,24 @@ class GameTest {
     }
 
     @Test
+    fun `add content to room`() {
+        val world = createWorld()
+        val game = createGame(world = world)
+        assertFalse(world.hasRoomContent(pitRoomPoint, RoomContent.GOLD))
+        game.addToRoom(pitRoomPoint, RoomContent.GOLD)
+        assertTrue(world.hasRoomContent(pitRoomPoint, RoomContent.GOLD))
+    }
+
+    @Test
+    fun `remove content from room`() {
+        val world = createWorld()
+        val game = createGame(world = world)
+        assertTrue(world.hasRoomContent(pitRoomPoint, RoomContent.PIT))
+        game.removeFromRoom(pitRoomPoint, RoomContent.PIT)
+        assertFalse(world.hasRoomContent(pitRoomPoint, RoomContent.PIT))
+    }
+
+    @Test
     fun `check player is equal on get`() {
         val game = createGame(player = player)
         assertEquals(player, game.getPlayer())
