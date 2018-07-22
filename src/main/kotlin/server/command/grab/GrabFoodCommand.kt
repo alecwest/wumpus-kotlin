@@ -5,7 +5,7 @@ import game.player.InventoryItem
 import game.world.RoomContent
 import server.command.Command
 
-class GrabFoodCommand(val game: Game): Command {
+internal class GrabFoodCommand(val game: Game): Command {
     override fun execute() {
         val playerLocation = game.getPlayerLocation()
         if (game.getWorld().hasRoomContent(playerLocation, RoomContent.FOOD)) {
