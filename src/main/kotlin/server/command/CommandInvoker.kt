@@ -7,7 +7,7 @@ class CommandInvoker {
         this.command = command
     }
 
-    fun makeMove() {
+    fun performAction() {
         command?.execute()
     }
 }
