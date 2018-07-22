@@ -8,10 +8,11 @@ import util.Direction
 import java.awt.Point
 
 /**
- * Game facilitates interactions between a world and its player
+ * Game retrieves the GameState and facilitates its manipulation
  */
-data class Game(private val gameState: GameState = GameState()) {
+data class Game(private var gameState: GameState = GameState()) {
     fun getGameState() = gameState
+
     fun getGameActive() = gameState.getActive()
     fun gameOver() = gameState.gameOver()
 
@@ -22,11 +23,38 @@ data class Game(private val gameState: GameState = GameState()) {
     fun getPlayerLocation() = gameState.getPlayerLocation()
     fun getPlayerDirection() = gameState.getPlayerDirection()
     fun getPlayerInventory() = gameState.getPlayerInventory()
-    fun addToPlayerInventory(inventoryItem: InventoryItem) = gameState.addToPlayerInventory(inventoryItem)
-    fun removeFromPlayerInventory(inventoryItem: InventoryItem) = gameState.removeFromPlayerInventory(inventoryItem)
 
-    fun setPlayerAlive(alive: Boolean) = gameState.setPlayerAlive(alive)
-    fun setPlayerLocation(location: Point) = gameState.setPlayerLocation(location)
-    fun setPlayerDirection(direction: Direction) = gameState.setPlayerFacing(direction)
-    fun setPlayerInventory(inventory: PlayerInventory) = gameState.setPlayerInventory(inventory)
+    fun addToPlayerInventory(inventoryItem: InventoryItem) {
+        val newPlayer = gameState.getPlayer()
+        newPlayer.addToInventory(inventoryItem)
+        gameState = gameState.copyThis(player = newPlayer)
+    }
+    fun removeFromPlayerInventory(inventoryItem: InventoryItem) {
+        val newPlayer = gameState.getPlayer()
+        newPlayer.removeFromInventory(inventoryItem)
+        gameState = gameState.copyThis(player = newPlayer)
+    }
+
+    fun setPlayerAlive(alive: Boolean) {
+        val newPlayer = gameState.getPlayer()
+        newPlayer.setAlive(alive)
+        gameState = gameState.copyThis(player = newPlayer)
+    }
+    fun setPlayerLocation(location: Point) {
+        val newPlayer = gameState.getPlayer()
+        newPlayer.setLocation(location)
+        gameState = gameState.copyThis(player = newPlayer)
+    }
+
+    fun setPlayerDirection(direction: Direction) {
+        val newPlayer = gameState.getPlayer()
+        newPlayer.setFacing(direction)
+        gameState = gameState.copyThis(player = newPlayer)
+    }
+
+    fun setPlayerInventory(inventory: PlayerInventory) {
+        val newPlayer = gameState.getPlayer()
+        newPlayer.setInventory(inventory)
+        gameState = gameState.copyThis(player = newPlayer)
+    }
 }

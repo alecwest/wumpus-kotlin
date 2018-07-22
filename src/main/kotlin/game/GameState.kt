@@ -1,12 +1,11 @@
 package game
 
-import game.player.InventoryItem
 import game.player.Player
-import game.player.PlayerInventory
 import game.world.World
-import util.Direction
-import java.awt.Point
 
+/**
+ * GameState holds the data on the world and the player
+ */
 data class GameState(private val active: Boolean = true,
                      private val world: World = World(),
                      private val player: Player = Player()) {
@@ -20,10 +19,8 @@ data class GameState(private val active: Boolean = true,
     fun getPlayerLocation() = player.getLocation()
     fun getPlayerDirection() = player.getDirection()
     fun getPlayerInventory() = player.getInventory()
-    fun addToPlayerInventory(inventoryItem: InventoryItem) = player.addToInventory(inventoryItem)
-    fun removeFromPlayerInventory(inventoryItem: InventoryItem) = player.removeFromInventory(inventoryItem)
-    fun setPlayerAlive(alive: Boolean) = player.setAlive(alive)
-    fun setPlayerLocation(location: Point) = player.setLocation(location)
-    fun setPlayerFacing(direction: Direction) = player.setFacing(direction)
-    fun setPlayerInventory(inventory: PlayerInventory) = player.setInventory(inventory)
+
+    fun copyThis(active: Boolean = this.active,
+                 world: World = this.world,
+                 player: Player = this.player) = GameState(active, world, player)
 }
