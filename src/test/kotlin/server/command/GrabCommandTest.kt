@@ -6,10 +6,8 @@ import game.player.InventoryItem
 import game.player.Player
 import game.player.PlayerInventory
 import game.player.PlayerState
-import game.world.Room
 import game.world.RoomContent
 import game.world.World
-import game.world.WorldState
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.params.ParameterizedTest
@@ -27,7 +25,7 @@ class GrabCommandTest {
                 initialGame.getPlayerInventory())
         // Verify the rest of the player state is maintained
         assertEquals(Direction.SOUTH, initialGame.getPlayerDirection())
-        assertFalse(initialGame.getGameWorld().hasRoomContent(testPoint, testData.lostWorldContent))
+        assertFalse(initialGame.getWorld().hasRoomContent(testPoint, testData.lostWorldContent))
     }
 
     companion object {

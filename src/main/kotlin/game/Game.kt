@@ -3,6 +3,7 @@ package game
 import game.player.InventoryItem
 import game.player.Player
 import game.player.PlayerInventory
+import game.world.RoomContent
 import game.world.World
 import util.Direction
 import java.awt.Point
@@ -13,12 +14,21 @@ import java.awt.Point
 data class Game(private var gameState: GameState = GameState()) {
     fun getGameState() = gameState
 
-    fun getGameActive() = gameState.getActive()
+    fun getActive() = gameState.getActive()
     fun gameOver() = gameState.gameOver()
 
-    fun getGameWorld() = gameState.getWorld()
+    fun getWorld() = gameState.getWorld()
+    fun getRooms() = gameState.getRooms()
+    fun hasRoomContent(point: Point, content: RoomContent) = gameState.hasRoomContent(point, content)
+    fun roomIsEmpty(point: Point) = gameState.roomIsEmpty(point)
+    fun getRoomIndex(point: Point) = gameState.getRoomIndex(point)
+    fun getWorldMap() = gameState.getWorldMap()
+    fun getRoom(point: Point) = gameState.getRoom(point)
+    fun getNumberRooms() = gameState.getNumberRooms()
+    fun getAmountOfContentInRoom(point: Point) = gameState.getAmountOfContentInRoom(point)
 
-    fun getGamePlayer() = gameState.getPlayer()
+
+    fun getPlayer() = gameState.getPlayer()
     fun isPlayerAlive() = gameState.isPlayerAlive()
     fun getPlayerLocation() = gameState.getPlayerLocation()
     fun getPlayerDirection() = gameState.getPlayerDirection()

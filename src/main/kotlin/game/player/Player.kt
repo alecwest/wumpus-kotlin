@@ -1,7 +1,6 @@
 package game.player
 
 import util.Direction
-import util.copyThis
 import java.awt.Point
 import java.util.logging.Logger
 
