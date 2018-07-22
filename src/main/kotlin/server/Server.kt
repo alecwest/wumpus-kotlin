@@ -1,9 +1,9 @@
 package server
 
-import util.JsonParser.Companion.buildFromJsonFile
+import game.Game
+import game.GameState
 import game.world.World
-import game.world.WorldState
-import java.util.*
+import util.JsonParser.Companion.buildFromJsonFile
 
 /**
  * GameState is an observable object that exists in the server
@@ -18,18 +18,18 @@ import java.util.*
  *          ...
  */
 class Server(private val fileName: String = "", private val worldSize: Int = 10) {
-    private val world: World = if (fileName.isBlank()) {
-        World(size = worldSize)
+    private val game: Game = if (fileName.isBlank()) {
+        Game(GameState(world = World(size = worldSize)))
     } else {
         buildFromJsonFile(fileName)
     }
 
     fun getWorldSize(): Int {
-        return world.getSize()
+        return game.getWorldSize()
     }
 
     fun getNumberRooms(): Int {
-        return world.getNumberRooms()
+        return game.getNumberRooms()
     }
 }
 

@@ -15,10 +15,10 @@ import java.awt.Point
 import java.util.stream.Stream
 
 class GameTest {
-    val game = createGame()
-    val player = createPlayer()
-    val world = createWorld()
-    val pitRoomPoint = Point(2, 2)
+    private val game = createGame()
+    private val player = createPlayer()
+    private val world = createWorld()
+    private val pitRoomPoint = Point(2, 2)
 
     @ParameterizedTest
     @MethodSource("validGameTestDataProvider")
@@ -39,6 +39,13 @@ class GameTest {
     fun `check given world is equal on get`() {
         val game = createGame(world = world)
         assertEquals(world, game.getWorld())
+    }
+
+    @Test
+    fun `check given world size is equal on get`() {
+        val world = createWorld(size = 5)
+        val game = createGame(world = world)
+        assertEquals(world.getSize(), game.getWorldSize())
     }
 
     @Test

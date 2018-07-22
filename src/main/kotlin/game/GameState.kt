@@ -15,6 +15,7 @@ data class GameState(private val active: Boolean = true,
     fun gameOver() = !active
 
     fun getWorld() = world
+    fun getWorldSize() = world.getSize()
     fun getRooms() = world.getRooms()
     fun hasRoomContent(point: Point, content: RoomContent) = world.hasRoomContent(point, content)
     fun roomIsEmpty(point: Point) = world.roomIsEmpty(point)

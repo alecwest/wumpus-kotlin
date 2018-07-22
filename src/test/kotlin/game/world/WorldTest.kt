@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
 import Helpers.Companion.assertContains
+import Helpers.Companion.createWorld
 import java.awt.Point
 import java.util.stream.Stream
 
@@ -17,6 +18,13 @@ class WorldTest {
         val world2 = World(3)
         assertEquals(world.getSize() * world.getSize(), world.getNumberRooms())
         assertEquals(world2.getSize() * world2.getSize(), world2.getNumberRooms())
+    }
+
+    @Test
+    fun `check given world size is equal on get`() {
+        assertEquals(4, world.getSize())
+        val world = createWorld(size = 5)
+        assertEquals(5, world.getSize())
     }
 
     @ParameterizedTest

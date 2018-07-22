@@ -1,6 +1,8 @@
 package util
 
 import com.beust.klaxon.*
+import game.Game
+import game.GameState
 import game.world.World
 import game.world.WorldState
 import game.world.toRoomContent
@@ -11,7 +13,7 @@ class JsonParser {
     data class Data(val x: Int, val y: Int, val content: List<String>)
 
     companion object {
-        fun buildFromJsonFile(fileName: String): World {
+        fun buildFromJsonFile(fileName: String): Game {
             val jsonReader = JsonReader(FileReader(fileName))
             val klaxon = Klaxon()
             var world = World(0)
@@ -27,7 +29,7 @@ class JsonParser {
                     }
                 }
             }
-            return world
+            return Game(GameState(world = world))
         }
 
         private fun World.parseDataArray(klaxon: Klaxon, reader: JsonReader) {
