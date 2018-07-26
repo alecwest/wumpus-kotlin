@@ -8,6 +8,7 @@ import game.world.Room
 import game.world.RoomContent
 import game.world.World
 import org.junit.jupiter.api.Assertions.assertEquals
+import server.Server
 import util.Direction
 import java.awt.Point
 
@@ -41,6 +42,11 @@ class Helpers {
                        world: World = createWorld(),
                        player: Player = createPlayer()): Game {
             return Game(GameState(active, world, player))
+        }
+
+        fun createServer(fileName: String = "src/test/resources/testFile.json",
+                         worldSize: Int = 10): Server {
+            return Server(fileName = fileName, worldSize = worldSize)
         }
 
         fun assertContains(content: String, subString: String, numExpected: Int) {

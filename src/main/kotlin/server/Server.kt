@@ -2,6 +2,7 @@ package server
 
 import game.Game
 import game.GameState
+import game.player.Player
 import game.world.World
 import server.command.Command
 import server.command.CommandInvoker
@@ -27,6 +28,8 @@ class Server(private val fileName: String = "", private val worldSize: Int = 10)
         buildFromJsonFile(fileName)
     }
 
+    fun getGame() = game
+
     fun getWorldSize(): Int {
         return game.getWorldSize()
     }
@@ -36,8 +39,13 @@ class Server(private val fileName: String = "", private val worldSize: Int = 10)
     }
 
     fun makeMove(command: Command) {
+        println("Making move " + command.toString())
         commandInvoker.command = command
         commandInvoker.performAction()
+    }
+
+    fun getPlayerState(): Player {
+        return game.getPlayer()
     }
 }
 

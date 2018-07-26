@@ -5,7 +5,7 @@ import game.player.InventoryItem
 import game.world.RoomContent
 import server.command.Command
 
-internal class GrabArrowCommand(override var game: Game): Command {
+internal class GrabArrowCommand: Command {
     override fun execute() {
         val playerLocation = game.getPlayerLocation()
         if (game.hasRoomContent(playerLocation, RoomContent.ARROW)) {

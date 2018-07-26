@@ -48,11 +48,11 @@ class GrabCommandTest {
         // TODO initialGame is not initialized at the start of every test, so these must run in succession to pass
         @JvmStatic
         fun validGrabCommandTestDataProvider() = Stream.of(
-                ValidGrabCommandTestData(initialGame, GrabFoodCommand(initialGame),
+                ValidGrabCommandTestData(initialGame, GrabFoodCommand(),
                         PlayerInventory(mapOf(InventoryItem.ARROW to 2, InventoryItem.FOOD to 1)), RoomContent.FOOD),
-                ValidGrabCommandTestData(initialGame, GrabFoodCommand(initialGame),
+                ValidGrabCommandTestData(initialGame, GrabFoodCommand(),
                         PlayerInventory(mapOf(InventoryItem.ARROW to 2, InventoryItem.FOOD to 1)), RoomContent.FOOD),
-                ValidGrabCommandTestData(initialGame, GrabGoldCommand(initialGame),
+                ValidGrabCommandTestData(initialGame, GrabGoldCommand(),
                         PlayerInventory(mapOf(InventoryItem.ARROW to 2,
                                 InventoryItem.FOOD to 1, InventoryItem.GOLD to 1)), RoomContent.GOLD)
         )

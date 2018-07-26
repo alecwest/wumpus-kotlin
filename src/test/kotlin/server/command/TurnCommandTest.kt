@@ -30,10 +30,10 @@ internal class TurnCommandTest {
 
         @JvmStatic
         fun validTurnCommandTestDataProvider() = Stream.of(
-                ValidTurnCommandTestData(initialGame, TurnLeftCommand(initialGame), Direction.EAST),
-                ValidTurnCommandTestData(initialGame, TurnLeftCommand(initialGame), Direction.NORTH),
-                ValidTurnCommandTestData(initialGame, TurnRightCommand(initialGame), Direction.EAST),
-                ValidTurnCommandTestData(initialGame, TurnRightCommand(initialGame), Direction.SOUTH)
+                ValidTurnCommandTestData(initialGame, TurnLeftCommand(), Direction.EAST),
+                ValidTurnCommandTestData(initialGame, TurnLeftCommand(), Direction.NORTH),
+                ValidTurnCommandTestData(initialGame, TurnRightCommand(), Direction.EAST),
+                ValidTurnCommandTestData(initialGame, TurnRightCommand(), Direction.SOUTH)
         )
     }
 }
