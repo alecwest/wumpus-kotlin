@@ -2,6 +2,7 @@ package util
 
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFails
 
 class DirectionTest {
     @Test
@@ -21,5 +22,10 @@ class DirectionTest {
         for (direction in Direction.values()) {
             assertEquals(direction, direction.toCharRepresentation().toDirection())
         }
+    }
+
+    @Test
+    fun `convert bad string to direction`() {
+        assertFails { "bad string".toDirection() }
     }
 }
