@@ -15,4 +15,11 @@ class DirectionTest {
         assertEquals(Direction.WEST, Direction.SOUTH.right())
         assertEquals(Direction.SOUTH, Direction.EAST.right())
     }
+
+    @Test
+    fun `convert between char and direction`() {
+        for (direction in Direction.values()) {
+            assertEquals(direction, direction.toCharRepresentation().toDirection())
+        }
+    }
 }
