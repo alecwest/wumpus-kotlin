@@ -27,7 +27,7 @@
   "player": {
     "x": 3,
     "y": 7,
-    "direction": "N",
+    "direction": "E",
     "inventory": [
       "A",
       "A",

@@ -4,6 +4,7 @@ import com.beust.klaxon.*
 import game.Game
 import game.GameState
 import game.player.Player
+import game.player.PlayerInventory
 import game.player.PlayerState
 import game.player.toInventoryItem
 import game.world.World
@@ -24,8 +25,10 @@ class JsonParser {
         fun buildFromJsonFile(fileName: String): Game {
             val r = Klaxon().parse<JsonWorld>(File(fileName))
             val world = World(size = r!!.`world-size`)
-            val player = Player(PlayerState(location = Point(r.player.x, r.player.y),
-                    facing = r.player.direction.toDirection()))
+            val player = Player(PlayerState(
+                    location = Point(r.player.x, r.player.y),
+                    facing = r.player.direction.toDirection(),
+                    inventory = PlayerInventory(mapOf())))
             for (room in r.data) {
                 for (roomContentString in room.content) {
                     world.addRoomContent(Point(room.x, room.y), roomContentString.toRoomContent())
