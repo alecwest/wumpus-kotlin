@@ -5,13 +5,12 @@ import game.player.InventoryItem
 import game.world.RoomContent
 import server.command.Command
 
-class GrabArrowCommand(val game: Game): Command {
+internal class GrabArrowCommand(private val game: Game): Command {
     override fun execute() {
-        //TODO clean this up (and the turn commands)
         val playerLocation = game.getPlayerLocation()
-        if (game.getWorld().hasRoomContent(playerLocation, RoomContent.ARROW)) {
+        if (game.hasRoomContent(playerLocation, RoomContent.ARROW)) {
             game.addToPlayerInventory(InventoryItem.ARROW)
-            game.getWorld().removeRoomContent(playerLocation, RoomContent.ARROW)
+            game.removeFromRoom(playerLocation, RoomContent.ARROW)
         }
     }
 }

@@ -10,6 +10,8 @@ data class WorldState(private val rooms: ArrayList<Room> = arrayListOf()) {
 
     fun getRooms() = rooms
 
+    fun getRoomContent(point: Point) = rooms[getRoomIndex(point)].getRoomContent()
+
     fun hasRoomContent(point: Point, content: RoomContent): Boolean {
         return try {
             rooms[getRoomIndex(point)].hasRoomContent(content)

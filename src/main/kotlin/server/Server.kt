@@ -1,9 +1,13 @@
 package server
 
-import util.JsonParser.Companion.buildFromJsonFile
+import game.Game
+import game.GameState
+import game.player.Player
+import game.world.RoomContent
 import game.world.World
-import game.world.WorldState
-import java.util.*
+import server.command.Command
+import server.command.CommandInvoker
+import util.JsonParser.Companion.buildFromJsonFile
 
 /**
  * GameState is an observable object that exists in the server
@@ -17,19 +21,32 @@ import java.util.*
  *      The gameState returns a state for the server to process and update the client with:
  *          ...
  */
+
+/**
+ * The server acts as an interface to the game for the client, allowing them to
+ * make moves and learn the results of that move.
+ */
 class Server(private val fileName: String = "", private val worldSize: Int = 10) {
-    private val world: World = if (fileName.isBlank()) {
-        World(size = worldSize)
+    private val game: Game = if (fileName.isBlank()) {
+        Game(GameState(world = World(size = worldSize)))
     } else {
         buildFromJsonFile(fileName)
     }
 
-    fun getWorldSize(): Int {
-        return world.getSize()
+    internal fun getGame() = game
+
+    fun makeMove(command: Command) {
+        println("Making move " + command.toString())
+        CommandInvoker.command = command
+        CommandInvoker.performAction()
     }
 
-    fun getNumberRooms(): Int {
-        return world.getNumberRooms()
+    fun getPlayerState(): Player {
+        return game.getPlayer()
+    }
+
+    fun getRoomContent(): ArrayList<RoomContent> {
+        return game.getRoomContent(game.getPlayerLocation())
     }
 }
 

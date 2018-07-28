@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
 import Helpers.Companion.assertContains
+import Helpers.Companion.createWorld
 import java.awt.Point
 import java.util.stream.Stream
 
@@ -19,6 +20,21 @@ class WorldTest {
         assertEquals(world2.getSize() * world2.getSize(), world2.getNumberRooms())
     }
 
+    @Test
+    fun `check given world size is equal on get`() {
+        assertEquals(4, world.getSize())
+        val world = createWorld(size = 5)
+        assertEquals(5, world.getSize())
+    }
+
+    @Test
+    fun `get room content`() {
+        val point = Point(0, 0)
+        assertEquals(arrayListOf<RoomContent>(), world.getRoomContent(point))
+        world.addRoomContent(point, RoomContent.BLOCKADE)
+        assertEquals(arrayListOf(RoomContent.BLOCKADE), world.getRoomContent(point))
+    }
+
     @ParameterizedTest
     @MethodSource("validAddRoomContentProvider")
     fun `add content to room`(testData: ValidRoomContentTestData) {
@@ -30,13 +46,13 @@ class WorldTest {
             assertTrue(world.hasRoomContent(Point(1, 1), roomContent))
         }
     }
-
     companion object {
         @JvmStatic
         fun validAddRoomContentProvider() = Stream.of(
                 ValidRoomContentTestData(arrayListOf(), arrayListOf(RoomContent.GOLD), arrayListOf(RoomContent.GOLD, RoomContent.GLITTER)),
                 ValidRoomContentTestData(arrayListOf(), arrayListOf(RoomContent.MOO), arrayListOf(RoomContent.MOO))
         )
+
     }
 
     @Test

@@ -8,6 +8,8 @@ package game.world
  *      It is up to the client to determine any "status" or "inferences" about any room.
  */
 class Room(private val roomContent: ArrayList<RoomContent> = arrayListOf()) {
+    fun getRoomContent() = roomContent
+
     fun addRoomContent(content: RoomContent) {
         if (!hasRoomContent(content)) {
             roomContent.add(content)

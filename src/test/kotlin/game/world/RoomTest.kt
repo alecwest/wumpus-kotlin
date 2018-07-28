@@ -9,6 +9,11 @@ class RoomTest {
     private val initialSize: Int = room.getAmountOfContent()
 
     @Test
+    fun `get room content`() {
+        assertEquals(arrayListOf(RoomContent.BREEZE, RoomContent.STENCH), room.getRoomContent())
+    }
+
+    @Test
     fun `add content to room`() {
         room.addRoomContent(RoomContent.GLITTER)
         assertEquals(initialSize + 1, room.getAmountOfContent())

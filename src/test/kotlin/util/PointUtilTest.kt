@@ -26,4 +26,24 @@ class PointUtilTest {
         assertEquals(Point(2, 6), diagonalPoints[2])
         assertEquals(Point(2, 4), diagonalPoints[3])
     }
+
+    @Test
+    fun `get north point`() {
+        assertEquals(Point(1, 2), Point(0, 2).north())
+    }
+
+    @Test
+    fun `get east point`() {
+        assertEquals(Point(1, 2), Point(1, 1).east())
+    }
+
+    @Test
+    fun `get south point`() {
+        assertEquals(Point(1, 2), Point(2, 2).south())
+    }
+
+    @Test
+    fun `get west point`() {
+        assertEquals(Point(1, 2), Point(1, 3).west())
+    }
 }
