@@ -55,6 +55,12 @@ class GameTest {
     }
 
     @Test
+    fun `get room content`() {
+        assertEquals(arrayListOf<RoomContent>(), world.getRoomContent(Point(0, 0)))
+        assertEquals(arrayListOf(RoomContent.PIT), world.getRoomContent(Point(2, 2)))
+    }
+
+    @Test
     fun `check room has content`() {
         assertTrue(game.hasRoomContent(pitRoomPoint, RoomContent.PIT))
         assertTrue(game.hasRoomContent(pitRoomPoint.north(), RoomContent.BREEZE))

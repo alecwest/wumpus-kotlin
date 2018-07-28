@@ -77,6 +77,8 @@ data class World(private var size: Int = 10) {
     fun getSize() = size
     fun getRooms() = worldState.getRooms()
 
+    fun getRoomContent(point: Point) = worldState.getRoomContent(point)
+
     fun addRoomContent(point: Point, content: RoomContent) {
         worldState = worldState.copyThis(rooms = worldState.getRooms().apply {
             try {

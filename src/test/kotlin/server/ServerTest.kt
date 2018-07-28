@@ -39,6 +39,13 @@ class ServerTest {
         assertEquals(121, server.getGame().getNumberRooms())
     }
 
+    @Test
+    fun `get room content`() {
+        assertEquals(arrayListOf<RoomContent>(), server.getRoomContent())
+        server.getGame().addToRoom(initialPoint, RoomContent.FOOD)
+        assertEquals(arrayListOf(RoomContent.FOOD), server.getRoomContent())
+    }
+
     // TODO add bad move tests
 
     @Test

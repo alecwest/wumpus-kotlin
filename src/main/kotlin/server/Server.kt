@@ -3,6 +3,7 @@ package server
 import game.Game
 import game.GameState
 import game.player.Player
+import game.world.RoomContent
 import game.world.World
 import server.command.Command
 import server.command.CommandInvoker
@@ -42,6 +43,10 @@ class Server(private val fileName: String = "", private val worldSize: Int = 10)
 
     fun getPlayerState(): Player {
         return game.getPlayer()
+    }
+
+    fun getRoomContent(): ArrayList<RoomContent> {
+        return game.getRoomContent(game.getPlayerLocation())
     }
 }
 
