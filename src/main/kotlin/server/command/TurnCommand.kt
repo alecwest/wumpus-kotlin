@@ -1,8 +1,9 @@
-package server.command.turn
+package server.command
 
 import game.Game
-import server.command.Command
 import util.Direction
+import util.left
+import util.right
 
 class TurnCommand(private val game: Game, private val targetDirection: Direction): Command {
     override fun execute() {
@@ -14,6 +15,16 @@ class TurnCommand(private val game: Game, private val targetDirection: Direction
             Direction.WEST -> if(targetDirection == Direction.NORTH) TurnRightCommand(game).execute() else TurnLeftCommand(game).execute()
         }
     }
+}
 
+private class TurnLeftCommand(private val game: Game): Command {
+    override fun execute() {
+        game.setPlayerDirection(game.getPlayerDirection().left())
+    }
+}
 
+private class TurnRightCommand(private val game: Game): Command {
+    override fun execute() {
+        game.setPlayerDirection(game.getPlayerDirection().right())
+    }
 }

@@ -1,10 +1,8 @@
-package server.command.move
+package server.command
 
 import game.Game
 import game.world.RoomContent
-import server.command.Command
-import util.Direction
-import util.adjacent
+import util.*
 import java.awt.Point
 
 class MoveCommand(private val game: Game, private val direction: Direction): Command {
@@ -24,5 +22,29 @@ class MoveCommand(private val game: Game, private val direction: Direction): Com
             return false
         }
         return true
+    }
+}
+
+private class MoveNorthCommand(private val game: Game): Command {
+    override fun execute() {
+        game.setPlayerLocation(game.getPlayerLocation().north())
+    }
+}
+
+private class MoveEastCommand(private val game: Game): Command {
+    override fun execute() {
+        game.setPlayerLocation(game.getPlayerLocation().east())
+    }
+}
+
+class MoveSouthCommand(private val game: Game): Command {
+    override fun execute() {
+        game.setPlayerLocation(game.getPlayerLocation().south())
+    }
+}
+
+class MoveWestCommand(private val game: Game): Command {
+    override fun execute() {
+        game.setPlayerLocation(game.getPlayerLocation().west())
     }
 }

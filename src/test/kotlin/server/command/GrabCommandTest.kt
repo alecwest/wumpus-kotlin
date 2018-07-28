@@ -12,8 +12,6 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
-import server.command.grab.GrabFoodCommand
-import server.command.grab.GrabGoldCommand
 import util.Direction
 import java.awt.Point
 import java.util.stream.Stream

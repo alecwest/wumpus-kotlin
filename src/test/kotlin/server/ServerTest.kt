@@ -5,15 +5,9 @@ import game.player.PlayerInventory
 import game.world.RoomContent
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.MethodSource
 import server.command.Command
-import server.command.turn.*
-import server.command.move.*
-import server.command.grab.*
 import util.*
 import java.awt.Point
-import java.util.stream.Stream
 
 class ServerTest {
     private val server = Server()
@@ -51,7 +45,7 @@ class ServerTest {
     @Test
     fun `check player moves on move command`() {
         assertEquals(initialPoint, server.getPlayerState().getLocation())
-        server.makeMove(MoveCommand(server.getGame(), server.getPlayerState().getDirection()))
+        server.makeMove(server.command.MoveCommand(server.getGame(), server.getPlayerState().getDirection()))
         assertEquals(initialPoint.north(), server.getPlayerState().getLocation())
         assertEquals(initialDirection, server.getPlayerState().getDirection())
         assertEquals(initialInventory, server.getPlayerState().getInventory())
@@ -60,7 +54,7 @@ class ServerTest {
     @Test
     fun `check player turns on turn command`() {
         assertEquals(initialDirection, server.getPlayerState().getDirection())
-        server.makeMove(TurnCommand(server.getGame(), Direction.EAST))
+        server.makeMove(server.command.TurnCommand(server.getGame(), Direction.EAST))
         assertEquals(initialPoint, server.getPlayerState().getLocation())
         assertEquals(Direction.EAST, server.getPlayerState().getDirection())
         assertEquals(initialInventory, server.getPlayerState().getInventory())
@@ -70,7 +64,7 @@ class ServerTest {
     fun `check player grabs on grab command`() {
         server.getGame().addToRoom(initialPoint, RoomContent.FOOD)
         assertEquals(initialInventory, server.getPlayerState().getInventory())
-        server.makeMove(GrabCommand(server.getGame(), InventoryItem.FOOD))
+        server.makeMove(server.command.GrabCommand(server.getGame(), InventoryItem.FOOD))
         assertEquals(initialPoint, server.getPlayerState().getLocation())
         assertEquals(initialDirection, server.getPlayerState().getDirection())
         assertEquals(initialInventory + mapOf(InventoryItem.FOOD to 1), server.getPlayerState().getInventory())
