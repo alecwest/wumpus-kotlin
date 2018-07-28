@@ -26,8 +26,8 @@ class ServerTest {
         val worldSize = 10
         val server = Server(worldSize = worldSize)
 
-        assertEquals(worldSize, server.getWorldSize())
-        assertEquals(worldSize * worldSize, server.getNumberRooms())
+        assertEquals(worldSize, server.getGame().getWorldSize())
+        assertEquals(worldSize * worldSize, server.getGame().getNumberRooms())
     }
 
     @Test
@@ -35,16 +35,8 @@ class ServerTest {
         val fileName = "src/test/resources/testFile.json"
         val server = Server(fileName = fileName)
 
-        assertEquals(11, server.getWorldSize())
-        assertEquals(121, server.getNumberRooms())
-    }
-
-    @Test
-    fun `check number of rooms`() {
-        val server = Server()
-        val server2 = Server(worldSize = 5)
-        assertEquals(100, server.getNumberRooms())
-        assertEquals(25, server2.getNumberRooms())
+        assertEquals(11, server.getGame().getWorldSize())
+        assertEquals(121, server.getGame().getNumberRooms())
     }
 
     // TODO add bad move tests

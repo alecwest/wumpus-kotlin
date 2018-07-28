@@ -34,14 +34,6 @@ class Server(private val fileName: String = "", private val worldSize: Int = 10)
 
     internal fun getGame() = game
 
-    fun getWorldSize(): Int {
-        return game.getWorldSize()
-    }
-
-    fun getNumberRooms(): Int {
-        return game.getNumberRooms()
-    }
-
     fun makeMove(command: Command) {
         println("Making move " + command.toString())
         CommandInvoker.command = command
