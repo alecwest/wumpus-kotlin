@@ -22,15 +22,16 @@ internal class MoveCommandTest {
     @MethodSource("validMoveCommandTestDataProvider")
     fun `execute move commands`(testData: ValidMoveCommandTestData) {
         testData.command.execute()
-        assertEquals(testData.expectedPoint, initialGame.getPlayerLocation())
+        assertEquals(testData.expectedPoint, testData.givenGame.getPlayerLocation())
         // Verify the rest of the player state is maintained
-        assertEquals(Direction.SOUTH, initialGame.getPlayerDirection())
+        assertEquals(Direction.SOUTH, testData.givenGame.getPlayerDirection())
     }
 
     companion object {
         private val initialGame = Game(GameState(player =
             Player(playerState =
                 PlayerState(location = Point(2, 2), facing = Direction.SOUTH))))
+        private val playerInCornerGame = Helpers.createGame(player = Helpers.createPlayer(location = Point(0, 0)))
 
         // TODO initialGame is not initialized at the start of every test, so these must run in succession to pass
         @JvmStatic
@@ -38,7 +39,9 @@ internal class MoveCommandTest {
             ValidMoveCommandTestData(initialGame, MoveNorthCommand(initialGame), Point(3, 2)),
             ValidMoveCommandTestData(initialGame, MoveEastCommand(initialGame), Point(3, 3)),
             ValidMoveCommandTestData(initialGame, MoveSouthCommand(initialGame), Point(2, 3)),
-            ValidMoveCommandTestData(initialGame, MoveWestCommand(initialGame), Point(2, 2))
+            ValidMoveCommandTestData(initialGame, MoveWestCommand(initialGame), Point(2, 2)),
+            ValidMoveCommandTestData(playerInCornerGame, MoveSouthCommand(playerInCornerGame), Point(0, 0)),
+            ValidMoveCommandTestData(playerInCornerGame, MoveWestCommand(playerInCornerGame), Point(0, 0))
         )
     }
 }
