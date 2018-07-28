@@ -23,5 +23,15 @@
         "O"
       ]
     }
-  ]
+  ],
+  "player": {
+    "x": 3,
+    "y": 7,
+    "direction": "N",
+    "inventory": [
+      "A",
+      "A",
+      "F"
+    ]
+  }
 }
