@@ -20,6 +20,11 @@ import util.JsonParser.Companion.buildFromJsonFile
  *      The gameState returns a state for the server to process and update the client with:
  *          ...
  */
+
+/**
+ * The server acts as an interface to the game for the client, allowing them to
+ * make moves and learn the results of that move.
+ */
 class Server(private val fileName: String = "", private val worldSize: Int = 10) {
     private val game: Game = if (fileName.isBlank()) {
         Game(GameState(world = World(size = worldSize)))
@@ -27,7 +32,7 @@ class Server(private val fileName: String = "", private val worldSize: Int = 10)
         buildFromJsonFile(fileName)
     }
 
-    fun getGame() = game
+    internal fun getGame() = game
 
     fun getWorldSize(): Int {
         return game.getWorldSize()
