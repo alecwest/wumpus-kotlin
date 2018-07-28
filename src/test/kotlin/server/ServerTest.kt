@@ -2,6 +2,7 @@ package server
 
 import game.player.InventoryItem
 import game.player.PlayerInventory
+import game.world.RoomContent
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
@@ -10,13 +11,16 @@ import server.command.Command
 import server.command.turn.*
 import server.command.move.*
 import server.command.grab.*
-import util.Direction
-import util.left
-import util.north
+import util.*
 import java.awt.Point
 import java.util.stream.Stream
 
 class ServerTest {
+    private val server = Server()
+    private val initialPoint = Point(0, 0)
+    private val initialDirection = Direction.NORTH
+    private val initialInventory = mapOf(InventoryItem.ARROW to 1)
+
     @Test
     fun `server generates world from world size only`() {
         val worldSize = 10
@@ -43,28 +47,34 @@ class ServerTest {
         assertEquals(25, server2.getNumberRooms())
     }
 
-    companion object {
-        private val server = Server()
-        private val initialPoint = Point(0, 0)
-        private val initialDirection = Direction.NORTH
-        private val initialInventory = mapOf(InventoryItem.ARROW to 1)
+    // TODO add bad move tests
 
-        @JvmStatic
-        fun validPostCommandPlayerTestDataProvider() = Stream.of(
-            ValidPostCommandPlayerTestData(server, TurnCommand(server.getPlayerState().getDirection().left()), initialPoint, initialDirection.left(), PlayerInventory(initialInventory)),
-            ValidPostCommandPlayerTestData(server, MoveCommand(server.getPlayerState().getDirection()), initialPoint.north(), initialDirection, PlayerInventory(initialInventory)),
-            ValidPostCommandPlayerTestData(server, GrabCommand(InventoryItem.GOLD), initialPoint, initialDirection, PlayerInventory(initialInventory + mapOf(InventoryItem.FOOD to 1)))
-        )
-        // TODO add get player and get world function calls to Server?
+    @Test
+    fun `check player moves on move command`() {
+        assertEquals(initialPoint, server.getPlayerState().getLocation())
+        server.makeMove(MoveCommand(server.getGame(), server.getPlayerState().getDirection()))
+        assertEquals(initialPoint.north(), server.getPlayerState().getLocation())
+        assertEquals(initialDirection, server.getPlayerState().getDirection())
+        assertEquals(initialInventory, server.getPlayerState().getInventory())
     }
 
-    @ParameterizedTest
-    @MethodSource("validPostCommandPlayerTestDataProvider")
-    fun `check player is modified on command execution`(testData: ValidPostCommandPlayerTestData) {
-        testData.givenServer.makeMove(testData.command)
-        assertEquals(testData.expectedPlayerLocation, testData.givenServer.getPlayerState().getLocation())
-        assertEquals(testData.expectedPlayerDirection, testData.givenServer.getPlayerState().getDirection())
-        assertEquals(testData.expectedPlayerInventory, testData.givenServer.getPlayerState().getInventory())
+    @Test
+    fun `check player turns on turn command`() {
+        assertEquals(initialDirection, server.getPlayerState().getDirection())
+        server.makeMove(TurnCommand(server.getGame(), Direction.EAST))
+        assertEquals(initialPoint, server.getPlayerState().getLocation())
+        assertEquals(Direction.EAST, server.getPlayerState().getDirection())
+        assertEquals(initialInventory, server.getPlayerState().getInventory())
+    }
+
+    @Test
+    fun `check player grabs on grab command`() {
+        server.getGame().addToRoom(initialPoint, RoomContent.FOOD)
+        assertEquals(initialInventory, server.getPlayerState().getInventory())
+        server.makeMove(GrabCommand(server.getGame(), InventoryItem.FOOD))
+        assertEquals(initialPoint, server.getPlayerState().getLocation())
+        assertEquals(initialDirection, server.getPlayerState().getDirection())
+        assertEquals(initialInventory + mapOf(InventoryItem.FOOD to 1), server.getPlayerState().getInventory())
     }
 }
 

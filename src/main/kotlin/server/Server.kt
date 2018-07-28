@@ -21,7 +21,6 @@ import util.JsonParser.Companion.buildFromJsonFile
  *          ...
  */
 class Server(private val fileName: String = "", private val worldSize: Int = 10) {
-    private val commandInvoker = CommandInvoker()
     private val game: Game = if (fileName.isBlank()) {
         Game(GameState(world = World(size = worldSize)))
     } else {
@@ -40,8 +39,8 @@ class Server(private val fileName: String = "", private val worldSize: Int = 10)
 
     fun makeMove(command: Command) {
         println("Making move " + command.toString())
-        commandInvoker.command = command
-        commandInvoker.performAction()
+        CommandInvoker.command = command
+        CommandInvoker.performAction()
     }
 
     fun getPlayerState(): Player {
