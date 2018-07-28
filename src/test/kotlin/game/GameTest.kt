@@ -70,6 +70,14 @@ class GameTest {
     }
 
     @Test
+    fun `check room is valid`() {
+        assertTrue(game.roomIsValid(Point(0, 0)))
+        assertFalse(game.roomIsValid(Point(-1, 0)))
+        assertFalse(game.roomIsValid(Point(0, 11)))
+        assertFalse(game.roomIsValid(Point(10, 4)))
+    }
+
+    @Test
     fun `check room is empty`() {
         assertTrue(game.roomIsEmpty(Point(0, 0)))
         assertFalse(game.roomIsEmpty(pitRoomPoint))

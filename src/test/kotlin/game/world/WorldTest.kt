@@ -93,6 +93,14 @@ class WorldTest {
     }
 
     @Test
+    fun `check room is valid`() {
+        assertTrue(world.roomIsValid(Point(0, 0)))
+        assertFalse(world.roomIsValid(Point(-1, 0)))
+        assertFalse(world.roomIsValid(Point(0, 4)))
+        assertFalse(world.roomIsValid(Point(5, 3)))
+    }
+
+    @Test
     fun `check room is empty`() {
         world.addRoomContent(Point(1, 1), RoomContent.BREEZE)
         assertTrue(world.roomIsEmpty(Point(0, 0)))

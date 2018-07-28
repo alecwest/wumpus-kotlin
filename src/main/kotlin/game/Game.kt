@@ -22,6 +22,7 @@ data class Game(private var gameState: GameState = GameState()) {
     fun getRooms() = gameState.getRooms()
     fun getRoomContent(point: Point) = gameState.getRoomContent(point)
     fun hasRoomContent(point: Point, content: RoomContent) = gameState.hasRoomContent(point, content)
+    fun roomIsValid(point: Point) = gameState.roomIsValid(point)
     fun roomIsEmpty(point: Point) = gameState.roomIsEmpty(point)
     fun getRoomIndex(point: Point) = gameState.getRoomIndex(point)
     fun getWorldMap() = gameState.getWorldMap()

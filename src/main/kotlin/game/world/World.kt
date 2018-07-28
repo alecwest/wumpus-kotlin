@@ -127,6 +127,7 @@ data class World(private var size: Int = 10) {
     }
 
     fun hasRoomContent(point: Point, content: RoomContent) = worldState.hasRoomContent(point, content)
+    fun roomIsValid(point: Point) = worldState.roomIsValid(point)
     fun roomIsEmpty(point: Point) = worldState.roomIsEmpty(point)
     fun getRoomIndex(point: Point) = worldState.getRoomIndex(point)
     fun getWorldMap() = worldState.getWorldMap()

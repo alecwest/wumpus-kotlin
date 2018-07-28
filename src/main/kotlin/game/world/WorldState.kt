@@ -21,6 +21,15 @@ data class WorldState(private val rooms: ArrayList<Room> = arrayListOf()) {
         }
     }
 
+    fun roomIsValid(point: Point): Boolean {
+        return try {
+            rooms[getRoomIndex(point)]
+            true
+        } catch (e: ArrayIndexOutOfBoundsException) {
+            false
+        }
+    }
+
     fun roomIsEmpty(point: Point): Boolean {
         return try {
             rooms[getRoomIndex(point)].isEmpty()
