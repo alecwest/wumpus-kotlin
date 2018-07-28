@@ -3,19 +3,19 @@ package util
 import java.awt.Point
 
 fun Point.north(): Point {
-    return Point(this.x + 1, this.y)
-}
-
-fun Point.east(): Point {
     return Point(this.x, this.y + 1)
 }
 
+fun Point.east(): Point {
+    return Point(this.x + 1, this.y)
+}
+
 fun Point.south(): Point {
-    return Point(this.x - 1, this.y)
+    return Point(this.x, this.y - 1)
 }
 
 fun Point.west(): Point {
-    return Point(this.x, this.y - 1)
+    return Point(this.x - 1, this.y)
 }
 
 fun Point.northEast(): Point {
@@ -23,11 +23,11 @@ fun Point.northEast(): Point {
 }
 
 fun Point.northWest(): Point {
-    return Point(this.x + 1, this.y - 1)
+    return Point(this.x - 1, this.y + 1)
 }
 
 fun Point.southEast(): Point {
-    return Point(this.x - 1, this.y + 1)
+    return Point(this.x + 1, this.y - 1)
 }
 
 fun Point.southWest(): Point {
