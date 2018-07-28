@@ -5,7 +5,7 @@ import game.player.PlayerInventory
 import game.world.RoomContent
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import server.command.Command
+import server.command.*
 import util.*
 import java.awt.Point
 
@@ -45,7 +45,7 @@ class ServerTest {
     @Test
     fun `check player moves on move command`() {
         assertEquals(initialPoint, server.getPlayerState().getLocation())
-        server.makeMove(server.command.MoveCommand(server.getGame(), server.getPlayerState().getDirection()))
+        server.makeMove(MoveCommand(server.getGame(), server.getPlayerState().getDirection()))
         assertEquals(initialPoint.north(), server.getPlayerState().getLocation())
         assertEquals(initialDirection, server.getPlayerState().getDirection())
         assertEquals(initialInventory, server.getPlayerState().getInventory())
@@ -54,7 +54,7 @@ class ServerTest {
     @Test
     fun `check player turns on turn command`() {
         assertEquals(initialDirection, server.getPlayerState().getDirection())
-        server.makeMove(server.command.TurnCommand(server.getGame(), Direction.EAST))
+        server.makeMove(TurnCommand(server.getGame(), Direction.EAST))
         assertEquals(initialPoint, server.getPlayerState().getLocation())
         assertEquals(Direction.EAST, server.getPlayerState().getDirection())
         assertEquals(initialInventory, server.getPlayerState().getInventory())
@@ -64,7 +64,7 @@ class ServerTest {
     fun `check player grabs on grab command`() {
         server.getGame().addToRoom(initialPoint, RoomContent.FOOD)
         assertEquals(initialInventory, server.getPlayerState().getInventory())
-        server.makeMove(server.command.GrabCommand(server.getGame(), InventoryItem.FOOD))
+        server.makeMove(GrabCommand(server.getGame(), InventoryItem.FOOD))
         assertEquals(initialPoint, server.getPlayerState().getLocation())
         assertEquals(initialDirection, server.getPlayerState().getDirection())
         assertEquals(initialInventory + mapOf(InventoryItem.FOOD to 1), server.getPlayerState().getInventory())
