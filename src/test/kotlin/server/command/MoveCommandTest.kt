@@ -35,10 +35,10 @@ internal class MoveCommandTest {
         // TODO initialGame is not initialized at the start of every test, so these must run in succession to pass
         @JvmStatic
         fun validMoveCommandTestDataProvider() = Stream.of(
-            ValidMoveCommandTestData(initialGame, MoveNorthCommand(), Point(3, 2)),
-            ValidMoveCommandTestData(initialGame, MoveEastCommand(), Point(3, 3)),
-            ValidMoveCommandTestData(initialGame, MoveSouthCommand(), Point(2, 3)),
-            ValidMoveCommandTestData(initialGame, MoveWestCommand(), Point(2, 2))
+            ValidMoveCommandTestData(initialGame, MoveNorthCommand(initialGame), Point(3, 2)),
+            ValidMoveCommandTestData(initialGame, MoveEastCommand(initialGame), Point(3, 3)),
+            ValidMoveCommandTestData(initialGame, MoveSouthCommand(initialGame), Point(2, 3)),
+            ValidMoveCommandTestData(initialGame, MoveWestCommand(initialGame), Point(2, 2))
         )
     }
 }
