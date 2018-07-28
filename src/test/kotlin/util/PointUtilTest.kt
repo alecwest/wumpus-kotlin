@@ -6,6 +6,14 @@ import java.awt.Point
 
 class PointUtilTest {
     @Test
+    fun `get adjacent point`() {
+        assertEquals(Point(2, 2), Point(2, 1).adjacent(Direction.NORTH))
+        assertEquals(Point(2, 2), Point(1, 2).adjacent(Direction.EAST))
+        assertEquals(Point(2, 2), Point(2, 3).adjacent(Direction.SOUTH))
+        assertEquals(Point(2, 2), Point(3, 2).adjacent(Direction.WEST))
+    }
+
+    @Test
     fun `get adjacent points`() {
         val point = Point(3,5)
         val adjacentPoints = point.adjacents()

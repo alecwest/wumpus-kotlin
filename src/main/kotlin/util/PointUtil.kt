@@ -34,6 +34,15 @@ fun Point.southWest(): Point {
     return Point(this.x - 1, this.y - 1)
 }
 
+fun Point.adjacent(direction: Direction): Point {
+    return when(direction) {
+        Direction.NORTH -> this.north()
+        Direction.EAST -> this.east()
+        Direction.SOUTH -> this.south()
+        Direction.WEST -> this.west()
+    }
+}
+
 fun Point.adjacents(): ArrayList<Point> {
     return arrayListOf(north(), east(), south(), west())
 }
