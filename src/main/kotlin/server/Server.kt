@@ -36,7 +36,6 @@ class Server(private val fileName: String = "", private val worldSize: Int = 10)
     internal fun getGame() = game
 
     fun makeMove(command: Command) {
-        println("Making move " + command.toString())
         CommandInvoker.command = command
         CommandInvoker.performAction()
     }
