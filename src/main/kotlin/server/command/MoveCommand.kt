@@ -5,8 +5,9 @@ import game.world.RoomContent
 import util.*
 import java.awt.Point
 
-class MoveCommand(private val game: Game, private val direction: Direction): Command {
+class MoveCommand(private val game: Game): Command {
     override fun execute() {
+        val direction = game.getPlayerDirection()
         if (canEnterRoom(game.getPlayerLocation().adjacent(direction))) {
             when(direction) {
                 Direction.NORTH -> MoveNorthCommand(game).execute()

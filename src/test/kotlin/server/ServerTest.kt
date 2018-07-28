@@ -45,7 +45,7 @@ class ServerTest {
     @Test
     fun `check player moves on move command`() {
         assertEquals(initialPoint, server.getPlayerState().getLocation())
-        server.makeMove(MoveCommand(server.getGame(), server.getPlayerState().getDirection()))
+        server.makeMove(MoveCommand(server.getGame()))
         assertEquals(initialPoint.north(), server.getPlayerState().getLocation())
         assertEquals(initialDirection, server.getPlayerState().getDirection())
         assertEquals(initialInventory, server.getPlayerState().getInventory())
