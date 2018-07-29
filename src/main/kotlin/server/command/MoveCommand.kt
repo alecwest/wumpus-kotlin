@@ -3,7 +3,6 @@ package server.command
 import game.Game
 import game.world.Perception
 import game.world.RoomContent
-import game.world.toPerception
 import util.*
 import java.awt.Point
 
@@ -14,8 +13,8 @@ class MoveCommand(private val game: Game): Command(game) {
         val perceptionList = arrayListOf<Perception>()
         when {
             canEnterRoom(targetLocation) -> deferExecution(direction)
-            game.roomIsValid(targetLocation) -> perceptionList.add(Perception.BUMP)
-            else -> perceptionList.add(Perception.WALL)
+            game.roomIsValid(targetLocation) -> perceptionList.add(Perception.BLOCKADE_BUMP)
+            else -> perceptionList.add(Perception.WALL_BUMP)
         }
 
         perceptionList.addAll(createPerceptions())

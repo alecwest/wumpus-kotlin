@@ -95,7 +95,6 @@ data class World(private var size: Int = 10) {
             RoomContent.ARROW -> arrayListOf(NoEffect())
             RoomContent.BLOCKADE -> arrayListOf(NoEffect())
             RoomContent.BREEZE -> arrayListOf(NoEffect())
-            RoomContent.BUMP -> arrayListOf(NoEffect())
             RoomContent.FOOD -> arrayListOf(NoEffect())
             RoomContent.GLITTER -> arrayListOf(NoEffect())
             RoomContent.GOLD -> arrayListOf(AddHereEffect(RoomContent.GLITTER))
@@ -106,7 +105,6 @@ data class World(private var size: Int = 10) {
                     AddDiagonalEffect(RoomContent.MOO))
             RoomContent.SUPMUW -> arrayListOf(AddAdjacentEffect(RoomContent.MOO),
                     AddDiagonalEffect(RoomContent.MOO), AddHereEffect(RoomContent.FOOD))
-            RoomContent.WALL -> arrayListOf(NoEffect())
             RoomContent.WUMPUS -> arrayListOf(AddAdjacentEffect(RoomContent.STENCH))
         }
     }

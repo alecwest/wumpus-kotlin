@@ -7,11 +7,11 @@ import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 internal class CommandResultTest {
-    private val commandResult = CommandResult(arrayListOf(Perception.BUMP, Perception.MOO))
+    private val commandResult = CommandResult(arrayListOf(Perception.BLOCKADE_BUMP, Perception.MOO))
 
     @Test
     fun `get perceptions`() {
-        assertEquals(arrayListOf(Perception.BUMP, Perception.MOO), commandResult.getPerceptions())
+        assertEquals(arrayListOf(Perception.BLOCKADE_BUMP, Perception.MOO), commandResult.getPerceptions())
     }
 
     @Test

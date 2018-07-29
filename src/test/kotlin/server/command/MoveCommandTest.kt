@@ -43,9 +43,9 @@ internal class MoveCommandTest {
             ValidMoveCommandTestData(initialGame, Direction.WEST, MoveCommand(initialGame), Point(1, 1), CommandResult()),
             ValidMoveCommandTestData(initialGame, Direction.NORTH, MoveCommand(initialGame), Point(1, 2), CommandResult()),
             ValidMoveCommandTestData(initialGame, Direction.EAST, MoveCommand(initialGame), Point(2, 2), CommandResult()),
-            ValidMoveCommandTestData(playerInCornerGame, Direction.SOUTH, MoveCommand(playerInCornerGame), Point(0, 0), CommandResult(arrayListOf(Perception.WALL))),
-            ValidMoveCommandTestData(playerInCornerGame, Direction.WEST, MoveCommand(playerInCornerGame), Point(0, 0), CommandResult(arrayListOf(Perception.WALL))),
-            ValidMoveCommandTestData(playerInCornerGame, Direction.NORTH, MoveCommand(playerInCornerGame), Point(0, 0), CommandResult(arrayListOf(Perception.BUMP))),
+            ValidMoveCommandTestData(playerInCornerGame, Direction.SOUTH, MoveCommand(playerInCornerGame), Point(0, 0), CommandResult(arrayListOf(Perception.WALL_BUMP))),
+            ValidMoveCommandTestData(playerInCornerGame, Direction.WEST, MoveCommand(playerInCornerGame), Point(0, 0), CommandResult(arrayListOf(Perception.WALL_BUMP))),
+            ValidMoveCommandTestData(playerInCornerGame, Direction.NORTH, MoveCommand(playerInCornerGame), Point(0, 0), CommandResult(arrayListOf(Perception.BLOCKADE_BUMP))),
             ValidMoveCommandTestData(playerInCornerGame, Direction.EAST, MoveCommand(playerInCornerGame), Point(1, 0), CommandResult(arrayListOf(Perception.GLITTER)))
         )
     }
