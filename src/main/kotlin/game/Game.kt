@@ -5,6 +5,7 @@ import game.player.Player
 import game.player.PlayerInventory
 import game.world.RoomContent
 import game.world.World
+import server.command.CommandResult
 import util.Direction
 import java.awt.Point
 
@@ -12,7 +13,14 @@ import java.awt.Point
  * Game retrieves the GameState and facilitates its manipulation
  */
 data class Game(private var gameState: GameState = GameState()) {
+    private var commandResult: CommandResult? = null
+
     fun getGameState() = gameState
+
+    fun getCommandResult() = commandResult
+    fun setCommandResult(commandResult: CommandResult) {
+        this.commandResult = commandResult
+    }
 
     fun getActive() = gameState.getActive()
     fun gameOver() = gameState.gameOver()
