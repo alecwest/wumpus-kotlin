@@ -5,5 +5,6 @@ enum class Perception {
     BUMP,
     GLITTER,
     MOO,
-    STENCH
+    STENCH,
+    WALL
 }
