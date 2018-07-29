@@ -1,10 +1,8 @@
 package game
 
 import game.player.InventoryItem
-import game.player.Player
 import game.player.PlayerInventory
 import game.world.RoomContent
-import game.world.World
 import server.command.CommandResult
 import util.Direction
 import java.awt.Point
@@ -13,13 +11,13 @@ import java.awt.Point
  * Game retrieves the GameState and facilitates its manipulation
  */
 data class Game(private var gameState: GameState = GameState()) {
-    private var commandResult: CommandResult? = null
+    private var lastCommandResult: CommandResult? = null
 
     fun getGameState() = gameState
 
-    fun getCommandResult() = commandResult
+    fun getCommandResult() = lastCommandResult
     fun setCommandResult(commandResult: CommandResult) {
-        this.commandResult = commandResult
+        this.lastCommandResult = commandResult
     }
 
     fun getActive() = gameState.getActive()
