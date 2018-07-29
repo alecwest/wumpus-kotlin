@@ -32,7 +32,6 @@ class GrabCommandTest {
 
     companion object {
         private val testPoint = Point(2, 2)
-        // TODO add SUPMUW instead to get FOOD as an effect
         private val initialGame = Helpers.createGame(
                 world = Helpers.createWorld(
                         roomContent = mapOf(
