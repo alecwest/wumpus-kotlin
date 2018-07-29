@@ -106,6 +106,7 @@ data class World(private var size: Int = 10) {
                     AddDiagonalEffect(RoomContent.MOO))
             RoomContent.SUPMUW -> arrayListOf(AddAdjacentEffect(RoomContent.MOO),
                     AddDiagonalEffect(RoomContent.MOO), AddHereEffect(RoomContent.FOOD))
+            RoomContent.WALL -> arrayListOf(NoEffect())
             RoomContent.WUMPUS -> arrayListOf(AddAdjacentEffect(RoomContent.STENCH))
         }
     }
