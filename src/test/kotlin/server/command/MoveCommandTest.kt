@@ -2,11 +2,9 @@ package server.command
 
 
 import game.Game
-import game.GameState
 import game.player.InventoryItem
-import game.player.Player
-import game.player.PlayerState
 import game.world.Perception
+import game.world.RoomContent
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
@@ -20,6 +18,7 @@ internal class MoveCommandTest {
     @ParameterizedTest
     @MethodSource("validMoveCommandTestDataProvider")
     fun `execute move commands`(testData: ValidMoveCommandTestData) {
+        assertEquals(testData.expectedStartingDirection, testData.givenGame.getPlayerDirection())
         testData.command.execute()
         assertEquals(testData.expectedPoint, testData.givenGame.getPlayerLocation())
         TurnCommand(testData.givenGame, testData.givenGame.getPlayerDirection().right()).execute()
@@ -31,24 +30,31 @@ internal class MoveCommandTest {
         private val initialGame = Helpers.createGame(player = Helpers.createPlayer(
                 location = Point(2, 2), facing = Direction.SOUTH, inventoryContent = mapOf(InventoryItem.ARROW to 2)))
         private val playerInCornerGame = Helpers.createGame(player = Helpers.createPlayer(
-                location = Point(0, 0), facing = Direction.SOUTH, inventoryContent = mapOf(InventoryItem.ARROW to 2)))
+                location = Point(0, 0), facing = Direction.SOUTH, inventoryContent = mapOf(InventoryItem.ARROW to 2)),
+                world = Helpers.createWorld(
+                        roomContent = mapOf(
+                                Point(0, 1) to RoomContent.BLOCKADE,
+                                Point(1, 0) to RoomContent.GOLD)))
 
         // TODO initialGame is not initialized at the start of every test, so these must run in succession to pass
         @JvmStatic
         fun validMoveCommandTestDataProvider() = Stream.of(
-            ValidMoveCommandTestData(initialGame, MoveCommand(initialGame), Point(2, 1), CommandResult()),
-            ValidMoveCommandTestData(initialGame, MoveCommand(initialGame), Point(1, 1), CommandResult()),
-            ValidMoveCommandTestData(initialGame, MoveCommand(initialGame), Point(1, 2), CommandResult()),
-            ValidMoveCommandTestData(initialGame, MoveCommand(initialGame), Point(2, 2), CommandResult()),
-            ValidMoveCommandTestData(playerInCornerGame, MoveCommand(playerInCornerGame), Point(0, 0), CommandResult(arrayListOf(Perception.WALL))),
-            ValidMoveCommandTestData(playerInCornerGame, MoveCommand(playerInCornerGame), Point(0, 0), CommandResult(arrayListOf(Perception.WALL)))
+            ValidMoveCommandTestData(initialGame, Direction.SOUTH, MoveCommand(initialGame), Point(2, 1), CommandResult()),
+            ValidMoveCommandTestData(initialGame, Direction.WEST, MoveCommand(initialGame), Point(1, 1), CommandResult()),
+            ValidMoveCommandTestData(initialGame, Direction.NORTH, MoveCommand(initialGame), Point(1, 2), CommandResult()),
+            ValidMoveCommandTestData(initialGame, Direction.EAST, MoveCommand(initialGame), Point(2, 2), CommandResult()),
+            ValidMoveCommandTestData(playerInCornerGame, Direction.SOUTH, MoveCommand(playerInCornerGame), Point(0, 0), CommandResult(arrayListOf(Perception.WALL))),
+            ValidMoveCommandTestData(playerInCornerGame, Direction.WEST, MoveCommand(playerInCornerGame), Point(0, 0), CommandResult(arrayListOf(Perception.WALL))),
+            ValidMoveCommandTestData(playerInCornerGame, Direction.NORTH, MoveCommand(playerInCornerGame), Point(0, 0), CommandResult(arrayListOf(Perception.BUMP))),
+            ValidMoveCommandTestData(playerInCornerGame, Direction.EAST, MoveCommand(playerInCornerGame), Point(1, 0), CommandResult(arrayListOf(Perception.GLITTER)))
         )
     }
 }
 
 data class ValidMoveCommandTestData (
-    val givenGame: Game,
-    val command: Command,
-    val expectedPoint: Point,
-    val expectedCommandResult: CommandResult
+        val givenGame: Game,
+        val expectedStartingDirection: Direction,
+        val command: Command,
+        val expectedPoint: Point,
+        val expectedCommandResult: CommandResult
 )
