@@ -14,6 +14,7 @@ class TurnCommand(private val game: Game, private val targetDirection: Direction
             Direction.SOUTH -> if(targetDirection == Direction.WEST) TurnRightCommand(game).execute() else TurnLeftCommand(game).execute()
             Direction.WEST -> if(targetDirection == Direction.NORTH) TurnRightCommand(game).execute() else TurnLeftCommand(game).execute()
         }
+        game.setCommandResult(CommandResult(createPerceptions()))
     }
 }
 

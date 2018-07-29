@@ -4,6 +4,7 @@ import game.Game
 import game.GameState
 import game.player.Player
 import game.player.PlayerState
+import game.world.Perception
 import game.world.RoomContent
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.params.ParameterizedTest
@@ -30,10 +31,10 @@ internal class TurnCommandTest {
 
         @JvmStatic
         fun validTurnCommandTestDataProvider() = Stream.of(
-                ValidTurnCommandTestData(initialGame, TurnCommand(initialGame, Direction.EAST), Direction.EAST, CommandResult()),
-                ValidTurnCommandTestData(initialGame, TurnCommand(initialGame, Direction.NORTH), Direction.NORTH, CommandResult()),
-                ValidTurnCommandTestData(initialGame, TurnCommand(initialGame, Direction.EAST), Direction.EAST, CommandResult()),
-                ValidTurnCommandTestData(initialGame, TurnCommand(initialGame, Direction.SOUTH), Direction.SOUTH, CommandResult())
+                ValidTurnCommandTestData(initialGame, TurnCommand(initialGame, Direction.EAST), Direction.EAST, CommandResult(arrayListOf(Perception.BREEZE))),
+                ValidTurnCommandTestData(initialGame, TurnCommand(initialGame, Direction.NORTH), Direction.NORTH, CommandResult(arrayListOf(Perception.BREEZE))),
+                ValidTurnCommandTestData(initialGame, TurnCommand(initialGame, Direction.EAST), Direction.EAST, CommandResult(arrayListOf(Perception.BREEZE))),
+                ValidTurnCommandTestData(initialGame, TurnCommand(initialGame, Direction.SOUTH), Direction.SOUTH, CommandResult(arrayListOf(Perception.BREEZE)))
         )
     }
 }
