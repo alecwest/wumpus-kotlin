@@ -1,4 +1,6 @@
 package server.command
 
-class CommandResult {
+import game.Perception
+
+class CommandResult(private val perceptions: ArrayList<Perception>) {
 }

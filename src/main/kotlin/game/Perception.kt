@@ -1,6 +1,6 @@
 package game
 
-enum class Perceptions {
+enum class Perception {
     BREEZE,
     BUMP,
     GLITTER,
