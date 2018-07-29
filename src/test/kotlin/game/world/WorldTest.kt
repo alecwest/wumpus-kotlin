@@ -35,6 +35,12 @@ class WorldTest {
         assertEquals(arrayListOf(RoomContent.BLOCKADE), world.getRoomContent(point))
     }
 
+    @Test
+    fun `get out of bounds room content`() {
+        assertEquals(arrayListOf<RoomContent>(), world.getRoomContent(Point(-1, 3)))
+        assertEquals(arrayListOf<RoomContent>(), world.getRoomContent(Point(12, 3)))
+    }
+
     @ParameterizedTest
     @MethodSource("validAddRoomContentProvider")
     fun `add content to room`(testData: ValidRoomContentTestData) {
