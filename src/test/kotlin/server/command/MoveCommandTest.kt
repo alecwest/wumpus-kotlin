@@ -33,8 +33,8 @@ internal class MoveCommandTest {
                 location = Point(0, 0), facing = Direction.SOUTH, inventoryContent = mapOf(InventoryItem.ARROW to 2)),
                 world = Helpers.createWorld(
                         roomContent = mapOf(
-                                Point(0, 1) to RoomContent.BLOCKADE,
-                                Point(1, 0) to RoomContent.GOLD)))
+                                Point(0, 1) to arrayListOf(RoomContent.BLOCKADE),
+                                Point(1, 0) to arrayListOf(RoomContent.GOLD))))
 
         // TODO initialGame is not initialized at the start of every test, so these must run in succession to pass
         @JvmStatic

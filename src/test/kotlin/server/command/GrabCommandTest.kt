@@ -32,19 +32,15 @@ class GrabCommandTest {
 
     companion object {
         private val testPoint = Point(2, 2)
-        private val initialGame = Game(GameState(world = getInitialRooms(),
-            player = Player(playerState =
-            PlayerState(location = testPoint, facing = Direction.SOUTH,
-            inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 2))))))
-
-        private fun getInitialRooms(): World {
-            val world = World()
-            // TODO add SUPMUW instead to get FOOD as an effect
-            for (content in arrayListOf(RoomContent.GOLD, RoomContent.FOOD)) {
-                world.addRoomContent(testPoint, content)
-            }
-            return world
-        }
+        // TODO add SUPMUW instead to get FOOD as an effect
+        private val initialGame = Helpers.createGame(
+                world = Helpers.createWorld(
+                        roomContent = mapOf(
+                                Point(2, 2) to arrayListOf(RoomContent.GOLD, RoomContent.SUPMUW))),
+                player = Helpers.createPlayer(
+                        location = testPoint,
+                        facing = Direction.SOUTH,
+                        inventoryContent = mapOf(InventoryItem.ARROW to 2)))
 
         // TODO initialGame is not initialized at the start of every test, so these must run in succession to pass
         @JvmStatic

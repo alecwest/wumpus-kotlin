@@ -27,7 +27,7 @@ internal class TurnCommandTest {
     companion object {
         private val initialGame = Helpers.createGame(player =
         Helpers.createPlayer(location = Point(2, 2), facing = Direction.SOUTH),
-                world = Helpers.createWorld(roomContent = mapOf(Point(3, 2) to RoomContent.PIT)))
+                world = Helpers.createWorld(roomContent = mapOf(Point(3, 2) to arrayListOf(RoomContent.PIT))))
 
         @JvmStatic
         fun validTurnCommandTestDataProvider() = Stream.of(
