@@ -1,6 +1,6 @@
 package server.command
 
-import game.Perception
+import game.world.Perception
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse

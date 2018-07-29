@@ -1,6 +1,6 @@
 package server.command
 
-import game.Perception
+import game.world.Perception
 
 data class CommandResult(private val perceptions: ArrayList<Perception>) {
     fun getPerceptions() = perceptions
