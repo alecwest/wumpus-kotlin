@@ -22,10 +22,11 @@ class GrabCommandTest {
     fun `execute grab command`(testData: ValidGrabCommandTestData) {
         testData.command.execute()
         assertEquals(testData.expectedInventory.getInventory(),
-                initialGame.getPlayerInventory())
+                testData.givenGame.getPlayerInventory())
+        assertEquals(testData.expectedCommandResult, testData.givenGame.getCommandResult())
         // Verify the rest of the player state is maintained
-        assertEquals(Direction.SOUTH, initialGame.getPlayerDirection())
-        assertFalse(initialGame.getWorld().hasRoomContent(testPoint, testData.lostWorldContent))
+        assertEquals(Direction.SOUTH, testData.givenGame.getPlayerDirection())
+        assertFalse(testData.givenGame.getWorld().hasRoomContent(testPoint, testData.lostWorldContent))
     }
 
     companion object {
@@ -47,12 +48,15 @@ class GrabCommandTest {
         @JvmStatic
         fun validGrabCommandTestDataProvider() = Stream.of(
                 ValidGrabCommandTestData(initialGame, GrabCommand(initialGame, InventoryItem.FOOD),
-                        PlayerInventory(mapOf(InventoryItem.ARROW to 2, InventoryItem.FOOD to 1)), RoomContent.FOOD),
+                        PlayerInventory(mapOf(InventoryItem.ARROW to 2, InventoryItem.FOOD to 1)),
+                        RoomContent.FOOD, CommandResult()),
                 ValidGrabCommandTestData(initialGame, GrabCommand(initialGame, InventoryItem.FOOD),
-                        PlayerInventory(mapOf(InventoryItem.ARROW to 2, InventoryItem.FOOD to 1)), RoomContent.FOOD),
+                        PlayerInventory(mapOf(InventoryItem.ARROW to 2, InventoryItem.FOOD to 1)),
+                        RoomContent.FOOD, CommandResult()),
                 ValidGrabCommandTestData(initialGame, GrabCommand(initialGame, InventoryItem.GOLD),
                         PlayerInventory(mapOf(InventoryItem.ARROW to 2,
-                                InventoryItem.FOOD to 1, InventoryItem.GOLD to 1)), RoomContent.GOLD)
+                                InventoryItem.FOOD to 1, InventoryItem.GOLD to 1)),
+                        RoomContent.GOLD, CommandResult())
         )
     }
 }
@@ -61,5 +65,6 @@ data class ValidGrabCommandTestData (
     val givenGame: Game,
     val command: Command,
     val expectedInventory: PlayerInventory,
-    val lostWorldContent: RoomContent
+    val lostWorldContent: RoomContent,
+    val expectedCommandResult: CommandResult
 )
