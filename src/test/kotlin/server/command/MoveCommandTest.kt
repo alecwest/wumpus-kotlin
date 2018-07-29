@@ -17,7 +17,7 @@ internal class MoveCommandTest {
 
     @ParameterizedTest
     @MethodSource("validMoveCommandTestDataProvider")
-    fun `execute move commands`(testData: ValidMoveCommandTestData) {
+    fun `execute move command and turn right`(testData: ValidMoveCommandTestData) {
         assertEquals(testData.expectedStartingDirection, testData.givenGame.getPlayerDirection())
         testData.command.execute()
         assertEquals(testData.expectedPoint, testData.givenGame.getPlayerLocation())
