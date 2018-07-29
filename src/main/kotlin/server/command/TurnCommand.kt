@@ -5,7 +5,7 @@ import util.Direction
 import util.left
 import util.right
 
-class TurnCommand(private val game: Game, private val targetDirection: Direction): Command {
+class TurnCommand(private val game: Game, private val targetDirection: Direction): Command(game) {
     override fun execute() {
         val currentDirection = game.getPlayerDirection()
         when(currentDirection) {
@@ -17,13 +17,13 @@ class TurnCommand(private val game: Game, private val targetDirection: Direction
     }
 }
 
-private class TurnLeftCommand(private val game: Game): Command {
+private class TurnLeftCommand(private val game: Game): Command(game) {
     override fun execute() {
         game.setPlayerDirection(game.getPlayerDirection().left())
     }
 }
 
-private class TurnRightCommand(private val game: Game): Command {
+private class TurnRightCommand(private val game: Game): Command(game) {
     override fun execute() {
         game.setPlayerDirection(game.getPlayerDirection().right())
     }

@@ -7,7 +7,7 @@ import game.world.toPerception
 import util.*
 import java.awt.Point
 
-class MoveCommand(private val game: Game): Command {
+class MoveCommand(private val game: Game): Command(game) {
     override fun execute() {
         val direction = game.getPlayerDirection()
         val targetLocation = game.getPlayerLocation().adjacent(direction)
@@ -20,15 +20,6 @@ class MoveCommand(private val game: Game): Command {
 
         perceptionList.addAll(createPerceptions())
         game.setCommandResult(CommandResult(perceptionList))
-    }
-
-    private fun createPerceptions(): ArrayList<Perception> {
-        val location = game.getPlayerLocation()
-        val perceptionList = arrayListOf<Perception>()
-        for (content in game.getRoomContent(location)) {
-            content.toPerception()?.let { perceptionList.add(it) }
-        }
-        return perceptionList
     }
 
     private fun canEnterRoom(point: Point): Boolean {
@@ -48,25 +39,25 @@ class MoveCommand(private val game: Game): Command {
     }
 }
 
-private class MoveNorthCommand(private val game: Game): Command {
+private class MoveNorthCommand(private val game: Game): Command(game) {
     override fun execute() {
         game.setPlayerLocation(game.getPlayerLocation().north())
     }
 }
 
-private class MoveEastCommand(private val game: Game): Command {
+private class MoveEastCommand(private val game: Game): Command(game) {
     override fun execute() {
         game.setPlayerLocation(game.getPlayerLocation().east())
     }
 }
 
-class MoveSouthCommand(private val game: Game): Command {
+class MoveSouthCommand(private val game: Game): Command(game) {
     override fun execute() {
         game.setPlayerLocation(game.getPlayerLocation().south())
     }
 }
 
-class MoveWestCommand(private val game: Game): Command {
+class MoveWestCommand(private val game: Game): Command(game) {
     override fun execute() {
         game.setPlayerLocation(game.getPlayerLocation().west())
     }

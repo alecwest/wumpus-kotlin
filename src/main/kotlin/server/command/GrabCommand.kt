@@ -4,7 +4,7 @@ import game.Game
 import game.player.InventoryItem
 import game.world.RoomContent
 
-class GrabCommand(private val game: Game, private val inventoryItem: InventoryItem): Command {
+class GrabCommand(private val game: Game, private val inventoryItem: InventoryItem): Command(game) {
     override fun execute() {
         when(inventoryItem){
             InventoryItem.ARROW -> GrabArrowCommand(game).execute()
@@ -14,7 +14,7 @@ class GrabCommand(private val game: Game, private val inventoryItem: InventoryIt
     }
 }
 
-private class GrabArrowCommand(private val game: Game): Command {
+private class GrabArrowCommand(private val game: Game): Command(game) {
     override fun execute() {
         val playerLocation = game.getPlayerLocation()
         if (game.hasRoomContent(playerLocation, RoomContent.ARROW)) {
@@ -24,7 +24,7 @@ private class GrabArrowCommand(private val game: Game): Command {
     }
 }
 
-private class GrabFoodCommand(private val game: Game): Command {
+private class GrabFoodCommand(private val game: Game): Command(game) {
     override fun execute() {
         val playerLocation = game.getPlayerLocation()
         if (game.hasRoomContent(playerLocation, RoomContent.FOOD)) {
@@ -34,7 +34,7 @@ private class GrabFoodCommand(private val game: Game): Command {
     }
 }
 
-private class GrabGoldCommand(private val game: Game): Command {
+private class GrabGoldCommand(private val game: Game): Command(game) {
     override fun execute() {
         val playerLocation = game.getPlayerLocation()
         if (game.hasRoomContent(playerLocation, RoomContent.GOLD)) {
