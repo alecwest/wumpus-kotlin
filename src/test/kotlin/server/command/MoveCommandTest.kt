@@ -6,6 +6,7 @@ import game.GameState
 import game.player.InventoryItem
 import game.player.Player
 import game.player.PlayerState
+import game.world.Perception
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
@@ -35,12 +36,12 @@ internal class MoveCommandTest {
         // TODO initialGame is not initialized at the start of every test, so these must run in succession to pass
         @JvmStatic
         fun validMoveCommandTestDataProvider() = Stream.of(
-            ValidMoveCommandTestData(initialGame, MoveCommand(initialGame), Point(2, 1)),
-            ValidMoveCommandTestData(initialGame, MoveCommand(initialGame), Point(1, 1)),
-            ValidMoveCommandTestData(initialGame, MoveCommand(initialGame), Point(1, 2)),
-            ValidMoveCommandTestData(initialGame, MoveCommand(initialGame), Point(2, 2)),
-            ValidMoveCommandTestData(playerInCornerGame, MoveCommand(playerInCornerGame), Point(0, 0)),
-            ValidMoveCommandTestData(playerInCornerGame, MoveCommand(playerInCornerGame), Point(0, 0))
+            ValidMoveCommandTestData(initialGame, MoveCommand(initialGame), Point(2, 1), CommandResult()),
+            ValidMoveCommandTestData(initialGame, MoveCommand(initialGame), Point(1, 1), CommandResult()),
+            ValidMoveCommandTestData(initialGame, MoveCommand(initialGame), Point(1, 2), CommandResult()),
+            ValidMoveCommandTestData(initialGame, MoveCommand(initialGame), Point(2, 2), CommandResult()),
+            ValidMoveCommandTestData(playerInCornerGame, MoveCommand(playerInCornerGame), Point(0, 0), CommandResult(arrayListOf(Perception.WALL))),
+            ValidMoveCommandTestData(playerInCornerGame, MoveCommand(playerInCornerGame), Point(0, 0), CommandResult(arrayListOf(Perception.WALL)))
         )
     }
 }
@@ -48,5 +49,6 @@ internal class MoveCommandTest {
 data class ValidMoveCommandTestData (
     val givenGame: Game,
     val command: Command,
-    val expectedPoint: Point
+    val expectedPoint: Point,
+    val expectedCommandResult: CommandResult
 )
