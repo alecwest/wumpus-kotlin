@@ -6,6 +6,7 @@ import game.player.InventoryItem
 import game.player.Player
 import game.player.PlayerInventory
 import game.player.PlayerState
+import game.world.Perception
 import game.world.RoomContent
 import game.world.World
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -38,6 +39,7 @@ class GrabCommandTest {
 
         private fun getInitialRooms(): World {
             val world = World()
+            // TODO add SUPMUW instead to get FOOD as an effect
             for (content in arrayListOf(RoomContent.GOLD, RoomContent.FOOD)) {
                 world.addRoomContent(testPoint, content)
             }
@@ -49,14 +51,14 @@ class GrabCommandTest {
         fun validGrabCommandTestDataProvider() = Stream.of(
                 ValidGrabCommandTestData(initialGame, GrabCommand(initialGame, InventoryItem.FOOD),
                         PlayerInventory(mapOf(InventoryItem.ARROW to 2, InventoryItem.FOOD to 1)),
-                        RoomContent.FOOD, CommandResult()),
+                        RoomContent.FOOD, CommandResult(arrayListOf(Perception.GLITTER))),
                 ValidGrabCommandTestData(initialGame, GrabCommand(initialGame, InventoryItem.FOOD),
                         PlayerInventory(mapOf(InventoryItem.ARROW to 2, InventoryItem.FOOD to 1)),
-                        RoomContent.FOOD, CommandResult()),
+                        RoomContent.FOOD, CommandResult(arrayListOf(Perception.GLITTER))),
                 ValidGrabCommandTestData(initialGame, GrabCommand(initialGame, InventoryItem.GOLD),
                         PlayerInventory(mapOf(InventoryItem.ARROW to 2,
                                 InventoryItem.FOOD to 1, InventoryItem.GOLD to 1)),
-                        RoomContent.GOLD, CommandResult())
+                        RoomContent.GOLD, CommandResult(arrayListOf(Perception.GLITTER)))
         )
     }
 }

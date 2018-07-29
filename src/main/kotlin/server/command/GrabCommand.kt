@@ -11,6 +11,7 @@ class GrabCommand(private val game: Game, private val inventoryItem: InventoryIt
             InventoryItem.FOOD -> GrabFoodCommand(game).execute()
             InventoryItem.GOLD -> GrabGoldCommand(game).execute()
         }
+        game.setCommandResult(CommandResult(createPerceptions()))
     }
 }
 
