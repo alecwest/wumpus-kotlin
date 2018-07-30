@@ -13,5 +13,8 @@ class AddAdjacentEffect(private val roomContent: RoomContent): WorldEffect {
     }
 
     override fun removeEffect(world: World, point: Point) {
+        for (adjacentPoint in point.adjacents()) {
+            world.removeRoomContent(adjacentPoint, roomContent)
+        }
     }
 }

@@ -76,6 +76,7 @@ class WorldTest {
         world.addRoomContent(Point(2, -4), RoomContent.SUPMUW)
     }
 
+    // TODO need to not remove effect if it is still applicable because of another nearby room's content.
     @ParameterizedTest
     @MethodSource("validRemoveRoomContentProvider")
     fun `remove content from room`(testData: ValidRoomContentTestData) {

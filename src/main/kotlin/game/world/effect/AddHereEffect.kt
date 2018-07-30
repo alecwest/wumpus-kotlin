@@ -10,5 +10,6 @@ class AddHereEffect(private val roomContent: RoomContent): WorldEffect {
     }
 
     override fun removeEffect(world: World, point: Point) {
+        world.removeRoomContent(point, roomContent)
     }
 }
