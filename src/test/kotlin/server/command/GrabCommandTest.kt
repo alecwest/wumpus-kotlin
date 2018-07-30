@@ -35,7 +35,7 @@ class GrabCommandTest {
         private val initialGame = Helpers.createGame(
                 world = Helpers.createWorld(
                         roomContent = mapOf(
-                                Point(2, 2) to arrayListOf(RoomContent.GOLD, RoomContent.SUPMUW))),
+                                Point(2, 2) to arrayListOf(RoomContent.GOLD, RoomContent.SUPMUW, RoomContent.ARROW))),
                 player = Helpers.createPlayer(
                         location = testPoint,
                         facing = Direction.SOUTH,
@@ -52,6 +52,10 @@ class GrabCommandTest {
                         RoomContent.FOOD, CommandResult(arrayListOf(Perception.GLITTER))),
                 ValidGrabCommandTestData(initialGame, GrabCommand(initialGame, InventoryItem.GOLD),
                         PlayerInventory(mapOf(InventoryItem.ARROW to 2,
+                                InventoryItem.FOOD to 1, InventoryItem.GOLD to 1)),
+                        RoomContent.GOLD, CommandResult(arrayListOf(Perception.GLITTER))),
+                ValidGrabCommandTestData(initialGame, GrabCommand(initialGame, InventoryItem.ARROW),
+                        PlayerInventory(mapOf(InventoryItem.ARROW to 3,
                                 InventoryItem.FOOD to 1, InventoryItem.GOLD to 1)),
                         RoomContent.GOLD, CommandResult(arrayListOf(Perception.GLITTER)))
         )
