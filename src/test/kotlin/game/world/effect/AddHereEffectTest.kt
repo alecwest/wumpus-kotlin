@@ -4,16 +4,23 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import game.world.RoomContent
 import game.world.World
-import game.world.WorldState
 import java.awt.Point
+import kotlin.test.assertFalse
 
 class AddHereEffectTest {
     private val world: World = World(3)
-    private val pointToAddTo: Point = Point(1, 1)
+    private val point: Point = Point(1, 1)
 
     @Test
     fun `add glitter to current room as result of gold`() {
-        world.addRoomContent(pointToAddTo, RoomContent.GOLD)
-        assertTrue(world.hasRoomContent(pointToAddTo, RoomContent.GLITTER))
+        world.addRoomContent(point, RoomContent.GOLD)
+        assertTrue(world.hasRoomContent(point, RoomContent.GLITTER))
+    }
+
+    @Test
+    fun `remove glitter from current room as result of gold removal`() {
+        val world = Helpers.createWorld(roomContent = mapOf(point to arrayListOf(RoomContent.GOLD)))
+        world.removeRoomContent(point, RoomContent.GOLD)
+        assertFalse(world.hasRoomContent(point, RoomContent.GLITTER))
     }
 }
