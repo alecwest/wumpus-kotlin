@@ -4,6 +4,7 @@ import Helpers.Companion.createGame
 import Helpers.Companion.createPlayer
 import Helpers.Companion.createWorld
 import game.player.InventoryItem
+import game.player.Player
 import game.player.PlayerInventory
 import game.world.RoomContent
 import org.junit.jupiter.api.Assertions.*
@@ -33,6 +34,14 @@ class GameTest {
                 ValidGameTestData(Game(), false),
                 ValidGameTestData(Game(GameState(active = false)), true)
         )
+    }
+
+    @Test
+    fun `get game state`() {
+        assertEquals(GameState(
+                player = Helpers.createPlayer(
+                        inventoryContent = mapOf(InventoryItem.ARROW to 2))),
+                game.getGameState())
     }
 
     @Test
