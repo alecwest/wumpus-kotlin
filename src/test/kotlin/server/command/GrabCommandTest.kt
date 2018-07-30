@@ -53,11 +53,11 @@ class GrabCommandTest {
                 ValidGrabCommandTestData(initialGame, GrabCommand(initialGame, InventoryItem.GOLD),
                         PlayerInventory(mapOf(InventoryItem.ARROW to 2,
                                 InventoryItem.FOOD to 1, InventoryItem.GOLD to 1)),
-                        RoomContent.GOLD, CommandResult(arrayListOf(Perception.GLITTER))),
+                        RoomContent.GOLD, CommandResult(arrayListOf())),
                 ValidGrabCommandTestData(initialGame, GrabCommand(initialGame, InventoryItem.ARROW),
                         PlayerInventory(mapOf(InventoryItem.ARROW to 3,
                                 InventoryItem.FOOD to 1, InventoryItem.GOLD to 1)),
-                        RoomContent.GOLD, CommandResult(arrayListOf(Perception.GLITTER)))
+                        RoomContent.GOLD, CommandResult(arrayListOf()))
         )
     }
 }
