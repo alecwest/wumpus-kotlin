@@ -7,7 +7,7 @@ import game.world.World
 import java.awt.Point
 import kotlin.test.assertFalse
 
-class AddHereEffectTest {
+class HereEffectTest {
     private val world: World = World(3)
     private val point: Point = Point(1, 1)
 

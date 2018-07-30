@@ -97,15 +97,15 @@ data class World(private var size: Int = 10) {
             RoomContent.BREEZE -> arrayListOf(NoEffect())
             RoomContent.FOOD -> arrayListOf(NoEffect())
             RoomContent.GLITTER -> arrayListOf(NoEffect())
-            RoomContent.GOLD -> arrayListOf(AddHereEffect(RoomContent.GLITTER))
+            RoomContent.GOLD -> arrayListOf(HereEffect(RoomContent.GLITTER))
             RoomContent.MOO -> arrayListOf(NoEffect())
-            RoomContent.PIT -> arrayListOf(AddAdjacentEffect(RoomContent.BREEZE))
+            RoomContent.PIT -> arrayListOf(AdjacentEffect(RoomContent.BREEZE))
             RoomContent.STENCH -> arrayListOf(NoEffect())
-            RoomContent.SUPMUW_EVIL -> arrayListOf(AddAdjacentEffect(RoomContent.MOO),
-                    AddDiagonalEffect(RoomContent.MOO))
-            RoomContent.SUPMUW -> arrayListOf(AddAdjacentEffect(RoomContent.MOO),
-                    AddDiagonalEffect(RoomContent.MOO), AddHereEffect(RoomContent.FOOD))
-            RoomContent.WUMPUS -> arrayListOf(AddAdjacentEffect(RoomContent.STENCH))
+            RoomContent.SUPMUW_EVIL -> arrayListOf(AdjacentEffect(RoomContent.MOO),
+                    DiagonalEffect(RoomContent.MOO))
+            RoomContent.SUPMUW -> arrayListOf(AdjacentEffect(RoomContent.MOO),
+                    DiagonalEffect(RoomContent.MOO), HereEffect(RoomContent.FOOD))
+            RoomContent.WUMPUS -> arrayListOf(AdjacentEffect(RoomContent.STENCH))
         }
     }
 
