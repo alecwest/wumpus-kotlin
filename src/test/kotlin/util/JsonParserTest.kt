@@ -11,6 +11,7 @@ import kotlin.test.assertEquals
 class JsonParserTest {
     @Test
     fun `test create world from json file`() {
+        val jsonParser = JsonParser()
         val game: Game = JsonParser.buildFromJsonFile("src/test/resources/testFile.json")
         assertTrue(game.hasRoomContent(Point(3, 5), RoomContent.GOLD))
         assertTrue(game.hasRoomContent(Point(3, 5), RoomContent.SUPMUW_EVIL))
