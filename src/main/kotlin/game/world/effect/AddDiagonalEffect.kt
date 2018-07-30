@@ -11,4 +11,7 @@ class AddDiagonalEffect(private val roomContent: RoomContent): WorldEffect {
             world.addRoomContent(diagonalPoint, roomContent)
         }
     }
+
+    override fun removeEffect(world: World, point: Point) {
+    }
 }

@@ -7,4 +7,8 @@ class NoEffect: WorldEffect {
     override fun applyEffect(world: World, point: Point) {
         // Do nothing
     }
+
+    override fun removeEffect(world: World, point: Point) {
+        // Do nothing
+    }
 }
