@@ -56,7 +56,8 @@ class WorldTest {
         @JvmStatic
         fun validAddRoomContentProvider() = Stream.of(
                 ValidRoomContentTestData(arrayListOf(), arrayListOf(RoomContent.GOLD), arrayListOf(RoomContent.GOLD, RoomContent.GLITTER)),
-                ValidRoomContentTestData(arrayListOf(), arrayListOf(RoomContent.MOO), arrayListOf(RoomContent.MOO))
+                ValidRoomContentTestData(arrayListOf(), arrayListOf(RoomContent.MOO), arrayListOf(RoomContent.MOO)),
+                ValidRoomContentTestData(arrayListOf(), arrayListOf(RoomContent.ARROW), arrayListOf(RoomContent.ARROW))
         )
 
     }
