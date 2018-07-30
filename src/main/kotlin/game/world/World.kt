@@ -128,7 +128,7 @@ data class World(private var size: Int = 10) {
 
     private fun removeWorldEffects(point: Point, worldEffects: ArrayList<WorldEffect>) {
         for (worldEffect in worldEffects) {
-
+            worldEffect.removeEffect(this, point)
         }
     }
 
