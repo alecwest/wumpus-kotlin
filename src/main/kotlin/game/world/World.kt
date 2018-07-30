@@ -119,10 +119,17 @@ data class World(private var size: Int = 10) {
         worldState = worldState.copyThis(rooms = worldState.getRooms().apply {
             try {
                 this[getRoomIndex(point)].removeRoomContent(content)
+                removeWorldEffects(point, getAssociatedWorldEffects(content))
             } catch (e: ArrayIndexOutOfBoundsException) {
                 log.info("Content %s was not removed from out-of-bounds room.".format(content.toString()))
             }
         })
+    }
+
+    private fun removeWorldEffects(point: Point, worldEffects: ArrayList<WorldEffect>) {
+        for (worldEffect in worldEffects) {
+
+        }
     }
 
     fun hasRoomContent(point: Point, content: RoomContent) = worldState.hasRoomContent(point, content)
