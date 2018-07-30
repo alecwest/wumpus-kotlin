@@ -41,6 +41,23 @@ class WorldTest {
         assertEquals(arrayListOf<RoomContent>(), world.getRoomContent(Point(12, 3)))
     }
 
+    companion object {
+        @JvmStatic
+        fun validAddRoomContentProvider() = Stream.of(
+                ValidRoomContentTestData(arrayListOf(), arrayListOf(RoomContent.GOLD), arrayListOf(RoomContent.GOLD, RoomContent.GLITTER)),
+                ValidRoomContentTestData(arrayListOf(), arrayListOf(RoomContent.MOO), arrayListOf(RoomContent.MOO)),
+                ValidRoomContentTestData(arrayListOf(), arrayListOf(RoomContent.ARROW), arrayListOf(RoomContent.ARROW))
+        )
+
+        @JvmStatic
+        fun validRemoveRoomContentProvider() = Stream.of(
+                ValidRoomContentTestData(arrayListOf(RoomContent.PIT), arrayListOf(RoomContent.PIT), arrayListOf()),
+                ValidRoomContentTestData(arrayListOf(RoomContent.GOLD, RoomContent.GLITTER), arrayListOf(RoomContent.GOLD), arrayListOf()),
+                ValidRoomContentTestData(arrayListOf(RoomContent.ARROW, RoomContent.WUMPUS), arrayListOf(RoomContent.ARROW), arrayListOf(RoomContent.WUMPUS))
+        )
+
+    }
+
     @ParameterizedTest
     @MethodSource("validAddRoomContentProvider")
     fun `add content to room`(testData: ValidRoomContentTestData) {
@@ -52,15 +69,6 @@ class WorldTest {
             assertTrue(world.hasRoomContent(Point(1, 1), roomContent))
         }
     }
-    companion object {
-        @JvmStatic
-        fun validAddRoomContentProvider() = Stream.of(
-                ValidRoomContentTestData(arrayListOf(), arrayListOf(RoomContent.GOLD), arrayListOf(RoomContent.GOLD, RoomContent.GLITTER)),
-                ValidRoomContentTestData(arrayListOf(), arrayListOf(RoomContent.MOO), arrayListOf(RoomContent.MOO)),
-                ValidRoomContentTestData(arrayListOf(), arrayListOf(RoomContent.ARROW), arrayListOf(RoomContent.ARROW))
-        )
-
-    }
 
     @Test
     fun `add content to out-of-bounds room`() {
@@ -68,14 +76,17 @@ class WorldTest {
         world.addRoomContent(Point(2, -4), RoomContent.SUPMUW)
     }
 
-    @Test
-    fun `remove content from room`() {
-        world.addRoomContent(Point(1, 1), RoomContent.BREEZE)
-        world.addRoomContent(Point(1, 1), RoomContent.STENCH)
-
-        val initialNumberItems = world.getAmountOfContentInRoom(Point(1, 1))
-        world.removeRoomContent(Point(1, 1), RoomContent.BREEZE)
-        assertEquals(initialNumberItems - 1, world.getAmountOfContentInRoom(Point(1, 1)))
+    @ParameterizedTest
+    @MethodSource("validRemoveRoomContentProvider")
+    fun `remove content from room`(testData: ValidRoomContentTestData) {
+        val world = Helpers.createWorld(roomContent = mapOf(Point(1, 1) to testData.initialContent))
+        for (roomContent in testData.contentToAddOrRemove) {
+            world.removeRoomContent(Point(1, 1), roomContent)
+        }
+        assertEquals(testData.finalContent.size, world.getAmountOfContentInRoom(Point(1, 1)))
+        for (roomContent in testData.finalContent) {
+            assertTrue(world.hasRoomContent(Point(1, 1), roomContent))
+        }
     }
 
     @Test
