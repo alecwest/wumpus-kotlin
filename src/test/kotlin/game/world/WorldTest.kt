@@ -6,6 +6,7 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
 import Helpers.Companion.assertContains
 import Helpers.Companion.createWorld
+import util.*
 import java.awt.Point
 import java.util.stream.Stream
 
@@ -56,6 +57,23 @@ class WorldTest {
                 ValidRoomContentTestData(arrayListOf(RoomContent.ARROW, RoomContent.WUMPUS), arrayListOf(RoomContent.ARROW), arrayListOf(RoomContent.WUMPUS))
         )
 
+        @JvmStatic
+        fun validSimilarRoomContentWithEffectsProvider() = Stream.of(
+                ValidSimilarRoomContentWithEffectsTestData(RoomContent.PIT, RoomContent.BREEZE,
+                        arrayListOf(Point(4, 4), Point(4, 4).northEast(), Point(4, 4).south().south()),
+                        Point(4, 4),
+                        arrayListOf(Point(4, 4).north(), Point(4, 4).east(), Point(4, 4).south())),
+                ValidSimilarRoomContentWithEffectsTestData(RoomContent.WUMPUS, RoomContent.STENCH,
+                        arrayListOf(Point(4, 4), Point(4, 4).northEast(), Point(4, 4).south().south()),
+                        Point(4, 4),
+                        arrayListOf(Point(4, 4).north(), Point(4, 4).east(), Point(4, 4).south())),
+                ValidSimilarRoomContentWithEffectsTestData(RoomContent.SUPMUW, RoomContent.MOO,
+                        arrayListOf(Point(4, 4), Point(4, 4).northEast(), Point(4, 4).south().south()),
+                        Point(4, 4),
+                        arrayListOf(Point(4, 4), Point(4, 4).north(), Point(4, 4).east(),
+                                Point(4, 4).southWest(), Point(4, 4).south(), Point(4, 4).southEast()))
+        )
+
     }
 
     @ParameterizedTest
@@ -76,17 +94,32 @@ class WorldTest {
         world.addRoomContent(Point(2, -4), RoomContent.SUPMUW)
     }
 
-    // TODO need to not remove effect if it is still applicable because of another nearby room's content.
     @ParameterizedTest
     @MethodSource("validRemoveRoomContentProvider")
-    fun `remove content from room`(testData: ValidRoomContentTestData) {
-        val world = Helpers.createWorld(roomContent = mapOf(Point(1, 1) to testData.initialContent))
+    fun `remove content from room and make sure effects remain where needed`(testData: ValidRoomContentTestData) {
+        val pointToRemove = Point(1, 1)
+        val world = Helpers.createWorld(roomContent = mapOf(pointToRemove to testData.initialContent))
         for (roomContent in testData.contentToAddOrRemove) {
-            world.removeRoomContent(Point(1, 1), roomContent)
+            world.removeRoomContent(pointToRemove, roomContent)
         }
-        assertEquals(testData.finalContent.size, world.getAmountOfContentInRoom(Point(1, 1)))
+        assertEquals(testData.finalContent.size, world.getAmountOfContentInRoom(pointToRemove))
         for (roomContent in testData.finalContent) {
-            assertTrue(world.hasRoomContent(Point(1, 1), roomContent))
+            assertTrue(world.hasRoomContent(pointToRemove, roomContent))
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("validSimilarRoomContentWithEffectsProvider")
+    fun `ensure world effects stay on remove if nearby rooms contain associated content`(testData: ValidSimilarRoomContentWithEffectsTestData) {
+        val world = Helpers.createWorld()
+        for (point in testData.locationsOfContent) {
+            world.addRoomContent(point, testData.contentTested)
+        }
+
+        world.removeRoomContent(testData.locationToRemoveContent, testData.contentTested)
+
+        for (point in testData.locationsThatShouldStillHaveContentEffect) {
+            assertTrue(world.hasRoomContent(point, testData.effectTested))
         }
     }
 
@@ -189,4 +222,12 @@ data class ValidRoomContentTestData (
         val initialContent: ArrayList<RoomContent>,
         val contentToAddOrRemove: ArrayList<RoomContent>,
         val finalContent: ArrayList<RoomContent>
+)
+
+data class ValidSimilarRoomContentWithEffectsTestData (
+        val contentTested: RoomContent,
+        val effectTested: RoomContent,
+        val locationsOfContent: ArrayList<Point>,
+        val locationToRemoveContent: Point,
+        val locationsThatShouldStillHaveContentEffect: ArrayList<Point>
 )
