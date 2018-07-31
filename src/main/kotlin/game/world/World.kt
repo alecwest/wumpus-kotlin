@@ -3,6 +3,8 @@ package game.world
 import game.world.effect.*
 import java.awt.Point
 import java.util.logging.Logger
+import kotlin.reflect.KClass
+import kotlin.reflect.full.primaryConstructor
 
 /**
  * Notes:
@@ -83,30 +85,11 @@ data class World(private var size: Int = 10) {
         worldState = worldState.copyThis(rooms = worldState.getRooms().apply {
             try {
                 this[getRoomIndex(point)].addRoomContent(content)
-                addWorldEffects(point, getAssociatedWorldEffects(content))
+                addWorldEffects(point, content.associatedEffects())
             } catch (e: ArrayIndexOutOfBoundsException) {
                 log.info("Content %s was not added to out-of-bounds room.".format(content.toString()))
             }
         })
-    }
-
-    private fun getAssociatedWorldEffects(roomContent: RoomContent): ArrayList<WorldEffect> {
-        return when (roomContent) {
-            RoomContent.ARROW -> arrayListOf(NoEffect())
-            RoomContent.BLOCKADE -> arrayListOf(NoEffect())
-            RoomContent.BREEZE -> arrayListOf(NoEffect())
-            RoomContent.FOOD -> arrayListOf(NoEffect())
-            RoomContent.GLITTER -> arrayListOf(NoEffect())
-            RoomContent.GOLD -> arrayListOf(HereEffect(RoomContent.GLITTER))
-            RoomContent.MOO -> arrayListOf(NoEffect())
-            RoomContent.PIT -> arrayListOf(AdjacentEffect(RoomContent.BREEZE))
-            RoomContent.STENCH -> arrayListOf(NoEffect())
-            RoomContent.SUPMUW_EVIL -> arrayListOf(AdjacentEffect(RoomContent.MOO),
-                    DiagonalEffect(RoomContent.MOO))
-            RoomContent.SUPMUW -> arrayListOf(AdjacentEffect(RoomContent.MOO),
-                    DiagonalEffect(RoomContent.MOO), HereEffect(RoomContent.FOOD))
-            RoomContent.WUMPUS -> arrayListOf(AdjacentEffect(RoomContent.STENCH))
-        }
     }
 
     private fun addWorldEffects(point: Point, worldEffects: ArrayList<WorldEffect>) {
@@ -119,7 +102,7 @@ data class World(private var size: Int = 10) {
         worldState = worldState.copyThis(rooms = worldState.getRooms().apply {
             try {
                 this[getRoomIndex(point)].removeRoomContent(content)
-                removeWorldEffects(point, getAssociatedWorldEffects(content))
+                removeWorldEffects(point, content.associatedEffects())
             } catch (e: ArrayIndexOutOfBoundsException) {
                 log.info("Content %s was not removed from out-of-bounds room.".format(content.toString()))
             }

@@ -34,24 +34,22 @@ fun RoomContent.toPerception(): Perception? {
     }
 }
 
-// TODO test this and swap out function in World
-fun RoomContent.associatedEffects(): Map<out KClass<out WorldEffect>, ArrayList<RoomContent>> {
+fun RoomContent.associatedEffects(): ArrayList<WorldEffect> {
     return when(this) {
-        RoomContent.ARROW -> mapOf(NoEffect::class to arrayListOf())
-        RoomContent.BLOCKADE -> mapOf(NoEffect::class to arrayListOf())
-        RoomContent.BREEZE -> mapOf(NoEffect::class to arrayListOf())
-        RoomContent.FOOD -> mapOf(NoEffect::class to arrayListOf())
-        RoomContent.GLITTER -> mapOf(NoEffect::class to arrayListOf())
-        RoomContent.GOLD -> mapOf(HereEffect::class to arrayListOf(RoomContent.GLITTER))
-        RoomContent.MOO -> mapOf(NoEffect::class to arrayListOf())
-        RoomContent.PIT -> mapOf(AdjacentEffect::class to arrayListOf(RoomContent.BREEZE))
-        RoomContent.STENCH -> mapOf(NoEffect::class to arrayListOf())
-        RoomContent.SUPMUW_EVIL -> mapOf(AdjacentEffect::class to arrayListOf(RoomContent.MOO),
-                DiagonalEffect::class to arrayListOf(RoomContent.MOO))
-        RoomContent.SUPMUW -> mapOf(AdjacentEffect::class to arrayListOf(RoomContent.MOO),
-                DiagonalEffect::class to arrayListOf(RoomContent.MOO),
-                HereEffect::class to arrayListOf(RoomContent.FOOD))
-        RoomContent.WUMPUS -> mapOf(AdjacentEffect::class to arrayListOf(RoomContent.STENCH))
+        RoomContent.ARROW -> arrayListOf(NoEffect())
+        RoomContent.BLOCKADE -> arrayListOf(NoEffect())
+        RoomContent.BREEZE -> arrayListOf(NoEffect())
+        RoomContent.FOOD -> arrayListOf(NoEffect())
+        RoomContent.GLITTER -> arrayListOf(NoEffect())
+        RoomContent.GOLD -> arrayListOf(HereEffect(RoomContent.GLITTER))
+        RoomContent.MOO -> arrayListOf(NoEffect())
+        RoomContent.PIT -> arrayListOf(AdjacentEffect(RoomContent.BREEZE))
+        RoomContent.STENCH -> arrayListOf(NoEffect())
+        RoomContent.SUPMUW_EVIL -> arrayListOf(AdjacentEffect(RoomContent.MOO),
+                DiagonalEffect(RoomContent.MOO))
+        RoomContent.SUPMUW -> arrayListOf(AdjacentEffect(RoomContent.MOO),
+                DiagonalEffect(RoomContent.MOO), HereEffect(RoomContent.FOOD))
+        RoomContent.WUMPUS -> arrayListOf(AdjacentEffect(RoomContent.STENCH))
     }
 }
 
