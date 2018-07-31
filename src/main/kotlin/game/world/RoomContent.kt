@@ -36,15 +36,15 @@ fun RoomContent.toPerception(): Perception? {
 
 fun RoomContent.associatedEffects(): ArrayList<WorldEffect> {
     return when(this) {
-        RoomContent.ARROW -> arrayListOf(NoEffect())
-        RoomContent.BLOCKADE -> arrayListOf(NoEffect())
-        RoomContent.BREEZE -> arrayListOf(NoEffect())
-        RoomContent.FOOD -> arrayListOf(NoEffect())
-        RoomContent.GLITTER -> arrayListOf(NoEffect())
+        RoomContent.ARROW -> arrayListOf()
+        RoomContent.BLOCKADE -> arrayListOf()
+        RoomContent.BREEZE -> arrayListOf()
+        RoomContent.FOOD -> arrayListOf()
+        RoomContent.GLITTER -> arrayListOf()
         RoomContent.GOLD -> arrayListOf(HereEffect(RoomContent.GLITTER))
-        RoomContent.MOO -> arrayListOf(NoEffect())
+        RoomContent.MOO -> arrayListOf()
         RoomContent.PIT -> arrayListOf(AdjacentEffect(RoomContent.BREEZE))
-        RoomContent.STENCH -> arrayListOf(NoEffect())
+        RoomContent.STENCH -> arrayListOf()
         RoomContent.SUPMUW_EVIL -> arrayListOf(AdjacentEffect(RoomContent.MOO),
                 DiagonalEffect(RoomContent.MOO))
         RoomContent.SUPMUW -> arrayListOf(AdjacentEffect(RoomContent.MOO),
