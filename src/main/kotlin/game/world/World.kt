@@ -97,15 +97,15 @@ data class World(private var size: Int = 10) {
             RoomContent.BREEZE -> arrayListOf(NoEffect())
             RoomContent.FOOD -> arrayListOf(NoEffect())
             RoomContent.GLITTER -> arrayListOf(NoEffect())
-            RoomContent.GOLD -> arrayListOf(AddHereEffect(RoomContent.GLITTER))
+            RoomContent.GOLD -> arrayListOf(HereEffect(RoomContent.GLITTER))
             RoomContent.MOO -> arrayListOf(NoEffect())
-            RoomContent.PIT -> arrayListOf(AddAdjacentEffect(RoomContent.BREEZE))
+            RoomContent.PIT -> arrayListOf(AdjacentEffect(RoomContent.BREEZE))
             RoomContent.STENCH -> arrayListOf(NoEffect())
-            RoomContent.SUPMUW_EVIL -> arrayListOf(AddAdjacentEffect(RoomContent.MOO),
-                    AddDiagonalEffect(RoomContent.MOO))
-            RoomContent.SUPMUW -> arrayListOf(AddAdjacentEffect(RoomContent.MOO),
-                    AddDiagonalEffect(RoomContent.MOO), AddHereEffect(RoomContent.FOOD))
-            RoomContent.WUMPUS -> arrayListOf(AddAdjacentEffect(RoomContent.STENCH))
+            RoomContent.SUPMUW_EVIL -> arrayListOf(AdjacentEffect(RoomContent.MOO),
+                    DiagonalEffect(RoomContent.MOO))
+            RoomContent.SUPMUW -> arrayListOf(AdjacentEffect(RoomContent.MOO),
+                    DiagonalEffect(RoomContent.MOO), HereEffect(RoomContent.FOOD))
+            RoomContent.WUMPUS -> arrayListOf(AdjacentEffect(RoomContent.STENCH))
         }
     }
 
@@ -119,10 +119,17 @@ data class World(private var size: Int = 10) {
         worldState = worldState.copyThis(rooms = worldState.getRooms().apply {
             try {
                 this[getRoomIndex(point)].removeRoomContent(content)
+                removeWorldEffects(point, getAssociatedWorldEffects(content))
             } catch (e: ArrayIndexOutOfBoundsException) {
                 log.info("Content %s was not removed from out-of-bounds room.".format(content.toString()))
             }
         })
+    }
+
+    private fun removeWorldEffects(point: Point, worldEffects: ArrayList<WorldEffect>) {
+        for (worldEffect in worldEffects) {
+            worldEffect.removeEffect(this, point)
+        }
     }
 
     fun hasRoomContent(point: Point, content: RoomContent) = worldState.hasRoomContent(point, content)

@@ -1,5 +1,8 @@
 package game.world
 
+import game.world.effect.*
+import kotlin.reflect.KClass
+
 /**
  * Changes:
  *      All AGENT types are removed in favor of a data structure containing the client's position, direction faced,
@@ -28,6 +31,27 @@ fun RoomContent.toPerception(): Perception? {
         RoomContent.MOO -> Perception.MOO
         RoomContent.STENCH -> Perception.STENCH
         else -> null
+    }
+}
+
+// TODO test this and swap out function in World
+fun RoomContent.associatedEffects(): Map<out KClass<out WorldEffect>, ArrayList<RoomContent>> {
+    return when(this) {
+        RoomContent.ARROW -> mapOf(NoEffect::class to arrayListOf())
+        RoomContent.BLOCKADE -> mapOf(NoEffect::class to arrayListOf())
+        RoomContent.BREEZE -> mapOf(NoEffect::class to arrayListOf())
+        RoomContent.FOOD -> mapOf(NoEffect::class to arrayListOf())
+        RoomContent.GLITTER -> mapOf(NoEffect::class to arrayListOf())
+        RoomContent.GOLD -> mapOf(HereEffect::class to arrayListOf(RoomContent.GLITTER))
+        RoomContent.MOO -> mapOf(NoEffect::class to arrayListOf())
+        RoomContent.PIT -> mapOf(AdjacentEffect::class to arrayListOf(RoomContent.BREEZE))
+        RoomContent.STENCH -> mapOf(NoEffect::class to arrayListOf())
+        RoomContent.SUPMUW_EVIL -> mapOf(AdjacentEffect::class to arrayListOf(RoomContent.MOO),
+                DiagonalEffect::class to arrayListOf(RoomContent.MOO))
+        RoomContent.SUPMUW -> mapOf(AdjacentEffect::class to arrayListOf(RoomContent.MOO),
+                DiagonalEffect::class to arrayListOf(RoomContent.MOO),
+                HereEffect::class to arrayListOf(RoomContent.FOOD))
+        RoomContent.WUMPUS -> mapOf(AdjacentEffect::class to arrayListOf(RoomContent.STENCH))
     }
 }
 
