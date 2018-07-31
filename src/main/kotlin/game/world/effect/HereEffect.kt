@@ -6,10 +6,10 @@ import java.awt.Point
 
 class HereEffect(roomContent: RoomContent): WorldEffect(roomContent) {
     override fun applyEffect(world: World, point: Point) {
-        world.addRoomContent(point, getRoomContent())
+        world.addRoomContent(point, roomContent)
     }
 
     override fun removeEffect(world: World, point: Point) {
-        world.removeRoomContent(point, getRoomContent())
+        world.removeRoomContent(point, roomContent)
     }
 }

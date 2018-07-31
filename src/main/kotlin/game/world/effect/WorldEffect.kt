@@ -7,9 +7,7 @@ import util.adjacents
 import util.diagonals
 import java.awt.Point
 
-abstract class WorldEffect(roomContent: RoomContent) {
-    private val roomContent = roomContent
-    fun getRoomContent() = roomContent
+abstract class WorldEffect(internal val roomContent: RoomContent) {
     abstract fun applyEffect(world: World, point: Point)
     abstract fun removeEffect(world: World, point: Point)
 
@@ -18,7 +16,7 @@ abstract class WorldEffect(roomContent: RoomContent) {
         for (adjacentPoint in point.adjacents() + point.diagonals()) {
             for (content in RoomContent.values()) {
                 for (effects in content.associatedEffects()) {
-                    if (effects.getRoomContent() == getRoomContent() && world.hasRoomContent(adjacentPoint, content)) {
+                    if (effects.roomContent == roomContent && world.hasRoomContent(adjacentPoint, content)) {
                         return true
                     }
                 }

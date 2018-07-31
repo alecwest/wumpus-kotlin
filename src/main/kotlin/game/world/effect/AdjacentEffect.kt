@@ -9,14 +9,14 @@ import java.awt.Point
 class AdjacentEffect(roomContent: RoomContent): WorldEffect(roomContent) {
     override fun applyEffect(world: World, point: Point) {
         for (adjacentPoint in point.adjacents()) {
-            world.addRoomContent(adjacentPoint, getRoomContent())
+            world.addRoomContent(adjacentPoint, roomContent)
         }
     }
 
     override fun removeEffect(world: World, point: Point) {
         for (adjacentPoint in point.adjacents()) {
             if (!nearbyContentHasAssociatedEffect(world, adjacentPoint)) {
-                world.removeRoomContent(adjacentPoint, getRoomContent())
+                world.removeRoomContent(adjacentPoint, roomContent)
             }
         }
     }
