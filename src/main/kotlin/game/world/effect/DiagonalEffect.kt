@@ -6,7 +6,7 @@ import game.world.World
 import util.adjacents
 import java.awt.Point
 
-class DiagonalEffect(private val roomContent: RoomContent): WorldEffect {
+class DiagonalEffect(private val roomContent: RoomContent): WorldEffect(roomContent) {
     override fun applyEffect(world: World, point: Point) {
         for (diagonalPoint in point.diagonals()) {
             world.addRoomContent(diagonalPoint, roomContent)

@@ -4,7 +4,7 @@ import game.world.RoomContent
 import game.world.World
 import java.awt.Point
 
-class HereEffect(private val roomContent: RoomContent): WorldEffect {
+class HereEffect(private val roomContent: RoomContent): WorldEffect(roomContent) {
     override fun applyEffect(world: World, point: Point) {
         world.addRoomContent(point, roomContent)
     }

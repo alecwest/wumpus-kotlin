@@ -5,7 +5,7 @@ import game.world.RoomContent
 import game.world.World
 import java.awt.Point
 
-class AdjacentEffect(private val roomContent: RoomContent): WorldEffect {
+class AdjacentEffect(private val roomContent: RoomContent): WorldEffect(roomContent) {
     override fun applyEffect(world: World, point: Point) {
         for (adjacentPoint in point.adjacents()) {
             world.addRoomContent(adjacentPoint, roomContent)
