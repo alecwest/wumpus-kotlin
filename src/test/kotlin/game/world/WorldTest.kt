@@ -60,9 +60,9 @@ class WorldTest {
         @JvmStatic
         fun validSimilarRoomContentWithEffectsProvider() = Stream.of(
                 ValidSimilarRoomContentWithEffectsTestData(RoomContent.PIT, RoomContent.BREEZE,
-                        arrayListOf(Point(4, 4), Point(4, 4).northEast(), Point(4, 4).south().south()),
+                        arrayListOf(Point(4, 4), Point(4, 4).northEast(), Point(4, 4).northEast().north(), Point(4, 4).south().south()),
                         Point(4, 4),
-                        arrayListOf(Point(4, 4).north(), Point(4, 4).east(), Point(4, 4).south())),
+                        arrayListOf(Point(4, 4).north(), Point(4, 4).east(), Point(4, 4).south(), Point(4, 4).northEast())),
                 ValidSimilarRoomContentWithEffectsTestData(RoomContent.WUMPUS, RoomContent.STENCH,
                         arrayListOf(Point(4, 4), Point(4, 4).northEast(), Point(4, 4).south().south()),
                         Point(4, 4),
