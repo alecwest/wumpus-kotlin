@@ -14,6 +14,7 @@ class ServerTest {
     private val initialPoint = Point(0, 0)
     private val initialDirection = Direction.NORTH
     private val initialInventory = mapOf(InventoryItem.ARROW to 1)
+    private val worldFileName = "src/test/resources/testFile.json"
 
     @Test
     fun `server generates world from world size only`() {
@@ -26,8 +27,7 @@ class ServerTest {
 
     @Test
     fun `server generates world from json file`() {
-        val fileName = "src/test/resources/testFile.json"
-        val gameId = Server.newSession(fileName = fileName)
+        val gameId = Server.newSession(fileName = worldFileName)
 
         assertEquals(11, Server.getGame(gameId).getWorldSize())
         assertEquals(121, Server.getGame(gameId).getNumberRooms())
@@ -67,6 +67,13 @@ class ServerTest {
         assertEquals(initialPoint, Server.getPlayerState(gameId).getLocation())
         assertEquals(initialDirection, Server.getPlayerState(gameId).getDirection())
         assertEquals(initialInventory + mapOf(InventoryItem.FOOD to 1), Server.getPlayerState(gameId).getInventory())
+    }
+
+    @Test
+    fun `get command result`() {
+        val sessionId = Helpers.createServerSession(worldFileName)
+        Server.makeMove(sessionId, MoveCommand())
+        assertEquals(arrayListOf(RoomContent.BREEZE).toString(), Server.getCommandResult(sessionId)?.getPerceptions().toString())
     }
 }
 

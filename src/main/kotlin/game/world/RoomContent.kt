@@ -62,7 +62,7 @@ fun RoomContent.toCharRepresentation(): String {
         RoomContent.GLITTER -> "*"
         RoomContent.GOLD -> "G"
         RoomContent.MOO -> "!"
-        RoomContent.PIT -> "O"
+        RoomContent.PIT -> "P"
         RoomContent.STENCH -> "~"
         RoomContent.SUPMUW_EVIL -> "E"
         RoomContent.SUPMUW -> "S"

@@ -11,7 +11,7 @@ import java.awt.Point
  * Game retrieves the GameState and facilitates its manipulation
  */
 data class Game(private var gameState: GameState = GameState()) {
-    private var lastCommandResult: CommandResult? = null
+    private var lastCommandResult: CommandResult? = null // TODO make lateinit
 
     fun getGameState() = gameState
 

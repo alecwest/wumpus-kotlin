@@ -28,7 +28,6 @@ private class GrabArrowCommand: Command() {
 
 private class GrabFoodCommand: Command() {
     override fun execute() {
-        println(game.toString())
         val playerLocation = game.getPlayerLocation()
         if (game.hasRoomContent(playerLocation, RoomContent.FOOD)) {
             game.addToPlayerInventory(InventoryItem.FOOD)

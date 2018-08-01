@@ -7,6 +7,7 @@ import game.world.RoomContent
 import game.world.World
 import game.command.Command
 import game.command.CommandInvoker
+import game.command.CommandResult
 import util.JsonParser.Companion.buildFromJsonFile
 
 /**
@@ -50,6 +51,10 @@ object Server {
         command.setGame(getGame(id))
         CommandInvoker.command = command
         CommandInvoker.performAction()
+    }
+
+    fun getCommandResult(id: Int): CommandResult? {
+        return getGame(id).getCommandResult()
     }
 
     fun getPlayerState(id: Int): Player {
