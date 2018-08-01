@@ -1,6 +1,7 @@
 package game.client
 
 import game.command.Command
+import game.command.CommandResult
 import game.server.Server
 
 /**
@@ -17,7 +18,7 @@ class Client(fileName: String = "", worldSize: Int = 10) {
         Server.makeMove(sessionId, command)
     }
 
-    fun getMoveResult() {
-
+    fun getMoveResult(): CommandResult? {
+        return Server.getCommandResult(sessionId)
     }
 }
