@@ -46,7 +46,8 @@ object Server {
 
     internal fun getGame(id: Int) = sessions.getValue(id)
 
-    fun makeMove(command: Command) {
+    fun makeMove(id: Int, command: Command) {
+        command.setGame(getGame(id))
         CommandInvoker.command = command
         CommandInvoker.performAction()
     }

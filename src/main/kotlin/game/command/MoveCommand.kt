@@ -1,12 +1,11 @@
 package game.command
 
-import game.Game
 import game.world.Perception
 import game.world.RoomContent
 import util.*
 import java.awt.Point
 
-class MoveCommand(private val game: Game): Command(game) {
+class MoveCommand: Command() {
     override fun execute() {
         val direction = game.getPlayerDirection()
         val targetLocation = game.getPlayerLocation().adjacent(direction)
@@ -29,34 +28,36 @@ class MoveCommand(private val game: Game): Command(game) {
     }
 
     private fun deferExecution(direction: Direction) {
-        when(direction) {
-            Direction.NORTH -> MoveNorthCommand(game).execute()
-            Direction.EAST -> MoveEastCommand(game).execute()
-            Direction.SOUTH -> MoveSouthCommand(game).execute()
-            Direction.WEST -> MoveWestCommand(game).execute()
+        val command = when(direction) {
+            Direction.NORTH -> MoveNorthCommand()
+            Direction.EAST -> MoveEastCommand()
+            Direction.SOUTH -> MoveSouthCommand()
+            Direction.WEST -> MoveWestCommand()
         }
+        command.setGame(this.game)
+        command.execute()
     }
 }
 
-private class MoveNorthCommand(private val game: Game): Command(game) {
+private class MoveNorthCommand: Command() {
     override fun execute() {
         game.setPlayerLocation(game.getPlayerLocation().north())
     }
 }
 
-private class MoveEastCommand(private val game: Game): Command(game) {
+private class MoveEastCommand: Command() {
     override fun execute() {
         game.setPlayerLocation(game.getPlayerLocation().east())
     }
 }
 
-class MoveSouthCommand(private val game: Game): Command(game) {
+class MoveSouthCommand: Command() {
     override fun execute() {
         game.setPlayerLocation(game.getPlayerLocation().south())
     }
 }
 
-class MoveWestCommand(private val game: Game): Command(game) {
+class MoveWestCommand: Command() {
     override fun execute() {
         game.setPlayerLocation(game.getPlayerLocation().west())
     }

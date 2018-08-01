@@ -1,21 +1,22 @@
 package game.command
 
-import game.Game
 import game.player.InventoryItem
 import game.world.RoomContent
 
-class GrabCommand(private val game: Game, private val inventoryItem: InventoryItem): Command(game) {
+class GrabCommand(private val inventoryItem: InventoryItem): Command() {
     override fun execute() {
-        when(inventoryItem){
-            InventoryItem.ARROW -> GrabArrowCommand(game).execute()
-            InventoryItem.FOOD -> GrabFoodCommand(game).execute()
-            InventoryItem.GOLD -> GrabGoldCommand(game).execute()
+        var command = when(inventoryItem){
+            InventoryItem.ARROW -> GrabArrowCommand()
+            InventoryItem.FOOD -> GrabFoodCommand()
+            InventoryItem.GOLD -> GrabGoldCommand()
         }
+        command.setGame(this.game)
+        command.execute()
         game.setCommandResult(CommandResult(createPerceptions()))
     }
 }
 
-private class GrabArrowCommand(private val game: Game): Command(game) {
+private class GrabArrowCommand: Command() {
     override fun execute() {
         val playerLocation = game.getPlayerLocation()
         if (game.hasRoomContent(playerLocation, RoomContent.ARROW)) {
@@ -25,8 +26,9 @@ private class GrabArrowCommand(private val game: Game): Command(game) {
     }
 }
 
-private class GrabFoodCommand(private val game: Game): Command(game) {
+private class GrabFoodCommand: Command() {
     override fun execute() {
+        println(game.toString())
         val playerLocation = game.getPlayerLocation()
         if (game.hasRoomContent(playerLocation, RoomContent.FOOD)) {
             game.addToPlayerInventory(InventoryItem.FOOD)
@@ -35,7 +37,7 @@ private class GrabFoodCommand(private val game: Game): Command(game) {
     }
 }
 
-private class GrabGoldCommand(private val game: Game): Command(game) {
+private class GrabGoldCommand: Command() {
     override fun execute() {
         val playerLocation = game.getPlayerLocation()
         if (game.hasRoomContent(playerLocation, RoomContent.GOLD)) {

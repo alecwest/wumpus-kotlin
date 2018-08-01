@@ -19,11 +19,18 @@ internal class MoveCommandTest {
     @MethodSource("validMoveCommandTestDataProvider")
     fun `execute move command and turn right`(testData: ValidMoveCommandTestData) {
         assertEquals(testData.expectedStartingDirection, testData.givenGame.getPlayerDirection())
+        testData.command.setGame(testData.givenGame)
         testData.command.execute()
         assertEquals(testData.expectedPoint, testData.givenGame.getPlayerLocation())
-        TurnCommand(testData.givenGame, testData.givenGame.getPlayerDirection().right()).execute()
+        turnRight(testData.givenGame)
         // Verify the rest of the player state is maintained
         assertEquals(mapOf(InventoryItem.ARROW to 2), testData.givenGame.getPlayerInventory())
+    }
+
+    private fun turnRight(game: Game) {
+        val command = TurnCommand(game.getPlayerDirection().right())
+        command.setGame(game)
+        command.execute()
     }
 
     companion object {
@@ -39,14 +46,14 @@ internal class MoveCommandTest {
         // TODO initialGame is not initialized at the start of every test, so these must run in succession to pass
         @JvmStatic
         fun validMoveCommandTestDataProvider() = Stream.of(
-            ValidMoveCommandTestData(initialGame, Direction.SOUTH, MoveCommand(initialGame), Point(2, 1), CommandResult()),
-            ValidMoveCommandTestData(initialGame, Direction.WEST, MoveCommand(initialGame), Point(1, 1), CommandResult()),
-            ValidMoveCommandTestData(initialGame, Direction.NORTH, MoveCommand(initialGame), Point(1, 2), CommandResult()),
-            ValidMoveCommandTestData(initialGame, Direction.EAST, MoveCommand(initialGame), Point(2, 2), CommandResult()),
-            ValidMoveCommandTestData(playerInCornerGame, Direction.SOUTH, MoveCommand(playerInCornerGame), Point(0, 0), CommandResult(arrayListOf(Perception.WALL_BUMP))),
-            ValidMoveCommandTestData(playerInCornerGame, Direction.WEST, MoveCommand(playerInCornerGame), Point(0, 0), CommandResult(arrayListOf(Perception.WALL_BUMP))),
-            ValidMoveCommandTestData(playerInCornerGame, Direction.NORTH, MoveCommand(playerInCornerGame), Point(0, 0), CommandResult(arrayListOf(Perception.BLOCKADE_BUMP))),
-            ValidMoveCommandTestData(playerInCornerGame, Direction.EAST, MoveCommand(playerInCornerGame), Point(1, 0), CommandResult(arrayListOf(Perception.GLITTER)))
+            ValidMoveCommandTestData(initialGame, Direction.SOUTH, MoveCommand(), Point(2, 1), CommandResult()),
+            ValidMoveCommandTestData(initialGame, Direction.WEST, MoveCommand(), Point(1, 1), CommandResult()),
+            ValidMoveCommandTestData(initialGame, Direction.NORTH, MoveCommand(), Point(1, 2), CommandResult()),
+            ValidMoveCommandTestData(initialGame, Direction.EAST, MoveCommand(), Point(2, 2), CommandResult()),
+            ValidMoveCommandTestData(playerInCornerGame, Direction.SOUTH, MoveCommand(), Point(0, 0), CommandResult(arrayListOf(Perception.WALL_BUMP))),
+            ValidMoveCommandTestData(playerInCornerGame, Direction.WEST, MoveCommand(), Point(0, 0), CommandResult(arrayListOf(Perception.WALL_BUMP))),
+            ValidMoveCommandTestData(playerInCornerGame, Direction.NORTH, MoveCommand(), Point(0, 0), CommandResult(arrayListOf(Perception.BLOCKADE_BUMP))),
+            ValidMoveCommandTestData(playerInCornerGame, Direction.EAST, MoveCommand(), Point(1, 0), CommandResult(arrayListOf(Perception.GLITTER)))
         )
     }
 }

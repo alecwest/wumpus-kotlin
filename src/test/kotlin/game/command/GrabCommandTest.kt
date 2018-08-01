@@ -3,6 +3,7 @@ package game.command
 import game.Game
 import game.player.InventoryItem
 import game.player.PlayerInventory
+import game.server.Server
 import game.world.Perception
 import game.world.RoomContent
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -17,10 +18,14 @@ class GrabCommandTest {
     @ParameterizedTest
     @MethodSource("validGrabCommandTestDataProvider")
     fun `execute grab command`(testData: ValidGrabCommandTestData) {
+        testData.command.setGame(testData.givenGame)
+        assertEquals(testData.command.game, testData.givenGame)
+
         testData.command.execute()
         assertEquals(testData.expectedInventory.getInventory(),
                 testData.givenGame.getPlayerInventory())
         assertEquals(testData.expectedCommandResult, testData.givenGame.getCommandResult())
+
         // Verify the rest of the player state is maintained
         assertEquals(Direction.SOUTH, testData.givenGame.getPlayerDirection())
         assertFalse(testData.givenGame.getWorld().hasRoomContent(testPoint, testData.lostWorldContent))
@@ -40,17 +45,17 @@ class GrabCommandTest {
         // TODO initialGame is not initialized at the start of every test, so these must run in succession to pass
         @JvmStatic
         fun validGrabCommandTestDataProvider() = Stream.of(
-                ValidGrabCommandTestData(initialGame, GrabCommand(initialGame, InventoryItem.FOOD),
+                ValidGrabCommandTestData(initialGame, GrabCommand(InventoryItem.FOOD),
                         PlayerInventory(mapOf(InventoryItem.ARROW to 2, InventoryItem.FOOD to 1)),
                         RoomContent.FOOD, CommandResult(arrayListOf(Perception.GLITTER))),
-                ValidGrabCommandTestData(initialGame, GrabCommand(initialGame, InventoryItem.FOOD),
+                ValidGrabCommandTestData(initialGame, GrabCommand(InventoryItem.FOOD),
                         PlayerInventory(mapOf(InventoryItem.ARROW to 2, InventoryItem.FOOD to 1)),
                         RoomContent.FOOD, CommandResult(arrayListOf(Perception.GLITTER))),
-                ValidGrabCommandTestData(initialGame, GrabCommand(initialGame, InventoryItem.GOLD),
+                ValidGrabCommandTestData(initialGame, GrabCommand(InventoryItem.GOLD),
                         PlayerInventory(mapOf(InventoryItem.ARROW to 2,
                                 InventoryItem.FOOD to 1, InventoryItem.GOLD to 1)),
                         RoomContent.GOLD, CommandResult(arrayListOf())),
-                ValidGrabCommandTestData(initialGame, GrabCommand(initialGame, InventoryItem.ARROW),
+                ValidGrabCommandTestData(initialGame, GrabCommand(InventoryItem.ARROW),
                         PlayerInventory(mapOf(InventoryItem.ARROW to 3,
                                 InventoryItem.FOOD to 1, InventoryItem.GOLD to 1)),
                         RoomContent.GOLD, CommandResult(arrayListOf()))

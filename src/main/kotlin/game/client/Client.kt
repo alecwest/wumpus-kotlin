@@ -1,5 +1,6 @@
 package game.client
 
+import game.command.Command
 import game.server.Server
 
 /**
@@ -10,5 +11,8 @@ class Client(fileName: String = "", worldSize: Int = 10) {
 
     private fun requestNewSessionId(fileName: String, worldSize: Int): Int {
         return Server.newSession(fileName, worldSize)
+    }
+
+    fun makeMove(command: Command) {
     }
 }

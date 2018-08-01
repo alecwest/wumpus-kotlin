@@ -14,6 +14,7 @@ internal class TurnCommandTest {
     @ParameterizedTest
     @MethodSource("validTurnCommandTestDataProvider")
     fun `execute turn commands`(testData: ValidTurnCommandTestData) {
+        testData.command.setGame(testData.givenGame)
         testData.command.execute()
         assertEquals(testData.expectedDirection, testData.givenGame.getPlayerDirection())
         assertEquals(testData.expectedCommandResult, testData.givenGame.getCommandResult())
@@ -28,10 +29,10 @@ internal class TurnCommandTest {
 
         @JvmStatic
         fun validTurnCommandTestDataProvider() = Stream.of(
-                ValidTurnCommandTestData(initialGame, TurnCommand(initialGame, Direction.EAST), Direction.EAST, CommandResult(arrayListOf(Perception.BREEZE))),
-                ValidTurnCommandTestData(initialGame, TurnCommand(initialGame, Direction.NORTH), Direction.NORTH, CommandResult(arrayListOf(Perception.BREEZE))),
-                ValidTurnCommandTestData(initialGame, TurnCommand(initialGame, Direction.EAST), Direction.EAST, CommandResult(arrayListOf(Perception.BREEZE))),
-                ValidTurnCommandTestData(initialGame, TurnCommand(initialGame, Direction.SOUTH), Direction.SOUTH, CommandResult(arrayListOf(Perception.BREEZE)))
+                ValidTurnCommandTestData(initialGame, TurnCommand(Direction.EAST), Direction.EAST, CommandResult(arrayListOf(Perception.BREEZE))),
+                ValidTurnCommandTestData(initialGame, TurnCommand(Direction.NORTH), Direction.NORTH, CommandResult(arrayListOf(Perception.BREEZE))),
+                ValidTurnCommandTestData(initialGame, TurnCommand(Direction.EAST), Direction.EAST, CommandResult(arrayListOf(Perception.BREEZE))),
+                ValidTurnCommandTestData(initialGame, TurnCommand(Direction.SOUTH), Direction.SOUTH, CommandResult(arrayListOf(Perception.BREEZE)))
         )
     }
 }

@@ -4,8 +4,14 @@ import game.Game
 import game.world.Perception
 import game.world.toPerception
 
-abstract class Command(private val game: Game) {
+abstract class Command {
+    internal lateinit var game: Game
+
     abstract fun execute()
+
+    fun setGame(game: Game) {
+        this.game = game
+    }
 
     fun createPerceptions(): ArrayList<Perception> {
         val location = game.getPlayerLocation()

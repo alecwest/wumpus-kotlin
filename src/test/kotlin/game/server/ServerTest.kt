@@ -41,11 +41,10 @@ class ServerTest {
     }
 
     // TODO add bad move tests
-
     @Test
     fun `check player moves on move command`() {
         assertEquals(initialPoint, Server.getPlayerState(gameId).getLocation())
-        Server.makeMove(MoveCommand(Server.getGame(gameId)))
+        Server.makeMove(gameId, MoveCommand())
         assertEquals(initialPoint.north(), Server.getPlayerState(gameId).getLocation())
         assertEquals(initialDirection, Server.getPlayerState(gameId).getDirection())
         assertEquals(initialInventory, Server.getPlayerState(gameId).getInventory())
@@ -54,7 +53,7 @@ class ServerTest {
     @Test
     fun `check player turns on turn command`() {
         assertEquals(initialDirection, Server.getPlayerState(gameId).getDirection())
-        Server.makeMove(TurnCommand(Server.getGame(gameId), Direction.EAST))
+        Server.makeMove(gameId, TurnCommand(Direction.EAST))
         assertEquals(initialPoint, Server.getPlayerState(gameId).getLocation())
         assertEquals(Direction.EAST, Server.getPlayerState(gameId).getDirection())
         assertEquals(initialInventory, Server.getPlayerState(gameId).getInventory())
@@ -64,7 +63,7 @@ class ServerTest {
     fun `check player grabs on grab command`() {
         Server.getGame(gameId).addToRoom(initialPoint, RoomContent.FOOD)
         assertEquals(initialInventory, Server.getPlayerState(gameId).getInventory())
-        Server.makeMove(GrabCommand(Server.getGame(gameId), InventoryItem.FOOD))
+        Server.makeMove(gameId, GrabCommand(InventoryItem.FOOD))
         assertEquals(initialPoint, Server.getPlayerState(gameId).getLocation())
         assertEquals(initialDirection, Server.getPlayerState(gameId).getDirection())
         assertEquals(initialInventory + mapOf(InventoryItem.FOOD to 1), Server.getPlayerState(gameId).getInventory())
