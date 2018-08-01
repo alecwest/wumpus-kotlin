@@ -1,9 +1,6 @@
-package server.command
+package game.command
 
 import game.Game
-import game.GameState
-import game.player.Player
-import game.player.PlayerState
 import game.world.Perception
 import game.world.RoomContent
 import org.junit.jupiter.api.Assertions.assertEquals

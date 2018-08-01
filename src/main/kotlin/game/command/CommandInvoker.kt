@@ -1,4 +1,4 @@
-package server.command
+package game.command
 
 object CommandInvoker {
     var command: Command? = null

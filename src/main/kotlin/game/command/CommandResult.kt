@@ -1,4 +1,4 @@
-package server.command
+package game.command
 
 import game.world.Perception
 

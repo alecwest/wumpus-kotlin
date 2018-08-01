@@ -1,14 +1,10 @@
-package server.command
+package game.command
 
 import game.Game
-import game.GameState
 import game.player.InventoryItem
-import game.player.Player
 import game.player.PlayerInventory
-import game.player.PlayerState
 import game.world.Perception
 import game.world.RoomContent
-import game.world.World
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.params.ParameterizedTest

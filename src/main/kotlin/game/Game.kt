@@ -3,7 +3,7 @@ package game
 import game.player.InventoryItem
 import game.player.PlayerInventory
 import game.world.RoomContent
-import server.command.CommandResult
+import game.command.CommandResult
 import util.Direction
 import java.awt.Point
 

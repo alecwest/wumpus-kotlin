@@ -8,7 +8,7 @@ import game.world.Room
 import game.world.RoomContent
 import game.world.World
 import org.junit.jupiter.api.Assertions.assertEquals
-import server.Server
+import game.server.Server
 import util.Direction
 import java.awt.Point
 

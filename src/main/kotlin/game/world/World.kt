@@ -3,14 +3,12 @@ package game.world
 import game.world.effect.*
 import java.awt.Point
 import java.util.logging.Logger
-import kotlin.reflect.KClass
-import kotlin.reflect.full.primaryConstructor
 
 /**
  * Notes:
- * Both the server and the client should be able to utilize one world class
+ * Both the game.server and the client should be able to utilize one world class
  *
- * When the game starts, the server creates a world and fills in its contents either via a file
+ * When the game starts, the game.server creates a world and fills in its contents either via a file
  * or procedural generation. The world info will include the following:
  *      Size of the world (one digit, since the world will be square)
  *      List of coordinates for each type of obstacle (no particular order needed), that don't go out of bounds.
@@ -18,7 +16,7 @@ import kotlin.reflect.full.primaryConstructor
  *      Coordinate for player to start at. This point will have no obstacles or content in it.
  *
  * The client, on the other hand, will attempt to establish itself as a player in this new world by contacting the
- * server. Upon success, the client creates a new world for itself with only knowledge of the following:
+ * game.server. Upon success, the client creates a new world for itself with only knowledge of the following:
  *      Size and starting location on map is unknown.
  *          Map fully "exists" but client doesn't know rooms outside of the starting room
  *          For visual effect, rooms that are not yet visited will not be printed. (How?)
@@ -28,11 +26,11 @@ import kotlin.reflect.full.primaryConstructor
  *      The starting space is guaranteed safe
  *
  * The World class simply acts as an aggregate for all known/accumulated knowledge of each room, whether it's for the
- * server or the client. When the player makes a move, they will declare there move to the server, who then queries its
- * own world instance for what exists in the target room. Upon return of this information, the server will pass it on
+ * game.server or the client. When the player makes a move, they will declare there move to the game.server, who then queries its
+ * own world instance for what exists in the target room. Upon return of this information, the game.server will pass it on
  * to the client, who then is able to update their own world instance.
  *
- * Storage of room knowledge should be contained in arraylist of rooms. For the server, this is easy. For the client,
+ * Storage of room knowledge should be contained in arraylist of rooms. For the game.server, this is easy. For the client,
  * there may be a frequent need to update the array based on changes in the known size of the map, thus altering
  * their understanding of coordinates for each room. The client will need to make sure they do not lose or damage what
  * knowledge they already have in doing this.
@@ -48,7 +46,7 @@ import kotlin.reflect.full.primaryConstructor
  *          applied appropriately around/on the coordinates
  *          C. Rooms that are not yet visited are still updated. That way when the client considers that room as an option,
  *          they already know about any effects that have been applied to that room
- *      6. When server is ready, it will begin receiving requests from clients for a connection
+ *      6. When game.server is ready, it will begin receiving requests from clients for a connection
  *      7. Client starts up and initializes a player and connection request
  *      8. Server responds with a session id, world size, and the starting room information (empty room)
  *          A. The agent should not have any information about the coordinates of the point

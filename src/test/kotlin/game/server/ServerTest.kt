@@ -1,11 +1,11 @@
-package server
+package game.server
 
 import game.player.InventoryItem
 import game.player.PlayerInventory
 import game.world.RoomContent
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import server.command.*
+import game.command.*
 import util.*
 import java.awt.Point
 
