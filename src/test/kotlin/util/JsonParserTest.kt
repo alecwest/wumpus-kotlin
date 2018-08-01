@@ -13,7 +13,7 @@ class JsonParserTest {
     fun `test create world from json file`() {
         val jsonParser = JsonParser()
         assertEquals(jsonParser::class, JsonParser::class)
-        val game: Game = JsonParser.buildFromJsonFile("src/test/resources/testFile.json")
+        val game: Game = JsonParser.buildFromJsonFile(Helpers.worldFileName)
         assertTrue(game.hasRoomContent(Point(3, 5), RoomContent.GOLD))
         assertTrue(game.hasRoomContent(Point(3, 5), RoomContent.SUPMUW_EVIL))
         assertTrue(game.hasRoomContent(Point(10, 9), RoomContent.PIT))

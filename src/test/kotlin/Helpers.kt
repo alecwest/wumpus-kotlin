@@ -14,6 +14,8 @@ import java.awt.Point
 
 class Helpers {
     companion object {
+        const val worldFileName = "src/test/resources/testFile.json"
+
         // TODO all of these create functions shouldn't just be test helpers
         fun createRoom(roomContent: ArrayList<RoomContent>
                        = arrayListOf(RoomContent.BREEZE, RoomContent.STENCH)): Room {
@@ -46,7 +48,7 @@ class Helpers {
             return Game(GameState(active, world, player))
         }
 
-        fun createServerSession(fileName: String = "src/test/resources/testFile.json",
+        fun createServerSession(fileName: String = Helpers.worldFileName,
                                 worldSize: Int = 10): Int {
             return Server.newSession(fileName = fileName, worldSize = worldSize)
         }

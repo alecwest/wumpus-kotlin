@@ -8,8 +8,6 @@ import org.junit.jupiter.api.Test
 import util.Direction
 
 internal class ClientTest {
-    private val worldFileName = "src/test/resources/testFile.json"
-
     @Test
     fun `initialize Client session`() {
         assertEquals(0, Client().sessionId)
@@ -25,7 +23,7 @@ internal class ClientTest {
 
     @Test
     fun `get move result`() {
-        val client = Client(worldFileName)
+        val client = Client(Helpers.worldFileName)
         val moveCommand = MoveCommand()
         moveCommand.setGame(Server.getGame(client.sessionId))
         moveCommand.execute()
