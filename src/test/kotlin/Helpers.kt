@@ -46,9 +46,9 @@ class Helpers {
             return Game(GameState(active, world, player))
         }
 
-        fun createServer(fileName: String = "src/test/resources/testFile.json",
-                         worldSize: Int = 10): Server {
-            return Server(fileName = fileName, worldSize = worldSize)
+        fun createServerSession(fileName: String = "src/test/resources/testFile.json",
+                                worldSize: Int = 10): Int {
+            return Server.newSession(fileName = fileName, worldSize = worldSize)
         }
 
         fun assertContains(content: String, subString: String, numExpected: Int) {

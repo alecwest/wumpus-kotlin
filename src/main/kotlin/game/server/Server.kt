@@ -26,25 +26,37 @@ import util.JsonParser.Companion.buildFromJsonFile
  * The game.server acts as an interface to the game for the client, allowing them to
  * make moves and learn the results of that move.
  */
-class Server(private val fileName: String = "", private val worldSize: Int = 10) {
-    private val game: Game = if (fileName.isBlank()) {
-        Game(GameState(world = World(size = worldSize)))
-    } else {
-        buildFromJsonFile(fileName)
+// (private val fileName: String = "", private val worldSize: Int = 10)
+object Server {
+    private val sessions: HashMap<Int, Game> = hashMapOf()
+
+    fun newSession(fileName: String = "", worldSize: Int = 10): Int {
+        val id = sessions.size
+        sessions[id] = createGame(fileName, worldSize)
+        return id
     }
 
-    internal fun getGame() = game
+    private fun createGame(fileName: String, worldSize: Int): Game {
+        return if (fileName.isBlank()) {
+            Game(GameState(world = World(size = worldSize)))
+        } else {
+            buildFromJsonFile(fileName)
+        }
+    }
+
+    internal fun getGame(id: Int) = sessions.getValue(id)
 
     fun makeMove(command: Command) {
         CommandInvoker.command = command
         CommandInvoker.performAction()
     }
 
-    fun getPlayerState(): Player {
-        return game.getPlayer()
+    fun getPlayerState(id: Int): Player {
+        return sessions.getValue(id).getPlayer()
     }
 
-    fun getRoomContent(): ArrayList<RoomContent> {
+    fun getRoomContent(id: Int): ArrayList<RoomContent> {
+        val game = sessions.getValue(id)
         return game.getRoomContent(game.getPlayerLocation())
     }
 }
