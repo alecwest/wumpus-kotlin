@@ -14,5 +14,6 @@ class Client(fileName: String = "", worldSize: Int = 10) {
     }
 
     fun makeMove(command: Command) {
+        Server.makeMove(sessionId, command)
     }
 }
