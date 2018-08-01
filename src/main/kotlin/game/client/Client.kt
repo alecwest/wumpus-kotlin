@@ -2,7 +2,9 @@ package game.client
 
 import game.command.Command
 import game.command.CommandResult
+import game.player.PlayerState
 import game.server.Server
+import game.world.RoomContent
 
 /**
  * Client acts as the interface for the agent (human or AI) to communicate with the Server
@@ -20,5 +22,13 @@ class Client(fileName: String = "", worldSize: Int = 10) {
 
     fun getMoveResult(): CommandResult? {
         return Server.getCommandResult(sessionId)
+    }
+
+    fun getPlayerState(): PlayerState {
+        return Server.getPlayerState(sessionId)
+    }
+
+    fun getRoomContent(): ArrayList<RoomContent> {
+        return Server.getRoomContent(sessionId)
     }
 }

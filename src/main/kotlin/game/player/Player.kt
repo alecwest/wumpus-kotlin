@@ -11,8 +11,9 @@ import java.util.logging.Logger
 data class Player(private var playerState: PlayerState = PlayerState()) {
     private val log = Logger.getLogger(Player::class.qualifiedName)
     fun isAlive() = playerState.isAlive()
+    fun getPlayerState() = playerState
     fun getLocation() = playerState.getLocation()
-    fun getDirection() = playerState.getFacing()
+    fun getDirection() = playerState.getDirection()
     fun getInventory() = playerState.getInventory()
     fun hasItem(item: InventoryItem) = getNumberOf(item) > 0
     fun getNumberOf(item: InventoryItem) = getInventory().getOrDefault(item, 0)

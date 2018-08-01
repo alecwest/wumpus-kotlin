@@ -49,6 +49,7 @@ data class Game(private var gameState: GameState = GameState()) {
     }
 
     fun getPlayer() = gameState.getPlayer()
+    fun getPlayerState() = gameState.getPlayerState()
     fun isPlayerAlive() = gameState.isPlayerAlive()
     fun getPlayerLocation() = gameState.getPlayerLocation()
     fun getPlayerDirection() = gameState.getPlayerDirection()

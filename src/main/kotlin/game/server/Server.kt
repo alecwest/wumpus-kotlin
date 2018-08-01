@@ -2,12 +2,12 @@ package game.server
 
 import game.Game
 import game.GameState
-import game.player.Player
 import game.world.RoomContent
 import game.world.World
 import game.command.Command
 import game.command.CommandInvoker
 import game.command.CommandResult
+import game.player.PlayerState
 import util.JsonParser.Companion.buildFromJsonFile
 
 /**
@@ -27,7 +27,6 @@ import util.JsonParser.Companion.buildFromJsonFile
  * The game.server acts as an interface to the game for the client, allowing them to
  * make moves and learn the results of that move.
  */
-// (private val fileName: String = "", private val worldSize: Int = 10)
 object Server {
     private val sessions: HashMap<Int, Game> = hashMapOf()
 
@@ -57,8 +56,8 @@ object Server {
         return getGame(id).getCommandResult()
     }
 
-    fun getPlayerState(id: Int): Player {
-        return sessions.getValue(id).getPlayer()
+    fun getPlayerState(id: Int): PlayerState {
+        return sessions.getValue(id).getPlayerState()
     }
 
     fun getRoomContent(id: Int): ArrayList<RoomContent> {

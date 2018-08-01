@@ -1,6 +1,7 @@
 package game.client
 
 import game.command.*
+import game.player.InventoryItem
 import game.server.Server
 import game.world.RoomContent
 import org.junit.jupiter.api.Assertions.*
@@ -10,8 +11,8 @@ import util.Direction
 internal class ClientTest {
     @Test
     fun `initialize Client session`() {
-        assertEquals(0, Client().sessionId)
-        assertEquals(1, Client().sessionId)
+        val client = Client()
+        assertEquals(client.sessionId + 1, Client().sessionId)
     }
 
     @Test
@@ -29,5 +30,21 @@ internal class ClientTest {
         moveCommand.execute()
 
         assertEquals(arrayListOf(RoomContent.BREEZE).toString(), client.getMoveResult()?.getPerceptions().toString())
+    }
+
+    @Test
+    fun `get player state`() {
+        val client = Client(Helpers.worldFileName)
+        assertEquals(mapOf(InventoryItem.ARROW to 2, InventoryItem.FOOD to 1), client.getPlayerState().getInventory())
+    }
+
+    @Test
+    fun `get room content`() {
+        val client = Client(Helpers.worldFileName)
+        val moveCommand = MoveCommand()
+        moveCommand.setGame(Server.getGame(client.sessionId))
+        moveCommand.execute()
+
+        assertEquals(arrayListOf(RoomContent.BREEZE), client.getRoomContent())
     }
 }

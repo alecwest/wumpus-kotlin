@@ -147,6 +147,12 @@ class GameTest {
     }
 
     @Test
+    fun `get player state`() {
+        val game = createGame(player = player)
+        assertEquals(player.getPlayerState(), game.getPlayerState())
+    }
+
+    @Test
     fun `check player is alive`() {
         val player = createPlayer(alive = false)
         assertTrue(game.isPlayerAlive())

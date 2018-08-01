@@ -7,6 +7,7 @@ import util.Direction
 import java.awt.Point
 import java.util.stream.Stream
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 
 class PlayerTest {
     private val player = Player()
@@ -89,6 +90,14 @@ class PlayerTest {
     fun `check player dead`() {
         player.setAlive(false)
         assertEquals(false, player.isAlive())
+    }
+
+    @Test
+    fun `get player state`() {
+        val playerState = PlayerState(false)
+        val player = Player(playerState)
+        assertEquals(playerState, player.getPlayerState())
+        assertFalse(player.getPlayerState().isAlive())
     }
 
     @Test

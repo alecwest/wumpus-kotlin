@@ -11,10 +11,10 @@ data class PlayerState(private val alive: Boolean = true,
                                mapOf(InventoryItem.ARROW to 1))) {
     fun isAlive() = alive
     fun getLocation() = location
-    fun getFacing() = facing
+    fun getDirection() = facing
     fun getInventory() = inventory.getInventory()
 
-    fun copyThis(alive: Boolean = this.alive,
+    internal fun copyThis(alive: Boolean = this.alive,
                  location: Point = this.location.copyThis(),
                  facing: Direction = this.facing,
                  inventory: PlayerInventory = this.inventory.copyThis())

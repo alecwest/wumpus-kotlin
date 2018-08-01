@@ -28,6 +28,7 @@ data class GameState(private val active: Boolean = true,
     fun getAmountOfContentInRoom(point: Point) = world.getAmountOfContentInRoom(point)
 
     fun getPlayer() = player
+    fun getPlayerState() = player.getPlayerState()
     fun isPlayerAlive() = player.isAlive()
     fun getPlayerLocation() = player.getLocation()
     fun getPlayerDirection() = player.getDirection()
