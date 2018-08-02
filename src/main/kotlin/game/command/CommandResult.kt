@@ -6,7 +6,7 @@ import game.world.RoomContent
 
 data class CommandResult(private val perceptions: ArrayList<Perception> = arrayListOf(),
                          private val playerState: PlayerState = PlayerState(),
-                         private val roomContent: ArrayList<RoomContent>) {
+                         private val roomContent: ArrayList<RoomContent> = arrayListOf()) {
     fun getPerceptions() = perceptions
     fun getPlayerState() = playerState
     fun getRoomContent() = roomContent

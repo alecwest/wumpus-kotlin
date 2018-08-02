@@ -15,7 +15,8 @@ class TurnCommand(private val targetDirection: Direction): Command() {
         }
         command.setGame(this.game)
         command.execute()
-        game.setCommandResult(CommandResult(createPerceptions()))
+        game.setCommandResult(CommandResult(createPerceptions(), game.getPlayerState(),
+                game.getRoomContent()))
     }
 }
 
