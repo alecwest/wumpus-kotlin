@@ -1,7 +1,9 @@
 package game.command
 
 import game.Game
+import game.player.PlayerState
 import game.world.Perception
+import game.world.RoomContent
 import game.world.toPerception
 
 abstract class Command {
@@ -11,6 +13,12 @@ abstract class Command {
 
     fun setGame(game: Game) {
         this.game = game
+    }
+
+    fun createCommandResult(perceptions: ArrayList<Perception> = createPerceptions(),
+                            playerState: PlayerState = game.getPlayerState(),
+                            roomContent: ArrayList<RoomContent> = game.getRoomContent()): CommandResult {
+        return CommandResult(perceptions, playerState, roomContent)
     }
 
     fun createPerceptions(): ArrayList<Perception> {
