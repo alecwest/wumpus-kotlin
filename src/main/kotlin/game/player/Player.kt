@@ -6,7 +6,7 @@ import java.util.logging.Logger
 
 /**
  * Player keeps track of all player attributes and is to be accessed through the game class
- * only by the game.server.
+ * only by the server.
  */
 data class Player(private var playerState: PlayerState = PlayerState()) {
     private val log = Logger.getLogger(Player::class.qualifiedName)
