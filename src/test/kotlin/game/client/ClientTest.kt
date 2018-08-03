@@ -31,20 +31,4 @@ internal class ClientTest {
 
         assertEquals(arrayListOf(RoomContent.BREEZE).toString(), client.getMoveResult()?.getPerceptions().toString())
     }
-
-    @Test
-    fun `get player state`() {
-        val client = Client(Helpers.worldFileName)
-        assertEquals(mapOf(InventoryItem.ARROW to 2, InventoryItem.FOOD to 1), client.getPlayerState().getInventory())
-    }
-
-    @Test
-    fun `get room content`() {
-        val client = Client(Helpers.worldFileName)
-        val moveCommand = MoveCommand()
-        moveCommand.setGame(Server.getGame(client.sessionId))
-        moveCommand.execute()
-
-        assertEquals(arrayListOf(RoomContent.BREEZE), client.getRoomContent())
-    }
 }
