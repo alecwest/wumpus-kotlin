@@ -43,10 +43,10 @@ internal class ShootCommandTest {
                                 initialGame.getPlayerState().copyThis(inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 1))), initialGame.getRoomContent())),
                 ValidShootCommandTestData(initialGame, ShootCommand(),
                         CommandResult(arrayListOf(),
-                                initialGame.getPlayerState().copyThis(inventory = PlayerInventory(mapOf())), initialGame.getRoomContent())),
+                                initialGame.getPlayerState().copyThis(inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 0))), initialGame.getRoomContent())),
                 ValidShootCommandTestData(initialGame, ShootCommand(),
                         CommandResult(arrayListOf(),
-                                initialGame.getPlayerState().copyThis(inventory = PlayerInventory(mapOf())), initialGame.getRoomContent()))
+                                initialGame.getPlayerState().copyThis(inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 0))), initialGame.getRoomContent()))
         )
     }
 }
