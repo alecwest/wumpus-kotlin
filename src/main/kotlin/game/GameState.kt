@@ -1,5 +1,6 @@
 package game
 
+import game.player.InventoryItem
 import game.player.Player
 import game.world.RoomContent
 import game.world.World
@@ -33,6 +34,7 @@ data class GameState(private val active: Boolean = true,
     fun getPlayerLocation() = player.getLocation()
     fun getPlayerDirection() = player.getDirection()
     fun getPlayerInventory() = player.getInventory()
+    fun playerHasItem(inventoryItem: InventoryItem) = player.hasItem(inventoryItem)
 
     fun copyThis(active: Boolean = this.active,
                  world: World = this.world,

@@ -179,6 +179,12 @@ class GameTest {
     }
 
     @Test
+    fun `player has item`() {
+        assertTrue(game.playerHasItem(InventoryItem.ARROW))
+        assertFalse(game.playerHasItem(InventoryItem.FOOD))
+    }
+
+    @Test
     fun `add to player inventory`() {
         game.addToPlayerInventory(InventoryItem.FOOD)
         assertEquals(1, game.getPlayerInventory().getValue(InventoryItem.FOOD))

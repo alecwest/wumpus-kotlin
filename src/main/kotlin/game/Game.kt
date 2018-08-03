@@ -57,6 +57,7 @@ data class Game(private var gameState: GameState = GameState()) {
     fun getPlayerLocation() = gameState.getPlayerLocation()
     fun getPlayerDirection() = gameState.getPlayerDirection()
     fun getPlayerInventory() = gameState.getPlayerInventory()
+    fun playerHasItem(inventoryItem: InventoryItem) = gameState.playerHasItem(inventoryItem)
 
     fun addToPlayerInventory(inventoryItem: InventoryItem) {
         val newPlayer = gameState.getPlayer()
