@@ -16,7 +16,6 @@ class MoveCommand: Command() {
             else -> perceptionList.add(Perception.WALL_BUMP)
         }
 
-        perceptionList.addAll(createPerceptions())
         game.setCommandResult(createCommandResult(perceptionList))
     }
 
