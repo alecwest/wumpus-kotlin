@@ -54,7 +54,7 @@ class WorldTest {
         fun validRemoveRoomContentProvider() = Stream.of(
                 ValidRoomContentTestData(arrayListOf(RoomContent.PIT), arrayListOf(RoomContent.PIT), arrayListOf()),
                 ValidRoomContentTestData(arrayListOf(RoomContent.GOLD, RoomContent.GLITTER), arrayListOf(RoomContent.GOLD), arrayListOf()),
-                ValidRoomContentTestData(arrayListOf(RoomContent.ARROW, RoomContent.WUMPUS), arrayListOf(RoomContent.ARROW), arrayListOf(RoomContent.WUMPUS))
+                ValidRoomContentTestData(arrayListOf(RoomContent.ARROW, Destructable.WUMPUS), arrayListOf(RoomContent.ARROW), arrayListOf(Destructable.WUMPUS))
         )
 
         @JvmStatic
@@ -63,11 +63,11 @@ class WorldTest {
                         arrayListOf(Point(4, 4), Point(4, 4).northEast(), Point(4, 4).northEast().north(), Point(4, 4).south().south()),
                         Point(4, 4),
                         arrayListOf(Point(4, 4).north(), Point(4, 4).east(), Point(4, 4).south(), Point(4, 4).northEast())),
-                ValidSimilarRoomContentWithEffectsTestData(RoomContent.WUMPUS, RoomContent.STENCH,
+                ValidSimilarRoomContentWithEffectsTestData(Destructable.WUMPUS, RoomContent.STENCH,
                         arrayListOf(Point(4, 4), Point(4, 4).northEast(), Point(4, 4).south().south()),
                         Point(4, 4),
                         arrayListOf(Point(4, 4).north(), Point(4, 4).east(), Point(4, 4).south())),
-                ValidSimilarRoomContentWithEffectsTestData(RoomContent.SUPMUW, RoomContent.MOO,
+                ValidSimilarRoomContentWithEffectsTestData(Destructable.SUPMUW, RoomContent.MOO,
                         arrayListOf(Point(4, 4), Point(4, 4).northEast(), Point(4, 4).south().south()),
                         Point(4, 4),
                         arrayListOf(Point(4, 4), Point(4, 4).north(), Point(4, 4).east(),
@@ -91,7 +91,7 @@ class WorldTest {
     @Test
     fun `add content to out-of-bounds room`() {
         world.addRoomContent(Point(-1, 1), RoomContent.STENCH)
-        world.addRoomContent(Point(2, -4), RoomContent.SUPMUW)
+        world.addRoomContent(Point(2, -4), Destructable.SUPMUW)
     }
 
     @ParameterizedTest
@@ -126,7 +126,7 @@ class WorldTest {
     @Test
     fun `remove content from out-of-bounds room`() {
         world.removeRoomContent(Point(-1, 1), RoomContent.STENCH)
-        world.removeRoomContent(Point(2, -4), RoomContent.SUPMUW)
+        world.removeRoomContent(Point(2, -4), Destructable.SUPMUW)
     }
 
     @Test
@@ -141,7 +141,7 @@ class WorldTest {
     @Test
     fun `check out-of-bounds room for content`() {
         assertFalse(world.hasRoomContent(Point(-1, 1), RoomContent.STENCH))
-        assertFalse(world.hasRoomContent(Point(2, -4), RoomContent.SUPMUW))
+        assertFalse(world.hasRoomContent(Point(2, -4), Destructable.SUPMUW))
     }
 
     @Test
@@ -199,9 +199,9 @@ class WorldTest {
 
     @Test
     fun `check for room content on world map edge`() {
-        world.addRoomContent(Point(0, 0), RoomContent.SUPMUW_EVIL)
+        world.addRoomContent(Point(0, 0), Destructable.SUPMUW_EVIL)
         val worldMap = world.getWorldMap()
-        val target1 = RoomContent.SUPMUW_EVIL.toCharRepresentation()
+        val target1 = Destructable.SUPMUW_EVIL.toCharRepresentation()
         val target2 = RoomContent.MOO.toCharRepresentation()
         assertContains(worldMap, target1, 1)
         assertContains(worldMap, target2, 3)
@@ -209,9 +209,9 @@ class WorldTest {
 
     @Test
     fun `check for room content when added out of bounds`() {
-        world.addRoomContent(Point(-1,0), RoomContent.WUMPUS)
+        world.addRoomContent(Point(-1,0), Destructable.WUMPUS)
         val worldMap = world.getWorldMap()
-        val target1 = RoomContent.WUMPUS.toCharRepresentation()
+        val target1 = Destructable.WUMPUS.toCharRepresentation()
         val target2 = RoomContent.STENCH.toCharRepresentation()
         assertContains(worldMap, target1, 0)
         assertContains(worldMap, target2, 0)

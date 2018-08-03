@@ -1,26 +1,40 @@
 package game.world
 
+import game.player.InventoryItem
 import game.world.effect.*
-import kotlin.reflect.KClass
 
 /**
- * Changes:
- *      All AGENT types are removed in favor of a data structure containing the client's position, direction faced,
- *      and inventory which will be used to render the agent appropriately on the map.
+ * RoomContent is a base class for all permanent/semi-permanent objects in the world
  */
-enum class RoomContent {
-    ARROW,
-    BLOCKADE,
-    BREEZE,
-    FOOD,
-    GLITTER,
-    GOLD,
-    MOO,
-    PIT,
-    STENCH,
-    SUPMUW_EVIL,
-    SUPMUW,
-    WUMPUS
+sealed class RoomContent {
+    object ARROW : RoomContent()
+    object BLOCKADE : RoomContent()
+    object BREEZE : RoomContent()
+    object FOOD : RoomContent()
+    object GLITTER : RoomContent()
+    object GOLD : RoomContent()
+    object MOO : RoomContent()
+    object PIT : RoomContent()
+    object STENCH : RoomContent()
+}
+
+/**
+ * Destructable objects are RoomContent that have weaknesses
+ */
+sealed class Destructable(private val weaknesses: Set<InventoryItem>): RoomContent() {
+    object SUPMUW_EVIL : Destructable(setOf(InventoryItem.ARROW))
+    object SUPMUW : Destructable(setOf(InventoryItem.ARROW))
+    object WUMPUS : Destructable(setOf(InventoryItem.ARROW))
+
+    fun hasWeakness(inventoryItem: InventoryItem) = weaknesses.contains(inventoryItem)
+}
+
+fun roomContentValues(): List<RoomContent> {
+    return RoomContent::class.nestedClasses.map { it.objectInstance as RoomContent } + destructableValues()
+}
+
+fun destructableValues(): List<RoomContent> {
+    return Destructable::class.nestedClasses.map { it.objectInstance as RoomContent }
 }
 
 /**
@@ -45,11 +59,11 @@ fun RoomContent.associatedEffects(): ArrayList<WorldEffect> {
         RoomContent.MOO -> arrayListOf()
         RoomContent.PIT -> arrayListOf(AdjacentEffect(RoomContent.BREEZE))
         RoomContent.STENCH -> arrayListOf()
-        RoomContent.SUPMUW_EVIL -> arrayListOf(AdjacentEffect(RoomContent.MOO),
+        Destructable.SUPMUW_EVIL -> arrayListOf(AdjacentEffect(RoomContent.MOO),
                 DiagonalEffect(RoomContent.MOO))
-        RoomContent.SUPMUW -> arrayListOf(AdjacentEffect(RoomContent.MOO),
+        Destructable.SUPMUW -> arrayListOf(AdjacentEffect(RoomContent.MOO),
                 DiagonalEffect(RoomContent.MOO), HereEffect(RoomContent.FOOD))
-        RoomContent.WUMPUS -> arrayListOf(AdjacentEffect(RoomContent.STENCH))
+        Destructable.WUMPUS -> arrayListOf(AdjacentEffect(RoomContent.STENCH))
     }
 }
 
@@ -64,9 +78,9 @@ fun RoomContent.toCharRepresentation(): String {
         RoomContent.MOO -> "!"
         RoomContent.PIT -> "P"
         RoomContent.STENCH -> "~"
-        RoomContent.SUPMUW_EVIL -> "E"
-        RoomContent.SUPMUW -> "S"
-        RoomContent.WUMPUS -> "W"
+        Destructable.SUPMUW_EVIL -> "E"
+        Destructable.SUPMUW -> "S"
+        Destructable.WUMPUS -> "W"
     }
 }
 
@@ -81,9 +95,9 @@ fun String.toRoomContent(): RoomContent {
         RoomContent.MOO.toCharRepresentation() -> RoomContent.MOO
         RoomContent.PIT.toCharRepresentation() -> RoomContent.PIT
         RoomContent.STENCH.toCharRepresentation() -> RoomContent.STENCH
-        RoomContent.SUPMUW_EVIL.toCharRepresentation() -> RoomContent.SUPMUW_EVIL
-        RoomContent.SUPMUW.toCharRepresentation() -> RoomContent.SUPMUW
-        RoomContent.WUMPUS.toCharRepresentation() -> RoomContent.WUMPUS
+        Destructable.SUPMUW_EVIL.toCharRepresentation() -> Destructable.SUPMUW_EVIL
+        Destructable.SUPMUW.toCharRepresentation() -> Destructable.SUPMUW
+        Destructable.WUMPUS.toCharRepresentation() -> Destructable.WUMPUS
         else -> throw Exception("Cannot convert %s to a RoomContent value".format(this))
     }
 }

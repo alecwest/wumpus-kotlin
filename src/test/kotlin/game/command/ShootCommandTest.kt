@@ -3,6 +3,7 @@ package game.command
 import game.Game
 import game.player.InventoryItem
 import game.player.PlayerInventory
+import game.world.Destructable
 import game.world.Perception
 import game.world.RoomContent
 import org.junit.jupiter.api.Assertions.*
@@ -25,9 +26,9 @@ internal class ShootCommandTest {
                 InventoryItem.ARROW to 4
         ))
         private val initialWorld = Helpers.createWorld(roomContent = mapOf(
-                Point(0, 9) to arrayListOf(RoomContent.SUPMUW_EVIL),
-                Point(0, 8) to arrayListOf(RoomContent.WUMPUS),
-                Point(0, 3) to arrayListOf(RoomContent.SUPMUW)))
+                Point(0, 9) to arrayListOf(Destructable.SUPMUW_EVIL),
+                Point(0, 8) to arrayListOf(Destructable.WUMPUS),
+                Point(0, 3) to arrayListOf(Destructable.SUPMUW)))
         private val initialGame = Helpers.createGame(player = initialPlayer, world = initialWorld)
 
         @JvmStatic

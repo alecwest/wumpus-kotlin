@@ -7,7 +7,7 @@ import kotlin.test.assertFails
 internal class RoomContentTest {
     @Test
     fun `convert between string and room content`() {
-        for (roomContent in RoomContent.values()) {
+        for (roomContent in roomContentValues()) {
             assertEquals(roomContent, roomContent.toCharRepresentation().toRoomContent())
         }
     }

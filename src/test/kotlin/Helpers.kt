@@ -23,7 +23,7 @@ class Helpers {
         }
 
         fun createWorld(size: Int = 10,
-                        roomContent: Map<Point, ArrayList<RoomContent>> =
+                        roomContent: Map<Point, ArrayList<out RoomContent>> =
                                 mapOf(Point(2, 2) to arrayListOf(RoomContent.PIT))): World {
             val world = World(size)
             for (point in roomContent.keys) {

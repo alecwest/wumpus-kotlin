@@ -5,6 +5,7 @@ import game.player.InventoryItem
 import org.junit.jupiter.api.Test
 import java.awt.Point
 import game.world.RoomContent
+import game.world.Destructable
 import kotlin.test.assertTrue
 import kotlin.test.assertEquals
 
@@ -15,7 +16,7 @@ class JsonParserTest {
         assertEquals(jsonParser::class, JsonParser::class)
         val game: Game = JsonParser.buildFromJsonFile(Helpers.worldFileName)
         assertTrue(game.hasRoomContent(Point(3, 5), RoomContent.GOLD))
-        assertTrue(game.hasRoomContent(Point(3, 5), RoomContent.SUPMUW_EVIL))
+        assertTrue(game.hasRoomContent(Point(3, 5), Destructable.SUPMUW_EVIL))
         assertTrue(game.hasRoomContent(Point(10, 9), RoomContent.PIT))
         assertEquals(game.getPlayerDirection(), Direction.EAST)
         assertEquals(game.getPlayerLocation(), Point(3, 7))
