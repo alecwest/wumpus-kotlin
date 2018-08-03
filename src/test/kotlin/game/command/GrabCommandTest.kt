@@ -3,6 +3,7 @@ package game.command
 import game.Game
 import game.player.InventoryItem
 import game.player.PlayerInventory
+import game.player.PlayerState
 import game.server.Server
 import game.world.Perception
 import game.world.RoomContent
@@ -22,7 +23,7 @@ class GrabCommandTest {
         assertEquals(testData.command.game, testData.givenGame)
 
         testData.command.execute()
-        assertEquals(testData.expectedInventory.getInventory(),
+        assertEquals(testData.expectedCommandResult.getPlayerState().getInventory(),
                 testData.givenGame.getPlayerInventory())
         assertEquals(testData.expectedCommandResult, testData.givenGame.getCommandResult())
 
@@ -46,19 +47,25 @@ class GrabCommandTest {
         @JvmStatic
         fun validGrabCommandTestDataProvider() = Stream.of(
                 ValidGrabCommandTestData(initialGame, GrabCommand(InventoryItem.FOOD),
-                        PlayerInventory(mapOf(InventoryItem.ARROW to 2, InventoryItem.FOOD to 1)),
-                        RoomContent.FOOD, CommandResult(arrayListOf(Perception.GLITTER))),
+                        RoomContent.FOOD, CommandResult(arrayListOf(Perception.GLITTER),
+                        PlayerState(location = initialGame.getPlayerLocation(), facing = initialGame.getPlayerDirection(),
+                                inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 2, InventoryItem.FOOD to 1))),
+                        initialGame.getRoomContent())),
                 ValidGrabCommandTestData(initialGame, GrabCommand(InventoryItem.FOOD),
-                        PlayerInventory(mapOf(InventoryItem.ARROW to 2, InventoryItem.FOOD to 1)),
-                        RoomContent.FOOD, CommandResult(arrayListOf(Perception.GLITTER))),
+                        RoomContent.FOOD, CommandResult(arrayListOf(Perception.GLITTER),
+                        PlayerState(location = initialGame.getPlayerLocation(), facing = initialGame.getPlayerDirection(),
+                                inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 2, InventoryItem.FOOD to 1))),
+                        initialGame.getRoomContent())),
                 ValidGrabCommandTestData(initialGame, GrabCommand(InventoryItem.GOLD),
-                        PlayerInventory(mapOf(InventoryItem.ARROW to 2,
-                                InventoryItem.FOOD to 1, InventoryItem.GOLD to 1)),
-                        RoomContent.GOLD, CommandResult(arrayListOf())),
+                        RoomContent.FOOD, CommandResult(arrayListOf(),
+                        PlayerState(location = initialGame.getPlayerLocation(), facing = initialGame.getPlayerDirection(),
+                                inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 2, InventoryItem.FOOD to 1,
+                                        InventoryItem.GOLD to 1))), initialGame.getRoomContent())),
                 ValidGrabCommandTestData(initialGame, GrabCommand(InventoryItem.ARROW),
-                        PlayerInventory(mapOf(InventoryItem.ARROW to 3,
-                                InventoryItem.FOOD to 1, InventoryItem.GOLD to 1)),
-                        RoomContent.GOLD, CommandResult(arrayListOf()))
+                        RoomContent.FOOD, CommandResult(arrayListOf(),
+                        PlayerState(location = initialGame.getPlayerLocation(), facing = initialGame.getPlayerDirection(),
+                                inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 3, InventoryItem.FOOD to 1,
+                                        InventoryItem.GOLD to 1))), initialGame.getRoomContent()))
         )
     }
 }
@@ -66,7 +73,6 @@ class GrabCommandTest {
 data class ValidGrabCommandTestData (
     val givenGame: Game,
     val command: Command,
-    val expectedInventory: PlayerInventory,
     val lostWorldContent: RoomContent,
     val expectedCommandResult: CommandResult
 )
