@@ -21,7 +21,7 @@ internal class MoveCommandTest {
         assertEquals(testData.expectedStartingDirection, testData.givenGame.getPlayerDirection())
         testData.command.setGame(testData.givenGame)
         testData.command.execute()
-        assertEquals(testData.expectedPoint, testData.givenGame.getPlayerLocation())
+        assertEquals(testData.expectedCommandResult.getPlayerState().getLocation(), testData.givenGame.getPlayerLocation())
         turnRight(testData.givenGame)
         // Verify the rest of the player state is maintained
         assertEquals(mapOf(InventoryItem.ARROW to 2), testData.givenGame.getPlayerInventory())
@@ -34,26 +34,40 @@ internal class MoveCommandTest {
     }
 
     companion object {
-        private val initialGame = Helpers.createGame(player = Helpers.createPlayer(
-                location = Point(2, 2), facing = Direction.SOUTH, inventoryContent = mapOf(InventoryItem.ARROW to 2)))
-        private val playerInCornerGame = Helpers.createGame(player = Helpers.createPlayer(
-                location = Point(0, 0), facing = Direction.SOUTH, inventoryContent = mapOf(InventoryItem.ARROW to 2)),
-                world = Helpers.createWorld(
-                        roomContent = mapOf(
-                                Point(0, 1) to arrayListOf(RoomContent.BLOCKADE),
-                                Point(1, 0) to arrayListOf(RoomContent.GOLD))))
+        private val initialPlayer = Helpers.createPlayer(
+                location = Point(2, 2), facing = Direction.SOUTH, inventoryContent = mapOf(InventoryItem.ARROW to 2))
+        private val initialGame = Helpers.createGame(player = initialPlayer)
+        private val initialPlayerInCorner = Helpers.createPlayer(
+                location = Point(0, 0), facing = Direction.SOUTH, inventoryContent = mapOf(InventoryItem.ARROW to 2))
+        private val initialPlayerInCornerWorld = Helpers.createWorld(
+                roomContent = mapOf(
+                        Point(0, 1) to arrayListOf(RoomContent.BLOCKADE),
+                        Point(1, 0) to arrayListOf(RoomContent.GOLD)))
+        private val playerInCornerGame = Helpers.createGame(player = initialPlayerInCorner, world = initialPlayerInCornerWorld)
 
         // TODO initialGame is not initialized at the start of every test, so these must run in succession to pass
         @JvmStatic
         fun validMoveCommandTestDataProvider() = Stream.of(
-            ValidMoveCommandTestData(initialGame, Direction.SOUTH, MoveCommand(), Point(2, 1), CommandResult()),
-            ValidMoveCommandTestData(initialGame, Direction.WEST, MoveCommand(), Point(1, 1), CommandResult()),
-            ValidMoveCommandTestData(initialGame, Direction.NORTH, MoveCommand(), Point(1, 2), CommandResult()),
-            ValidMoveCommandTestData(initialGame, Direction.EAST, MoveCommand(), Point(2, 2), CommandResult()),
-            ValidMoveCommandTestData(playerInCornerGame, Direction.SOUTH, MoveCommand(), Point(0, 0), CommandResult(arrayListOf(Perception.WALL_BUMP))),
-            ValidMoveCommandTestData(playerInCornerGame, Direction.WEST, MoveCommand(), Point(0, 0), CommandResult(arrayListOf(Perception.WALL_BUMP))),
-            ValidMoveCommandTestData(playerInCornerGame, Direction.NORTH, MoveCommand(), Point(0, 0), CommandResult(arrayListOf(Perception.BLOCKADE_BUMP))),
-            ValidMoveCommandTestData(playerInCornerGame, Direction.EAST, MoveCommand(), Point(1, 0), CommandResult(arrayListOf(Perception.GLITTER)))
+            ValidMoveCommandTestData(initialGame, Direction.SOUTH, MoveCommand(),
+                    CommandResult(playerState = initialPlayer.getPlayerState().copyThis(location = Point(2, 1)))),
+            ValidMoveCommandTestData(initialGame, Direction.WEST, MoveCommand(),
+                    CommandResult(playerState = initialPlayer.getPlayerState().copyThis(location = Point(1, 1)))),
+            ValidMoveCommandTestData(initialGame, Direction.NORTH, MoveCommand(),
+                    CommandResult(playerState = initialPlayer.getPlayerState().copyThis(location = Point(1, 2)))),
+            ValidMoveCommandTestData(initialGame, Direction.EAST, MoveCommand(),
+                    CommandResult(playerState = initialPlayer.getPlayerState().copyThis(location = Point(2, 2)))),
+            ValidMoveCommandTestData(playerInCornerGame, Direction.SOUTH, MoveCommand(),
+                    CommandResult(arrayListOf(Perception.WALL_BUMP), initialPlayer.getPlayerState().copyThis(
+                            location = Point(0, 0)))),
+            ValidMoveCommandTestData(playerInCornerGame, Direction.WEST, MoveCommand(),
+                    CommandResult(arrayListOf(Perception.WALL_BUMP), initialPlayer.getPlayerState().copyThis(
+                            location = Point(0, 0)))),
+            ValidMoveCommandTestData(playerInCornerGame, Direction.NORTH, MoveCommand(),
+                    CommandResult(arrayListOf(Perception.BLOCKADE_BUMP), initialPlayer.getPlayerState().copyThis(
+                            location = Point(0, 0)))),
+            ValidMoveCommandTestData(playerInCornerGame, Direction.EAST, MoveCommand(),
+                    CommandResult(arrayListOf(Perception.GLITTER), initialPlayer.getPlayerState().copyThis(
+                            location = Point(1, 0))))
         )
     }
 }
@@ -62,6 +76,5 @@ data class ValidMoveCommandTestData (
         val givenGame: Game,
         val expectedStartingDirection: Direction,
         val command: Command,
-        val expectedPoint: Point,
         val expectedCommandResult: CommandResult
 )
