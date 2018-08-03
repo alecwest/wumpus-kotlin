@@ -29,6 +29,6 @@ internal class ClientTest {
         moveCommand.setGame(Server.getGame(client.sessionId))
         moveCommand.execute()
 
-        assertEquals(arrayListOf(RoomContent.BREEZE).toString(), client.getMoveResult()?.getPerceptions().toString())
+        assertEquals(arrayListOf(RoomContent.BREEZE).toString(), client.getMoveResult().getPerceptions().toString())
     }
 }

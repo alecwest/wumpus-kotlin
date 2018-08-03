@@ -52,17 +52,8 @@ object Server {
         CommandInvoker.performAction()
     }
 
-    fun getCommandResult(id: Int): CommandResult? {
+    fun getCommandResult(id: Int): CommandResult {
         return getGame(id).getCommandResult()
-    }
-
-    fun getPlayerState(id: Int): PlayerState {
-        return sessions.getValue(id).getPlayerState()
-    }
-
-    fun getRoomContent(id: Int): ArrayList<RoomContent> {
-        val game = sessions.getValue(id)
-        return game.getRoomContent(game.getPlayerLocation())
     }
 }
 

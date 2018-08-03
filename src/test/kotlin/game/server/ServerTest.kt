@@ -34,45 +34,45 @@ class ServerTest {
 
     @Test
     fun `get room content`() {
-        assertEquals(arrayListOf<RoomContent>(), Server.getRoomContent(gameId))
+        assertEquals(arrayListOf<RoomContent>(), Server.getCommandResult(gameId).getRoomContent())
         Server.getGame(gameId).addToRoom(initialPoint, RoomContent.FOOD)
-        assertEquals(arrayListOf(RoomContent.FOOD), Server.getRoomContent(gameId))
+        assertEquals(arrayListOf(RoomContent.FOOD), Server.getCommandResult(gameId).getRoomContent())
     }
 
     // TODO add bad move tests
     @Test
     fun `check player moves on move command`() {
-        assertEquals(initialPoint, Server.getPlayerState(gameId).getLocation())
+        assertEquals(initialPoint, Server.getCommandResult(gameId).getPlayerState().getLocation())
         Server.makeMove(gameId, MoveCommand())
-        assertEquals(initialPoint.north(), Server.getPlayerState(gameId).getLocation())
-        assertEquals(initialDirection, Server.getPlayerState(gameId).getDirection())
-        assertEquals(initialInventory, Server.getPlayerState(gameId).getInventory())
+        assertEquals(initialPoint.north(), Server.getCommandResult(gameId).getPlayerState().getLocation())
+        assertEquals(initialDirection, Server.getCommandResult(gameId).getPlayerState().getDirection())
+        assertEquals(initialInventory, Server.getCommandResult(gameId).getPlayerState().getInventory())
     }
 
     @Test
     fun `check player turns on turn command`() {
-        assertEquals(initialDirection, Server.getPlayerState(gameId).getDirection())
+        assertEquals(initialDirection, Server.getCommandResult(gameId).getPlayerState().getDirection())
         Server.makeMove(gameId, TurnCommand(Direction.EAST))
-        assertEquals(initialPoint, Server.getPlayerState(gameId).getLocation())
-        assertEquals(Direction.EAST, Server.getPlayerState(gameId).getDirection())
-        assertEquals(initialInventory, Server.getPlayerState(gameId).getInventory())
+        assertEquals(initialPoint, Server.getCommandResult(gameId).getPlayerState().getLocation())
+        assertEquals(Direction.EAST, Server.getCommandResult(gameId).getPlayerState().getDirection())
+        assertEquals(initialInventory, Server.getCommandResult(gameId).getPlayerState().getInventory())
     }
 
     @Test
     fun `check player grabs on grab command`() {
         Server.getGame(gameId).addToRoom(initialPoint, RoomContent.FOOD)
-        assertEquals(initialInventory, Server.getPlayerState(gameId).getInventory())
+        assertEquals(initialInventory, Server.getCommandResult(gameId).getPlayerState().getInventory())
         Server.makeMove(gameId, GrabCommand(InventoryItem.FOOD))
-        assertEquals(initialPoint, Server.getPlayerState(gameId).getLocation())
-        assertEquals(initialDirection, Server.getPlayerState(gameId).getDirection())
-        assertEquals(initialInventory + mapOf(InventoryItem.FOOD to 1), Server.getPlayerState(gameId).getInventory())
+        assertEquals(initialPoint, Server.getCommandResult(gameId).getPlayerState().getLocation())
+        assertEquals(initialDirection, Server.getCommandResult(gameId).getPlayerState().getDirection())
+        assertEquals(initialInventory + mapOf(InventoryItem.FOOD to 1), Server.getCommandResult(gameId).getPlayerState().getInventory())
     }
 
     @Test
     fun `get command result`() {
         val sessionId = Helpers.createServerSession(Helpers.worldFileName)
         Server.makeMove(sessionId, MoveCommand())
-        assertEquals(arrayListOf(RoomContent.BREEZE).toString(), Server.getCommandResult(sessionId)?.getPerceptions().toString())
+        assertEquals(arrayListOf(RoomContent.BREEZE).toString(), Server.getCommandResult(sessionId).getPerceptions().toString())
     }
 }
 
