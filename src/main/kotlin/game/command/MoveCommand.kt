@@ -17,7 +17,7 @@ class MoveCommand: Command() {
         }
 
         perceptionList.addAll(createPerceptions())
-        game.setCommandResult(createCommandResult())
+        game.setCommandResult(createCommandResult(perceptionList))
     }
 
     private fun canEnterRoom(point: Point): Boolean {
