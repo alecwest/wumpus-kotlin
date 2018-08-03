@@ -12,20 +12,24 @@ import kotlin.test.assertTrue
 internal class CommandResultTest {
     private val commandResult = CommandResult(arrayListOf(Perception.BLOCKADE_BUMP, Perception.MOO),
             PlayerState(location = Point(44, 23)), arrayListOf(RoomContent.ARROW))
+    private val plainCommandResult = CommandResult()
 
     @Test
     fun `get perceptions`() {
         assertEquals(arrayListOf(Perception.BLOCKADE_BUMP, Perception.MOO), commandResult.getPerceptions())
+        assertEquals(arrayListOf(), plainCommandResult.getPerceptions())
     }
 
     @Test
     fun `get player state`() {
-        assertEquals(PlayerState(location = Point(44, 23)).getLocation(), commandResult.getPlayerState().getLocation())
+        assertEquals(PlayerState(location = Point(44, 23)), commandResult.getPlayerState())
+        assertEquals(PlayerState(), plainCommandResult.getPlayerState())
     }
 
     @Test
     fun `get room content`() {
         assertEquals(arrayListOf(RoomContent.ARROW).toString(), commandResult.getRoomContent().toString())
+        assertEquals(arrayListOf(), plainCommandResult.getRoomContent())
     }
 
     @Test
