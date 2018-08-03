@@ -1,10 +1,7 @@
 package game.world
 
 enum class Perception {
-    BREEZE,
     BLOCKADE_BUMP,
-    GLITTER,
-    MOO,
-    STENCH,
+    SCREAM,
     WALL_BUMP
 }

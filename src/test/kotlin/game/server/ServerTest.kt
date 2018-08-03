@@ -72,7 +72,7 @@ class ServerTest {
     fun `get command result`() {
         val sessionId = Helpers.createServerSession(Helpers.worldFileName)
         Server.makeMove(sessionId, MoveCommand())
-        assertEquals(arrayListOf(RoomContent.BREEZE).toString(), Server.getCommandResult(sessionId).getPerceptions().toString())
+        assertEquals(arrayListOf(RoomContent.BREEZE).toString(), Server.getCommandResult(sessionId).getRoomContent().toString())
     }
 }
 

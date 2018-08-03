@@ -15,10 +15,6 @@ internal class RoomContentTest {
     @Test
     fun `convert to perception`() {
         assertEquals(Perception.BLOCKADE_BUMP, RoomContent.BLOCKADE.toPerception())
-        assertEquals(Perception.BREEZE, RoomContent.BREEZE.toPerception())
-        assertEquals(Perception.GLITTER, RoomContent.GLITTER.toPerception())
-        assertEquals(Perception.MOO, RoomContent.MOO.toPerception())
-        assertEquals(Perception.STENCH, RoomContent.STENCH.toPerception())
         assertEquals(null, RoomContent.PIT.toPerception())
     }
 

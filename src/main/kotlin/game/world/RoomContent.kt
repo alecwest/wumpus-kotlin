@@ -23,13 +23,13 @@ enum class RoomContent {
     WUMPUS
 }
 
+/**
+ * Intended to inform the client that they could not enter a room because of a certain RoomContent,
+ * indicated by the returned Perception
+ */
 fun RoomContent.toPerception(): Perception? {
     return when(this) {
         RoomContent.BLOCKADE -> Perception.BLOCKADE_BUMP
-        RoomContent.BREEZE -> Perception.BREEZE
-        RoomContent.GLITTER -> Perception.GLITTER
-        RoomContent.MOO -> Perception.MOO
-        RoomContent.STENCH -> Perception.STENCH
         else -> null
     }
 }

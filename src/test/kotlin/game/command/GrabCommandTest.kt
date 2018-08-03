@@ -47,12 +47,12 @@ class GrabCommandTest {
         @JvmStatic
         fun validGrabCommandTestDataProvider() = Stream.of(
                 ValidGrabCommandTestData(initialGame, GrabCommand(InventoryItem.FOOD),
-                        RoomContent.FOOD, CommandResult(arrayListOf(Perception.GLITTER),
+                        RoomContent.FOOD, CommandResult(arrayListOf(),
                         PlayerState(location = initialGame.getPlayerLocation(), facing = initialGame.getPlayerDirection(),
                                 inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 2, InventoryItem.FOOD to 1))),
                         initialGame.getRoomContent())),
                 ValidGrabCommandTestData(initialGame, GrabCommand(InventoryItem.FOOD),
-                        RoomContent.FOOD, CommandResult(arrayListOf(Perception.GLITTER),
+                        RoomContent.FOOD, CommandResult(arrayListOf(),
                         PlayerState(location = initialGame.getPlayerLocation(), facing = initialGame.getPlayerDirection(),
                                 inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 2, InventoryItem.FOOD to 1))),
                         initialGame.getRoomContent())),
