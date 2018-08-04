@@ -84,9 +84,5 @@ class Helpers {
             }
             assertEquals(numExpected, numFound)
         }
-
-        fun assertCommandEquals(expectedCommand: Command, actualCommand: Command) {
-            assertEquals(expectedCommand::class.toString(), actualCommand::class.toString())
-        }
     }
 }

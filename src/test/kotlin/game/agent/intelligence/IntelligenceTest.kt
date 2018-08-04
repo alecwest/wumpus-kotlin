@@ -1,22 +1,25 @@
 package game.agent.intelligence
 
-import Helpers.Companion.assertCommandEquals
 import game.command.Command
 import game.command.CommandResult
 import game.command.MoveCommand
+import game.command.TurnCommand
+import game.world.Perception
 import game.world.RoomContent
 import game.world.World
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
+import util.Direction
 import java.awt.Point
 import java.util.stream.Stream
 
 internal class IntelligenceTest {
 
     @ParameterizedTest
-    @MethodSource("validIntelligenceTestDataProvider")
+    @MethodSource("validBasicIntelligenceTestDataProvider")
     fun `use basic intelligence`(testData: ValidIntelligenceTestData) {
-        assertCommandEquals(MoveCommand(), testData.givenIntelligence.chooseNextMove(testData.givenWorld, testData.givenCommandResult))
+        assertEquals(testData.expectedCommand, BasicIntelligence().chooseNextMove(testData.givenWorld, testData.givenCommandResult))
     }
 
     companion object {
@@ -25,15 +28,18 @@ internal class IntelligenceTest {
         val commandResult = CommandResult()
 
         @JvmStatic
-        fun validIntelligenceTestDataProvider() = Stream.of(
-                ValidIntelligenceTestData(world, BasicIntelligence(), commandResult, MoveCommand())
+        fun validBasicIntelligenceTestDataProvider() = Stream.of(
+                ValidIntelligenceTestData(world, commandResult, MoveCommand()),
+                ValidIntelligenceTestData(world, commandResult.copyThis(
+                        perceptions = arrayListOf(Perception.BLOCKADE_BUMP),
+                        playerState = Helpers.createPlayerState(location = Point(0, 3))),
+                        TurnCommand(Direction.EAST))
         )
     }
 }
 
 data class ValidIntelligenceTestData (
     val givenWorld: World,
-    val givenIntelligence: Intelligence,
     val givenCommandResult: CommandResult,
     val expectedCommand: Command
 )
