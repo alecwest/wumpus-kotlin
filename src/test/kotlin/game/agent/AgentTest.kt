@@ -6,6 +6,8 @@ import game.command.Command
 import game.command.CommandResult
 import game.command.MoveCommand
 import game.command.TurnCommand
+import game.player.InventoryItem
+import game.server.Server
 import game.world.Perception
 import game.world.RoomContent
 import game.world.World
@@ -35,21 +37,53 @@ internal class AgentTest {
     @ParameterizedTest
     @MethodSource("validBasicIntelligenceAgentTestDataProvider")
     fun `choose next move with basic intelligence`(testData: ValidAgentTestData) {
-        assertEquals(testData.expectedCommand, BasicIntelligence().chooseNextMove(testData.givenWorld, testData.givenCommandResult))
+        assertEquals(testData.expectedCommand, basicIntelligenceAgent.chooseNextMove(testData.givenWorld, testData.givenCommandResult))
+    }
+
+    @ParameterizedTest
+    @MethodSource("validPostMoveBasicIntelligenceAgentTestDataProvider")
+    fun `make next move with basic intelligence`(testData: ValidPostMoveAgentTestData) {
+        basicIntelligenceAgent.makeNextMove()
+        assertEquals(testData.expectedCommandResult, basicIntelligenceAgent.client.getMoveResult())
     }
 
     companion object {
+        val basicIntelligenceClient = Helpers.createClient(Helpers.basicIntelligenceWorldFileName)
+        val basicIntelligenceAgent = Helpers.createAgent(basicIntelligenceClient, BasicIntelligence())
         val world = Helpers.createWorld(
-                roomContent = mapOf(Point(0, 4) to arrayListOf(RoomContent.BLOCKADE)))
-        val commandResult = CommandResult()
+                roomContent = mapOf(Point(0, 1) to arrayListOf(RoomContent.BLOCKADE)))
+        val commandResult = Helpers.createCommandResult(
+                playerState = Helpers.createPlayerState(
+                        inventoryContent = mapOf(InventoryItem.ARROW to 1)
+                )
+        )
 
         @JvmStatic
         fun validBasicIntelligenceAgentTestDataProvider() = Stream.of(
                 ValidAgentTestData(world, commandResult, MoveCommand()),
                 ValidAgentTestData(world, commandResult.copyThis(
                         perceptions = arrayListOf(Perception.BLOCKADE_BUMP),
-                        playerState = Helpers.createPlayerState(location = Point(0, 3))),
+                        playerState = commandResult.getPlayerState().copyThis(location = Point(0, 0))),
                         TurnCommand(Direction.EAST))
+        )
+
+        @JvmStatic
+        fun validPostMoveBasicIntelligenceAgentTestDataProvider() = Stream.of(
+                ValidPostMoveAgentTestData(world,
+                        commandResult.copyThis(
+                                playerState = commandResult.getPlayerState().copyThis(location = Point(0, 3))
+                        )),
+                ValidPostMoveAgentTestData(world,
+                        commandResult.copyThis(
+                                perceptions = arrayListOf(Perception.BLOCKADE_BUMP),
+                                playerState = commandResult.getPlayerState().copyThis(
+                                        location = Point(0, 3))
+                        )),
+                ValidPostMoveAgentTestData(world,
+                        commandResult.copyThis(
+                                playerState = commandResult.getPlayerState().copyThis(
+                                        location = Point(0, 3), facing = Direction.EAST)
+                ))
         )
     }
 }
@@ -58,4 +92,9 @@ data class ValidAgentTestData (
         val givenWorld: World,
         val givenCommandResult: CommandResult,
         val expectedCommand: Command
+)
+
+data class ValidPostMoveAgentTestData (
+        val givenWorld: World,
+        val expectedCommandResult: CommandResult
 )

@@ -22,6 +22,7 @@ import java.awt.Point
 class Helpers {
     companion object {
         const val worldFileName = "src/test/resources/testFile.json"
+        const val basicIntelligenceWorldFileName = "src/test/resources/basicIntelligenceTestFile.json"
 
         // TODO all of these create functions shouldn't just be test helpers
         fun createRoom(roomContent: ArrayList<RoomContent>

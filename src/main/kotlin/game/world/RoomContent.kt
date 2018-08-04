@@ -70,7 +70,7 @@ fun RoomContent.associatedEffects(): ArrayList<WorldEffect> {
 fun RoomContent.toCharRepresentation(): String {
     return when(this){
         RoomContent.ARROW -> "A"
-        RoomContent.BLOCKADE -> "X"
+        RoomContent.BLOCKADE -> "B"
         RoomContent.BREEZE -> "="
         RoomContent.FOOD -> "F"
         RoomContent.GLITTER -> "*"
