@@ -11,18 +11,18 @@ import game.world.World
  */
 class Agent(internal val client: Client, internal val intelligence: Intelligence) {
     internal val world: World = World(client.getWorldSize())
+    internal val lastMove = client.getMoveResult()
 
     fun makeNextMove() {
-        val lastMove = client.getMoveResult()
-        processLastMove(lastMove)
+        processLastMove()
         val command = chooseNextMove()
         client.makeMove(command)
     }
 
-    fun processLastMove(lastMove: CommandResult) {
+    private fun processLastMove() {
     }
 
-    internal fun chooseNextMove(world: World = this.world): Command {
-        return intelligence.chooseNextMove(world)
+    internal fun chooseNextMove(world: World = this.world, lastMove: CommandResult = this.lastMove): Command {
+        return intelligence.chooseNextMove(world, lastMove)
     }
 }
