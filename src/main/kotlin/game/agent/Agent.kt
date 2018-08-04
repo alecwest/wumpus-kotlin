@@ -2,6 +2,8 @@ package game.agent
 
 import game.agent.intelligence.Intelligence
 import game.client.Client
+import game.command.Command
+import game.command.CommandResult
 import game.world.World
 
 /**
@@ -10,12 +12,17 @@ import game.world.World
 class Agent(internal val client: Client, internal val intelligence: Intelligence) {
     internal val world: World = World(client.getWorldSize())
 
-    fun processLastMove() {
-        val moveResult = client.getMoveResult()
+    fun makeNextMove() {
+        val lastMove = client.getMoveResult()
+        processLastMove(lastMove)
+        val command = chooseNextMove()
+        client.makeMove(command)
     }
 
-    fun makeNextMove() {
-        val command = intelligence.chooseNextMove(world)
-        client.makeMove(command)
+    fun processLastMove(lastMove: CommandResult) {
+    }
+
+    internal fun chooseNextMove(world: World = this.world): Command {
+        return intelligence.chooseNextMove(world)
     }
 }
