@@ -1,5 +1,9 @@
 import game.Game
 import game.GameState
+import game.agent.Agent
+import game.agent.intelligence.BasicIntelligence
+import game.agent.intelligence.Intelligence
+import game.client.Client
 import game.command.Command
 import game.command.CommandResult
 import game.player.InventoryItem
@@ -73,6 +77,16 @@ class Helpers {
                                 playerState: PlayerState = Helpers.createPlayerState(),
                                 roomContent: ArrayList<RoomContent> = arrayListOf()): CommandResult {
             return CommandResult(perceptions, playerState, roomContent)
+        }
+
+        fun createClient(fileName: String = "",
+                         worldSize: Int = 10): Client {
+            return Client(fileName, worldSize)
+        }
+
+        fun createAgent(client: Client = Helpers.createClient(),
+                        intelligence: Intelligence = BasicIntelligence()): Agent {
+            return Agent(client, intelligence)
         }
 
         fun assertContains(content: String, subString: String, numExpected: Int) {
