@@ -15,6 +15,6 @@ internal class AgentTest {
 
     @Test
     fun `initialize agent world`() {
-
+        assertEquals(5, agent.world.getSize())
     }
 }
