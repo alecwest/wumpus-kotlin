@@ -1,16 +1,20 @@
 package game.agent
 
-import game.server.Server
+import game.client.Client
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
 internal class AgentTest {
-    val agent = Agent()
+    val client = Client(worldSize = 5)
+    val agent = Agent(client)
 
     @Test
     fun `initialize client`() {
-        agent.createGame(worldSize = 5)
-        assertEquals(5,
-                Server.getGame(agent.client.sessionId).getGameState().getWorldSize())
+        assertEquals(5, agent.client.getWorldSize())
+    }
+
+    @Test
+    fun `initialize agent world`() {
+
     }
 }

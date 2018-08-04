@@ -16,6 +16,11 @@ internal class ClientTest {
     }
 
     @Test
+    fun `get world size`() {
+        assertEquals(5, Client(worldSize = 5).getWorldSize())
+    }
+
+    @Test
     fun `make move`() {
         val client = Client()
         client.makeMove(TurnCommand(Direction.WEST))
