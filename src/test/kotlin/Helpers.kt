@@ -1,5 +1,6 @@
 import game.Game
 import game.GameState
+import game.command.Command
 import game.player.InventoryItem
 import game.player.Player
 import game.player.PlayerInventory
@@ -61,6 +62,10 @@ class Helpers {
                     0
             }
             assertEquals(numExpected, numFound)
+        }
+
+        fun assertCommandEquals(expectedCommand: Command, actualCommand: Command) {
+            assertEquals(expectedCommand::class.toString(), actualCommand::class.toString())
         }
     }
 }
