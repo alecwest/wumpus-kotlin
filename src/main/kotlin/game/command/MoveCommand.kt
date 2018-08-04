@@ -36,6 +36,12 @@ class MoveCommand: Command() {
         command.setGame(this.game)
         command.execute()
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is MoveCommand) return false
+        return true
+    }
 }
 
 private class MoveNorthCommand: Command() {

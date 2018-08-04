@@ -14,6 +14,15 @@ class GrabCommand(private val inventoryItem: InventoryItem): Command() {
         command.execute()
         game.setCommandResult(createCommandResult())
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is GrabCommand) return false
+
+        if (inventoryItem != other.inventoryItem) return false
+
+        return true
+    }
 }
 
 private class GrabArrowCommand: Command() {

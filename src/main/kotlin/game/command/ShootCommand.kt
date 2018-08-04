@@ -36,4 +36,13 @@ class ShootCommand: Command() {
         game.removeFromRoom(room, roomContent)
         perceptionList.add(Perception.SCREAM)
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is ShootCommand) return false
+
+        if (perceptionList != other.perceptionList) return false
+
+        return true
+    }
 }

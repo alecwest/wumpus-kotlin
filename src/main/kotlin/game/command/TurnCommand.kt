@@ -17,6 +17,15 @@ class TurnCommand(private val targetDirection: Direction): Command() {
         command.execute()
         game.setCommandResult(createCommandResult())
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is TurnCommand) return false
+
+        if (targetDirection != other.targetDirection) return false
+
+        return true
+    }
 }
 
 private class TurnLeftCommand: Command() {
