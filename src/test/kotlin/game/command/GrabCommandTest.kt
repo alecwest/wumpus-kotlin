@@ -4,12 +4,10 @@ import game.Game
 import game.player.InventoryItem
 import game.player.PlayerInventory
 import game.player.PlayerState
-import game.server.Server
 import game.world.Destructable
-import game.world.Perception
 import game.world.RoomContent
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
 import util.Direction
@@ -17,6 +15,15 @@ import java.awt.Point
 import java.util.stream.Stream
 
 class GrabCommandTest {
+    @Test
+    fun `grab commands are equal`() {
+        val command = GrabCommand(InventoryItem.ARROW)
+        assertEquals(command, command)
+        assertNotEquals(command, Direction.EAST)
+        assertNotEquals(GrabCommand(InventoryItem.ARROW), GrabCommand(InventoryItem.FOOD))
+        assertEquals(command, GrabCommand(InventoryItem.ARROW))
+    }
+
     @ParameterizedTest
     @MethodSource("validGrabCommandTestDataProvider")
     fun `execute grab command`(testData: ValidGrabCommandTestData) {

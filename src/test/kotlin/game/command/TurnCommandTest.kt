@@ -1,10 +1,14 @@
 package game.command
 
 import game.Game
+import game.player.InventoryItem
 import game.player.PlayerState
 import game.world.Perception
 import game.world.RoomContent
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotEquals
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
 import util.Direction
@@ -12,6 +16,15 @@ import java.awt.Point
 import java.util.stream.Stream
 
 internal class TurnCommandTest {
+    @Test
+    fun `turn commands are equal`() {
+        val command = TurnCommand(Direction.EAST)
+        assertEquals(command, command)
+        assertNotEquals(command, Direction.EAST)
+        assertNotEquals(TurnCommand(Direction.EAST), TurnCommand(Direction.WEST))
+        assertEquals(command, TurnCommand(Direction.EAST))
+    }
+
     @ParameterizedTest
     @MethodSource("validTurnCommandTestDataProvider")
     fun `execute turn commands`(testData: ValidTurnCommandTestData) {

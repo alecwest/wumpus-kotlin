@@ -6,6 +6,7 @@ import game.player.InventoryItem
 import game.world.Perception
 import game.world.RoomContent
 import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
 import util.Direction
@@ -14,6 +15,13 @@ import java.awt.Point
 import java.util.stream.Stream
 
 internal class MoveCommandTest {
+    @Test
+    fun `move commands are equal`() {
+        val command = MoveCommand()
+        assertEquals(command, command)
+        assertNotEquals(command, Direction.EAST)
+        assertEquals(command, MoveCommand())
+    }
 
     @ParameterizedTest
     @MethodSource("validMoveCommandTestDataProvider")

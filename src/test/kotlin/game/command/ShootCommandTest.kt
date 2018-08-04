@@ -7,12 +7,22 @@ import game.world.Destructable
 import game.world.Perception
 import game.world.RoomContent
 import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
+import util.Direction
 import java.awt.Point
 import java.util.stream.Stream
 
 internal class ShootCommandTest {
+    @Test
+    fun `shoot commands are equal`() {
+        val command = ShootCommand()
+        assertEquals(command, command)
+        assertNotEquals(command, Direction.EAST)
+        assertEquals(command, ShootCommand())
+    }
+
     @ParameterizedTest
     @MethodSource("validShootCommandTestDataProvider")
     fun `execute shoot command`(testData: ValidShootCommandTestData) {
