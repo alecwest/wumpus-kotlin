@@ -1,6 +1,7 @@
 import game.Game
 import game.GameState
 import game.command.Command
+import game.command.CommandResult
 import game.player.InventoryItem
 import game.player.Player
 import game.player.PlayerInventory
@@ -10,6 +11,7 @@ import game.world.RoomContent
 import game.world.World
 import org.junit.jupiter.api.Assertions.assertEquals
 import game.server.Server
+import game.world.Perception
 import util.Direction
 import java.awt.Point
 
@@ -43,6 +45,19 @@ class Helpers {
             return Player(PlayerState(alive, location, facing, PlayerInventory(inventoryContent)))
         }
 
+        fun createPlayerState(alive: Boolean = true,
+                              location: Point = Point(0, 0),
+                              facing: Direction = Direction.NORTH,
+                              inventoryContent: Map<InventoryItem, Int> =
+                                    mapOf(InventoryItem.ARROW to 2)): PlayerState {
+            return PlayerState(alive, location, facing, Helpers.createPlayerInventory(inventoryContent))
+        }
+
+        fun createPlayerInventory(inventoryContent: Map<InventoryItem, Int> =
+                                          mapOf(InventoryItem.ARROW to 2)): PlayerInventory {
+            return PlayerInventory(inventoryContent)
+        }
+
         fun createGame(active: Boolean = true,
                        world: World = createWorld(),
                        player: Player = createPlayer()): Game {
@@ -52,6 +67,12 @@ class Helpers {
         fun createServerSession(fileName: String = Helpers.worldFileName,
                                 worldSize: Int = 10): Int {
             return Server.newSession(fileName = fileName, worldSize = worldSize)
+        }
+
+        fun createCommandResult(perceptions: ArrayList<Perception> = arrayListOf(),
+                                playerState: PlayerState = Helpers.createPlayerState(),
+                                roomContent: ArrayList<RoomContent> = arrayListOf()): CommandResult {
+            return CommandResult(perceptions, playerState, roomContent)
         }
 
         fun assertContains(content: String, subString: String, numExpected: Int) {
