@@ -13,4 +13,8 @@ data class CommandResult(private val perceptions: ArrayList<Perception> = arrayL
     fun blockadeHit() = getPerceptions().contains(Perception.BLOCKADE_BUMP)
     fun wallHit() = getPerceptions().contains(Perception.WALL_BUMP)
     fun moveRejected() = blockadeHit() || wallHit()
+
+    fun copyThis(perceptions: ArrayList<Perception> = this.perceptions,
+                 playerState: PlayerState = this.playerState.copyThis(),
+                 roomContent: ArrayList<RoomContent> = this.roomContent) = CommandResult(perceptions, playerState, roomContent)
 }

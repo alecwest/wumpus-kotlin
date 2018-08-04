@@ -84,6 +84,6 @@ data class WorldState(private val rooms: ArrayList<Room> = arrayListOf()) {
         return room.getAmountOfContent()
     }
 
-    fun copyThis(rooms: ArrayList<Room> = arrayListOf()) =
+    fun copyThis(rooms: ArrayList<Room> = this.rooms) =
             WorldState(rooms)
 }
