@@ -6,6 +6,7 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
 import Helpers.Companion.assertContains
 import Helpers.Companion.createWorld
+import game.player.PlayerState
 import util.*
 import java.awt.Point
 import java.util.stream.Stream
@@ -215,6 +216,12 @@ class WorldTest {
         val target2 = RoomContent.STENCH.toCharRepresentation()
         assertContains(worldMap, target1, 0)
         assertContains(worldMap, target2, 0)
+    }
+
+    @Test
+    fun `check for player when PlayerState added`() {
+        val worldMap = world.getWorldMap(playerState = PlayerState(facing = Direction.EAST))
+        assertContains(worldMap, Direction.EAST.toPlayerMapRepresentation(), 1)
     }
 }
 

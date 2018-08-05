@@ -1,5 +1,6 @@
 package game.world
 
+import game.player.PlayerState
 import game.world.effect.*
 import java.awt.Point
 import java.util.logging.Logger
@@ -117,7 +118,7 @@ data class World(private var size: Int = 10) {
     fun roomIsValid(point: Point) = worldState.roomIsValid(point)
     fun roomIsEmpty(point: Point) = worldState.roomIsEmpty(point)
     fun getRoomIndex(point: Point) = worldState.getRoomIndex(point)
-    fun getWorldMap() = worldState.getWorldMap()
+    fun getWorldMap(playerState: PlayerState? = null) = worldState.getWorldMap(playerState)
     fun getRoom(point: Point) = worldState.getRoom(point)
     fun getNumberRooms() = worldState.getNumberRooms()
     fun getAmountOfContentInRoom(point: Point) = worldState.getAmountOfContentInRoom(point)

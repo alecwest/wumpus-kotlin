@@ -1,5 +1,7 @@
 package game.world
 
+import game.player.PlayerState
+import util.Direction
 import java.awt.Point
 import java.util.logging.Logger
 import kotlin.math.sqrt
@@ -50,11 +52,12 @@ data class WorldState(private val rooms: ArrayList<Room> = arrayListOf()) {
         return result
     }
 
-    fun getWorldMap(): String {
+    fun getWorldMap(playerState: PlayerState? = null): String {
         val result: MutableList<String> = mutableListOf()
         var row: MutableList<String> = mutableListOf()
         for (i in getNumberRooms() - 1 downTo 0) {
-            val splitSmallRoomString = rooms[i].getSmallRoomString().split("\n")
+            val splitSmallRoomString = rooms[i].getSmallRoomString(
+                    playerDirectionIfInRoom(i, playerState)).split("\n")
                     .toMutableList()
             when {
                 i % size == size - 1 -> row = splitSmallRoomString
@@ -69,6 +72,14 @@ data class WorldState(private val rooms: ArrayList<Room> = arrayListOf()) {
             }
         }
         return result.joinToString(separator = "\n")
+    }
+
+    private fun playerDirectionIfInRoom(index: Int, playerState: PlayerState?): Direction? {
+        if (playerState == null) return null
+        if (getRoomIndex(playerState.getLocation()) == index) {
+            return playerState.getDirection()
+        }
+        return null
     }
 
     fun getRoom(point: Point): Room {

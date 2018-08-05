@@ -1,5 +1,8 @@
 package game.world
 
+import util.Direction
+import util.toPlayerMapRepresentation
+
 /**
  * Some features of the Room that will differ from the c++ implementation:
  *      Rooms cannot know their coordinates. This knowledge shouldn't be passed down to a Room.
@@ -34,11 +37,14 @@ class Room(private val roomContent: ArrayList<RoomContent> = arrayListOf()) {
         return roomContent.size == 0
     }
 
-    fun getSmallRoomString(): String {
+    fun getSmallRoomString(playerDirection: Direction? = null): String {
         var roomString = " ------- \n|x x x x|\n|x x x x|\n|x x x x|\n ------- "
         for (content in roomContent) {
             roomString = roomString.replaceFirst(
                     "x", content.toCharRepresentation())
+        }
+        if (playerDirection != null) {
+            roomString = roomString.replaceAfterLast("x", playerDirection.toPlayerMapRepresentation())
         }
         return roomString.replace("x", " ")
     }

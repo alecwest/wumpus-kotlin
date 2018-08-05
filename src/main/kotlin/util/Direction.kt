@@ -28,10 +28,17 @@ fun Direction.toCharRepresentation() = when(this) {
     Direction.WEST -> "W"
 }
 
+fun Direction.toPlayerMapRepresentation() = when(this) {
+    Direction.NORTH -> "^"
+    Direction.EAST -> ">"
+    Direction.SOUTH -> "<"
+    Direction.WEST -> "v"
+}
+
 fun String.toDirection() = when(this) {
-    "N" -> Direction.NORTH
-    "E" -> Direction.EAST
-    "S" -> Direction.SOUTH
-    "W" -> Direction.WEST
+    Direction.NORTH.toCharRepresentation() -> Direction.NORTH
+    Direction.EAST.toCharRepresentation() -> Direction.EAST
+    Direction.SOUTH.toCharRepresentation() -> Direction.SOUTH
+    Direction.WEST.toCharRepresentation() -> Direction.WEST
     else -> throw Exception("Cannot convert %s to a Direction value".format(this))
 }
