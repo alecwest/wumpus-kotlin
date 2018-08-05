@@ -10,12 +10,9 @@ import game.player.InventoryItem
 import game.player.Player
 import game.player.PlayerInventory
 import game.player.PlayerState
-import game.world.Room
-import game.world.RoomContent
-import game.world.World
 import org.junit.jupiter.api.Assertions.assertEquals
 import game.server.Server
-import game.world.Perception
+import game.world.*
 import util.Direction
 import java.awt.Point
 
@@ -32,7 +29,7 @@ class Helpers {
 
         fun createWorld(size: Int = 10,
                         roomContent: Map<Point, ArrayList<out RoomContent>> =
-                                mapOf(Point(2, 2) to arrayListOf(RoomContent.PIT))): World {
+                                mapOf(Point(2, 2) to arrayListOf(Dangerous.PIT))): World {
             val world = World(size)
             for (point in roomContent.keys) {
                 for (content in roomContent.getValue(point)) {

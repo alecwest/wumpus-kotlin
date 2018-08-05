@@ -15,7 +15,7 @@ internal class RoomContentTest {
     @Test
     fun `convert to perception`() {
         assertEquals(Perception.BLOCKADE_BUMP, RoomContent.BLOCKADE.toPerception())
-        assertEquals(null, RoomContent.PIT.toPerception())
+        assertEquals(null, Dangerous.PIT.toPerception())
     }
 
     @Test
