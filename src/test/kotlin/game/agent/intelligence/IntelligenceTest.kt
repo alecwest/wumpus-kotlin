@@ -17,13 +17,6 @@ import java.io.ByteArrayInputStream
 import java.util.stream.Stream
 
 internal class IntelligenceTest {
-
-    @ParameterizedTest
-    @MethodSource("validBasicIntelligenceTestDataProvider")
-    fun `choose next move with basic intelligence`(testData: ValidIntelligenceTestData) {
-        assertEquals(testData.expectedCommand, BasicIntelligence().chooseNextMove(testData.givenWorld, testData.givenCommandResult))
-    }
-
     @Test
     fun `process last move with base method`() {
         val lastMove = Helpers.createCommandResult(arrayListOf(),
@@ -39,20 +32,6 @@ internal class IntelligenceTest {
         val world = Helpers.createWorld(
                 roomContent = mapOf(Point(0, 4) to arrayListOf(RoomContent.BLOCKADE)))
         val commandResult = CommandResult()
-
-        @JvmStatic
-        fun validBasicIntelligenceTestDataProvider() = Stream.of(
-                ValidIntelligenceTestData(world, commandResult, MoveCommand()),
-                ValidIntelligenceTestData(world, commandResult.copyThis(
-                        perceptions = arrayListOf(Perception.BLOCKADE_BUMP),
-                        playerState = Helpers.createPlayerState(location = Point(0, 3))),
-                        TurnCommand(Direction.EAST))
-        )
     }
 }
 
-data class ValidIntelligenceTestData (
-    val givenWorld: World,
-    val givenCommandResult: CommandResult,
-    val expectedCommand: Command
-)

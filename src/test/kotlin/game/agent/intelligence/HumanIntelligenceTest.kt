@@ -3,7 +3,6 @@ package game.agent.intelligence
 import game.command.*
 import game.player.InventoryItem
 import org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
 import util.Direction
