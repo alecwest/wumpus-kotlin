@@ -13,6 +13,7 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
 import util.Direction
 import java.awt.Point
+import java.io.ByteArrayInputStream
 import java.util.stream.Stream
 
 internal class IntelligenceTest {
@@ -21,6 +22,17 @@ internal class IntelligenceTest {
     @MethodSource("validBasicIntelligenceTestDataProvider")
     fun `choose next move with basic intelligence`(testData: ValidIntelligenceTestData) {
         assertEquals(testData.expectedCommand, BasicIntelligence().chooseNextMove(testData.givenWorld, testData.givenCommandResult))
+    }
+
+    @Test
+    fun `process last move with base method`() {
+        val lastMove = Helpers.createCommandResult(arrayListOf(),
+                Helpers.createPlayerState(location = Point(4, 4)),
+                arrayListOf(RoomContent.BREEZE))
+        val intelligence = BasicIntelligence()
+
+        intelligence.processLastMove(world, lastMove)
+        assertTrue(world.hasRoomContent(lastMove.getPlayerState().getLocation(), RoomContent.BREEZE))
     }
 
     companion object {
@@ -36,17 +48,6 @@ internal class IntelligenceTest {
                         playerState = Helpers.createPlayerState(location = Point(0, 3))),
                         TurnCommand(Direction.EAST))
         )
-    }
-
-    @Test
-    fun `process last move with basic intelligence`() {
-        val lastMove = Helpers.createCommandResult(arrayListOf(),
-                Helpers.createPlayerState(location = Point(4, 4)),
-                arrayListOf(RoomContent.BREEZE))
-        val intelligence = BasicIntelligence()
-
-        intelligence.processLastMove(world, lastMove)
-        assertTrue(world.hasRoomContent(lastMove.getPlayerState().getLocation(), RoomContent.BREEZE))
     }
 }
 
