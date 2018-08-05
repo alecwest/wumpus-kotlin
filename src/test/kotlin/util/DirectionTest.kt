@@ -25,6 +25,13 @@ class DirectionTest {
     }
 
     @Test
+    fun `convert between player map representation and direction`() {
+        for (direction in Direction.values()) {
+            assertEquals(direction, direction.toPlayerMapRepresentation().toDirection())
+        }
+    }
+
+    @Test
     fun `convert bad string to direction`() {
         assertFails { "bad string".toDirection() }
     }
