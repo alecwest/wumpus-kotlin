@@ -44,6 +44,6 @@ fun String.toDirection() = when(this) {
 fun Direction.toPlayerMapRepresentation() = when(this) {
     Direction.NORTH -> "^"
     Direction.EAST -> ">"
-    Direction.SOUTH -> "<"
-    Direction.WEST -> "v"
+    Direction.SOUTH -> "v"
+    Direction.WEST -> "<"
 }

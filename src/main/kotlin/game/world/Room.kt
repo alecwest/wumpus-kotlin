@@ -44,7 +44,7 @@ class Room(private val roomContent: ArrayList<RoomContent> = arrayListOf()) {
                     "x", content.toCharRepresentation())
         }
         if (playerDirection != null) {
-            roomString = roomString.replaceAfterLast("x", playerDirection.toPlayerMapRepresentation())
+            roomString = roomString.replaceFirst("x", playerDirection.toPlayerMapRepresentation())
         }
         return roomString.replace("x", " ")
     }
