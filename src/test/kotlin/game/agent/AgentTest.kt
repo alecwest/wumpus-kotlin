@@ -7,7 +7,12 @@ import game.command.CommandResult
 import game.command.MoveCommand
 import game.command.TurnCommand
 import game.player.InventoryItem
-import game.server.Server
+import Helpers.Companion.assertContains
+import Helpers.Companion.createAgent
+import Helpers.Companion.createClient
+import Helpers.Companion.createCommandResult
+import Helpers.Companion.createPlayerState
+import Helpers.Companion.createWorld
 import game.world.Perception
 import game.world.RoomContent
 import game.world.World
@@ -16,6 +21,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
 import util.Direction
+import util.toPlayerMapRepresentation
 import java.awt.Point
 import java.util.stream.Stream
 
@@ -32,6 +38,7 @@ internal class AgentTest {
     fun `initialize agent world`() {
         assertEquals(5, agent.world.getSize())
         assertEquals(0, agent.world.getRooms().filter { !it.isEmpty() }.size)
+        assertContains(agent.client.getMoveResult().getPlayerState().getDirection().toPlayerMapRepresentation(), agent.world.getWorldMap(agent.client.getMoveResult().getPlayerState()), 1)
     }
 
     @ParameterizedTest
@@ -48,12 +55,12 @@ internal class AgentTest {
     }
 
     companion object {
-        val basicIntelligenceClient = Helpers.createClient(Helpers.basicIntelligenceWorldFileName)
-        val basicIntelligenceAgent = Helpers.createAgent(basicIntelligenceClient, BasicIntelligence())
-        val world = Helpers.createWorld(
+        val basicIntelligenceClient = createClient(Helpers.basicIntelligenceWorldFileName)
+        val basicIntelligenceAgent = createAgent(basicIntelligenceClient, BasicIntelligence())
+        val world = createWorld(
                 roomContent = mapOf(Point(0, 1) to arrayListOf(RoomContent.BLOCKADE)))
-        val commandResult = Helpers.createCommandResult(
-                playerState = Helpers.createPlayerState(
+        val commandResult = createCommandResult(
+                playerState = createPlayerState(
                         inventoryContent = mapOf(InventoryItem.ARROW to 1)
                 )
         )
