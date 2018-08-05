@@ -211,6 +211,13 @@ class GameTest {
     }
 
     @Test
+    fun `set player location to dangerous room`() {
+        assertEquals(true, game.isPlayerAlive())
+        game.setPlayerLocation(Point(2, 2))
+        assertEquals(false, game.isPlayerAlive())
+    }
+
+    @Test
     fun `check direction player is facing on change`() {
         assertEquals(Direction.NORTH, game.getPlayerDirection())
         game.setPlayerDirection(Direction.SOUTH)
