@@ -125,6 +125,19 @@ sealed class GameObject(val characeteristics: Set<GameObjectCharacteristic> = se
     }
 }
 
+fun setWithCharacteristics(characeteristics: Set<GameObjectCharacteristic>): List<GameObject> {
+    return gameObjectValues().filter {
+        var result = true
+        for (characteristic in characeteristics) {
+            if (!it.hasCharacteristic(characteristic)) {
+                result = false
+                break
+            }
+        }
+        result
+    }
+}
+
 fun gameObjectValues(): List<GameObject> {
     return GameObject::class.nestedClasses.map { it.objectInstance as GameObject }
 }

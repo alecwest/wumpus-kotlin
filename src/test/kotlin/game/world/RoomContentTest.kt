@@ -23,10 +23,20 @@ internal class RoomContentTest {
         assertFails { "invalid string".toRoomContent() }
     }
 
+
+
     @Test
     fun `convert mappables between string and game object`() {
         for (gameObject in gameObjectValues().filter { it.hasCharacteristic(GameObjectCharacteristic.Mappable()) }) {
         }
+    }
+
+    @Test
+    fun `filter game object values by characteristic`() {
+        assertTrue(setOf(GameObject.BREEZE, GameObject.GLITTER,
+                GameObject.MOO, GameObject.STENCH,
+                GameObject.BLOCKADE, GameObject.FOOD).containsAll(
+                        setWithCharacteristics(setOf(GameObjectCharacteristic.Perceptable()))))
     }
 
     @Test
