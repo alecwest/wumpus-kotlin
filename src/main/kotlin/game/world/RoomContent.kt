@@ -1,7 +1,7 @@
 package game.world
 
 import game.player.InventoryItem
-import game.world.GameObjectCharacteristic.*
+import game.world.GameObjectFeature.*
 import game.world.effect.*
 
 /**
@@ -103,7 +103,7 @@ fun String.toRoomContent(): RoomContent {
     }
 }
 
-sealed class GameObject(val characeteristics: Set<GameObjectCharacteristic> = setOf()) {
+sealed class GameObject(val features: Set<GameObjectFeature> = setOf()) {
     object ARROW : GameObject(setOf(Shootable(), Grabbable()))
     object BLOCKADE : GameObject(setOf(Mappable("X"), Perceptable(), Blocking()))
     object BREEZE : GameObject(setOf(Mappable("="), Perceptable()))
@@ -120,16 +120,16 @@ sealed class GameObject(val characeteristics: Set<GameObjectCharacteristic> = se
     object WUMPUS : GameObject(setOf(Dangerous(), Destructable(setOf(GameObject.ARROW)), Mappable("W"), WorldAffecting(
             arrayListOf(AdjacentEffect(RoomContent.STENCH)))))
 
-    fun hasCharacteristic(characteristic: GameObjectCharacteristic): Boolean {
-        return this.characeteristics.any { it::class == characteristic::class }
+    fun hasFeature(feature: GameObjectFeature): Boolean {
+        return this.features.any { it::class == feature::class }
     }
 }
 
-fun setWithCharacteristics(characeteristics: Set<GameObjectCharacteristic>): List<GameObject> {
+fun gameObjectsWithFeatures(features: Set<GameObjectFeature>): List<GameObject> {
     return gameObjectValues().filter {
         var result = true
-        for (characteristic in characeteristics) {
-            if (!it.hasCharacteristic(characteristic)) {
+        for (feature in features) {
+            if (!it.hasFeature(feature)) {
                 result = false
                 break
             }
@@ -142,13 +142,13 @@ fun gameObjectValues(): List<GameObject> {
     return GameObject::class.nestedClasses.map { it.objectInstance as GameObject }
 }
 
-sealed class GameObjectCharacteristic {
-    class Blocking: GameObjectCharacteristic()
-    class Dangerous: GameObjectCharacteristic()
-    class Destructable(val weaknesses: Set<GameObject> = setOf()): GameObjectCharacteristic()
-    class Grabbable: GameObjectCharacteristic()
-    class Mappable(val character: String = ""): GameObjectCharacteristic()
-    class Perceptable(): GameObjectCharacteristic()
-    class Shootable(): GameObjectCharacteristic()
-    class WorldAffecting(val effects: ArrayList<WorldEffect> = arrayListOf()): GameObjectCharacteristic()
+sealed class GameObjectFeature {
+    class Blocking: GameObjectFeature()
+    class Dangerous: GameObjectFeature()
+    class Destructable(val weaknesses: Set<GameObject> = setOf()): GameObjectFeature()
+    class Grabbable: GameObjectFeature()
+    class Mappable(val character: String = ""): GameObjectFeature()
+    class Perceptable(): GameObjectFeature()
+    class Shootable(): GameObjectFeature()
+    class WorldAffecting(val effects: ArrayList<WorldEffect> = arrayListOf()): GameObjectFeature()
 }

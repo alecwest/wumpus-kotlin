@@ -27,22 +27,22 @@ internal class RoomContentTest {
 
     @Test
     fun `convert mappables between string and game object`() {
-        for (gameObject in gameObjectValues().filter { it.hasCharacteristic(GameObjectCharacteristic.Mappable()) }) {
+        for (gameObject in gameObjectValues().filter { it.hasFeature(GameObjectFeature.Mappable()) }) {
         }
     }
 
     @Test
-    fun `filter game object values by characteristic`() {
+    fun `filter game object values by feature`() {
         assertTrue(setOf(GameObject.BREEZE, GameObject.GLITTER,
                 GameObject.MOO, GameObject.STENCH,
                 GameObject.BLOCKADE, GameObject.FOOD).containsAll(
-                        setWithCharacteristics(setOf(GameObjectCharacteristic.Perceptable()))))
+                        gameObjectsWithFeatures(setOf(GameObjectFeature.Perceptable()))))
     }
 
     @Test
-    fun `has characteristic`() {
-        assertTrue(GameObject.STENCH.hasCharacteristic(GameObjectCharacteristic.Perceptable()))
-        assertFalse(GameObject.GOLD.hasCharacteristic(GameObjectCharacteristic.Perceptable()))
+    fun `has feature`() {
+        assertTrue(GameObject.STENCH.hasFeature(GameObjectFeature.Perceptable()))
+        assertFalse(GameObject.GOLD.hasFeature(GameObjectFeature.Perceptable()))
     }
 }
 
