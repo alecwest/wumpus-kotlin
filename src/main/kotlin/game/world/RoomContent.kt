@@ -111,13 +111,13 @@ sealed class GameObject(val characeteristics: Set<GameObjectCharacteristic> = se
     object GLITTER : GameObject(setOf(Mappable("*"), Perceptable()))
     object GOLD : GameObject(setOf(Mappable("G"), Grabbable()))
     object MOO : GameObject(setOf(Mappable("!"), Perceptable()))
-    object PIT : GameObject(setOf(Mappable("P"), WorldAffecting(setOf(AdjacentEffect(RoomContent.BREEZE)))))
+    object PIT : GameObject(setOf(Dangerous(), Mappable("P"), WorldAffecting(setOf(AdjacentEffect(RoomContent.BREEZE)))))
     object STENCH : GameObject(setOf(Mappable("~"), Perceptable()))
-    object SUPMUW : GameObject(setOf(Destructable(setOf(GameObject.ARROW)), Mappable("S"), WorldAffecting(
+    object SUPMUW : GameObject(setOf(Dangerous(), Destructable(setOf(GameObject.ARROW)), Mappable("S"), WorldAffecting(
             setOf(AdjacentEffect(RoomContent.MOO), DiagonalEffect(RoomContent.MOO), HereEffect(RoomContent.FOOD)))))
-    object SUPMUW_EVIL : GameObject(setOf(Destructable(setOf(GameObject.ARROW)), Mappable("E"), WorldAffecting(
+    object SUPMUW_EVIL : GameObject(setOf(Dangerous(), Destructable(setOf(GameObject.ARROW)), Mappable("E"), WorldAffecting(
             setOf(AdjacentEffect(RoomContent.MOO), DiagonalEffect(RoomContent.MOO)))))
-    object WUMPUS : GameObject(setOf(Destructable(setOf(GameObject.ARROW)), Mappable("W"), WorldAffecting(
+    object WUMPUS : GameObject(setOf(Dangerous(), Destructable(setOf(GameObject.ARROW)), Mappable("W"), WorldAffecting(
             setOf(AdjacentEffect(RoomContent.STENCH)))))
 
     fun hasCharacteristic(characteristic: GameObjectCharacteristic): Boolean {
@@ -127,6 +127,7 @@ sealed class GameObject(val characeteristics: Set<GameObjectCharacteristic> = se
 
 sealed class GameObjectCharacteristic {
     class Blocking: GameObjectCharacteristic()
+    class Dangerous: GameObjectCharacteristic()
     class Destructable(val weaknesses: Set<GameObject>): GameObjectCharacteristic()
     class Grabbable: GameObjectCharacteristic()
     class Mappable(val character: String): GameObjectCharacteristic()
