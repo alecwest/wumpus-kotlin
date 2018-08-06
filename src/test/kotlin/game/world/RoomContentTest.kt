@@ -24,6 +24,12 @@ internal class RoomContentTest {
     }
 
     @Test
+    fun `convert mappables between string and game object`() {
+        for (gameObject in gameObjectValues().filter { it.hasCharacteristic(GameObjectCharacteristic.Mappable()) }) {
+        }
+    }
+
+    @Test
     fun `has characteristic`() {
         assertTrue(GameObject.STENCH.hasCharacteristic(GameObjectCharacteristic.Perceptable()))
         assertFalse(GameObject.GOLD.hasCharacteristic(GameObjectCharacteristic.Perceptable()))
