@@ -1,12 +1,7 @@
 package game.command
 
 import game.Game
-import game.player.InventoryItem
-import game.player.PlayerState
-import game.world.Dangerous
-import game.world.Perception
-import game.world.RoomContent
-import org.junit.jupiter.api.Assertions
+import game.world.Dangerous1
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.Test
@@ -38,7 +33,7 @@ internal class TurnCommandTest {
 
     companion object {
         private val initialPlayer = Helpers.createPlayer(location = Point(2, 2), facing = Direction.SOUTH)
-        private val initialWorld = Helpers.createWorld(roomContent = mapOf(Point(3, 2) to arrayListOf(Dangerous.PIT)))
+        private val initialWorld = Helpers.createWorld(roomContent = mapOf(Point(3, 2) to arrayListOf(Dangerous1.PIT)))
         private val initialGame = Helpers.createGame(player = initialPlayer, world = initialWorld)
 
         @JvmStatic

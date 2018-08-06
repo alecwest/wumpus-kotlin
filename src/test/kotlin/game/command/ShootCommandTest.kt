@@ -3,9 +3,8 @@ package game.command
 import game.Game
 import game.player.InventoryItem
 import game.player.PlayerInventory
-import game.world.Dangerous
+import game.world.Dangerous1
 import game.world.Perception
-import game.world.RoomContent
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
@@ -36,9 +35,9 @@ internal class ShootCommandTest {
                 InventoryItem.ARROW to 4
         ))
         private val initialWorld = Helpers.createWorld(roomContent = mapOf(
-                Point(0, 9) to arrayListOf(Dangerous.SUPMUW_EVIL),
-                Point(0, 8) to arrayListOf(Dangerous.WUMPUS),
-                Point(0, 3) to arrayListOf(Dangerous.SUPMUW)))
+                Point(0, 9) to arrayListOf(Dangerous1.SUPMUW_EVIL),
+                Point(0, 8) to arrayListOf(Dangerous1.WUMPUS),
+                Point(0, 3) to arrayListOf(Dangerous1.SUPMUW)))
         private val initialGame = Helpers.createGame(player = initialPlayer, world = initialWorld)
 
         @JvmStatic

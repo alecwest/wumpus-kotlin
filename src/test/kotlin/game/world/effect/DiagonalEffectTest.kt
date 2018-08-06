@@ -1,6 +1,6 @@
 package game.world.effect
 
-import game.world.Dangerous
+import game.world.Dangerous1
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import util.adjacents
@@ -16,7 +16,7 @@ class DiagonalEffectTest {
 
     @Test
     fun `add moo to surrounding rooms as effect of supmuw`() {
-        world.addRoomContent(point, Dangerous.SUPMUW)
+        world.addRoomContent(point, Dangerous1.SUPMUW)
         for (point in point.adjacents() + point.diagonals()) {
             assertTrue(world.hasRoomContent(point, RoomContent.MOO))
         }
@@ -24,8 +24,8 @@ class DiagonalEffectTest {
 
     @Test
     fun `remove moo from surrounding rooms as result of supmuw removal`() {
-        val world = Helpers.createWorld(roomContent = mapOf(point to arrayListOf(Dangerous.SUPMUW)))
-        world.removeRoomContent(point, Dangerous.SUPMUW)
+        val world = Helpers.createWorld(roomContent = mapOf(point to arrayListOf(Dangerous1.SUPMUW)))
+        world.removeRoomContent(point, Dangerous1.SUPMUW)
         for (point in point.adjacents() + point.diagonals()) {
             assertFalse(world.hasRoomContent(point, RoomContent.MOO))
         }

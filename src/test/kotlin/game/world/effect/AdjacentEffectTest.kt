@@ -1,6 +1,6 @@
 package game.world.effect
 
-import game.world.Dangerous
+import game.world.Dangerous1
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import util.adjacents
@@ -16,7 +16,7 @@ class AdjacentEffectTest {
 
     @Test
     fun `add breeze to adjacent rooms as effect of pit`() {
-        world.addRoomContent(point, Dangerous.PIT)
+        world.addRoomContent(point, Dangerous1.PIT)
         for (point in point.adjacents()) {
             assertTrue(world.hasRoomContent(point, RoomContent.BREEZE))
         }
@@ -27,8 +27,8 @@ class AdjacentEffectTest {
 
     @Test
     fun `remove breeze from adjacent rooms as result of pit removal`() {
-        val world = Helpers.createWorld(roomContent = mapOf(point to arrayListOf(Dangerous.PIT)))
-        world.removeRoomContent(point, Dangerous.PIT)
+        val world = Helpers.createWorld(roomContent = mapOf(point to arrayListOf(Dangerous1.PIT)))
+        world.removeRoomContent(point, Dangerous1.PIT)
         for (point in point.adjacents() + point.diagonals()) {
             assertFalse(world.hasRoomContent(point, RoomContent.BREEZE))
         }

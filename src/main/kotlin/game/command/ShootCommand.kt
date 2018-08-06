@@ -1,7 +1,7 @@
 package game.command
 
 import game.player.InventoryItem
-import game.world.Dangerous
+import game.world.Dangerous1
 import game.world.Perception
 import game.world.RoomContent
 import util.adjacent
@@ -16,9 +16,9 @@ class ShootCommand: Command() {
             game.removeFromPlayerInventory(InventoryItem.ARROW)
             loop@ while (game.roomIsValid(currentRoom)) {
                 val dangers = getDangersFromRoom(currentRoom)
-                for (dangers in dangers) {
-                    if (dangers.hasWeakness(InventoryItem.ARROW)) {
-                        kill(currentRoom, dangers)
+                for (danger in dangers) {
+                    if (danger.hasWeakness(InventoryItem.ARROW)) {
+                        kill(currentRoom, danger)
                         break@loop
                     }
                 }
@@ -29,8 +29,8 @@ class ShootCommand: Command() {
     }
 
     private fun getDangersFromRoom(room: Point) = game.getRoomContent(room).filter {
-        it is Dangerous
-    } as ArrayList<Dangerous>
+        it is Dangerous1
+    } as ArrayList<Dangerous1>
 
     private fun kill(room: Point, roomContent: RoomContent) {
         game.removeFromRoom(room, roomContent)

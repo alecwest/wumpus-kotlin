@@ -53,22 +53,22 @@ class WorldTest {
 
         @JvmStatic
         fun validRemoveRoomContentProvider() = Stream.of(
-                ValidRoomContentTestData(arrayListOf(Dangerous.PIT), arrayListOf(Dangerous.PIT), arrayListOf()),
+                ValidRoomContentTestData(arrayListOf(Dangerous1.PIT), arrayListOf(Dangerous1.PIT), arrayListOf()),
                 ValidRoomContentTestData(arrayListOf(RoomContent.GOLD, RoomContent.GLITTER), arrayListOf(RoomContent.GOLD), arrayListOf()),
-                ValidRoomContentTestData(arrayListOf(RoomContent.ARROW, Dangerous.WUMPUS), arrayListOf(RoomContent.ARROW), arrayListOf(Dangerous.WUMPUS))
+                ValidRoomContentTestData(arrayListOf(RoomContent.ARROW, Dangerous1.WUMPUS), arrayListOf(RoomContent.ARROW), arrayListOf(Dangerous1.WUMPUS))
         )
 
         @JvmStatic
         fun validSimilarRoomContentWithEffectsProvider() = Stream.of(
-                ValidSimilarRoomContentWithEffectsTestData(Dangerous.PIT, RoomContent.BREEZE,
+                ValidSimilarRoomContentWithEffectsTestData(Dangerous1.PIT, RoomContent.BREEZE,
                         arrayListOf(Point(4, 4), Point(4, 4).northEast(), Point(4, 4).northEast().north(), Point(4, 4).south().south()),
                         Point(4, 4),
                         arrayListOf(Point(4, 4).north(), Point(4, 4).east(), Point(4, 4).south(), Point(4, 4).northEast())),
-                ValidSimilarRoomContentWithEffectsTestData(Dangerous.WUMPUS, RoomContent.STENCH,
+                ValidSimilarRoomContentWithEffectsTestData(Dangerous1.WUMPUS, RoomContent.STENCH,
                         arrayListOf(Point(4, 4), Point(4, 4).northEast(), Point(4, 4).south().south()),
                         Point(4, 4),
                         arrayListOf(Point(4, 4).north(), Point(4, 4).east(), Point(4, 4).south())),
-                ValidSimilarRoomContentWithEffectsTestData(Dangerous.SUPMUW, RoomContent.MOO,
+                ValidSimilarRoomContentWithEffectsTestData(Dangerous1.SUPMUW, RoomContent.MOO,
                         arrayListOf(Point(4, 4), Point(4, 4).northEast(), Point(4, 4).south().south()),
                         Point(4, 4),
                         arrayListOf(Point(4, 4), Point(4, 4).north(), Point(4, 4).east(),
@@ -92,7 +92,7 @@ class WorldTest {
     @Test
     fun `add content to out-of-bounds room`() {
         world.addRoomContent(Point(-1, 1), RoomContent.STENCH)
-        world.addRoomContent(Point(2, -4), Dangerous.SUPMUW)
+        world.addRoomContent(Point(2, -4), Dangerous1.SUPMUW)
     }
 
     @ParameterizedTest
@@ -127,7 +127,7 @@ class WorldTest {
     @Test
     fun `remove content from out-of-bounds room`() {
         world.removeRoomContent(Point(-1, 1), RoomContent.STENCH)
-        world.removeRoomContent(Point(2, -4), Dangerous.SUPMUW)
+        world.removeRoomContent(Point(2, -4), Dangerous1.SUPMUW)
     }
 
     @Test
@@ -142,7 +142,7 @@ class WorldTest {
     @Test
     fun `check out-of-bounds room for content`() {
         assertFalse(world.hasRoomContent(Point(-1, 1), RoomContent.STENCH))
-        assertFalse(world.hasRoomContent(Point(2, -4), Dangerous.SUPMUW))
+        assertFalse(world.hasRoomContent(Point(2, -4), Dangerous1.SUPMUW))
     }
 
     @Test
@@ -190,9 +190,9 @@ class WorldTest {
 
     @Test
     fun `check for room content in world map`() {
-        world.addRoomContent(Point(2, 2), Dangerous.PIT)
+        world.addRoomContent(Point(2, 2), Dangerous1.PIT)
         val worldMap = world.getWorldMap()
-        val target1 = Dangerous.PIT.toCharRepresentation()
+        val target1 = Dangerous1.PIT.toCharRepresentation()
         val target2 = RoomContent.BREEZE.toCharRepresentation()
         assertContains(worldMap, target1, 1)
         assertContains(worldMap, target2, 4)
@@ -200,9 +200,9 @@ class WorldTest {
 
     @Test
     fun `check for room content on world map edge`() {
-        world.addRoomContent(Point(0, 0), Dangerous.SUPMUW_EVIL)
+        world.addRoomContent(Point(0, 0), Dangerous1.SUPMUW_EVIL)
         val worldMap = world.getWorldMap()
-        val target1 = Dangerous.SUPMUW_EVIL.toCharRepresentation()
+        val target1 = Dangerous1.SUPMUW_EVIL.toCharRepresentation()
         val target2 = RoomContent.MOO.toCharRepresentation()
         assertContains(worldMap, target1, 1)
         assertContains(worldMap, target2, 3)
@@ -210,9 +210,9 @@ class WorldTest {
 
     @Test
     fun `check for room content when added out of bounds`() {
-        world.addRoomContent(Point(-1,0), Dangerous.WUMPUS)
+        world.addRoomContent(Point(-1,0), Dangerous1.WUMPUS)
         val worldMap = world.getWorldMap()
-        val target1 = Dangerous.WUMPUS.toCharRepresentation()
+        val target1 = Dangerous1.WUMPUS.toCharRepresentation()
         val target2 = RoomContent.STENCH.toCharRepresentation()
         assertContains(worldMap, target1, 0)
         assertContains(worldMap, target2, 0)

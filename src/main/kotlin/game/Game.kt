@@ -4,7 +4,7 @@ import game.player.InventoryItem
 import game.player.PlayerInventory
 import game.world.RoomContent
 import game.command.CommandResult
-import game.world.Dangerous
+import game.world.Dangerous1
 import util.Direction
 import java.awt.Point
 
@@ -79,7 +79,7 @@ data class Game(private var gameState: GameState = GameState()) {
     fun setPlayerLocation(location: Point) {
         val newPlayer = gameState.getPlayer()
         newPlayer.setLocation(location)
-        if (getRoomContent(location).any { it is Dangerous }) {
+        if (getRoomContent(location).any { it is Dangerous1 }) {
             newPlayer.setAlive(false)
         }
         gameState = gameState.copyThis(player = newPlayer)

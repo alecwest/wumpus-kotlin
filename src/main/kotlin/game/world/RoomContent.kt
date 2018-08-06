@@ -3,7 +3,6 @@ package game.world
 import game.player.InventoryItem
 import game.world.GameObjectCharacteristic.*
 import game.world.effect.*
-import kotlin.reflect.KClass
 
 /**
  * RoomContent is a base class for all permanent/semi-permanent objects in the world
@@ -22,13 +21,13 @@ sealed class RoomContent(val weaknesses: Set<InventoryItem> = setOf()) {
 }
 
 /**
- * Dangerous objects are RoomContent that are intended to kill players on contact
+ * Dangerous1 objects are RoomContent that are intended to kill players on contact
  */
-sealed class Dangerous(weaknesses: Set<InventoryItem> = setOf()): RoomContent(weaknesses) {
-    object PIT : Dangerous()
-    object SUPMUW_EVIL : Dangerous(setOf(InventoryItem.ARROW))
-    object SUPMUW : Dangerous(setOf(InventoryItem.ARROW))
-    object WUMPUS : Dangerous(setOf(InventoryItem.ARROW))
+sealed class Dangerous1(weaknesses: Set<InventoryItem> = setOf()): RoomContent(weaknesses) {
+    object PIT : Dangerous1()
+    object SUPMUW_EVIL : Dangerous1(setOf(InventoryItem.ARROW))
+    object SUPMUW : Dangerous1(setOf(InventoryItem.ARROW))
+    object WUMPUS : Dangerous1(setOf(InventoryItem.ARROW))
 }
 
 fun roomContentValues(): List<RoomContent> {
@@ -36,7 +35,7 @@ fun roomContentValues(): List<RoomContent> {
 }
 
 fun dangerousValues(): List<RoomContent> {
-    return Dangerous::class.nestedClasses.map { it.objectInstance as RoomContent }
+    return Dangerous1::class.nestedClasses.map { it.objectInstance as RoomContent }
 }
 
 /**
@@ -60,12 +59,12 @@ fun RoomContent.associatedEffects(): ArrayList<WorldEffect> {
         RoomContent.GOLD -> arrayListOf(HereEffect(RoomContent.GLITTER))
         RoomContent.MOO -> arrayListOf()
         RoomContent.STENCH -> arrayListOf()
-        Dangerous.PIT -> arrayListOf(AdjacentEffect(RoomContent.BREEZE))
-        Dangerous.SUPMUW_EVIL -> arrayListOf(AdjacentEffect(RoomContent.MOO),
+        Dangerous1.PIT -> arrayListOf(AdjacentEffect(RoomContent.BREEZE))
+        Dangerous1.SUPMUW_EVIL -> arrayListOf(AdjacentEffect(RoomContent.MOO),
                 DiagonalEffect(RoomContent.MOO))
-        Dangerous.SUPMUW -> arrayListOf(AdjacentEffect(RoomContent.MOO),
+        Dangerous1.SUPMUW -> arrayListOf(AdjacentEffect(RoomContent.MOO),
                 DiagonalEffect(RoomContent.MOO), HereEffect(RoomContent.FOOD))
-        Dangerous.WUMPUS -> arrayListOf(AdjacentEffect(RoomContent.STENCH))
+        Dangerous1.WUMPUS -> arrayListOf(AdjacentEffect(RoomContent.STENCH))
     }
 }
 
@@ -79,10 +78,10 @@ fun RoomContent.toCharRepresentation(): String {
         RoomContent.GOLD -> "G"
         RoomContent.MOO -> "!"
         RoomContent.STENCH -> "~"
-        Dangerous.PIT -> "P"
-        Dangerous.SUPMUW_EVIL -> "E"
-        Dangerous.SUPMUW -> "S"
-        Dangerous.WUMPUS -> "W"
+        Dangerous1.PIT -> "P"
+        Dangerous1.SUPMUW_EVIL -> "E"
+        Dangerous1.SUPMUW -> "S"
+        Dangerous1.WUMPUS -> "W"
     }
 }
 
@@ -96,10 +95,10 @@ fun String.toRoomContent(): RoomContent {
         RoomContent.GOLD.toCharRepresentation() -> RoomContent.GOLD
         RoomContent.MOO.toCharRepresentation() -> RoomContent.MOO
         RoomContent.STENCH.toCharRepresentation() -> RoomContent.STENCH
-        Dangerous.PIT.toCharRepresentation() -> Dangerous.PIT
-        Dangerous.SUPMUW_EVIL.toCharRepresentation() -> Dangerous.SUPMUW_EVIL
-        Dangerous.SUPMUW.toCharRepresentation() -> Dangerous.SUPMUW
-        Dangerous.WUMPUS.toCharRepresentation() -> Dangerous.WUMPUS
+        Dangerous1.PIT.toCharRepresentation() -> Dangerous1.PIT
+        Dangerous1.SUPMUW_EVIL.toCharRepresentation() -> Dangerous1.SUPMUW_EVIL
+        Dangerous1.SUPMUW.toCharRepresentation() -> Dangerous1.SUPMUW
+        Dangerous1.WUMPUS.toCharRepresentation() -> Dangerous1.WUMPUS
         else -> throw Exception("Cannot convert %s to a RoomContent value".format(this))
     }
 }

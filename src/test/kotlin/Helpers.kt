@@ -4,7 +4,6 @@ import game.agent.Agent
 import game.agent.intelligence.BasicIntelligence
 import game.agent.intelligence.Intelligence
 import game.client.Client
-import game.command.Command
 import game.command.CommandResult
 import game.player.InventoryItem
 import game.player.Player
@@ -29,7 +28,7 @@ class Helpers {
 
         fun createWorld(size: Int = 10,
                         roomContent: Map<Point, ArrayList<out RoomContent>> =
-                                mapOf(Point(2, 2) to arrayListOf(Dangerous.PIT))): World {
+                                mapOf(Point(2, 2) to arrayListOf(Dangerous1.PIT))): World {
             val world = World(size)
             for (point in roomContent.keys) {
                 for (content in roomContent.getValue(point)) {

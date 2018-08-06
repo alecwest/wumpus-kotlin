@@ -4,7 +4,7 @@ import game.Game
 import game.player.InventoryItem
 import game.player.PlayerInventory
 import game.player.PlayerState
-import game.world.Dangerous
+import game.world.Dangerous1
 import game.world.RoomContent
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
@@ -45,7 +45,7 @@ class GrabCommandTest {
         private val initialGame = Helpers.createGame(
                 world = Helpers.createWorld(
                         roomContent = mapOf(
-                                Point(2, 2) to arrayListOf(RoomContent.GOLD, Dangerous.SUPMUW, RoomContent.ARROW))),
+                                Point(2, 2) to arrayListOf(RoomContent.GOLD, Dangerous1.SUPMUW, RoomContent.ARROW))),
                 player = Helpers.createPlayer(
                         location = testPoint,
                         facing = Direction.SOUTH,
