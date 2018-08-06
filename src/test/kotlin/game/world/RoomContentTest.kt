@@ -22,5 +22,11 @@ internal class RoomContentTest {
     fun `convert invalid string`() {
         assertFails { "invalid string".toRoomContent() }
     }
+
+    @Test
+    fun `has characteristic`() {
+        assertTrue(GameObject.STENCH.hasCharacteristic(GameObjectCharacteristic.Perceptable()))
+        assertFalse(GameObject.GOLD.hasCharacteristic(GameObjectCharacteristic.Perceptable()))
+    }
 }
 

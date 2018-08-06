@@ -1,7 +1,9 @@
 package game.world
 
 import game.player.InventoryItem
+import game.world.GameObjectCharacteristic.*
 import game.world.effect.*
+import kotlin.reflect.KClass
 
 /**
  * RoomContent is a base class for all permanent/semi-permanent objects in the world
@@ -100,4 +102,36 @@ fun String.toRoomContent(): RoomContent {
         Dangerous.WUMPUS.toCharRepresentation() -> Dangerous.WUMPUS
         else -> throw Exception("Cannot convert %s to a RoomContent value".format(this))
     }
+}
+
+sealed class GameObject(val characeteristics: Set<GameObjectCharacteristic> = setOf()) {
+    object ARROW : GameObject(setOf(Shootable(), Grabbable()))
+    object BLOCKADE : GameObject(setOf(Mappable("X"), Perceptable(), Blocking()))
+    object BREEZE : GameObject(setOf(Mappable("="), Perceptable()))
+    object FOOD : GameObject(setOf(Mappable("F"), Grabbable(), Perceptable()))
+    object GLITTER : GameObject(setOf(Mappable("*"), Perceptable()))
+    object GOLD : GameObject(setOf(Mappable("G"), Grabbable()))
+    object MOO : GameObject(setOf(Mappable("!"), Perceptable()))
+    object PIT : GameObject(setOf(Mappable("P"), WorldAffecting(setOf(AdjacentEffect(RoomContent.BREEZE)))))
+    object STENCH : GameObject(setOf(Mappable("~"), Perceptable()))
+    object SUPMUW : GameObject(setOf(Destructable(setOf(GameObject.ARROW)), Mappable("S"), WorldAffecting(
+            setOf(AdjacentEffect(RoomContent.MOO), DiagonalEffect(RoomContent.MOO), HereEffect(RoomContent.FOOD)))))
+    object SUPMUW_EVIL : GameObject(setOf(Destructable(setOf(GameObject.ARROW)), Mappable("E"), WorldAffecting(
+            setOf(AdjacentEffect(RoomContent.MOO), DiagonalEffect(RoomContent.MOO)))))
+    object WUMPUS : GameObject(setOf(Destructable(setOf(GameObject.ARROW)), Mappable("W"), WorldAffecting(
+            setOf(AdjacentEffect(RoomContent.STENCH)))))
+
+    fun hasCharacteristic(characteristic: GameObjectCharacteristic): Boolean {
+        return this.characeteristics.any { it::class == characteristic::class }
+    }
+}
+
+sealed class GameObjectCharacteristic {
+    class Blocking: GameObjectCharacteristic()
+    class Destructable(val weaknesses: Set<GameObject>): GameObjectCharacteristic()
+    class Grabbable: GameObjectCharacteristic()
+    class Mappable(val character: String): GameObjectCharacteristic()
+    class Perceptable(): GameObjectCharacteristic()
+    class Shootable(): GameObjectCharacteristic()
+    class WorldAffecting(val effects: Set<WorldEffect>): GameObjectCharacteristic()
 }
