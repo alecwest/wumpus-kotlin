@@ -12,6 +12,7 @@ import util.right
  */
 class BasicIntelligence : Intelligence() {
     override fun chooseNextMove(world: World, commandResult: CommandResult): Command {
+        super.chooseNextMove(world, commandResult)
         return if (commandResult.moveRejected()) {
             TurnCommand(commandResult.getPlayerState().getDirection().right())
         } else {

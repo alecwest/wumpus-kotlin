@@ -9,6 +9,7 @@ import util.right
 
 class HumanIntelligence: Intelligence() {
     override fun chooseNextMove(world: World, commandResult: CommandResult): Command {
+        super.chooseNextMove(world, commandResult)
         println(world.getWorldMap(commandResult.getPlayerState()))
         println(commandResult.toString())
         var move = readLine() ?: ""

@@ -13,9 +13,7 @@ import Helpers.Companion.createClient
 import Helpers.Companion.createCommandResult
 import Helpers.Companion.createPlayerState
 import Helpers.Companion.createWorld
-import game.world.Perception
-import game.world.RoomContent
-import game.world.World
+import game.world.*
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
@@ -38,7 +36,8 @@ internal class AgentTest {
     fun `initialize agent world`() {
         assertEquals(5, agent.world.getSize())
         assertEquals(0, agent.world.getRooms().filter { !it.isEmpty() }.size)
-        assertContains(agent.client.getMoveResult().getPlayerState().getDirection().toPlayerMapRepresentation(), agent.world.getWorldMap(agent.client.getMoveResult().getPlayerState()), 1)
+        assertContains(agent.client.getMoveResult().getPlayerState().getDirection().toPlayerMapRepresentation(),
+                agent.world.getWorldMap(agent.client.getMoveResult().getPlayerState()), 1)
     }
 
     @ParameterizedTest
@@ -76,21 +75,23 @@ internal class AgentTest {
 
         @JvmStatic
         fun validPostMoveBasicIntelligenceAgentTestDataProvider() = Stream.of(
-                ValidPostMoveAgentTestData(world,
-                        commandResult.copyThis(
+                ValidPostMoveAgentTestData(commandResult.copyThis(
                                 playerState = commandResult.getPlayerState().copyThis(location = Point(0, 3))
                         )),
-                ValidPostMoveAgentTestData(world,
-                        commandResult.copyThis(
+                ValidPostMoveAgentTestData(commandResult.copyThis(
                                 perceptions = arrayListOf(Perception.BLOCKADE_BUMP),
                                 playerState = commandResult.getPlayerState().copyThis(
                                         location = Point(0, 3))
                         )),
-                ValidPostMoveAgentTestData(world,
-                        commandResult.copyThis(
+                ValidPostMoveAgentTestData(commandResult.copyThis(
                                 playerState = commandResult.getPlayerState().copyThis(
                                         location = Point(0, 3), facing = Direction.EAST)
-                ))
+                        )),
+                ValidPostMoveAgentTestData(commandResult.copyThis(
+                                playerState = commandResult.getPlayerState().copyThis(
+                                        location = Point(1, 3), facing = Direction.EAST),
+                                roomContent = arrayListOf(RoomContent.BREEZE)
+                        ))
         )
     }
 }
@@ -102,6 +103,5 @@ data class ValidAgentTestData (
 )
 
 data class ValidPostMoveAgentTestData (
-        val givenWorld: World,
         val expectedCommandResult: CommandResult
 )
