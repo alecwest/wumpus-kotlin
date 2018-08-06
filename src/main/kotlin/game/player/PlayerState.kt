@@ -19,4 +19,10 @@ data class PlayerState(private val alive: Boolean = true,
                  facing: Direction = this.facing,
                  inventory: PlayerInventory = this.inventory.copyThis())
             = PlayerState(alive, location, facing, inventory)
+
+    override fun toString(): String {
+        return "Alive: $alive\nLocation: $location\nFacing: $facing\nInventory: $inventory"
+    }
+
+
 }

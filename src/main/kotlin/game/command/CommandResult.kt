@@ -17,4 +17,10 @@ data class CommandResult(private val perceptions: ArrayList<Perception> = arrayL
     fun copyThis(perceptions: ArrayList<Perception> = this.perceptions,
                  playerState: PlayerState = this.playerState.copyThis(),
                  roomContent: ArrayList<RoomContent> = this.roomContent) = CommandResult(perceptions, playerState, roomContent)
+
+    override fun toString(): String {
+        return "Perceptions: $perceptions\n$playerState\nIn the room: $roomContent\n"
+    }
+
+
 }
