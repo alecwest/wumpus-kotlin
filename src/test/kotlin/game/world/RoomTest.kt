@@ -21,6 +21,19 @@ class RoomTest {
     }
 
     @Test
+    fun `add RoomFilling content to room`() {
+        room.addGameObject(GameObject.BLOCKADE)
+        assertEquals(1, room.getAmountOfObjects())
+    }
+
+    @Test
+    fun `add content to full room`() {
+        val room = Room(arrayListOf(GameObject.BLOCKADE))
+        room.addGameObject(GameObject.WUMPUS)
+        assertEquals(1, room.getAmountOfObjects())
+    }
+
+    @Test
     fun `remove content from room`() {
         room.removeGameObject(GameObject.BREEZE)
         assertEquals(initialSize - 1, room.getAmountOfObjects())
@@ -36,6 +49,13 @@ class RoomTest {
     fun `check room is empty`() {
         val emptyRoom = Room()
         assertTrue(emptyRoom.isEmpty())
+    }
+
+    @Test
+    fun `room is full`() {
+        val room = Room()
+        room.addGameObject(GameObject.BLOCKADE)
+        assertTrue(room.isFull())
     }
 
     @Test

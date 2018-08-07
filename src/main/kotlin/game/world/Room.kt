@@ -14,7 +14,10 @@ class Room(private val gameObjects: ArrayList<GameObject> = arrayListOf()) {
     fun getGameObject() = gameObjects
 
     fun addGameObject(content: GameObject) {
-        if (!hasGameObject(content)) {
+        if (!hasGameObject(content) && !isFull()) {
+            if (content.hasFeature(GameObjectFeature.RoomFilling())) {
+                gameObjects.removeIf { true }
+            }
             gameObjects.add(content)
         }
     }
@@ -35,6 +38,10 @@ class Room(private val gameObjects: ArrayList<GameObject> = arrayListOf()) {
 
     fun isEmpty(): Boolean {
         return gameObjects.size == 0
+    }
+
+    fun isFull(): Boolean {
+        return gameObjects.any { it.hasFeature(GameObjectFeature.Blocking()) }
     }
 
     fun getSmallRoomString(playerDirection: Direction? = null): String {
