@@ -15,10 +15,14 @@ class Room(private val gameObjects: ArrayList<GameObject> = arrayListOf()) {
 
     fun addGameObject(content: GameObject) {
         if (!hasGameObject(content) && !isFull()) {
-            if (content.hasFeature(GameObjectFeature.RoomFilling())) {
-                gameObjects.removeIf { true }
-            }
+            removeAllObjectsIfRoomFilling(content)
             gameObjects.add(content)
+        }
+    }
+
+    private fun removeAllObjectsIfRoomFilling(content: GameObject) {
+        if (content.hasFeature(GameObjectFeature.RoomFilling())) {
+            gameObjects.removeIf { true }
         }
     }
 
