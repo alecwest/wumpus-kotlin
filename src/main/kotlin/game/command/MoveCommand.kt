@@ -1,7 +1,7 @@
 package game.command
 
 import game.world.Perception
-import game.world.GameObject
+import game.world.GameObjectFeature.*
 import util.*
 import java.awt.Point
 
@@ -12,7 +12,12 @@ class MoveCommand: Command() {
         val perceptionList = arrayListOf<Perception>()
         when {
             canEnterRoom(targetLocation) -> deferExecution(direction)
-            game.roomIsValid(targetLocation) -> perceptionList.add(Perception.BLOCKADE_BUMP)
+            game.roomIsValid(targetLocation) -> {
+                for (gameObject in game.getGameObjects(targetLocation).filter { it.hasFeature(Blocking()) }) {
+                    val perception = (gameObject.getFeature(Perceptable()) as Perceptable).perception
+                    if (perception != null) perceptionList.add(perception)
+                }
+            }
             else -> perceptionList.add(Perception.WALL_BUMP)
         }
 
@@ -20,7 +25,7 @@ class MoveCommand: Command() {
     }
 
     private fun canEnterRoom(point: Point): Boolean {
-        if(game.hasGameObject(point, GameObject.BLOCKADE) || !game.roomIsValid(point)) {
+        if(game.getGameObjects(point).any { it.hasFeature(Blocking()) } || !game.roomIsValid(point)) {
             return false
         }
         return true

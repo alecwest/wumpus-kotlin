@@ -5,7 +5,7 @@ import game.world.effect.*
 
 sealed class GameObject(val features: Set<GameObjectFeature> = setOf()) {
     object ARROW : GameObject(setOf(Shootable(), Grabbable()))
-    object BLOCKADE : GameObject(setOf(Mappable("X"), Perceptable(Perception.BLOCKADE_BUMP), Blocking()))
+    object BLOCKADE : GameObject(setOf(Blocking(), Mappable("X"), Perceptable(Perception.BLOCKADE_BUMP), RoomFilling()))
     object BREEZE : GameObject(setOf(Mappable("="), Perceptable(Perception.BREEZE)))
     object FOOD : GameObject(setOf(Mappable("F"), Grabbable(), Perceptable(Perception.FOOD)))
     object GLITTER : GameObject(setOf(Mappable("*"), Perceptable(Perception.GLITTER)))
@@ -53,12 +53,13 @@ fun String.toMappableGameObject(): GameObject? {
 }
 
 sealed class GameObjectFeature {
-    class Blocking: GameObjectFeature()
+    class Blocking: GameObjectFeature() // For things that block a player from entering
     class Dangerous: GameObjectFeature()
     class Destructable(val weaknesses: Set<GameObject> = setOf()): GameObjectFeature()
     class Grabbable: GameObjectFeature()
     class Mappable(val character: String = ""): GameObjectFeature()
     class Perceptable(val perception: Perception? = null): GameObjectFeature()
+    class RoomFilling: GameObjectFeature() // For things that must exist in a Room alone
     class Shootable(): GameObjectFeature()
     class WorldAffecting(val effects: ArrayList<WorldEffect> = arrayListOf()): GameObjectFeature()
 }
