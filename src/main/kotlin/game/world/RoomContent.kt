@@ -120,6 +120,10 @@ sealed class GameObject(val features: Set<GameObjectFeature> = setOf()) {
     object WUMPUS : GameObject(setOf(Dangerous(), Destructable(setOf(GameObject.ARROW)), Mappable("W"), WorldAffecting(
             arrayListOf(AdjacentEffect(RoomContent.STENCH)))))
 
+    fun getFeature(feature: GameObjectFeature): GameObjectFeature? {
+        return this.features.find { it::class == feature::class }
+    }
+
     fun hasFeature(feature: GameObjectFeature): Boolean {
         return this.features.any { it::class == feature::class }
     }

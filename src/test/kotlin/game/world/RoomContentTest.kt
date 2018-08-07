@@ -1,5 +1,7 @@
 package game.world
 
+import game.world.GameObject.*
+import game.world.GameObjectFeature.*
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import kotlin.test.assertFails
@@ -27,35 +29,43 @@ internal class RoomContentTest {
 
     @Test
     fun `convert mappables between string and game object`() {
-        for (gameObject in gameObjectValues().filter { it.hasFeature(GameObjectFeature.Mappable()) }) {
+        for (gameObject in gameObjectValues().filter { it.hasFeature(Mappable()) }) {
         }
     }
 
     @Test
     fun `filter game object values by feature`() {
-        assertTrue(setOf(GameObject.BREEZE, GameObject.GLITTER,
-                GameObject.MOO, GameObject.STENCH,
-                GameObject.BLOCKADE, GameObject.FOOD).containsAll(
-                        gameObjectsWithFeatures(setOf(GameObjectFeature.Perceptable()))))
+        assertTrue(setOf(BREEZE, GLITTER, MOO, STENCH, BLOCKADE, FOOD).containsAll(
+                        gameObjectsWithFeatures(setOf(Perceptable()))))
     }
 
     @Test
     fun `filter game object values by features that exist together`() {
-        assertTrue(setOf(GameObject.SUPMUW, GameObject.SUPMUW_EVIL,
-                GameObject.WUMPUS).containsAll(
-                gameObjectsWithFeatures(setOf(
-                        GameObjectFeature.Dangerous(), GameObjectFeature.Destructable()))))
+        assertTrue(setOf(SUPMUW, SUPMUW_EVIL, WUMPUS).containsAll(
+                gameObjectsWithFeatures(setOf(Dangerous(), Destructable()))))
     }
 
     @Test
     fun `filter game object values by features that do not exist together`() {
-        assertTrue(gameObjectsWithFeatures(setOf(GameObjectFeature.Shootable(), GameObjectFeature.Destructable())).isEmpty())
+        assertTrue(gameObjectsWithFeatures(setOf(Shootable(), Destructable())).isEmpty())
+    }
+
+    @Test
+    fun `get feature from game object`() {
+        assertEquals("X", (BLOCKADE.getFeature(Mappable()) as Mappable).character)
+    }
+
+    @Test
+    fun `convert mappable game objects between string and game object`() {
+        for (gameObject in gameObjectsWithFeatures(setOf(Mappable()))) {
+
+        }
     }
 
     @Test
     fun `has feature`() {
-        assertTrue(GameObject.STENCH.hasFeature(GameObjectFeature.Perceptable()))
-        assertFalse(GameObject.GOLD.hasFeature(GameObjectFeature.Perceptable()))
+        assertTrue(STENCH.hasFeature(Perceptable()))
+        assertFalse(GOLD.hasFeature(Perceptable()))
     }
 }
 
