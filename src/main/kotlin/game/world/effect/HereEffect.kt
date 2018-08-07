@@ -1,15 +1,15 @@
 package game.world.effect
 
-import game.world.RoomContent
+import game.world.GameObject
 import game.world.World
 import java.awt.Point
 
-class HereEffect(roomContent: RoomContent): WorldEffect(roomContent) {
+class HereEffect(gameObject: GameObject): WorldEffect(gameObject) {
     override fun applyEffect(world: World, point: Point) {
-        world.addRoomContent(point, roomContent)
+        world.addGameObject(point, gameObject)
     }
 
     override fun removeEffect(world: World, point: Point) {
-        world.removeRoomContent(point, roomContent)
+        world.removeGameObject(point, gameObject)
     }
 }

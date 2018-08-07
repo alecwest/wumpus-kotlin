@@ -2,7 +2,7 @@ package game.command
 
 import game.player.PlayerState
 import game.world.Perception
-import game.world.RoomContent
+import game.world.GameObject
 import org.junit.jupiter.api.Test
 import java.awt.Point
 import kotlin.test.assertEquals
@@ -11,7 +11,7 @@ import kotlin.test.assertTrue
 
 internal class CommandResultTest {
     private val commandResult = CommandResult(arrayListOf(Perception.BLOCKADE_BUMP),
-            PlayerState(location = Point(44, 23)), arrayListOf(RoomContent.ARROW))
+            PlayerState(location = Point(44, 23)), arrayListOf(GameObject.ARROW))
     private val plainCommandResult = CommandResult()
 
     @Test
@@ -28,8 +28,8 @@ internal class CommandResultTest {
 
     @Test
     fun `get room content`() {
-        assertEquals(arrayListOf(RoomContent.ARROW).toString(), commandResult.getRoomContent().toString())
-        assertEquals(arrayListOf(), plainCommandResult.getRoomContent())
+        assertEquals(arrayListOf(GameObject.ARROW).toString(), commandResult.getGameObjects().toString())
+        assertEquals(arrayListOf(), plainCommandResult.getGameObjects())
     }
 
     @Test

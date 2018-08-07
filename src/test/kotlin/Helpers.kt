@@ -21,18 +21,18 @@ class Helpers {
         const val basicIntelligenceWorldFileName = "src/test/resources/basicIntelligenceTestFile.json"
 
         // TODO all of these create functions shouldn't just be test helpers
-        fun createRoom(roomContent: ArrayList<RoomContent>
-                       = arrayListOf(RoomContent.BREEZE, RoomContent.STENCH)): Room {
-            return Room(roomContent)
+        fun createRoom(gameObject: ArrayList<GameObject>
+                       = arrayListOf(GameObject.BREEZE, GameObject.STENCH)): Room {
+            return Room(gameObject)
         }
 
         fun createWorld(size: Int = 10,
-                        roomContent: Map<Point, ArrayList<out RoomContent>> =
-                                mapOf(Point(2, 2) to arrayListOf(Dangerous1.PIT))): World {
+                        gameObject: Map<Point, ArrayList<out GameObject>> =
+                                mapOf(Point(2, 2) to arrayListOf(GameObject.PIT))): World {
             val world = World(size)
-            for (point in roomContent.keys) {
-                for (content in roomContent.getValue(point)) {
-                    world.addRoomContent(point, content)
+            for (point in gameObject.keys) {
+                for (content in gameObject.getValue(point)) {
+                    world.addGameObject(point, content)
                 }
             }
             return world
@@ -72,8 +72,8 @@ class Helpers {
 
         fun createCommandResult(perceptions: ArrayList<Perception> = arrayListOf(),
                                 playerState: PlayerState = Helpers.createPlayerState(),
-                                roomContent: ArrayList<RoomContent> = arrayListOf()): CommandResult {
-            return CommandResult(perceptions, playerState, roomContent)
+                                gameObject: ArrayList<GameObject> = arrayListOf()): CommandResult {
+            return CommandResult(perceptions, playerState, gameObject)
         }
 
         fun createClient(fileName: String = "",

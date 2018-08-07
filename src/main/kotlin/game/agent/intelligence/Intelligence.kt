@@ -12,8 +12,8 @@ abstract class Intelligence {
     }
 
     open fun processLastMove(world: World, commandResult: CommandResult) {
-        for (roomContent in commandResult.getRoomContent()) {
-            world.addRoomContent(commandResult.getPlayerState().getLocation(), roomContent)
+        for (gameObject in commandResult.getGameObjects()) {
+            world.addGameObject(commandResult.getPlayerState().getLocation(), gameObject)
         }
     }
 }

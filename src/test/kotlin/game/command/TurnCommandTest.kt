@@ -1,7 +1,8 @@
 package game.command
 
 import game.Game
-import game.world.Dangerous1
+import game.world.GameObject
+import game.world.Perception
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.Test
@@ -33,19 +34,19 @@ internal class TurnCommandTest {
 
     companion object {
         private val initialPlayer = Helpers.createPlayer(location = Point(2, 2), facing = Direction.SOUTH)
-        private val initialWorld = Helpers.createWorld(roomContent = mapOf(Point(3, 2) to arrayListOf(Dangerous1.PIT)))
+        private val initialWorld = Helpers.createWorld(gameObject = mapOf(Point(3, 2) to arrayListOf(GameObject.PIT)))
         private val initialGame = Helpers.createGame(player = initialPlayer, world = initialWorld)
 
         @JvmStatic
         fun validTurnCommandTestDataProvider() = Stream.of(
-                ValidTurnCommandTestData(initialGame, TurnCommand(Direction.EAST), CommandResult(arrayListOf(),
-                        initialPlayer.getPlayerState().copyThis(facing = Direction.EAST), initialGame.getRoomContent())),
-                ValidTurnCommandTestData(initialGame, TurnCommand(Direction.NORTH), CommandResult(arrayListOf(),
-                        initialPlayer.getPlayerState().copyThis(facing = Direction.NORTH), initialGame.getRoomContent())),
-                ValidTurnCommandTestData(initialGame, TurnCommand(Direction.EAST), CommandResult(arrayListOf(),
-                        initialPlayer.getPlayerState().copyThis(facing = Direction.EAST), initialGame.getRoomContent())),
-                ValidTurnCommandTestData(initialGame, TurnCommand(Direction.SOUTH), CommandResult(arrayListOf(),
-                        initialPlayer.getPlayerState().copyThis(facing = Direction.SOUTH), initialGame.getRoomContent()))
+                ValidTurnCommandTestData(initialGame, TurnCommand(Direction.EAST), CommandResult(arrayListOf(Perception.BREEZE),
+                        initialPlayer.getPlayerState().copyThis(facing = Direction.EAST), initialGame.getGameObjects())),
+                ValidTurnCommandTestData(initialGame, TurnCommand(Direction.NORTH), CommandResult(arrayListOf(Perception.BREEZE),
+                        initialPlayer.getPlayerState().copyThis(facing = Direction.NORTH), initialGame.getGameObjects())),
+                ValidTurnCommandTestData(initialGame, TurnCommand(Direction.EAST), CommandResult(arrayListOf(Perception.BREEZE),
+                        initialPlayer.getPlayerState().copyThis(facing = Direction.EAST), initialGame.getGameObjects())),
+                ValidTurnCommandTestData(initialGame, TurnCommand(Direction.SOUTH), CommandResult(arrayListOf(Perception.BREEZE),
+                        initialPlayer.getPlayerState().copyThis(facing = Direction.SOUTH), initialGame.getGameObjects()))
         )
     }
 }

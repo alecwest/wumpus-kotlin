@@ -4,7 +4,7 @@ package game.command
 import game.Game
 import game.player.InventoryItem
 import game.world.Perception
-import game.world.RoomContent
+import game.world.GameObject
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
@@ -47,9 +47,9 @@ internal class MoveCommandTest {
         private val initialPlayerInCorner = Helpers.createPlayer(
                 location = Point(0, 0), facing = Direction.SOUTH, inventoryContent = mapOf(InventoryItem.ARROW to 2))
         private val initialPlayerInCornerWorld = Helpers.createWorld(
-                roomContent = mapOf(
-                        Point(0, 1) to arrayListOf(RoomContent.BLOCKADE),
-                        Point(1, 0) to arrayListOf(RoomContent.GOLD)))
+                gameObject = mapOf(
+                        Point(0, 1) to arrayListOf(GameObject.BLOCKADE),
+                        Point(1, 0) to arrayListOf(GameObject.GOLD)))
         private val playerInCornerGame = Helpers.createGame(player = initialPlayerInCorner, world = initialPlayerInCornerWorld)
 
         // TODO initialGame is not initialized at the start of every test, so these must run in succession to pass
@@ -58,7 +58,7 @@ internal class MoveCommandTest {
             ValidMoveCommandTestData(initialGame, MoveCommand(),
                     CommandResult(arrayListOf(),
                             initialPlayer.getPlayerState().copyThis(location = Point(2, 3), facing = Direction.SOUTH),
-                            arrayListOf(RoomContent.BREEZE))),
+                            arrayListOf(GameObject.BREEZE))),
             ValidMoveCommandTestData(initialGame, MoveCommand(),
                     CommandResult(playerState = initialPlayer.getPlayerState().copyThis(location = Point(1, 3), facing = Direction.WEST))),
             ValidMoveCommandTestData(initialGame, MoveCommand(),
@@ -77,7 +77,7 @@ internal class MoveCommandTest {
             ValidMoveCommandTestData(playerInCornerGame, MoveCommand(),
                     CommandResult(arrayListOf(), initialPlayerInCorner.getPlayerState().copyThis(
                             location = Point(1, 0), facing = Direction.EAST),
-                            initialPlayerInCornerWorld.getRoomContent(Point(1, 0))))
+                            initialPlayerInCornerWorld.getGameObject(Point(1, 0))))
         )
     }
 }

@@ -1,7 +1,7 @@
 package game.command
 
 import game.player.InventoryItem
-import game.world.RoomContent
+import game.world.GameObject
 
 class GrabCommand(private val inventoryItem: InventoryItem): Command() {
     override fun execute() {
@@ -28,9 +28,9 @@ class GrabCommand(private val inventoryItem: InventoryItem): Command() {
 private class GrabArrowCommand: Command() {
     override fun execute() {
         val playerLocation = game.getPlayerLocation()
-        if (game.hasRoomContent(playerLocation, RoomContent.ARROW)) {
+        if (game.hasGameObject(playerLocation, GameObject.ARROW)) {
             game.addToPlayerInventory(InventoryItem.ARROW)
-            game.removeFromRoom(playerLocation, RoomContent.ARROW)
+            game.removeFromRoom(playerLocation, GameObject.ARROW)
         }
     }
 }
@@ -38,9 +38,9 @@ private class GrabArrowCommand: Command() {
 private class GrabFoodCommand: Command() {
     override fun execute() {
         val playerLocation = game.getPlayerLocation()
-        if (game.hasRoomContent(playerLocation, RoomContent.FOOD)) {
+        if (game.hasGameObject(playerLocation, GameObject.FOOD)) {
             game.addToPlayerInventory(InventoryItem.FOOD)
-            game.removeFromRoom(playerLocation, RoomContent.FOOD)
+            game.removeFromRoom(playerLocation, GameObject.FOOD)
         }
     }
 }
@@ -48,9 +48,9 @@ private class GrabFoodCommand: Command() {
 private class GrabGoldCommand: Command() {
     override fun execute() {
         val playerLocation = game.getPlayerLocation()
-        if (game.hasRoomContent(playerLocation, RoomContent.GOLD)) {
+        if (game.hasGameObject(playerLocation, GameObject.GOLD)) {
             game.addToPlayerInventory(InventoryItem.GOLD)
-            game.removeFromRoom(playerLocation, RoomContent.GOLD)
+            game.removeFromRoom(playerLocation, GameObject.GOLD)
         }
     }
 }

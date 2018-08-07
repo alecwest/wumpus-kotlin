@@ -5,8 +5,7 @@ import Helpers.Companion.createPlayer
 import Helpers.Companion.createWorld
 import game.player.InventoryItem
 import game.player.PlayerInventory
-import game.world.RoomContent
-import game.world.Dangerous1
+import game.world.GameObject
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
@@ -65,17 +64,17 @@ class GameTest {
 
     @Test
     fun `get room content`() {
-        assertEquals(arrayListOf<RoomContent>(), world.getRoomContent(Point(0, 0)))
-        assertEquals(arrayListOf(Dangerous1.PIT), world.getRoomContent(Point(2, 2)))
+        assertEquals(arrayListOf<GameObject>(), world.getGameObject(Point(0, 0)))
+        assertEquals(arrayListOf(GameObject.PIT), world.getGameObject(Point(2, 2)))
     }
 
     @Test
     fun `check room has content`() {
-        assertTrue(game.hasRoomContent(pitRoomPoint, Dangerous1.PIT))
-        assertTrue(game.hasRoomContent(pitRoomPoint.north(), RoomContent.BREEZE))
-        assertTrue(game.hasRoomContent(pitRoomPoint.east(), RoomContent.BREEZE))
-        assertTrue(game.hasRoomContent(pitRoomPoint.south(), RoomContent.BREEZE))
-        assertTrue(game.hasRoomContent(pitRoomPoint.west(), RoomContent.BREEZE))
+        assertTrue(game.hasGameObject(pitRoomPoint, GameObject.PIT))
+        assertTrue(game.hasGameObject(pitRoomPoint.north(), GameObject.BREEZE))
+        assertTrue(game.hasGameObject(pitRoomPoint.east(), GameObject.BREEZE))
+        assertTrue(game.hasGameObject(pitRoomPoint.south(), GameObject.BREEZE))
+        assertTrue(game.hasGameObject(pitRoomPoint.west(), GameObject.BREEZE))
     }
 
     @Test
@@ -118,26 +117,26 @@ class GameTest {
 
     @Test
     fun `check amount of content in room`() {
-        assertEquals(1, game.getAmountOfContentInRoom(pitRoomPoint))
-        assertEquals(0, game.getAmountOfContentInRoom(Point(0, 0)))
+        assertEquals(1, game.getAmountOfObjectsInRoom(pitRoomPoint))
+        assertEquals(0, game.getAmountOfObjectsInRoom(Point(0, 0)))
     }
 
     @Test
     fun `add content to room`() {
         val world = createWorld()
         val game = createGame(world = world)
-        assertFalse(world.hasRoomContent(pitRoomPoint, RoomContent.GOLD))
-        game.addToRoom(pitRoomPoint, RoomContent.GOLD)
-        assertTrue(world.hasRoomContent(pitRoomPoint, RoomContent.GOLD))
+        assertFalse(world.hasGameObject(pitRoomPoint, GameObject.GOLD))
+        game.addToRoom(pitRoomPoint, GameObject.GOLD)
+        assertTrue(world.hasGameObject(pitRoomPoint, GameObject.GOLD))
     }
 
     @Test
     fun `remove content from room`() {
         val world = createWorld()
         val game = createGame(world = world)
-        assertTrue(world.hasRoomContent(pitRoomPoint, Dangerous1.PIT))
-        game.removeFromRoom(pitRoomPoint, Dangerous1.PIT)
-        assertFalse(world.hasRoomContent(pitRoomPoint, Dangerous1.PIT))
+        assertTrue(world.hasGameObject(pitRoomPoint, GameObject.PIT))
+        game.removeFromRoom(pitRoomPoint, GameObject.PIT)
+        assertFalse(world.hasGameObject(pitRoomPoint, GameObject.PIT))
     }
 
     @Test

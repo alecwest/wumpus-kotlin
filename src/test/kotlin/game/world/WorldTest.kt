@@ -7,6 +7,7 @@ import org.junit.jupiter.params.provider.MethodSource
 import Helpers.Companion.assertContains
 import Helpers.Companion.createWorld
 import game.player.PlayerState
+import game.world.GameObjectFeature.*
 import util.*
 import java.awt.Point
 import java.util.stream.Stream
@@ -32,43 +33,43 @@ class WorldTest {
     @Test
     fun `get room content`() {
         val point = Point(0, 0)
-        assertEquals(arrayListOf<RoomContent>(), world.getRoomContent(point))
-        world.addRoomContent(point, RoomContent.BLOCKADE)
-        assertEquals(arrayListOf(RoomContent.BLOCKADE), world.getRoomContent(point))
+        assertEquals(arrayListOf<GameObject>(), world.getGameObject(point))
+        world.addGameObject(point, GameObject.BLOCKADE)
+        assertEquals(arrayListOf(GameObject.BLOCKADE), world.getGameObject(point))
     }
 
     @Test
     fun `get out of bounds room content`() {
-        assertEquals(arrayListOf<RoomContent>(), world.getRoomContent(Point(-1, 3)))
-        assertEquals(arrayListOf<RoomContent>(), world.getRoomContent(Point(12, 3)))
+        assertEquals(arrayListOf<GameObject>(), world.getGameObject(Point(-1, 3)))
+        assertEquals(arrayListOf<GameObject>(), world.getGameObject(Point(12, 3)))
     }
 
     companion object {
         @JvmStatic
-        fun validAddRoomContentProvider() = Stream.of(
-                ValidRoomContentTestData(arrayListOf(), arrayListOf(RoomContent.GOLD), arrayListOf(RoomContent.GOLD, RoomContent.GLITTER)),
-                ValidRoomContentTestData(arrayListOf(), arrayListOf(RoomContent.MOO), arrayListOf(RoomContent.MOO)),
-                ValidRoomContentTestData(arrayListOf(), arrayListOf(RoomContent.ARROW), arrayListOf(RoomContent.ARROW))
+        fun validAddGameObjectProvider() = Stream.of(
+                ValidGameObjectTestData(arrayListOf(), arrayListOf(GameObject.GOLD), arrayListOf(GameObject.GOLD, GameObject.GLITTER)),
+                ValidGameObjectTestData(arrayListOf(), arrayListOf(GameObject.MOO), arrayListOf(GameObject.MOO)),
+                ValidGameObjectTestData(arrayListOf(), arrayListOf(GameObject.ARROW), arrayListOf(GameObject.ARROW))
         )
 
         @JvmStatic
-        fun validRemoveRoomContentProvider() = Stream.of(
-                ValidRoomContentTestData(arrayListOf(Dangerous1.PIT), arrayListOf(Dangerous1.PIT), arrayListOf()),
-                ValidRoomContentTestData(arrayListOf(RoomContent.GOLD, RoomContent.GLITTER), arrayListOf(RoomContent.GOLD), arrayListOf()),
-                ValidRoomContentTestData(arrayListOf(RoomContent.ARROW, Dangerous1.WUMPUS), arrayListOf(RoomContent.ARROW), arrayListOf(Dangerous1.WUMPUS))
+        fun validRemoveGameObjectProvider() = Stream.of(
+                ValidGameObjectTestData(arrayListOf(GameObject.PIT), arrayListOf(GameObject.PIT), arrayListOf()),
+                ValidGameObjectTestData(arrayListOf(GameObject.GOLD, GameObject.GLITTER), arrayListOf(GameObject.GOLD), arrayListOf()),
+                ValidGameObjectTestData(arrayListOf(GameObject.ARROW, GameObject.WUMPUS), arrayListOf(GameObject.ARROW), arrayListOf(GameObject.WUMPUS))
         )
 
         @JvmStatic
-        fun validSimilarRoomContentWithEffectsProvider() = Stream.of(
-                ValidSimilarRoomContentWithEffectsTestData(Dangerous1.PIT, RoomContent.BREEZE,
+        fun validSimilarGameObjectWithEffectsProvider() = Stream.of(
+                ValidSimilarGameObjectWithEffectsTestData(GameObject.PIT, GameObject.BREEZE,
                         arrayListOf(Point(4, 4), Point(4, 4).northEast(), Point(4, 4).northEast().north(), Point(4, 4).south().south()),
                         Point(4, 4),
                         arrayListOf(Point(4, 4).north(), Point(4, 4).east(), Point(4, 4).south(), Point(4, 4).northEast())),
-                ValidSimilarRoomContentWithEffectsTestData(Dangerous1.WUMPUS, RoomContent.STENCH,
+                ValidSimilarGameObjectWithEffectsTestData(GameObject.WUMPUS, GameObject.STENCH,
                         arrayListOf(Point(4, 4), Point(4, 4).northEast(), Point(4, 4).south().south()),
                         Point(4, 4),
                         arrayListOf(Point(4, 4).north(), Point(4, 4).east(), Point(4, 4).south())),
-                ValidSimilarRoomContentWithEffectsTestData(Dangerous1.SUPMUW, RoomContent.MOO,
+                ValidSimilarGameObjectWithEffectsTestData(GameObject.SUPMUW, GameObject.MOO,
                         arrayListOf(Point(4, 4), Point(4, 4).northEast(), Point(4, 4).south().south()),
                         Point(4, 4),
                         arrayListOf(Point(4, 4), Point(4, 4).north(), Point(4, 4).east(),
@@ -78,71 +79,71 @@ class WorldTest {
     }
 
     @ParameterizedTest
-    @MethodSource("validAddRoomContentProvider")
-    fun `add content to room`(testData: ValidRoomContentTestData) {
-        for (roomContent in testData.contentToAddOrRemove) {
-            world.addRoomContent(Point(1, 1), roomContent)
+    @MethodSource("validAddGameObjectProvider")
+    fun `add content to room`(testData: ValidGameObjectTestData) {
+        for (gameObject in testData.contentToAddOrRemove) {
+            world.addGameObject(Point(1, 1), gameObject)
         }
-        assertEquals(testData.finalContent.size, world.getAmountOfContentInRoom(Point(1, 1)))
-        for (roomContent in testData.finalContent) {
-            assertTrue(world.hasRoomContent(Point(1, 1), roomContent))
+        assertEquals(testData.finalContent.size, world.getAmountOfObjectsInRoom(Point(1, 1)))
+        for (gameObject in testData.finalContent) {
+            assertTrue(world.hasGameObject(Point(1, 1), gameObject))
         }
     }
 
     @Test
     fun `add content to out-of-bounds room`() {
-        world.addRoomContent(Point(-1, 1), RoomContent.STENCH)
-        world.addRoomContent(Point(2, -4), Dangerous1.SUPMUW)
+        world.addGameObject(Point(-1, 1), GameObject.STENCH)
+        world.addGameObject(Point(2, -4), GameObject.SUPMUW)
     }
 
     @ParameterizedTest
-    @MethodSource("validRemoveRoomContentProvider")
-    fun `remove content from room and make sure effects remain where needed`(testData: ValidRoomContentTestData) {
+    @MethodSource("validRemoveGameObjectProvider")
+    fun `remove content from room and make sure effects remain where needed`(testData: ValidGameObjectTestData) {
         val pointToRemove = Point(1, 1)
-        val world = Helpers.createWorld(roomContent = mapOf(pointToRemove to testData.initialContent))
-        for (roomContent in testData.contentToAddOrRemove) {
-            world.removeRoomContent(pointToRemove, roomContent)
+        val world = Helpers.createWorld(gameObject = mapOf(pointToRemove to testData.initialContent))
+        for (gameObject in testData.contentToAddOrRemove) {
+            world.removeGameObject(pointToRemove, gameObject)
         }
-        assertEquals(testData.finalContent.size, world.getAmountOfContentInRoom(pointToRemove))
-        for (roomContent in testData.finalContent) {
-            assertTrue(world.hasRoomContent(pointToRemove, roomContent))
+        assertEquals(testData.finalContent.size, world.getAmountOfObjectsInRoom(pointToRemove))
+        for (gameObject in testData.finalContent) {
+            assertTrue(world.hasGameObject(pointToRemove, gameObject))
         }
     }
 
     @ParameterizedTest
-    @MethodSource("validSimilarRoomContentWithEffectsProvider")
-    fun `ensure world effects stay on remove if nearby rooms contain associated content`(testData: ValidSimilarRoomContentWithEffectsTestData) {
+    @MethodSource("validSimilarGameObjectWithEffectsProvider")
+    fun `ensure world effects stay on remove if nearby rooms contain associated content`(testData: ValidSimilarGameObjectWithEffectsTestData) {
         val world = Helpers.createWorld()
         for (point in testData.locationsOfContent) {
-            world.addRoomContent(point, testData.contentTested)
+            world.addGameObject(point, testData.contentTested)
         }
 
-        world.removeRoomContent(testData.locationToRemoveContent, testData.contentTested)
+        world.removeGameObject(testData.locationToRemoveContent, testData.contentTested)
 
         for (point in testData.locationsThatShouldStillHaveContentEffect) {
-            assertTrue(world.hasRoomContent(point, testData.effectTested))
+            assertTrue(world.hasGameObject(point, testData.effectTested))
         }
     }
 
     @Test
     fun `remove content from out-of-bounds room`() {
-        world.removeRoomContent(Point(-1, 1), RoomContent.STENCH)
-        world.removeRoomContent(Point(2, -4), Dangerous1.SUPMUW)
+        world.removeGameObject(Point(-1, 1), GameObject.STENCH)
+        world.removeGameObject(Point(2, -4), GameObject.SUPMUW)
     }
 
     @Test
     fun `check room for content`() {
-        world.addRoomContent(Point(1, 1), RoomContent.BREEZE)
-        world.addRoomContent(Point(1, 1), RoomContent.STENCH)
+        world.addGameObject(Point(1, 1), GameObject.BREEZE)
+        world.addGameObject(Point(1, 1), GameObject.STENCH)
 
-        assertTrue(world.hasRoomContent(Point(1, 1), RoomContent.BREEZE))
-        assertFalse(world.hasRoomContent(Point(1, 1), RoomContent.FOOD))
+        assertTrue(world.hasGameObject(Point(1, 1), GameObject.BREEZE))
+        assertFalse(world.hasGameObject(Point(1, 1), GameObject.FOOD))
     }
 
     @Test
     fun `check out-of-bounds room for content`() {
-        assertFalse(world.hasRoomContent(Point(-1, 1), RoomContent.STENCH))
-        assertFalse(world.hasRoomContent(Point(2, -4), Dangerous1.SUPMUW))
+        assertFalse(world.hasGameObject(Point(-1, 1), GameObject.STENCH))
+        assertFalse(world.hasGameObject(Point(2, -4), GameObject.SUPMUW))
     }
 
     @Test
@@ -155,7 +156,7 @@ class WorldTest {
 
     @Test
     fun `check room is empty`() {
-        world.addRoomContent(Point(1, 1), RoomContent.BREEZE)
+        world.addGameObject(Point(1, 1), GameObject.BREEZE)
         assertTrue(world.roomIsEmpty(Point(0, 0)))
         assertFalse(world.roomIsEmpty(Point(1, 1)))
     }
@@ -190,30 +191,30 @@ class WorldTest {
 
     @Test
     fun `check for room content in world map`() {
-        world.addRoomContent(Point(2, 2), Dangerous1.PIT)
+        world.addGameObject(Point(2, 2), GameObject.PIT)
         val worldMap = world.getWorldMap()
-        val target1 = Dangerous1.PIT.toCharRepresentation()
-        val target2 = RoomContent.BREEZE.toCharRepresentation()
+        val target1 = (GameObject.PIT.getFeature(Mappable()) as Mappable).character
+        val target2 = (GameObject.BREEZE.getFeature(Mappable()) as Mappable).character
         assertContains(worldMap, target1, 1)
         assertContains(worldMap, target2, 4)
     }
 
     @Test
     fun `check for room content on world map edge`() {
-        world.addRoomContent(Point(0, 0), Dangerous1.SUPMUW_EVIL)
+        world.addGameObject(Point(0, 0), GameObject.SUPMUW_EVIL)
         val worldMap = world.getWorldMap()
-        val target1 = Dangerous1.SUPMUW_EVIL.toCharRepresentation()
-        val target2 = RoomContent.MOO.toCharRepresentation()
+        val target1 = (GameObject.SUPMUW_EVIL.getFeature(Mappable()) as Mappable).character
+        val target2 = (GameObject.MOO.getFeature(Mappable()) as Mappable).character
         assertContains(worldMap, target1, 1)
         assertContains(worldMap, target2, 3)
     }
 
     @Test
     fun `check for room content when added out of bounds`() {
-        world.addRoomContent(Point(-1,0), Dangerous1.WUMPUS)
+        world.addGameObject(Point(-1,0), GameObject.WUMPUS)
         val worldMap = world.getWorldMap()
-        val target1 = Dangerous1.WUMPUS.toCharRepresentation()
-        val target2 = RoomContent.STENCH.toCharRepresentation()
+        val target1 = (GameObject.WUMPUS.getFeature(Mappable()) as Mappable).character
+        val target2 = (GameObject.STENCH.getFeature(Mappable()) as Mappable).character
         assertContains(worldMap, target1, 0)
         assertContains(worldMap, target2, 0)
     }
@@ -225,15 +226,15 @@ class WorldTest {
     }
 }
 
-data class ValidRoomContentTestData (
-        val initialContent: ArrayList<RoomContent>,
-        val contentToAddOrRemove: ArrayList<RoomContent>,
-        val finalContent: ArrayList<RoomContent>
+data class ValidGameObjectTestData (
+        val initialContent: ArrayList<GameObject>,
+        val contentToAddOrRemove: ArrayList<GameObject>,
+        val finalContent: ArrayList<GameObject>
 )
 
-data class ValidSimilarRoomContentWithEffectsTestData (
-        val contentTested: RoomContent,
-        val effectTested: RoomContent,
+data class ValidSimilarGameObjectWithEffectsTestData (
+        val contentTested: GameObject,
+        val effectTested: GameObject,
         val locationsOfContent: ArrayList<Point>,
         val locationToRemoveContent: Point,
         val locationsThatShouldStillHaveContentEffect: ArrayList<Point>

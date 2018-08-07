@@ -57,7 +57,7 @@ internal class AgentTest {
         val basicIntelligenceClient = createClient(Helpers.basicIntelligenceWorldFileName)
         val basicIntelligenceAgent = createAgent(basicIntelligenceClient, BasicIntelligence())
         val world = createWorld(
-                roomContent = mapOf(Point(0, 1) to arrayListOf(RoomContent.BLOCKADE)))
+                gameObject = mapOf(Point(0, 1) to arrayListOf(GameObject.BLOCKADE)))
         val commandResult = createCommandResult(
                 playerState = createPlayerState(
                         inventoryContent = mapOf(InventoryItem.ARROW to 1)
@@ -90,7 +90,7 @@ internal class AgentTest {
                 ValidPostMoveAgentTestData(commandResult.copyThis(
                                 playerState = commandResult.getPlayerState().copyThis(
                                         location = Point(1, 3), facing = Direction.EAST),
-                                roomContent = arrayListOf(RoomContent.BREEZE)
+                                gameObjects = arrayListOf(GameObject.BREEZE)
                         ))
         )
     }

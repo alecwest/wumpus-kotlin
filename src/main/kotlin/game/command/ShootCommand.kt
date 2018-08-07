@@ -1,9 +1,9 @@
 package game.command
 
 import game.player.InventoryItem
-import game.world.Dangerous1
 import game.world.Perception
-import game.world.RoomContent
+import game.world.GameObject
+import game.world.GameObjectFeature.*
 import util.adjacent
 import java.awt.Point
 
@@ -15,10 +15,10 @@ class ShootCommand: Command() {
             var currentRoom = game.getPlayerLocation().adjacent(game.getPlayerDirection())
             game.removeFromPlayerInventory(InventoryItem.ARROW)
             loop@ while (game.roomIsValid(currentRoom)) {
-                val dangers = getDangersFromRoom(currentRoom)
-                for (danger in dangers) {
-                    if (danger.hasWeakness(InventoryItem.ARROW)) {
-                        kill(currentRoom, danger)
+                val destructables = getDestructablesFromRoom(currentRoom)
+                for (destructable in destructables) {
+                    if ((destructable.getFeature(Destructable()) as Destructable).weaknesses.contains(GameObject.ARROW)) {
+                        kill(currentRoom, destructable)
                         break@loop
                     }
                 }
@@ -28,12 +28,12 @@ class ShootCommand: Command() {
         game.setCommandResult(createCommandResult(perceptionList))
     }
 
-    private fun getDangersFromRoom(room: Point) = game.getRoomContent(room).filter {
-        it is Dangerous1
-    } as ArrayList<Dangerous1>
+    private fun getDestructablesFromRoom(room: Point) = game.getGameObjects(room).filter {
+        it.hasFeature(Destructable())
+    } as ArrayList<GameObject>
 
-    private fun kill(room: Point, roomContent: RoomContent) {
-        game.removeFromRoom(room, roomContent)
+    private fun kill(room: Point, gameObject: GameObject) {
+        game.removeFromRoom(room, gameObject)
         perceptionList.add(Perception.SCREAM)
     }
 

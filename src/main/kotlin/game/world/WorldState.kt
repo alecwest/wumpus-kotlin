@@ -12,14 +12,14 @@ data class WorldState(private val rooms: ArrayList<Room> = arrayListOf()) {
 
     fun getRooms() = rooms
 
-    fun getRoomContent(point: Point) = when {
-        roomIsValid(point) -> rooms[getRoomIndex(point)].getRoomContent()
+    fun getGameObject(point: Point) = when {
+        roomIsValid(point) -> rooms[getRoomIndex(point)].getGameObject()
         else -> arrayListOf()
     }
 
-    fun hasRoomContent(point: Point, content: RoomContent): Boolean {
+    fun hasGameObject(point: Point, content: GameObject): Boolean {
         return try {
-            rooms[getRoomIndex(point)].hasRoomContent(content)
+            rooms[getRoomIndex(point)].hasGameObject(content)
         } catch (e: ArrayIndexOutOfBoundsException) {
             log.info("Content %s cannot exist in out-of-bounds room.".format(content))
             false
@@ -90,9 +90,9 @@ data class WorldState(private val rooms: ArrayList<Room> = arrayListOf()) {
         return rooms.size
     }
 
-    fun getAmountOfContentInRoom(point: Point): Int {
+    fun getAmountOfObjectsInRoom(point: Point): Int {
         val room = getRoom(point)
-        return room.getAmountOfContent()
+        return room.getAmountOfObjects()
     }
 
     fun copyThis(rooms: ArrayList<Room> = this.rooms) =

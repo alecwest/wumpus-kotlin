@@ -78,13 +78,14 @@ data class World(private var size: Int = 10) {
     fun getSize() = size
     fun getRooms() = worldState.getRooms()
 
-    fun getRoomContent(point: Point) = worldState.getRoomContent(point)
+    fun getGameObject(point: Point) = worldState.getGameObject(point)
 
-    fun addRoomContent(point: Point, content: RoomContent) {
+    fun addGameObject(point: Point, content: GameObject) {
         worldState = worldState.copyThis(rooms = worldState.getRooms().apply {
             try {
-                this[getRoomIndex(point)].addRoomContent(content)
-                addWorldEffects(point, content.associatedEffects())
+                this[getRoomIndex(point)].addGameObject(content)
+                val worldAffectingFeature = (content.getFeature(GameObjectFeature.WorldAffecting()) as GameObjectFeature.WorldAffecting?)
+                if (worldAffectingFeature != null) addWorldEffects(point, worldAffectingFeature.effects)
             } catch (e: ArrayIndexOutOfBoundsException) {
                 log.info("Content %s was not added to out-of-bounds room.".format(content.toString()))
             }
@@ -97,11 +98,12 @@ data class World(private var size: Int = 10) {
         }
     }
 
-    fun removeRoomContent(point: Point, content: RoomContent) {
+    fun removeGameObject(point: Point, content: GameObject) {
         worldState = worldState.copyThis(rooms = worldState.getRooms().apply {
             try {
-                this[getRoomIndex(point)].removeRoomContent(content)
-                removeWorldEffects(point, content.associatedEffects())
+                this[getRoomIndex(point)].removeGameObject(content)
+                val worldAffectingFeature = (content.getFeature(GameObjectFeature.WorldAffecting()) as GameObjectFeature.WorldAffecting?)
+                if (worldAffectingFeature != null) removeWorldEffects(point, worldAffectingFeature.effects)
             } catch (e: ArrayIndexOutOfBoundsException) {
                 log.info("Content %s was not removed from out-of-bounds room.".format(content.toString()))
             }
@@ -114,12 +116,12 @@ data class World(private var size: Int = 10) {
         }
     }
 
-    fun hasRoomContent(point: Point, content: RoomContent) = worldState.hasRoomContent(point, content)
+    fun hasGameObject(point: Point, content: GameObject) = worldState.hasGameObject(point, content)
     fun roomIsValid(point: Point) = worldState.roomIsValid(point)
     fun roomIsEmpty(point: Point) = worldState.roomIsEmpty(point)
     fun getRoomIndex(point: Point) = worldState.getRoomIndex(point)
     fun getWorldMap(playerState: PlayerState? = null) = worldState.getWorldMap(playerState)
     fun getRoom(point: Point) = worldState.getRoom(point)
     fun getNumberRooms() = worldState.getNumberRooms()
-    fun getAmountOfContentInRoom(point: Point) = worldState.getAmountOfContentInRoom(point)
+    fun getAmountOfObjectsInRoom(point: Point) = worldState.getAmountOfObjectsInRoom(point)
 }

@@ -1,9 +1,8 @@
 package game.client
 
 import game.command.*
-import game.player.InventoryItem
 import game.server.Server
-import game.world.RoomContent
+import game.world.GameObject
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import util.Direction
@@ -34,6 +33,6 @@ internal class ClientTest {
         moveCommand.setGame(Server.getGame(client.sessionId))
         moveCommand.execute()
 
-        assertEquals(arrayListOf(RoomContent.BREEZE).toString(), client.getMoveResult().getRoomContent().toString())
+        assertEquals(arrayListOf(GameObject.BREEZE).toString(), client.getMoveResult().getGameObjects().toString())
     }
 }

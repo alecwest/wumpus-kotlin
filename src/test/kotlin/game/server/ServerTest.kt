@@ -2,7 +2,7 @@ package game.server
 
 import game.player.InventoryItem
 import game.player.PlayerInventory
-import game.world.RoomContent
+import game.world.GameObject
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import game.command.*
@@ -34,9 +34,9 @@ class ServerTest {
 
     @Test
     fun `get room content`() {
-        assertEquals(arrayListOf<RoomContent>(), Server.getCommandResult(gameId).getRoomContent())
-        Server.getGame(gameId).addToRoom(initialPoint, RoomContent.FOOD)
-        assertEquals(arrayListOf(RoomContent.FOOD), Server.getCommandResult(gameId).getRoomContent())
+        assertEquals(arrayListOf<GameObject>(), Server.getCommandResult(gameId).getGameObjects())
+        Server.getGame(gameId).addToRoom(initialPoint, GameObject.FOOD)
+        assertEquals(arrayListOf(GameObject.FOOD), Server.getCommandResult(gameId).getGameObjects())
     }
 
     // TODO add bad move tests
@@ -60,7 +60,7 @@ class ServerTest {
 
     @Test
     fun `check player grabs on grab command`() {
-        Server.getGame(gameId).addToRoom(initialPoint, RoomContent.FOOD)
+        Server.getGame(gameId).addToRoom(initialPoint, GameObject.FOOD)
         assertEquals(initialInventory, Server.getCommandResult(gameId).getPlayerState().getInventory())
         Server.makeMove(gameId, GrabCommand(InventoryItem.FOOD))
         assertEquals(initialPoint, Server.getCommandResult(gameId).getPlayerState().getLocation())
@@ -72,7 +72,7 @@ class ServerTest {
     fun `get command result`() {
         val sessionId = Helpers.createServerSession(Helpers.worldFileName)
         Server.makeMove(sessionId, MoveCommand())
-        assertEquals(arrayListOf(RoomContent.BREEZE).toString(), Server.getCommandResult(sessionId).getRoomContent().toString())
+        assertEquals(arrayListOf(GameObject.BREEZE).toString(), Server.getCommandResult(sessionId).getGameObjects().toString())
     }
 }
 

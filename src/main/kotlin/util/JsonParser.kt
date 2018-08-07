@@ -8,11 +8,9 @@ import game.player.PlayerInventory
 import game.player.PlayerState
 import game.player.toInventoryItem
 import game.world.World
-import game.world.WorldState
-import game.world.toRoomContent
+import game.world.toMappableGameObject
 import java.awt.Point
 import java.io.File
-import java.io.FileReader
 
 internal class JsonPlayer(val x: Int, val y: Int, val direction: String, val inventory: List<String>)
 
@@ -30,8 +28,9 @@ class JsonParser {
                     facing = r.player.direction.toDirection(),
                     inventory = PlayerInventory(mapOf())))
             for (room in r.data) {
-                for (roomContentString in room.content) {
-                    world.addRoomContent(Point(room.x, room.y), roomContentString.toRoomContent())
+                for (gameObjectString in room.content) {
+                    val gameObject = gameObjectString.toMappableGameObject()
+                    if (gameObject != null) world.addGameObject(Point(room.x, room.y), gameObject)
                 }
             }
             for (inventoryItemString in r.player.inventory) {

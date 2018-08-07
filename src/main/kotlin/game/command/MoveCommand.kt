@@ -1,7 +1,7 @@
 package game.command
 
 import game.world.Perception
-import game.world.RoomContent
+import game.world.GameObject
 import util.*
 import java.awt.Point
 
@@ -20,7 +20,7 @@ class MoveCommand: Command() {
     }
 
     private fun canEnterRoom(point: Point): Boolean {
-        if(game.hasRoomContent(point, RoomContent.BLOCKADE) || !game.roomIsValid(point)) {
+        if(game.hasGameObject(point, GameObject.BLOCKADE) || !game.roomIsValid(point)) {
             return false
         }
         return true

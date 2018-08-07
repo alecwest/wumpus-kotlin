@@ -8,26 +8,6 @@ import kotlin.test.assertFails
 
 internal class RoomContentTest {
     @Test
-    fun `convert between string and room content`() {
-        for (roomContent in roomContentValues()) {
-            assertEquals(roomContent, roomContent.toCharRepresentation().toRoomContent())
-        }
-    }
-
-    @Test
-    fun `convert to perception`() {
-        assertEquals(Perception.BLOCKADE_BUMP, RoomContent.BLOCKADE.toPerception())
-        assertEquals(null, Dangerous1.PIT.toPerception())
-    }
-
-    @Test
-    fun `convert invalid string`() {
-        assertFails { "invalid string".toRoomContent() }
-    }
-
-
-
-    @Test
     fun `convert mappables between string and game object`() {
         for (gameObject in gameObjectValues().filter { it.hasFeature(Mappable()) }) {
         }
@@ -61,6 +41,16 @@ internal class RoomContentTest {
             val mappableFeature = gameObject.getFeature(Mappable()) as Mappable
             assertEquals(gameObject, mappableFeature.character.toMappableGameObject())
         }
+    }
+
+    @Test
+    fun `convert game object to perceptable`() {
+        assertEquals(Perception.BLOCKADE_BUMP, (GameObject.BLOCKADE.getFeature(Perceptable()) as Perceptable).perception)
+        assertEquals(Perception.BREEZE, (GameObject.BREEZE.getFeature(Perceptable()) as Perceptable).perception)
+        assertEquals(Perception.FOOD, (GameObject.FOOD.getFeature(Perceptable()) as Perceptable).perception)
+        assertEquals(Perception.GLITTER, (GameObject.GLITTER.getFeature(Perceptable()) as Perceptable).perception)
+        assertEquals(Perception.MOO, (GameObject.MOO.getFeature(Perceptable()) as Perceptable).perception)
+        assertEquals(Perception.STENCH, (GameObject.STENCH.getFeature(Perceptable()) as Perceptable).perception)
     }
 
     @Test

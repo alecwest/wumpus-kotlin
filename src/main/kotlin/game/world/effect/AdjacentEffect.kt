@@ -1,22 +1,21 @@
 package game.world.effect
 
+import game.world.GameObject
 import util.adjacents
-import game.world.RoomContent
 import game.world.World
-import game.world.associatedEffects
 import java.awt.Point
 
-class AdjacentEffect(roomContent: RoomContent): WorldEffect(roomContent) {
+class AdjacentEffect(gameObject: GameObject): WorldEffect(gameObject) {
     override fun applyEffect(world: World, point: Point) {
         for (adjacentPoint in point.adjacents()) {
-            world.addRoomContent(adjacentPoint, roomContent)
+            world.addGameObject(adjacentPoint, gameObject)
         }
     }
 
     override fun removeEffect(world: World, point: Point) {
         for (adjacentPoint in point.adjacents()) {
             if (!nearbyContentHasAssociatedEffect(world, adjacentPoint)) {
-                world.removeRoomContent(adjacentPoint, roomContent)
+                world.removeGameObject(adjacentPoint, gameObject)
             }
         }
     }

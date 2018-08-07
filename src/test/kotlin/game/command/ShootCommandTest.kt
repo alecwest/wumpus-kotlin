@@ -3,7 +3,7 @@ package game.command
 import game.Game
 import game.player.InventoryItem
 import game.player.PlayerInventory
-import game.world.Dangerous1
+import game.world.GameObject
 import game.world.Perception
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
@@ -34,29 +34,29 @@ internal class ShootCommandTest {
         private val initialPlayer = Helpers.createPlayer(inventoryContent = mapOf(
                 InventoryItem.ARROW to 4
         ))
-        private val initialWorld = Helpers.createWorld(roomContent = mapOf(
-                Point(0, 9) to arrayListOf(Dangerous1.SUPMUW_EVIL),
-                Point(0, 8) to arrayListOf(Dangerous1.WUMPUS),
-                Point(0, 3) to arrayListOf(Dangerous1.SUPMUW)))
+        private val initialWorld = Helpers.createWorld(gameObject = mapOf(
+                Point(0, 9) to arrayListOf(GameObject.SUPMUW_EVIL),
+                Point(0, 8) to arrayListOf(GameObject.WUMPUS),
+                Point(0, 3) to arrayListOf(GameObject.SUPMUW)))
         private val initialGame = Helpers.createGame(player = initialPlayer, world = initialWorld)
 
         @JvmStatic
         fun validShootCommandTestDataProvider() = Stream.of(
                 ValidShootCommandTestData(initialGame, ShootCommand(),
                         CommandResult(arrayListOf(Perception.SCREAM),
-                                initialGame.getPlayerState().copyThis(inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 3))), initialGame.getRoomContent())),
+                                initialGame.getPlayerState().copyThis(inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 3))), initialGame.getGameObjects())),
                  ValidShootCommandTestData(initialGame, ShootCommand(),
                         CommandResult(arrayListOf(Perception.SCREAM),
-                                initialGame.getPlayerState().copyThis(inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 2))), initialGame.getRoomContent())),
+                                initialGame.getPlayerState().copyThis(inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 2))), initialGame.getGameObjects())),
                  ValidShootCommandTestData(initialGame, ShootCommand(),
                         CommandResult(arrayListOf(Perception.SCREAM),
-                                initialGame.getPlayerState().copyThis(inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 1))), initialGame.getRoomContent())),
+                                initialGame.getPlayerState().copyThis(inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 1))), initialGame.getGameObjects())),
                 ValidShootCommandTestData(initialGame, ShootCommand(),
                         CommandResult(arrayListOf(),
-                                initialGame.getPlayerState().copyThis(inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 0))), initialGame.getRoomContent())),
+                                initialGame.getPlayerState().copyThis(inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 0))), initialGame.getGameObjects())),
                 ValidShootCommandTestData(initialGame, ShootCommand(),
                         CommandResult(arrayListOf(),
-                                initialGame.getPlayerState().copyThis(inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 0))), initialGame.getRoomContent()))
+                                initialGame.getPlayerState().copyThis(inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 0))), initialGame.getGameObjects()))
         )
     }
 }

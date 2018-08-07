@@ -10,38 +10,39 @@ import util.toPlayerMapRepresentation
  *      A room only contains information on what exists inside it.
  *      It is up to the client to determine any "status" or "inferences" about any room.
  */
-class Room(private val roomContent: ArrayList<RoomContent> = arrayListOf()) {
-    fun getRoomContent() = roomContent
+class Room(private val gameObjects: ArrayList<GameObject> = arrayListOf()) {
+    fun getGameObject() = gameObjects
 
-    fun addRoomContent(content: RoomContent) {
-        if (!hasRoomContent(content)) {
-            roomContent.add(content)
+    fun addGameObject(content: GameObject) {
+        if (!hasGameObject(content)) {
+            gameObjects.add(content)
         }
     }
 
-    fun removeRoomContent(content: RoomContent) {
-        if (hasRoomContent(content)) {
-            roomContent.remove(content)
+    fun removeGameObject(content: GameObject) {
+        if (hasGameObject(content)) {
+            gameObjects.remove(content)
         }
     }
 
-    fun hasRoomContent(content: RoomContent): Boolean {
-        return roomContent.contains(content)
+    fun hasGameObject(content: GameObject): Boolean {
+        return gameObjects.contains(content)
     }
 
-    fun getAmountOfContent(): Int {
-        return roomContent.size
+    fun getAmountOfObjects(): Int {
+        return gameObjects.size
     }
 
     fun isEmpty(): Boolean {
-        return roomContent.size == 0
+        return gameObjects.size == 0
     }
 
     fun getSmallRoomString(playerDirection: Direction? = null): String {
         var roomString = " ------- \n|x x x x|\n|x x x x|\n|x x x x|\n ------- "
-        for (content in roomContent) {
+        for (content in gameObjects.filter { it.hasFeature(GameObjectFeature.Mappable()) }) {
             roomString = roomString.replaceFirst(
-                    "x", content.toCharRepresentation())
+                    "x", (content.getFeature(
+                    GameObjectFeature.Mappable()) as GameObjectFeature.Mappable).character)
         }
         if (playerDirection != null) {
             roomString = roomString.replaceFirst("x", playerDirection.toPlayerMapRepresentation())
