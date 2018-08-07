@@ -105,14 +105,14 @@ fun String.toRoomContent(): RoomContent {
 
 sealed class GameObject(val features: Set<GameObjectFeature> = setOf()) {
     object ARROW : GameObject(setOf(Shootable(), Grabbable()))
-    object BLOCKADE : GameObject(setOf(Mappable("X"), Perceptable(), Blocking()))
-    object BREEZE : GameObject(setOf(Mappable("="), Perceptable()))
-    object FOOD : GameObject(setOf(Mappable("F"), Grabbable(), Perceptable()))
-    object GLITTER : GameObject(setOf(Mappable("*"), Perceptable()))
+    object BLOCKADE : GameObject(setOf(Mappable("X"), Perceptable(Perception.BLOCKADE_BUMP), Blocking()))
+    object BREEZE : GameObject(setOf(Mappable("="), Perceptable(Perception.BREEZE)))
+    object FOOD : GameObject(setOf(Mappable("F"), Grabbable(), Perceptable(Perception.FOOD)))
+    object GLITTER : GameObject(setOf(Mappable("*"), Perceptable(Perception.GLITTER)))
     object GOLD : GameObject(setOf(Mappable("G"), Grabbable()))
-    object MOO : GameObject(setOf(Mappable("!"), Perceptable()))
+    object MOO : GameObject(setOf(Mappable("!"), Perceptable(Perception.MOO)))
     object PIT : GameObject(setOf(Dangerous(), Mappable("P"), WorldAffecting(arrayListOf(AdjacentEffect(RoomContent.BREEZE)))))
-    object STENCH : GameObject(setOf(Mappable("~"), Perceptable()))
+    object STENCH : GameObject(setOf(Mappable("~"), Perceptable(Perception.STENCH)))
     object SUPMUW : GameObject(setOf(Dangerous(), Destructable(setOf(GameObject.ARROW)), Mappable("S"), WorldAffecting(
             arrayListOf(AdjacentEffect(RoomContent.MOO), DiagonalEffect(RoomContent.MOO), HereEffect(RoomContent.FOOD)))))
     object SUPMUW_EVIL : GameObject(setOf(Dangerous(), Destructable(setOf(GameObject.ARROW)), Mappable("E"), WorldAffecting(
@@ -158,7 +158,7 @@ sealed class GameObjectFeature {
     class Destructable(val weaknesses: Set<GameObject> = setOf()): GameObjectFeature()
     class Grabbable: GameObjectFeature()
     class Mappable(val character: String = ""): GameObjectFeature()
-    class Perceptable(): GameObjectFeature()
+    class Perceptable(val perception: Perception? = null): GameObjectFeature()
     class Shootable(): GameObjectFeature()
     class WorldAffecting(val effects: ArrayList<WorldEffect> = arrayListOf()): GameObjectFeature()
 }
