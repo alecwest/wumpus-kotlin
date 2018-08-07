@@ -40,6 +40,19 @@ internal class RoomContentTest {
     }
 
     @Test
+    fun `filter game object values by features that exist together`() {
+        assertTrue(setOf(GameObject.SUPMUW, GameObject.SUPMUW_EVIL,
+                GameObject.WUMPUS).containsAll(
+                gameObjectsWithFeatures(setOf(
+                        GameObjectFeature.Dangerous(), GameObjectFeature.Destructable()))))
+    }
+
+    @Test
+    fun `filter game object values by features that do not exist together`() {
+        assertTrue(gameObjectsWithFeatures(setOf(GameObjectFeature.Shootable(), GameObjectFeature.Destructable())).isEmpty())
+    }
+
+    @Test
     fun `has feature`() {
         assertTrue(GameObject.STENCH.hasFeature(GameObjectFeature.Perceptable()))
         assertFalse(GameObject.GOLD.hasFeature(GameObjectFeature.Perceptable()))
