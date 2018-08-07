@@ -146,6 +146,12 @@ fun gameObjectValues(): List<GameObject> {
     return GameObject::class.nestedClasses.map { it.objectInstance as GameObject }
 }
 
+fun String.toMappableGameObject(): GameObject? {
+    return gameObjectsWithFeatures(setOf(Mappable())).find {
+        this == (it.getFeature(Mappable()) as Mappable).character
+    }
+}
+
 sealed class GameObjectFeature {
     class Blocking: GameObjectFeature()
     class Dangerous: GameObjectFeature()

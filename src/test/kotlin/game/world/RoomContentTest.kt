@@ -58,7 +58,8 @@ internal class RoomContentTest {
     @Test
     fun `convert mappable game objects between string and game object`() {
         for (gameObject in gameObjectsWithFeatures(setOf(Mappable()))) {
-
+            val mappableFeature = gameObject.getFeature(Mappable()) as Mappable
+            assertEquals(gameObject, mappableFeature.character.toMappableGameObject())
         }
     }
 
