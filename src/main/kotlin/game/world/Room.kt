@@ -11,7 +11,7 @@ import util.toPlayerMapRepresentation
  *      It is up to the client to determine any "status" or "inferences" about any room.
  */
 class Room(private val gameObjects: ArrayList<GameObject> = arrayListOf()) {
-    fun getGameObject() = gameObjects
+    fun getGameObjects() = gameObjects
 
     fun addGameObject(content: GameObject) {
         if (!hasGameObject(content) && !isFull()) {

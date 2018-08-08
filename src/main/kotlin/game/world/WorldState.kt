@@ -12,8 +12,8 @@ data class WorldState(private val rooms: ArrayList<Room> = arrayListOf()) {
 
     fun getRooms() = rooms
 
-    fun getGameObject(point: Point) = when {
-        roomIsValid(point) -> rooms[getRoomIndex(point)].getGameObject()
+    fun getGameObjects(point: Point) = when {
+        roomIsValid(point) -> rooms[getRoomIndex(point)].getGameObjects()
         else -> arrayListOf()
     }
 

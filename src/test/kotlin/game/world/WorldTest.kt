@@ -33,15 +33,15 @@ class WorldTest {
     @Test
     fun `get room content`() {
         val point = Point(0, 0)
-        assertEquals(arrayListOf<GameObject>(), world.getGameObject(point))
+        assertEquals(arrayListOf<GameObject>(), world.getGameObjects(point))
         world.addGameObject(point, GameObject.BLOCKADE)
-        assertEquals(arrayListOf(GameObject.BLOCKADE), world.getGameObject(point))
+        assertEquals(arrayListOf(GameObject.BLOCKADE), world.getGameObjects(point))
     }
 
     @Test
     fun `get out of bounds room content`() {
-        assertEquals(arrayListOf<GameObject>(), world.getGameObject(Point(-1, 3)))
-        assertEquals(arrayListOf<GameObject>(), world.getGameObject(Point(12, 3)))
+        assertEquals(arrayListOf<GameObject>(), world.getGameObjects(Point(-1, 3)))
+        assertEquals(arrayListOf<GameObject>(), world.getGameObjects(Point(12, 3)))
     }
 
     companion object {

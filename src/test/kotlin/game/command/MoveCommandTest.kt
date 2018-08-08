@@ -77,7 +77,7 @@ internal class MoveCommandTest {
             ValidMoveCommandTestData(playerInCornerGame, MoveCommand(),
                     CommandResult(arrayListOf(), initialPlayerInCorner.getPlayerState().copyThis(
                             location = Point(1, 0), facing = Direction.EAST),
-                            initialPlayerInCornerWorld.getGameObject(Point(1, 0))))
+                            initialPlayerInCornerWorld.getGameObjects(Point(1, 0))))
         )
     }
 }

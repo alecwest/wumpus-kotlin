@@ -11,7 +11,7 @@ class RoomTest {
 
     @Test
     fun `get room content`() {
-        assertEquals(arrayListOf(GameObject.BREEZE, GameObject.STENCH), room.getGameObject())
+        assertEquals(arrayListOf(GameObject.BREEZE, GameObject.STENCH), room.getGameObjects())
     }
 
     @Test
