@@ -54,7 +54,7 @@ internal class AgentTest {
     }
 
     companion object {
-        val basicIntelligenceClient = createClient(Helpers.basicIntelligenceWorldFileName)
+    val basicIntelligenceClient = createClient(Helpers.testFilePath + "basicIntelligenceTestFile.json")
         val basicIntelligenceAgent = createAgent(basicIntelligenceClient, BasicIntelligence())
         val world = createWorld(
                 gameObject = mapOf(Point(0, 1) to arrayListOf(GameObject.BLOCKADE)))
