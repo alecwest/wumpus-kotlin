@@ -4,9 +4,8 @@ import game.world.GameObject.*
 import game.world.GameObjectFeature.*
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
-import kotlin.test.assertFails
 
-internal class RoomContentTest {
+internal class GameObjectTest {
     @Test
     fun `convert mappables between string and game object`() {
         for (gameObject in gameObjectValues().filter { it.hasFeature(Mappable()) }) {
