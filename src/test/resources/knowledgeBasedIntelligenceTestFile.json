@@ -1,0 +1,27 @@
+{
+  "world-size": 10,
+  "data": [
+    {
+      "x": 0,
+      "y": 4,
+      "content": [
+        "X"
+      ]
+    },
+    {
+      "x": 2,
+      "y": 3,
+      "content": [
+        "P"
+      ]
+    }
+  ],
+  "player": {
+    "x": 0,
+    "y": 2,
+    "direction": "N",
+    "inventory": [
+      "A"
+    ]
+  }
+}
