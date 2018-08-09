@@ -19,7 +19,7 @@ abstract class Intelligence {
         }
     }
 
-    private fun resetRoom(world: World, commandResult: CommandResult) {
+    internal fun resetRoom(world: World, commandResult: CommandResult) {
         for (gameObject in gameObjectValues()) {
             world.removeGameObject(commandResult.getPlayerState().getLocation(), gameObject)
         }
