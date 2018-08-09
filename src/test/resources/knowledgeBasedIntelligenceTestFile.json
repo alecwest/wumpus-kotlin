@@ -3,22 +3,22 @@
   "data": [
     {
       "x": 0,
-      "y": 4,
+      "y": 2,
       "content": [
-        "X"
+        "P"
       ]
     },
     {
       "x": 2,
-      "y": 3,
+      "y": 0,
       "content": [
-        "P"
+        "W"
       ]
     }
   ],
   "player": {
     "x": 0,
-    "y": 2,
+    "y": 0,
     "direction": "N",
     "inventory": [
       "A"
