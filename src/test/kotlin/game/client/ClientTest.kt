@@ -28,7 +28,7 @@ internal class ClientTest {
 
     @Test
     fun `get move result`() {
-        val client = Client(Helpers.worldFileName)
+        val client = Client(Helpers.testFilePath + "testFile.json")
         val moveCommand = MoveCommand()
         moveCommand.setGame(Server.getGame(client.sessionId))
         moveCommand.execute()

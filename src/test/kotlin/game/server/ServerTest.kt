@@ -26,7 +26,7 @@ class ServerTest {
 
     @Test
     fun `server generates world from json file`() {
-        val gameId = Server.newSession(fileName = Helpers.worldFileName)
+        val gameId = Server.newSession(fileName = Helpers.testFilePath + "testFile.json")
 
         assertEquals(11, Server.getGame(gameId).getWorldSize())
         assertEquals(121, Server.getGame(gameId).getNumberRooms())
@@ -70,7 +70,7 @@ class ServerTest {
 
     @Test
     fun `get command result`() {
-        val sessionId = Helpers.createServerSession(Helpers.worldFileName)
+        val sessionId = Helpers.createServerSession(Helpers.testFilePath + "testFile.json")
         Server.makeMove(sessionId, MoveCommand())
         assertEquals(arrayListOf(GameObject.BREEZE).toString(), Server.getCommandResult(sessionId).getGameObjects().toString())
     }
