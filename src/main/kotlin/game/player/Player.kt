@@ -2,14 +2,12 @@ package game.player
 
 import util.Direction
 import java.awt.Point
-import java.util.logging.Logger
 
 /**
  * Player keeps track of all player attributes and is to be accessed through the game class
  * only by the server.
  */
 data class Player(private var playerState: PlayerState = PlayerState()) {
-    private val log = Logger.getLogger(Player::class.qualifiedName)
     fun isAlive() = playerState.isAlive()
     fun getPlayerState() = playerState
     fun getLocation() = playerState.getLocation()
@@ -32,8 +30,6 @@ data class Player(private var playerState: PlayerState = PlayerState()) {
         val newMap = playerState.getInventory().toMutableMap()
         if (getNumberOf(inventoryItem) > 0) {
             newMap[inventoryItem] = newMap.getValue(inventoryItem) - 1
-        } else {
-            log.info("Item %s was not removed from inventory that doesn't contain it".format(inventoryItem.toString()))
         }
         playerState = playerState.copyThis(inventory = PlayerInventory(newMap.toMap()))
     }

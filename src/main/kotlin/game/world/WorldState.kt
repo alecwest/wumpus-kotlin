@@ -3,11 +3,9 @@ package game.world
 import game.player.PlayerState
 import util.Direction
 import java.awt.Point
-import java.util.logging.Logger
 import kotlin.math.sqrt
 
 data class WorldState(private val rooms: ArrayList<Room> = arrayListOf()) {
-    private val log = Logger.getLogger(WorldState::class.qualifiedName)
     private val size = sqrt(rooms.size.toFloat()).toInt()
 
     fun getRooms() = rooms
@@ -21,7 +19,6 @@ data class WorldState(private val rooms: ArrayList<Room> = arrayListOf()) {
         return try {
             rooms[getRoomIndex(point)].hasGameObject(content)
         } catch (e: ArrayIndexOutOfBoundsException) {
-            log.info("Content %s cannot exist in out-of-bounds room.".format(content))
             false
         }
     }
@@ -39,7 +36,6 @@ data class WorldState(private val rooms: ArrayList<Room> = arrayListOf()) {
         return try {
             rooms[getRoomIndex(point)].isEmpty()
         } catch (e: ArrayIndexOutOfBoundsException) {
-            log.info("Out of bounds room is empty.")
             true
         }
     }

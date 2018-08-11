@@ -3,7 +3,6 @@ package game.world
 import game.player.PlayerState
 import game.world.effect.*
 import java.awt.Point
-import java.util.logging.Logger
 
 /**
  * Notes:
@@ -63,8 +62,6 @@ import java.util.logging.Logger
  *      11. Client responds to success or failure by updating room positions, knowledge, and whether or not it's alive
  */
 data class World(private var size: Int = 10) {
-    private val log = Logger.getLogger(World::class.qualifiedName)
-
     private var worldState: WorldState = WorldState()
 
     init {
@@ -86,9 +83,7 @@ data class World(private var size: Int = 10) {
                 this[getRoomIndex(point)].addGameObject(content)
                 val worldAffectingFeature = (content.getFeature(GameObjectFeature.WorldAffecting()) as GameObjectFeature.WorldAffecting?)
                 if (worldAffectingFeature != null) addWorldEffects(point, worldAffectingFeature.effects)
-            } catch (e: ArrayIndexOutOfBoundsException) {
-                log.info("Content %s was not added to out-of-bounds room.".format(content.toString()))
-            }
+            } catch (e: ArrayIndexOutOfBoundsException) { }
         })
     }
 
@@ -104,9 +99,7 @@ data class World(private var size: Int = 10) {
                 this[getRoomIndex(point)].removeGameObject(content)
                 val worldAffectingFeature = (content.getFeature(GameObjectFeature.WorldAffecting()) as GameObjectFeature.WorldAffecting?)
                 if (worldAffectingFeature != null) removeWorldEffects(point, worldAffectingFeature.effects)
-            } catch (e: ArrayIndexOutOfBoundsException) {
-                log.info("Content %s was not removed from out-of-bounds room.".format(content.toString()))
-            }
+            } catch (e: ArrayIndexOutOfBoundsException) { }
         })
     }
 
