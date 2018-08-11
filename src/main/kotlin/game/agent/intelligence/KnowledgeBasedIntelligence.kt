@@ -8,13 +8,11 @@ import util.adjacents
 import java.awt.Point
 
 class KnowledgeBasedIntelligence: Intelligence() {
-    internal val visited: MutableSet<Point> = mutableSetOf()
     internal val knowns: MutableMap<Point, MutableSet<GameObject>> = mutableMapOf()
     internal val possibles: MutableMap<Point, MutableSet<GameObject>> = mutableMapOf()
 
     override fun processLastMove(world: World, commandResult: CommandResult) {
         super.processLastMove(world, commandResult)
-        visited.add(commandResult.getPlayerState().getLocation())
         processPerceptions(world, commandResult)
     }
 
