@@ -6,16 +6,17 @@ import game.world.GameObject
 import game.world.GameObjectFeature.*
 import game.world.World
 import game.world.gameObjectsWithFeatures
-import game.world.toMappableGameObject
 import util.adjacents
 import java.awt.Point
 
 class KnowledgeBasedIntelligence: Intelligence() {
+    internal val visited: MutableSet<Point> = mutableSetOf()
     internal val knowns: MutableMap<Point, MutableSet<GameObject>> = mutableMapOf()
     internal val possibles: MutableMap<Point, MutableSet<GameObject>> = mutableMapOf()
 
     override fun processLastMove(world: World, commandResult: CommandResult) {
         super.processLastMove(world, commandResult)
+        visited.add(commandResult.getPlayerState().getLocation())
         val location = commandResult.getPlayerState().getLocation()
         for (perception in commandResult.getPerceptions()) {
             // Get all objects that have effects
@@ -38,8 +39,10 @@ class KnowledgeBasedIntelligence: Intelligence() {
             objectToAdd.forEach {
                 for (adjacent in location.adjacents()) {
                     val gameObjects = possibles.getOrDefault(adjacent, mutableSetOf())
-                    gameObjects.add(it)
-                    possibles[adjacent] = gameObjects
+                    if (world.roomIsValid(adjacent)) {
+                        gameObjects.add(it)
+                        possibles[adjacent] = gameObjects
+                    }
                 }
             }
         }
