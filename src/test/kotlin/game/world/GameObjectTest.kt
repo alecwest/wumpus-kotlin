@@ -73,5 +73,10 @@ internal class GameObjectTest {
     fun `world affecting object has effect`() {
         assertTrue((GameObject.GOLD.getFeature(WorldAffecting()) as WorldAffecting).hasEffect(HereEffect(GameObject.GLITTER)))
     }
+
+    @Test
+    fun `world affecting object has any effect with specific object`() {
+        assertTrue((GameObject.GOLD.getFeature(WorldAffecting()) as WorldAffecting).createsObject(GameObject.GLITTER))
+    }
 }
 

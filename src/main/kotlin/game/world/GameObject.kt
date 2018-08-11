@@ -76,5 +76,11 @@ sealed class GameObjectFeature {
                 worldEffect::class == it::class && worldEffect.gameObject.toString() == it.gameObject.toString()
             }
         }
+
+        fun createsObject(gameObject: GameObject): Boolean {
+            return effects.any {
+                it.gameObject.toString() == gameObject.toString()
+            }
+        }
     }
 }
