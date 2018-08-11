@@ -2,6 +2,7 @@ package game.world
 
 import game.world.GameObject.*
 import game.world.GameObjectFeature.*
+import game.world.effect.HereEffect
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
@@ -66,6 +67,11 @@ internal class GameObjectTest {
         assertEquals(GameObject.MOO, Perception.MOO.toGameObject())
         assertEquals(GameObject.STENCH, Perception.STENCH.toGameObject())
         assertEquals(null, Perception.SCREAM.toGameObject())
+    }
+
+    @Test
+    fun `world affecting object has effect`() {
+        assertTrue((GameObject.GOLD.getFeature(WorldAffecting()) as WorldAffecting).hasEffect(HereEffect(GameObject.GLITTER)))
     }
 }
 
