@@ -20,16 +20,9 @@ class KnowledgeBasedIntelligence: Intelligence() {
         visited.add(commandResult.getPlayerState().getLocation())
         val location = commandResult.getPlayerState().getLocation()
         for (perception in commandResult.getPerceptions()) {
-            // Convert perceptable to game object
-            val gameObjectToMatch = perception.toGameObject()
-            // Get all objects that have effects
+            val gameObjectToMatch = perception.toGameObject() ?: continue
             val objectToAdd = gameObjectsWithFeatures(setOf(WorldAffecting())).filter { worldAffecting ->
-                // Get the list of effects
-                val worldEffects = (worldAffecting.getFeature(WorldAffecting()) as WorldAffecting)
-                // look through each effect for the game object that was just perceived
-                worldEffects.effects.any { worldEffect ->
-                    worldEffect.gameObject == gameObjectToMatch
-                }
+                (worldAffecting.getFeature(WorldAffecting()) as WorldAffecting).createsObject(gameObjectToMatch)
             }
             objectToAdd.forEach {
                 for (adjacent in location.adjacents()) {
