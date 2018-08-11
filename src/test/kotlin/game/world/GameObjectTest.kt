@@ -65,6 +65,7 @@ internal class GameObjectTest {
         assertEquals(GameObject.GLITTER, Perception.GLITTER.toGameObject())
         assertEquals(GameObject.MOO, Perception.MOO.toGameObject())
         assertEquals(GameObject.STENCH, Perception.STENCH.toGameObject())
+        assertEquals(null, Perception.SCREAM.toGameObject())
     }
 }
 
