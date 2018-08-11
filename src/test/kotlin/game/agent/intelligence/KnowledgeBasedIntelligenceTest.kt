@@ -20,7 +20,7 @@ internal class KnowledgeBasedIntelligenceTest {
         assertEquals(mapOf(Point(0, 0) to setOf(GameObject.PIT),
                 Point(0, 2) to setOf(GameObject.PIT),
                 Point(1, 1) to setOf(GameObject.PIT)), intelligence.possibles)
-        assertEquals(emptyMap<Point, Set<GameObject>>(), intelligence.knowns)
+        assertEquals(mapOf(Point(0, 1) to setOf(GameObject.BREEZE)), intelligence.knowns)
     }
 
     @Test
@@ -34,6 +34,7 @@ internal class KnowledgeBasedIntelligenceTest {
         intelligence.processLastMove(world, lastMove2)
         assertEquals(mapOf(Point(0, 2) to setOf(GameObject.PIT),
                 Point(1, 1) to setOf(GameObject.PIT)), intelligence.possibles)
-        assertEquals(mapOf<Point, Set<GameObject>>(Point(0, 0) to setOf()), intelligence.knowns)
+        assertEquals(mapOf<Point, Set<GameObject>>(Point(0, 0) to setOf(),
+                Point(0, 1) to setOf(GameObject.BREEZE)), intelligence.knowns)
     }
 }

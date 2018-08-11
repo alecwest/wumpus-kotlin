@@ -16,23 +16,29 @@ class KnowledgeBasedIntelligence: Intelligence() {
         processPerceptions(world, commandResult)
     }
 
+    // TODO this can be refactored
     private fun processPerceptions(world: World, commandResult: CommandResult) {
         val location = commandResult.getPlayerState().getLocation()
+        val knownObjects = knowns.getOrDefault(location, mutableSetOf())
         for (perception in commandResult.getPerceptions()) {
             val gameObjectToMatch = perception.toGameObject() ?: continue
+            knownObjects.add(gameObjectToMatch)
+
             val objectsToAdd = gameObjectsWithFeatures(setOf(WorldAffecting())).filter { worldAffecting ->
                 (worldAffecting.getFeature(WorldAffecting()) as WorldAffecting).createsObject(gameObjectToMatch)
             }
             objectsToAdd.forEach {
                 for (adjacent in location.adjacents()) {
-                    val gameObjects = possibles.getOrDefault(adjacent, mutableSetOf())
-                    if (world.roomIsValid(adjacent)) {
+                    if (world.roomIsValid(adjacent) && knowns[adjacent] == null) {
+                        val gameObjects = possibles.getOrDefault(adjacent, mutableSetOf())
+                        println(adjacent.toString() + " " + knowns[adjacent])
                         gameObjects.add(it)
                         possibles[adjacent] = gameObjects
                     }
                 }
             }
         }
+        knowns[location] = knownObjects
     }
 
     override fun chooseNextMove(world: World, commandResult: CommandResult): Command {
