@@ -2,11 +2,8 @@ package game.agent.intelligence
 
 import game.command.Command
 import game.command.CommandResult
-import game.world.GameObject
+import game.world.*
 import game.world.GameObjectFeature.*
-import game.world.World
-import game.world.gameObjectsWithFeatures
-import game.world.toGameObject
 import util.adjacents
 import java.awt.Point
 
@@ -18,13 +15,17 @@ class KnowledgeBasedIntelligence: Intelligence() {
     override fun processLastMove(world: World, commandResult: CommandResult) {
         super.processLastMove(world, commandResult)
         visited.add(commandResult.getPlayerState().getLocation())
+        processPerceptions(world, commandResult)
+    }
+
+    private fun processPerceptions(world: World, commandResult: CommandResult) {
         val location = commandResult.getPlayerState().getLocation()
         for (perception in commandResult.getPerceptions()) {
             val gameObjectToMatch = perception.toGameObject() ?: continue
-            val objectToAdd = gameObjectsWithFeatures(setOf(WorldAffecting())).filter { worldAffecting ->
+            val objectsToAdd = gameObjectsWithFeatures(setOf(WorldAffecting())).filter { worldAffecting ->
                 (worldAffecting.getFeature(WorldAffecting()) as WorldAffecting).createsObject(gameObjectToMatch)
             }
-            objectToAdd.forEach {
+            objectsToAdd.forEach {
                 for (adjacent in location.adjacents()) {
                     val gameObjects = possibles.getOrDefault(adjacent, mutableSetOf())
                     if (world.roomIsValid(adjacent)) {
