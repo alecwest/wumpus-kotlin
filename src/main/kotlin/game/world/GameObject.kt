@@ -52,6 +52,15 @@ fun String.toMappableGameObject(): GameObject? {
     }
 }
 
+fun Perception.toGameObject(): GameObject? {
+    for (gameObject in gameObjectsWithFeatures(setOf(Perceptable()))) {
+        if ((gameObject.getFeature(Perceptable()) as Perceptable).perception == this) {
+            return gameObject
+        }
+    }
+    return null
+}
+
 sealed class GameObjectFeature {
     class Blocking: GameObjectFeature() // For things that block a player from entering
     class Dangerous: GameObjectFeature()

@@ -57,5 +57,14 @@ internal class GameObjectTest {
         assertTrue(STENCH.hasFeature(Perceptable()))
         assertFalse(GOLD.hasFeature(Perceptable()))
     }
+
+    @Test
+    fun `convert perception to game object`() {
+        assertEquals(GameObject.BREEZE, Perception.BREEZE.toGameObject())
+        assertEquals(GameObject.FOOD, Perception.FOOD.toGameObject())
+        assertEquals(GameObject.GLITTER, Perception.GLITTER.toGameObject())
+        assertEquals(GameObject.MOO, Perception.MOO.toGameObject())
+        assertEquals(GameObject.STENCH, Perception.STENCH.toGameObject())
+    }
 }
 
