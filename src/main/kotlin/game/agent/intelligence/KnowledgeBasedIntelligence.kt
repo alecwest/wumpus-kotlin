@@ -6,6 +6,7 @@ import game.world.GameObject
 import game.world.GameObjectFeature.*
 import game.world.World
 import game.world.gameObjectsWithFeatures
+import game.world.toGameObject
 import util.adjacents
 import java.awt.Point
 
@@ -19,15 +20,9 @@ class KnowledgeBasedIntelligence: Intelligence() {
         visited.add(commandResult.getPlayerState().getLocation())
         val location = commandResult.getPlayerState().getLocation()
         for (perception in commandResult.getPerceptions()) {
-            // Get all objects that have effects
             // Convert perceptable to game object
-            var gameObjectToMatch: GameObject? = null
-            for (gameObject in gameObjectsWithFeatures(setOf(Perceptable()))) {
-                if ((gameObject.getFeature(Perceptable()) as Perceptable).perception == perception) {
-                    gameObjectToMatch = gameObject
-                    break
-                }
-            }
+            val gameObjectToMatch = perception.toGameObject()
+            // Get all objects that have effects
             val objectToAdd = gameObjectsWithFeatures(setOf(WorldAffecting())).filter { worldAffecting ->
                 // Get the list of effects
                 val worldEffects = (worldAffecting.getFeature(WorldAffecting()) as WorldAffecting)
