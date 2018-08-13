@@ -10,10 +10,14 @@ class HereEffect(gameObject: GameObject): WorldEffect(gameObject) {
     }
 
     override fun applyEffect(world: World, point: Point) {
-        world.addGameObject(point, gameObject)
+        for (herePoint in roomsAffected(point)) {
+            world.addGameObject(herePoint, gameObject)
+        }
     }
 
     override fun removeEffect(world: World, point: Point) {
-        world.removeGameObject(point, gameObject)
+        for (herePoint in roomsAffected(point)) {
+            world.removeGameObject(herePoint, gameObject)
+        }
     }
 }

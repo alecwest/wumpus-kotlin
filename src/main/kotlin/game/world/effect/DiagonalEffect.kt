@@ -11,13 +11,13 @@ class DiagonalEffect(gameObject: GameObject): WorldEffect(gameObject) {
     }
 
     override fun applyEffect(world: World, point: Point) {
-        for (diagonalPoint in point.diagonals()) {
+        for (diagonalPoint in roomsAffected(point)) {
             world.addGameObject(diagonalPoint, gameObject)
         }
     }
 
     override fun removeEffect(world: World, point: Point) {
-        for (adjacentPoint in point.diagonals()) {
+        for (adjacentPoint in roomsAffected(point)) {
             if (!nearbyContentHasAssociatedEffect(world, adjacentPoint)) {
                 world.removeGameObject(adjacentPoint, gameObject)
             }
