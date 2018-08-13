@@ -33,13 +33,6 @@ class ServerTest {
         assertEquals(121, Server.getGame(gameId).getNumberRooms())
     }
 
-    @Test
-    fun `get room content`() {
-        assertEquals(arrayListOf<Perception>(), Server.getCommandResult(gameId).getPerceptions())
-        Server.getGame(gameId).addToRoom(initialPoint, GameObject.FOOD)
-        assertEquals(arrayListOf(Perception.FOOD), Server.getCommandResult(gameId).getPerceptions())
-    }
-
     // TODO add bad move tests
     @Test
     fun `check player moves on move command`() {
