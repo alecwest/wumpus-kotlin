@@ -6,6 +6,10 @@ import game.world.World
 import java.awt.Point
 
 class DiagonalEffect(gameObject: GameObject): WorldEffect(gameObject) {
+    override fun roomsAffected(point: Point): Set<Point> {
+        return setOf()
+    }
+
     override fun applyEffect(world: World, point: Point) {
         for (diagonalPoint in point.diagonals()) {
             world.addGameObject(diagonalPoint, gameObject)

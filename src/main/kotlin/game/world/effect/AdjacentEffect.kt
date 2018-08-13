@@ -6,6 +6,10 @@ import game.world.World
 import java.awt.Point
 
 class AdjacentEffect(gameObject: GameObject): WorldEffect(gameObject) {
+    override fun roomsAffected(point: Point): Set<Point> {
+        return setOf()
+    }
+
     override fun applyEffect(world: World, point: Point) {
         for (adjacentPoint in point.adjacents()) {
             world.addGameObject(adjacentPoint, gameObject)

@@ -5,6 +5,10 @@ import game.world.World
 import java.awt.Point
 
 class HereEffect(gameObject: GameObject): WorldEffect(gameObject) {
+    override fun roomsAffected(point: Point): Set<Point> {
+        return setOf()
+    }
+
     override fun applyEffect(world: World, point: Point) {
         world.addGameObject(point, gameObject)
     }
