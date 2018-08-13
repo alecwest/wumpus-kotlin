@@ -56,7 +56,7 @@ internal class MoveCommandTest {
         @JvmStatic
         fun validMoveCommandTestDataProvider() = Stream.of(
             ValidMoveCommandTestData(initialGame, MoveCommand(),
-                    CommandResult(arrayListOf(),
+                    CommandResult(arrayListOf(Perception.BREEZE),
                             initialPlayer.getPlayerState().copyThis(location = Point(2, 3), facing = Direction.SOUTH))),
             ValidMoveCommandTestData(initialGame, MoveCommand(),
                     CommandResult(playerState = initialPlayer.getPlayerState().copyThis(location = Point(1, 3), facing = Direction.WEST))),
@@ -74,7 +74,7 @@ internal class MoveCommandTest {
                     CommandResult(arrayListOf(Perception.BLOCKADE_BUMP), initialPlayerInCorner.getPlayerState().copyThis(
                             location = Point(0, 0), facing = Direction.NORTH))),
             ValidMoveCommandTestData(playerInCornerGame, MoveCommand(),
-                    CommandResult(arrayListOf(), initialPlayerInCorner.getPlayerState().copyThis(
+                    CommandResult(arrayListOf(Perception.GLITTER), initialPlayerInCorner.getPlayerState().copyThis(
                             location = Point(1, 0), facing = Direction.EAST)))
         )
     }
