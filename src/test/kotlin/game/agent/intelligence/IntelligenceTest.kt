@@ -9,13 +9,13 @@ import org.junit.jupiter.api.Test
 import java.awt.Point
 internal class IntelligenceTest {
     val intelligence = BasicIntelligence()
-    val lastMove = Helpers.createCommandResult(arrayListOf(),
+    val lastMove = Helpers.createCommandResult(arrayListOf(Perception.BREEZE, Perception.GLITTER),
             Helpers.createPlayerState(location = Point(4, 4)))
 
     @Test
     fun `process last move with base method`() {
         intelligence.processLastMove(world, lastMove)
-        assertEquals(arrayListOf(GameObject.BREEZE, GameObject.GLITTER, GameObject.GOLD), world.getGameObjects(lastMove.getPlayerState().getLocation()))
+        assertEquals(arrayListOf(GameObject.BREEZE, GameObject.GLITTER), world.getGameObjects(lastMove.getPlayerState().getLocation()))
     }
 
     @Test
