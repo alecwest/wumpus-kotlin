@@ -88,7 +88,8 @@ internal class AgentTest {
                                         location = Point(0, 3), facing = Direction.EAST)
                         )),
                 ValidPostMoveAgentTestData(commandResult.copyThis(
-                                playerState = commandResult.getPlayerState().copyThis(
+                                arrayListOf(Perception.BREEZE),
+                                commandResult.getPlayerState().copyThis(
                                         location = Point(1, 3), facing = Direction.EAST)
                         ))
         )
