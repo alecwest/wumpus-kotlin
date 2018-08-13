@@ -14,8 +14,7 @@ internal class KnowledgeBasedIntelligenceTest {
     @Test
     fun `process last move with knowns and possibles`() {
         val lastMove = Helpers.createCommandResult(arrayListOf(Perception.BREEZE),
-                Helpers.createPlayerState(location = Point(0, 1)),
-                arrayListOf(GameObject.BREEZE))
+                Helpers.createPlayerState(location = Point(0, 1)))
         intelligence.processLastMove(world, lastMove)
         assertEquals(mapOf(Point(0, 0) to setOf(GameObject.PIT),
                 Point(0, 2) to setOf(GameObject.PIT),
@@ -28,8 +27,7 @@ internal class KnowledgeBasedIntelligenceTest {
         val lastMove = Helpers.createCommandResult(
                 playerState = Helpers.createPlayerState(location = Point(0, 0)))
         val lastMove2 = Helpers.createCommandResult(arrayListOf(Perception.BREEZE),
-                Helpers.createPlayerState(location = Point(0, 1)),
-                arrayListOf(GameObject.BREEZE))
+                Helpers.createPlayerState(location = Point(0, 1)))
         intelligence.processLastMove(world, lastMove)
         intelligence.processLastMove(world, lastMove2)
         assertEquals(mapOf(Point(0, 2) to setOf(GameObject.PIT),

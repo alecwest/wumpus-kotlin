@@ -89,8 +89,7 @@ internal class AgentTest {
                         )),
                 ValidPostMoveAgentTestData(commandResult.copyThis(
                                 playerState = commandResult.getPlayerState().copyThis(
-                                        location = Point(1, 3), facing = Direction.EAST),
-                                gameObjects = arrayListOf(GameObject.BREEZE)
+                                        location = Point(1, 3), facing = Direction.EAST)
                         ))
         )
     }

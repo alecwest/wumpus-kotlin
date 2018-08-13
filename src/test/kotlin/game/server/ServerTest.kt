@@ -6,6 +6,7 @@ import game.world.GameObject
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import game.command.*
+import game.world.Perception
 import util.*
 import java.awt.Point
 
@@ -34,9 +35,9 @@ class ServerTest {
 
     @Test
     fun `get room content`() {
-        assertEquals(arrayListOf<GameObject>(), Server.getCommandResult(gameId).getGameObjects())
+        assertEquals(arrayListOf<Perception>(), Server.getCommandResult(gameId).getPerceptions())
         Server.getGame(gameId).addToRoom(initialPoint, GameObject.FOOD)
-        assertEquals(arrayListOf(GameObject.FOOD), Server.getCommandResult(gameId).getGameObjects())
+        assertEquals(arrayListOf(Perception.FOOD), Server.getCommandResult(gameId).getPerceptions())
     }
 
     // TODO add bad move tests
@@ -72,7 +73,7 @@ class ServerTest {
     fun `get command result`() {
         val sessionId = Helpers.createServerSession(Helpers.testFilePath + "testFile.json")
         Server.makeMove(sessionId, MoveCommand())
-        assertEquals(arrayListOf(GameObject.BREEZE).toString(), Server.getCommandResult(sessionId).getGameObjects().toString())
+        assertEquals(arrayListOf(Perception.BREEZE).toString(), Server.getCommandResult(sessionId).getPerceptions().toString())
     }
 }
 

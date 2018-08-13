@@ -44,19 +44,19 @@ internal class ShootCommandTest {
         fun validShootCommandTestDataProvider() = Stream.of(
                 ValidShootCommandTestData(initialGame, ShootCommand(),
                         CommandResult(arrayListOf(Perception.SCREAM),
-                                initialGame.getPlayerState().copyThis(inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 3))), initialGame.getGameObjects())),
+                                initialGame.getPlayerState().copyThis(inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 3))))),
                  ValidShootCommandTestData(initialGame, ShootCommand(),
                         CommandResult(arrayListOf(Perception.SCREAM),
-                                initialGame.getPlayerState().copyThis(inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 2))), initialGame.getGameObjects())),
+                                initialGame.getPlayerState().copyThis(inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 2))))),
                  ValidShootCommandTestData(initialGame, ShootCommand(),
                         CommandResult(arrayListOf(Perception.SCREAM),
-                                initialGame.getPlayerState().copyThis(inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 1))), initialGame.getGameObjects())),
+                                initialGame.getPlayerState().copyThis(inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 1))))),
                 ValidShootCommandTestData(initialGame, ShootCommand(),
                         CommandResult(arrayListOf(),
-                                initialGame.getPlayerState().copyThis(inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 0))), initialGame.getGameObjects())),
+                                initialGame.getPlayerState().copyThis(inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 0))))),
                 ValidShootCommandTestData(initialGame, ShootCommand(),
                         CommandResult(arrayListOf(),
-                                initialGame.getPlayerState().copyThis(inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 0))), initialGame.getGameObjects()))
+                                initialGame.getPlayerState().copyThis(inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 0)))))
         )
     }
 }

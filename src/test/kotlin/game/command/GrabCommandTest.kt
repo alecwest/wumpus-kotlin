@@ -57,23 +57,21 @@ class GrabCommandTest {
                 ValidGrabCommandTestData(initialGame, GrabCommand(InventoryItem.FOOD),
                         GameObject.FOOD, CommandResult(arrayListOf(Perception.GLITTER),
                         PlayerState(location = initialGame.getPlayerLocation(), facing = initialGame.getPlayerDirection(),
-                                inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 2, InventoryItem.FOOD to 1))),
-                        initialGame.getGameObjects())),
+                                inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 2, InventoryItem.FOOD to 1))))),
                 ValidGrabCommandTestData(initialGame, GrabCommand(InventoryItem.FOOD),
                         GameObject.FOOD, CommandResult(arrayListOf(Perception.GLITTER),
                         PlayerState(location = initialGame.getPlayerLocation(), facing = initialGame.getPlayerDirection(),
-                                inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 2, InventoryItem.FOOD to 1))),
-                        initialGame.getGameObjects())),
+                                inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 2, InventoryItem.FOOD to 1))))),
                 ValidGrabCommandTestData(initialGame, GrabCommand(InventoryItem.GOLD),
                         GameObject.FOOD, CommandResult(arrayListOf(),
                         PlayerState(location = initialGame.getPlayerLocation(), facing = initialGame.getPlayerDirection(),
                                 inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 2, InventoryItem.FOOD to 1,
-                                        InventoryItem.GOLD to 1))), initialGame.getGameObjects())),
+                                        InventoryItem.GOLD to 1))))),
                 ValidGrabCommandTestData(initialGame, GrabCommand(InventoryItem.ARROW),
                         GameObject.FOOD, CommandResult(arrayListOf(),
                         PlayerState(location = initialGame.getPlayerLocation(), facing = initialGame.getPlayerDirection(),
                                 inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 3, InventoryItem.FOOD to 1,
-                                        InventoryItem.GOLD to 1))), initialGame.getGameObjects()))
+                                        InventoryItem.GOLD to 1)))))
         )
     }
 }

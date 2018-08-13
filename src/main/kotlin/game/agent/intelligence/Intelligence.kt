@@ -5,6 +5,7 @@ import game.command.CommandResult
 import game.command.MoveCommand
 import game.world.World
 import game.world.gameObjectValues
+import game.world.toGameObject
 
 abstract class Intelligence {
     open fun chooseNextMove(world: World, commandResult: CommandResult): Command {
@@ -14,7 +15,8 @@ abstract class Intelligence {
 
     open fun processLastMove(world: World, commandResult: CommandResult) {
         resetRoom(world, commandResult)
-        for (gameObject in commandResult.getGameObjects()) {
+        for (perception in commandResult.getPerceptions()) {
+            val gameObject = perception.toGameObject() ?: continue
             world.addGameObject(commandResult.getPlayerState().getLocation(), gameObject)
         }
     }

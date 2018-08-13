@@ -16,9 +16,8 @@ abstract class Command {
     }
 
     fun createCommandResult(perceptions: ArrayList<Perception> = createPerceptions(),
-                            playerState: PlayerState = game.getPlayerState(),
-                            gameObjects: ArrayList<GameObject> = game.getGameObjects()): CommandResult {
-        return CommandResult(perceptions, playerState, gameObjects)
+                            playerState: PlayerState = game.getPlayerState()): CommandResult {
+        return CommandResult(perceptions, playerState)
     }
 
     fun createPerceptions(): ArrayList<Perception> {

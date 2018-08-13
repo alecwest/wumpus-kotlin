@@ -57,8 +57,7 @@ internal class MoveCommandTest {
         fun validMoveCommandTestDataProvider() = Stream.of(
             ValidMoveCommandTestData(initialGame, MoveCommand(),
                     CommandResult(arrayListOf(),
-                            initialPlayer.getPlayerState().copyThis(location = Point(2, 3), facing = Direction.SOUTH),
-                            arrayListOf(GameObject.BREEZE))),
+                            initialPlayer.getPlayerState().copyThis(location = Point(2, 3), facing = Direction.SOUTH))),
             ValidMoveCommandTestData(initialGame, MoveCommand(),
                     CommandResult(playerState = initialPlayer.getPlayerState().copyThis(location = Point(1, 3), facing = Direction.WEST))),
             ValidMoveCommandTestData(initialGame, MoveCommand(),
@@ -76,8 +75,7 @@ internal class MoveCommandTest {
                             location = Point(0, 0), facing = Direction.NORTH))),
             ValidMoveCommandTestData(playerInCornerGame, MoveCommand(),
                     CommandResult(arrayListOf(), initialPlayerInCorner.getPlayerState().copyThis(
-                            location = Point(1, 0), facing = Direction.EAST),
-                            initialPlayerInCornerWorld.getGameObjects(Point(1, 0))))
+                            location = Point(1, 0), facing = Direction.EAST)))
         )
     }
 }

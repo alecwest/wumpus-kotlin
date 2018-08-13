@@ -70,9 +70,8 @@ class Helpers {
         }
 
         fun createCommandResult(perceptions: ArrayList<Perception> = arrayListOf(),
-                                playerState: PlayerState = Helpers.createPlayerState(),
-                                gameObject: ArrayList<GameObject> = arrayListOf()): CommandResult {
-            return CommandResult(perceptions, playerState, gameObject)
+                                playerState: PlayerState = Helpers.createPlayerState()): CommandResult {
+            return CommandResult(perceptions, playerState)
         }
 
         fun createClient(fileName: String = "",

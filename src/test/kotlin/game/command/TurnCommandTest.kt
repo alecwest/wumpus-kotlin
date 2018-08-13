@@ -40,13 +40,13 @@ internal class TurnCommandTest {
         @JvmStatic
         fun validTurnCommandTestDataProvider() = Stream.of(
                 ValidTurnCommandTestData(initialGame, TurnCommand(Direction.EAST), CommandResult(arrayListOf(Perception.BREEZE),
-                        initialPlayer.getPlayerState().copyThis(facing = Direction.EAST), initialGame.getGameObjects())),
+                        initialPlayer.getPlayerState().copyThis(facing = Direction.EAST))),
                 ValidTurnCommandTestData(initialGame, TurnCommand(Direction.NORTH), CommandResult(arrayListOf(Perception.BREEZE),
-                        initialPlayer.getPlayerState().copyThis(facing = Direction.NORTH), initialGame.getGameObjects())),
+                        initialPlayer.getPlayerState().copyThis(facing = Direction.NORTH))),
                 ValidTurnCommandTestData(initialGame, TurnCommand(Direction.EAST), CommandResult(arrayListOf(Perception.BREEZE),
-                        initialPlayer.getPlayerState().copyThis(facing = Direction.EAST), initialGame.getGameObjects())),
+                        initialPlayer.getPlayerState().copyThis(facing = Direction.EAST))),
                 ValidTurnCommandTestData(initialGame, TurnCommand(Direction.SOUTH), CommandResult(arrayListOf(Perception.BREEZE),
-                        initialPlayer.getPlayerState().copyThis(facing = Direction.SOUTH), initialGame.getGameObjects()))
+                        initialPlayer.getPlayerState().copyThis(facing = Direction.SOUTH)))
         )
     }
 }
