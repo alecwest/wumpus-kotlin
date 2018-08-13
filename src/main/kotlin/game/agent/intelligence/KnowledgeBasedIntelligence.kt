@@ -31,7 +31,6 @@ class KnowledgeBasedIntelligence: Intelligence() {
                 for (adjacent in location.adjacents()) {
                     if (world.roomIsValid(adjacent) && knowns[adjacent] == null) {
                         val gameObjects = possibles.getOrDefault(adjacent, mutableSetOf())
-                        println(adjacent.toString() + " " + knowns[adjacent])
                         gameObjects.add(it)
                         possibles[adjacent] = gameObjects
                     }
