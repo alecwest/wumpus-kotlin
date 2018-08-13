@@ -19,25 +19,37 @@ class KnowledgeBasedIntelligence: Intelligence() {
     // TODO this can be refactored
     private fun processPerceptions(world: World, commandResult: CommandResult) {
         val location = commandResult.getPlayerState().getLocation()
-        val knownObjects = knowns.getOrDefault(location, mutableSetOf())
-        for (perception in commandResult.getPerceptions()) {
-            val gameObjectToMatch = perception.toGameObject() ?: continue
-            knownObjects.add(gameObjectToMatch)
+        val localObjects = getObjectsFromPerceptions(location, commandResult.getPerceptions())
 
-            val objectsToAdd = gameObjectsWithFeatures(setOf(WorldAffecting())).filter { worldAffecting ->
+        localObjects.forEach { gameObjectToMatch ->
+            val possibleNearbyObjects = gameObjectsWithFeatures(setOf(WorldAffecting())).filter { worldAffecting ->
                 (worldAffecting.getFeature(WorldAffecting()) as WorldAffecting).createsObject(gameObjectToMatch)
             }
-            objectsToAdd.forEach {
+            possibleNearbyObjects.forEach {
+                // TODO this isn't complete if a moo were perceived
                 for (adjacent in location.adjacents()) {
-                    if (world.roomIsValid(adjacent) && knowns[adjacent] == null) {
-                        val gameObjects = possibles.getOrDefault(adjacent, mutableSetOf())
-                        gameObjects.add(it)
-                        possibles[adjacent] = gameObjects
-                    }
+                    addPossibleObject(world, adjacent, it)
                 }
             }
         }
-        knowns[location] = knownObjects
+        knowns[location] = localObjects
+    }
+
+    private fun getObjectsFromPerceptions(location: Point, perceptions: ArrayList<Perception>): MutableSet<GameObject> {
+        val knownObjects = knowns.getOrDefault(location, mutableSetOf())
+        perceptions.forEach { perception ->
+            val gameObjectToMatch = perception.toGameObject() ?: return@forEach
+            knownObjects.add(gameObjectToMatch)
+        }
+        return knownObjects
+    }
+
+    private fun addPossibleObject(world: World, location: Point, objectToAdd: GameObject) {
+        if (world.roomIsValid(location) && knowns[location] == null) {
+            val gameObjects = possibles.getOrDefault(location, mutableSetOf())
+            gameObjects.add(objectToAdd)
+            possibles[location] = gameObjects
+        }
     }
 
     override fun chooseNextMove(world: World, commandResult: CommandResult): Command {

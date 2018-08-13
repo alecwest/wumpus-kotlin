@@ -69,7 +69,7 @@ sealed class GameObjectFeature {
     class Mappable(val character: String = ""): GameObjectFeature()
     class Perceptable(val perception: Perception? = null): GameObjectFeature()
     class RoomFilling: GameObjectFeature() // For things that must exist in a Room alone
-    class Shootable(): GameObjectFeature()
+    class Shootable : GameObjectFeature()
     class WorldAffecting(val effects: ArrayList<WorldEffect> = arrayListOf()): GameObjectFeature() {
         fun hasEffect(worldEffect: WorldEffect): Boolean {
             return effects.any {
