@@ -16,7 +16,6 @@ class KnowledgeBasedIntelligence: Intelligence() {
         processPerceptions(world, commandResult)
     }
 
-    // TODO this can be refactored
     private fun processPerceptions(world: World, commandResult: CommandResult) {
         val location = commandResult.getPlayerState().getLocation()
         val localObjects = getObjectsFromPerceptions(location, commandResult.getPerceptions())
@@ -25,10 +24,15 @@ class KnowledgeBasedIntelligence: Intelligence() {
             val possibleNearbyObjects = gameObjectsWithFeatures(setOf(WorldAffecting())).filter { worldAffecting ->
                 (worldAffecting.getFeature(WorldAffecting()) as WorldAffecting).createsObject(gameObjectToMatch)
             }
-            possibleNearbyObjects.forEach {
-                // TODO this isn't complete if a moo were perceived
-                for (adjacent in location.adjacents()) {
-                    addPossibleObject(world, adjacent, it)
+            possibleNearbyObjects.forEach {possibleNearbyObject ->
+                val worldEffects = (possibleNearbyObject.getFeature(WorldAffecting()) as WorldAffecting).effects
+                        .filter { worldEffect ->
+                    commandResult.getPerceptions().any { it.toGameObject() == worldEffect.gameObject }
+                }
+                worldEffects.forEach { worldEffect ->
+                    worldEffect.roomsAffected(location).forEach { point ->
+                        addPossibleObject(world, point, possibleNearbyObject)
+                    }
                 }
             }
         }
