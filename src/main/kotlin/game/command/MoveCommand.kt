@@ -11,7 +11,13 @@ class MoveCommand: Command() {
         val targetLocation = game.getPlayerLocation().adjacent(direction)
         val perceptionList = arrayListOf<Perception>()
         when {
-            canEnterRoom(targetLocation) -> deferExecution(direction)
+            canEnterRoom(targetLocation) -> {
+                deferExecution(direction)
+                for (gameObject in game.getGameObjects(targetLocation).filter { it.hasFeature(Perceptable()) }) {
+                    val perceptable = (gameObject.getFeature(Perceptable()) as Perceptable).perception ?: continue
+                    perceptionList.add(perceptable)
+                }
+            }
             game.roomIsValid(targetLocation) -> {
                 for (gameObject in game.getGameObjects(targetLocation).filter { it.hasFeature(Blocking()) }) {
                     val perception = (gameObject.getFeature(Perceptable()) as Perceptable).perception

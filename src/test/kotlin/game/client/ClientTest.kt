@@ -3,6 +3,7 @@ package game.client
 import game.command.*
 import game.server.Server
 import game.world.GameObject
+import game.world.Perception
 import game.world.toGameObject
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
@@ -35,6 +36,6 @@ internal class ClientTest {
         moveCommand.execute()
 
         assertEquals(1, client.getMoveResult().getPerceptions().size)
-        assertEquals(GameObject.BREEZE, client.getMoveResult().getPerceptions()[0].toGameObject())
+        assertEquals(Perception.BREEZE, client.getMoveResult().getPerceptions()[0])
     }
 }
