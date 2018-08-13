@@ -6,7 +6,7 @@ import java.awt.Point
 
 class HereEffect(gameObject: GameObject): WorldEffect(gameObject) {
     override fun roomsAffected(point: Point): Set<Point> {
-        return setOf()
+        return setOf(point)
     }
 
     override fun applyEffect(world: World, point: Point) {

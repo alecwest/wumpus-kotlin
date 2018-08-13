@@ -7,7 +7,7 @@ import java.awt.Point
 
 class AdjacentEffect(gameObject: GameObject): WorldEffect(gameObject) {
     override fun roomsAffected(point: Point): Set<Point> {
-        return setOf()
+        return point.adjacents().toSet()
     }
 
     override fun applyEffect(world: World, point: Point) {

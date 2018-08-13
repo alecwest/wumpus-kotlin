@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import game.world.GameObject
 import game.world.World
+import org.junit.jupiter.api.Assertions.assertEquals
 import java.awt.Point
 import kotlin.test.assertFalse
 
@@ -22,5 +23,10 @@ class HereEffectTest {
         val world = Helpers.createWorld(gameObject = mapOf(point to arrayListOf(GameObject.GOLD)))
         world.removeGameObject(point, GameObject.GOLD)
         assertFalse(world.hasGameObject(point, GameObject.GLITTER))
+    }
+
+    @Test
+    fun `get rooms affected`() {
+        assertEquals(HereEffect(GameObject.GOLD).roomsAffected(Point(2, 2)), setOf(Point(2, 2)))
     }
 }

@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test
 import util.adjacents
 import util.diagonals
 import game.world.World
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
 import java.awt.Point
 import kotlin.test.assertFalse
 
@@ -28,5 +30,11 @@ class DiagonalEffectTest {
         for (point in point.adjacents() + point.diagonals()) {
             assertFalse(world.hasGameObject(point, GameObject.MOO))
         }
+    }
+
+    @Test
+    fun `get rooms affected`() {
+        assertEquals(DiagonalEffect(GameObject.SUPMUW).roomsAffected(Point(2, 2)),
+                setOf(Point(3, 3), Point(1, 1), Point(1, 3), Point(3, 1)))
     }
 }
