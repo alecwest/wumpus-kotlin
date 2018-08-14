@@ -4,7 +4,7 @@ import game.command.Command
 import game.command.CommandResult
 import game.world.*
 import game.world.GameObjectFeature.*
-import util.adjacents
+import game.world.effect.WorldEffect
 import java.awt.Point
 
 class KnowledgeBasedIntelligence: Intelligence() {
@@ -25,11 +25,8 @@ class KnowledgeBasedIntelligence: Intelligence() {
                 (worldAffecting.getFeature(WorldAffecting()) as WorldAffecting).createsObject(gameObjectToMatch)
             }
             possibleNearbyObjects.forEach {possibleNearbyObject ->
-                val worldEffects = (possibleNearbyObject.getFeature(WorldAffecting()) as WorldAffecting).effects
-                        .filter { worldEffect ->
-                    commandResult.getPerceptions().any { it.toGameObject() == worldEffect.gameObject }
-                }
-                worldEffects.forEach { worldEffect ->
+                val possibleEffects = getPossibleEffects(commandResult, possibleNearbyObject)
+                possibleEffects.forEach { worldEffect ->
                     worldEffect.roomsAffected(location).forEach { point ->
                         addPossibleObject(world, point, possibleNearbyObject)
                     }
@@ -37,6 +34,15 @@ class KnowledgeBasedIntelligence: Intelligence() {
             }
         }
         knowns[location] = localObjects
+    }
+
+    private fun getPossibleEffects(commandResult: CommandResult, gameObject: GameObject): List<WorldEffect> {
+        return (gameObject.getFeature(WorldAffecting()) as WorldAffecting).effects
+                .filter { wasPerceived(commandResult, it.gameObject) }
+    }
+
+    private fun wasPerceived(commandResult: CommandResult, gameObject: GameObject): Boolean {
+        return commandResult.getPerceptions().any { it.toGameObject() == gameObject }
     }
 
     private fun getObjectsFromPerceptions(location: Point, perceptions: ArrayList<Perception>): MutableSet<GameObject> {
