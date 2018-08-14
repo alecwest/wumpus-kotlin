@@ -14,6 +14,22 @@ class KnowledgeBasedIntelligence: Intelligence() {
     override fun processLastMove(world: World, commandResult: CommandResult) {
         super.processLastMove(world, commandResult)
         processPerceptions(world, commandResult)
+        val pointsToRemove = mutableSetOf<Point>()
+        possibles.forEach { point, gameObjects ->
+            gameObjects.forEach { gameObject ->
+                (gameObject.getFeature(WorldAffecting()) as WorldAffecting).effects.forEach { effect ->
+                    effect.roomsAffected(point).forEach { roomAffected ->
+                        if (knowns[roomAffected]?.isEmpty() == true) {
+                            pointsToRemove.add(point)
+                            return@forEach
+                        }
+                    }
+                }
+            }
+        }
+        pointsToRemove.forEach {
+            possibles.remove(it)
+        }
     }
 
     private fun processPerceptions(world: World, commandResult: CommandResult) {

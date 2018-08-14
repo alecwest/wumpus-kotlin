@@ -77,7 +77,7 @@ internal class KnowledgeBasedIntelligenceTest {
                                 Point(1, 1) to mutableSetOf<GameObject>(GameObject.BREEZE),
                                 Point(1, 0) to mutableSetOf(),
                                 Point(2, 0) to mutableSetOf(),
-                                Point(2, 1) to mutableSetOf<GameObject>(GameObject.PIT)))
+                                Point(1, 2) to mutableSetOf<GameObject>(GameObject.PIT)))
         )
     }
 
@@ -85,6 +85,8 @@ internal class KnowledgeBasedIntelligenceTest {
     @MethodSource("validMovePitDeductionTestDataProvider")
     fun `process multiple moves to deduce location of pit`(testData: ValidMoveProcessingTestData) {
         companionIntelligence.processLastMove(world, testData.lastMove)
+        println(companionIntelligence.possibles)
+        println(companionIntelligence.knowns)
         assertEquals(testData.expectedPossibles, companionIntelligence.possibles)
         assertEquals(testData.expectedKnowns, companionIntelligence.knowns)
     }
