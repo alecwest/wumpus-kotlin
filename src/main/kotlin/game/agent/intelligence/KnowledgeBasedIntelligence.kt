@@ -14,6 +14,11 @@ class KnowledgeBasedIntelligence: Intelligence() {
     override fun processLastMove(world: World, commandResult: CommandResult) {
         super.processLastMove(world, commandResult)
         processPerceptions(world, commandResult)
+        clearContradictions()
+
+    }
+
+    private fun clearContradictions() {
         val pointsToRemove = mutableSetOf<Point>()
         possibles.forEach { point, gameObjects ->
             gameObjects.forEach { gameObject ->
