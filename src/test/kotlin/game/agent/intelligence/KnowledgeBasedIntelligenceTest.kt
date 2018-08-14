@@ -25,6 +25,7 @@ internal class KnowledgeBasedIntelligenceTest {
     companion object {
         val lastMove = Helpers.createCommandResult(arrayListOf(Perception.BREEZE),
                 Helpers.createPlayerState(location = Point(0, 1)))
+        val companionIntelligence = KnowledgeBasedIntelligence()
 
         @JvmStatic
         fun validMoveProcessingTestDataProvider() = Stream.of(
@@ -44,20 +45,48 @@ internal class KnowledgeBasedIntelligenceTest {
                         mutableMapOf(),
                         mutableMapOf(Point(0, 1) to mutableSetOf(GameObject.GLITTER, GameObject.GOLD)))
         )
+
+        @JvmStatic
+        fun validMovePitDeductionTestDataProvider() = Stream.of(
+                ValidMoveProcessingTestData(lastMove.copyThis(arrayListOf(), Helpers.createPlayerState(location = Point(0, 0))),
+                        mutableMapOf(),
+                        mutableMapOf(Point(0, 0) to mutableSetOf())),
+                ValidMoveProcessingTestData(lastMove.copyThis(arrayListOf(), Helpers.createPlayerState(location = Point(0, 1))),
+                        mutableMapOf(),
+                        mutableMapOf(Point(0, 0) to mutableSetOf(), Point(0, 1) to mutableSetOf())),
+                // Player should be able to deduce that both (0, 1) and (1, 0) are not possible pit locations
+                // since (0, 1) has been visited and there was no breeze in (0, 0)
+                ValidMoveProcessingTestData(lastMove.copyThis(playerState = Helpers.createPlayerState(location = Point(1, 1))),
+                        mutableMapOf(Point(1, 2) to mutableSetOf<GameObject>(GameObject.PIT),
+                                Point(2, 1) to mutableSetOf<GameObject>(GameObject.PIT)),
+                        mutableMapOf(Point(0, 0) to mutableSetOf(),
+                                Point(0, 1) to mutableSetOf(),
+                                Point(1, 1) to mutableSetOf<GameObject>(GameObject.BREEZE))),
+                ValidMoveProcessingTestData(lastMove.copyThis(arrayListOf(), Helpers.createPlayerState(location = Point(1, 0))),
+                        mutableMapOf(Point(1, 2) to mutableSetOf<GameObject>(GameObject.PIT),
+                                Point(2, 1) to mutableSetOf<GameObject>(GameObject.PIT)),
+                        mutableMapOf(Point(0, 0) to mutableSetOf(),
+                                Point(0, 1) to mutableSetOf(),
+                                Point(1, 1) to mutableSetOf<GameObject>(GameObject.BREEZE),
+                                Point(1, 0) to mutableSetOf())),
+                // Player should be able to deduce the location of a pit upon finding (2, 0) to be empty
+                ValidMoveProcessingTestData(lastMove.copyThis(arrayListOf(), Helpers.createPlayerState(location = Point(2, 0))),
+                        mutableMapOf(),
+                        mutableMapOf(Point(0, 0) to mutableSetOf(),
+                                Point(0, 1) to mutableSetOf(),
+                                Point(1, 1) to mutableSetOf<GameObject>(GameObject.BREEZE),
+                                Point(1, 0) to mutableSetOf(),
+                                Point(2, 0) to mutableSetOf(),
+                                Point(2, 1) to mutableSetOf<GameObject>(GameObject.PIT)))
+        )
     }
 
-    @Test
-    fun `process move without marking visited rooms as possible for content`() {
-        val lastMove = Helpers.createCommandResult(
-                playerState = Helpers.createPlayerState(location = Point(0, 0)))
-        val lastMove2 = Helpers.createCommandResult(arrayListOf(Perception.BREEZE),
-                Helpers.createPlayerState(location = Point(0, 1)))
-        intelligence.processLastMove(world, lastMove)
-        intelligence.processLastMove(world, lastMove2)
-        assertEquals(mapOf(Point(0, 2) to setOf(GameObject.PIT),
-                Point(1, 1) to setOf(GameObject.PIT)), intelligence.possibles)
-        assertEquals(mapOf<Point, Set<GameObject>>(Point(0, 0) to setOf(),
-                Point(0, 1) to setOf(GameObject.BREEZE)), intelligence.knowns)
+    @ParameterizedTest
+    @MethodSource("validMovePitDeductionTestDataProvider")
+    fun `process multiple moves to deduce location of pit`(testData: ValidMoveProcessingTestData) {
+        companionIntelligence.processLastMove(world, testData.lastMove)
+        assertEquals(testData.expectedPossibles, companionIntelligence.possibles)
+        assertEquals(testData.expectedKnowns, companionIntelligence.knowns)
     }
 }
 
