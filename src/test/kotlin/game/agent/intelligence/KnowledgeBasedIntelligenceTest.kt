@@ -30,16 +30,19 @@ internal class KnowledgeBasedIntelligenceTest {
         fun validMoveProcessingTestDataProvider() = Stream.of(
                 ValidMoveProcessingTestData(lastMove,
                         mutableMapOf(Point(0, 0) to mutableSetOf<GameObject>(GameObject.PIT),
-                        Point(0, 2) to mutableSetOf<GameObject>(GameObject.PIT),
-                        Point(1, 1) to mutableSetOf<GameObject>(GameObject.PIT)),
+                                Point(0, 2) to mutableSetOf<GameObject>(GameObject.PIT),
+                                Point(1, 1) to mutableSetOf<GameObject>(GameObject.PIT)),
                         mutableMapOf(Point(0, 1) to mutableSetOf<GameObject>(GameObject.BREEZE))),
                 ValidMoveProcessingTestData(lastMove.copyThis(arrayListOf(Perception.MOO)),
                         mutableMapOf(Point(0, 0) to mutableSetOf(GameObject.SUPMUW, GameObject.SUPMUW_EVIL),
-                        Point(0, 2) to mutableSetOf(GameObject.SUPMUW, GameObject.SUPMUW_EVIL),
-                        Point(1, 2) to mutableSetOf(GameObject.SUPMUW, GameObject.SUPMUW_EVIL),
-                        Point(1, 0) to mutableSetOf(GameObject.SUPMUW, GameObject.SUPMUW_EVIL),
-                        Point(1, 1) to mutableSetOf(GameObject.SUPMUW, GameObject.SUPMUW_EVIL)),
-                        mutableMapOf(Point(0, 1) to mutableSetOf<GameObject>(GameObject.MOO)))
+                                Point(0, 2) to mutableSetOf(GameObject.SUPMUW, GameObject.SUPMUW_EVIL),
+                                Point(1, 2) to mutableSetOf(GameObject.SUPMUW, GameObject.SUPMUW_EVIL),
+                                Point(1, 0) to mutableSetOf(GameObject.SUPMUW, GameObject.SUPMUW_EVIL),
+                                Point(1, 1) to mutableSetOf(GameObject.SUPMUW, GameObject.SUPMUW_EVIL)),
+                        mutableMapOf(Point(0, 1) to mutableSetOf<GameObject>(GameObject.MOO))),
+                ValidMoveProcessingTestData(lastMove.copyThis(arrayListOf(Perception.GLITTER)),
+                        mutableMapOf(),
+                        mutableMapOf(Point(0, 1) to mutableSetOf(GameObject.GLITTER, GameObject.GOLD)))
         )
     }
 

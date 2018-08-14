@@ -19,7 +19,7 @@ class KnowledgeBasedIntelligence: Intelligence() {
     private fun processPerceptions(world: World, commandResult: CommandResult) {
         val location = commandResult.getPlayerState().getLocation()
         val localObjects = getObjectsFromPerceptions(location, commandResult.getPerceptions())
-
+        knowns[location] = mutableSetOf()
         localObjects.forEach { gameObjectToMatch ->
             val possibleNearbyObjects = gameObjectsWithFeatures(setOf(WorldAffecting())).filter { worldAffecting ->
                 (worldAffecting.getFeature(WorldAffecting()) as WorldAffecting).createsObject(gameObjectToMatch)
@@ -28,12 +28,15 @@ class KnowledgeBasedIntelligence: Intelligence() {
                 val possibleEffects = getPossibleEffects(commandResult, possibleNearbyObject)
                 possibleEffects.forEach { worldEffect ->
                     worldEffect.roomsAffected(location).forEach { point ->
-                        addPossibleObject(world, point, possibleNearbyObject)
+                        when (point) {
+                            location -> addKnownObject(world, point, possibleNearbyObject)
+                            else -> addPossibleObject(world, point, possibleNearbyObject)
+                        }
                     }
                 }
             }
+            addKnownObject(world, location, gameObjectToMatch)
         }
-        knowns[location] = localObjects
     }
 
     private fun getPossibleEffects(commandResult: CommandResult, gameObject: GameObject): List<WorldEffect> {
@@ -52,6 +55,14 @@ class KnowledgeBasedIntelligence: Intelligence() {
             knownObjects.add(gameObjectToMatch)
         }
         return knownObjects
+    }
+
+    private fun addKnownObject(world: World, location: Point, objectToAdd: GameObject) {
+        if (world.roomIsValid(location)) {
+            val gameObjects = knowns.getOrDefault(location, mutableSetOf())
+            gameObjects.add(objectToAdd)
+            knowns[location] = gameObjects
+        }
     }
 
     private fun addPossibleObject(world: World, location: Point, objectToAdd: GameObject) {
