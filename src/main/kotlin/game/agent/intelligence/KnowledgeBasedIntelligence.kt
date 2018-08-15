@@ -30,13 +30,7 @@ class KnowledgeBasedIntelligence: Intelligence() {
                 if (possibleCauses.size == 1) {
                     possibleCauseLocations = getPossibleCauseLocations(point, possibleCauses[0])
                     if (possibleCauseLocations.size == 1) {
-                        val possiblesInRoom = possibles.getOrDefault(possibleCauseLocations[0], mutableSetOf())
-                        possiblesInRoom.remove(possibleCauses[0])
-                        if (possiblesInRoom.isEmpty()) {
-                            possibles.remove(possibleCauseLocations[0])
-                        } else {
-                            possibles[possibleCauseLocations[0]] = possiblesInRoom
-                        }
+                        removePossibleObject(possibleCauseLocations[0], possibleCauses[0])
                         knownsToAdd[possibleCauseLocations[0]] = mutableSetOf(possibleCauses[0])
                     }
                 } else {
@@ -48,6 +42,16 @@ class KnowledgeBasedIntelligence: Intelligence() {
             val gameObjects = knowns.getOrDefault(it.key, mutableSetOf())
             gameObjects.addAll(it.value)
             knowns[it.key] = gameObjects
+        }
+    }
+
+    private fun removePossibleObject(point: Point, gameObject: GameObject) {
+        val possiblesInRoom = possibles.getOrDefault(point, mutableSetOf())
+        possiblesInRoom.remove(gameObject)
+        if (possiblesInRoom.isEmpty()) {
+            possibles.remove(point)
+        } else {
+            possibles[point] = possiblesInRoom
         }
     }
 
