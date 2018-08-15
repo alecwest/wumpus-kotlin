@@ -22,9 +22,18 @@ internal class KnowledgeBasedIntelligenceTest {
         assertEquals(testData.expectedKnowns, intelligence.knowns)
     }
 
+    @ParameterizedTest
+    @MethodSource("validMovePitDeductionTestDataProvider")
+    fun `process multiple moves to deduce location of pit`(testData: ValidMoveProcessingTestData) {
+        companionIntelligence.processLastMove(world, testData.lastMove)
+        assertEquals(testData.expectedPossibles, companionIntelligence.possibles)
+        assertEquals(testData.expectedKnowns, companionIntelligence.knowns)
+    }
+
     companion object {
         val lastMove = Helpers.createCommandResult(arrayListOf(Perception.BREEZE),
                 Helpers.createPlayerState(location = Point(0, 1)))
+
         val companionIntelligence = KnowledgeBasedIntelligence()
 
         @JvmStatic
@@ -79,14 +88,6 @@ internal class KnowledgeBasedIntelligenceTest {
                                 Point(2, 0) to mutableSetOf(),
                                 Point(1, 2) to mutableSetOf<GameObject>(GameObject.PIT)))
         )
-    }
-
-    @ParameterizedTest
-    @MethodSource("validMovePitDeductionTestDataProvider")
-    fun `process multiple moves to deduce location of pit`(testData: ValidMoveProcessingTestData) {
-        companionIntelligence.processLastMove(world, testData.lastMove)
-        assertEquals(testData.expectedPossibles, companionIntelligence.possibles)
-        assertEquals(testData.expectedKnowns, companionIntelligence.knowns)
     }
 }
 
