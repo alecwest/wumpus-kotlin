@@ -23,4 +23,15 @@ class DiagonalEffect(gameObject: GameObject): WorldEffect(gameObject) {
             }
         }
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is DiagonalEffect) return false
+        if (gameObject != other.gameObject) return false
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return javaClass.hashCode()
+    }
 }
