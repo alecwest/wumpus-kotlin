@@ -85,8 +85,6 @@ internal class KnowledgeBasedIntelligenceTest {
     @MethodSource("validMovePitDeductionTestDataProvider")
     fun `process multiple moves to deduce location of pit`(testData: ValidMoveProcessingTestData) {
         companionIntelligence.processLastMove(world, testData.lastMove)
-        println(companionIntelligence.possibles)
-        println(companionIntelligence.knowns)
         assertEquals(testData.expectedPossibles, companionIntelligence.possibles)
         assertEquals(testData.expectedKnowns, companionIntelligence.knowns)
     }
