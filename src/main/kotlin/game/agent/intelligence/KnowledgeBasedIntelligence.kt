@@ -73,7 +73,7 @@ class KnowledgeBasedIntelligence: Intelligence() {
             gameObjects.forEach { gameObject ->
                 (gameObject.getFeature(WorldAffecting()) as WorldAffecting).effects.forEach { effect ->
                     effect.roomsAffected(point).forEach { roomAffected ->
-                        if (knowns.getValue(roomAffected).isEmpty()) {
+                        if (!knowns.isNull(roomAffected) && knowns.getValue(roomAffected).isEmpty()) {
                             pointsToRemove.add(point)
                             return@forEach
                         }

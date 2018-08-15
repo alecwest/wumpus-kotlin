@@ -18,16 +18,16 @@ internal class KnowledgeBasedIntelligenceTest {
     @MethodSource("validMoveProcessingTestDataProvider")
     fun `process last move with knowns and possibles`(testData: ValidMoveProcessingTestData) {
         intelligence.processLastMove(world, testData.lastMove)
-        assertEquals(testData.expectedPossibles, intelligence.possibles)
-        assertEquals(testData.expectedKnowns, intelligence.knowns)
+        assertEquals(testData.expectedPossibles, intelligence.possibles.getMap())
+        assertEquals(testData.expectedKnowns, intelligence.knowns.getMap())
     }
 
     @ParameterizedTest
     @MethodSource("validMovePitDeductionTestDataProvider")
     fun `process multiple moves to deduce location of pit`(testData: ValidMoveProcessingTestData) {
         companionIntelligence.processLastMove(world, testData.lastMove)
-        assertEquals(testData.expectedPossibles, companionIntelligence.possibles)
-        assertEquals(testData.expectedKnowns, companionIntelligence.knowns)
+        assertEquals(testData.expectedPossibles, companionIntelligence.possibles.getMap())
+        assertEquals(testData.expectedKnowns, companionIntelligence.knowns.getMap())
     }
 
 
