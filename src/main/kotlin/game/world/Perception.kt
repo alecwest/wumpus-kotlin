@@ -10,3 +10,12 @@ enum class Perception {
     STENCH,
     WALL_BUMP
 }
+
+fun toGameObjects(perceptions: Set<Perception>): Set<GameObject> {
+    val gameObjects = mutableSetOf<GameObject>()
+    perceptions.forEach { perception ->
+        val gameObjectToMatch = perception.toGameObject() ?: return@forEach
+        gameObjects.add(gameObjectToMatch)
+    }
+    return gameObjects.toSet()
+}
