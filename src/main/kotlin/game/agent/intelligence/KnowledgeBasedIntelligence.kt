@@ -15,6 +15,11 @@ class KnowledgeBasedIntelligence: Intelligence() {
         super.processLastMove(world, commandResult)
         processPerceptions(world, commandResult)
         clearContradictions()
+        makeDeductions()
+    }
+
+    // TODO needs refactoring
+    private fun makeDeductions() {
         // take everything we know
         val knownsToAdd = mutableMapOf<Point, MutableSet<GameObject>>()
         var possibleToRemove: Point = Point(-1, -1)
@@ -22,19 +27,20 @@ class KnowledgeBasedIntelligence: Intelligence() {
             // look at each known object
             gameObjects.forEach { gameObject ->
                 // get world affecting objects that could have caused the object currently being looked at
+                // TODO code duplication in processPerceptions
                 val possibleCauses = gameObjectsWithFeatures(setOf(WorldAffecting())).filter { worldEffector ->
                     (worldEffector.getFeature(WorldAffecting()) as WorldAffecting).createsObject(gameObject)
                 }
                 if (possibleCauses.size == 1) {
                     if ((possibleCauses[0].getFeature(WorldAffecting()) as WorldAffecting).effects.filter { worldEffect ->
-                        worldEffect.roomsAffected(point).filter { roomAffected ->
-                            val result = possibles.containsKey(roomAffected)
-                            if (result) {
-                                possibleToRemove = roomAffected
-                            }
-                            result
-                        }.size == 1
-                    }.size == 1) {
+                                worldEffect.roomsAffected(point).filter { roomAffected ->
+                                    val result = possibles.containsKey(roomAffected)
+                                    if (result) {
+                                        possibleToRemove = roomAffected
+                                    }
+                                    result
+                                }.size == 1
+                            }.size == 1) {
                         val possiblesInRoom = possibles.getOrDefault(possibleToRemove, mutableSetOf())
                         possiblesInRoom.remove(possibleCauses[0])
                         if (possiblesInRoom.isEmpty()) {
@@ -56,6 +62,7 @@ class KnowledgeBasedIntelligence: Intelligence() {
         }
     }
 
+    // TODO needs refactoring
     private fun clearContradictions() {
         val pointsToRemove = mutableSetOf<Point>()
         possibles.forEach { point, gameObjects ->
