@@ -88,7 +88,7 @@ class KnowledgeBasedIntelligence: Intelligence() {
 
     private fun processPerceptions(world: World, commandResult: CommandResult) {
         val location = commandResult.getPlayerState().getLocation()
-        val perceivedObjects = getObjectsFromPerceptions(commandResult.getPerceptions())
+        val perceivedObjects = toGameObjects(commandResult.getPerceptions().toSet())
         knowns.add(location)
 
         perceivedObjects.forEach { gameObjectToMatch ->
@@ -118,15 +118,6 @@ class KnowledgeBasedIntelligence: Intelligence() {
 
     internal fun wasPerceived(commandResult: CommandResult, gameObject: GameObject): Boolean {
         return commandResult.getPerceptions().any { it.toGameObject() == gameObject }
-    }
-
-    private fun getObjectsFromPerceptions(perceptions: ArrayList<Perception>): MutableSet<GameObject> {
-        val knownObjects = mutableSetOf<GameObject>()
-        perceptions.forEach { perception ->
-            val gameObjectToMatch = perception.toGameObject() ?: return@forEach
-            knownObjects.add(gameObjectToMatch)
-        }
-        return knownObjects
     }
 
     private fun addKnownObject(world: World, location: Point, objectToAdd: GameObject) {
