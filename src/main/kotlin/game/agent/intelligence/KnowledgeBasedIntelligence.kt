@@ -89,7 +89,7 @@ class KnowledgeBasedIntelligence: Intelligence() {
     private fun processPerceptions(world: World, commandResult: CommandResult) {
         val location = commandResult.getPlayerState().getLocation()
         val localObjects = getObjectsFromPerceptions(location, commandResult.getPerceptions())
-        knowns.add(mapOf(location to setOf()))
+        knowns.add(location)
 
         localObjects.forEach { gameObjectToMatch ->
 
