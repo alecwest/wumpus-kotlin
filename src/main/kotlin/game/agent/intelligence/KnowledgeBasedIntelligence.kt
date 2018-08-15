@@ -8,8 +8,8 @@ import game.world.effect.WorldEffect
 import java.awt.Point
 
 class KnowledgeBasedIntelligence: Intelligence() {
-    internal val knowns: MutableMap<Point, MutableSet<GameObject>> = mutableMapOf()
-    internal val possibles: MutableMap<Point, MutableSet<GameObject>> = mutableMapOf()
+    internal val knowns = GameObjectMap()
+    internal val possibles = GameObjectMap()
 
     override fun processLastMove(world: World, commandResult: CommandResult) {
         super.processLastMove(world, commandResult)
@@ -22,7 +22,7 @@ class KnowledgeBasedIntelligence: Intelligence() {
     private fun makeDeductions() {
         val knownsToAdd = mutableMapOf<Point, MutableSet<GameObject>>()
         var possibleCauseLocations: List<Point>
-        knowns.forEach { point, gameObjects ->
+        knowns.getMap().forEach { point, gameObjects ->
             // look at each known object
             gameObjects.forEach { gameObject ->
                 // get world affecting objects that could have caused the object currently being looked at
@@ -30,7 +30,7 @@ class KnowledgeBasedIntelligence: Intelligence() {
                 if (possibleCauses.size == 1) {
                     possibleCauseLocations = getPossibleCauseLocations(point, possibleCauses[0])
                     if (possibleCauseLocations.size == 1) {
-                        removePossibleObject(possibleCauseLocations[0], possibleCauses[0])
+                        possibles.remove(possibleCauseLocations[0], possibleCauses[0])
                         knownsToAdd[possibleCauseLocations[0]] = mutableSetOf(possibleCauses[0])
                     }
                 } else {
@@ -38,11 +38,7 @@ class KnowledgeBasedIntelligence: Intelligence() {
                 }
             }
         }
-        knownsToAdd.forEach {
-            val gameObjects = knowns.getOrDefault(it.key, mutableSetOf())
-            gameObjects.addAll(it.value)
-            knowns[it.key] = gameObjects
-        }
+        knowns.add(knownsToAdd)
     }
 
     private fun getPossibleCauseLocations(effectLocation: Point, cause: GameObject): List<Point> {
@@ -61,7 +57,7 @@ class KnowledgeBasedIntelligence: Intelligence() {
     private fun numberOfNearbyRoomsAffected(worldEffect: WorldEffect, effectLocation: Point): List<Point> {
         val locations = mutableListOf<Point>()
         worldEffect.roomsAffected(effectLocation).filter { roomAffected ->
-            val result = possibles.containsKey(roomAffected)
+            val result = possibles.getMap().containsKey(roomAffected)
             if (result) {
                 locations.add(roomAffected)
             }
@@ -73,11 +69,11 @@ class KnowledgeBasedIntelligence: Intelligence() {
     // TODO needs refactoring
     private fun clearContradictions() {
         val pointsToRemove = mutableSetOf<Point>()
-        possibles.forEach { point, gameObjects ->
+        possibles.getMap().forEach { point, gameObjects ->
             gameObjects.forEach { gameObject ->
                 (gameObject.getFeature(WorldAffecting()) as WorldAffecting).effects.forEach { effect ->
                     effect.roomsAffected(point).forEach { roomAffected ->
-                        if (knowns[roomAffected]?.isEmpty() == true) {
+                        if (knowns.getValue(roomAffected).isEmpty()) {
                             pointsToRemove.add(point)
                             return@forEach
                         }
@@ -93,7 +89,7 @@ class KnowledgeBasedIntelligence: Intelligence() {
     private fun processPerceptions(world: World, commandResult: CommandResult) {
         val location = commandResult.getPlayerState().getLocation()
         val localObjects = getObjectsFromPerceptions(location, commandResult.getPerceptions())
-        knowns[location] = mutableSetOf()
+        knowns.add(mapOf(location to setOf()))
 
         localObjects.forEach { gameObjectToMatch ->
 
@@ -124,8 +120,9 @@ class KnowledgeBasedIntelligence: Intelligence() {
         return commandResult.getPerceptions().any { it.toGameObject() == gameObject }
     }
 
+    // TODO this can probably be refactored due to GameObjectMap
     private fun getObjectsFromPerceptions(location: Point, perceptions: ArrayList<Perception>): MutableSet<GameObject> {
-        val knownObjects = knowns.getOrDefault(location, mutableSetOf())
+        val knownObjects = knowns.getValue(location).toMutableSet()
         perceptions.forEach { perception ->
             val gameObjectToMatch = perception.toGameObject() ?: return@forEach
             knownObjects.add(gameObjectToMatch)
@@ -133,29 +130,15 @@ class KnowledgeBasedIntelligence: Intelligence() {
         return knownObjects
     }
 
-    private fun removePossibleObject(point: Point, gameObject: GameObject) {
-        val possiblesInRoom = possibles.getOrDefault(point, mutableSetOf())
-        possiblesInRoom.remove(gameObject)
-        if (possiblesInRoom.isEmpty()) {
-            possibles.remove(point)
-        } else {
-            possibles[point] = possiblesInRoom
-        }
-    }
-
     private fun addKnownObject(world: World, location: Point, objectToAdd: GameObject) {
         if (world.roomIsValid(location)) {
-            val gameObjects = knowns.getOrDefault(location, mutableSetOf())
-            gameObjects.add(objectToAdd)
-            knowns[location] = gameObjects
+            knowns.add(location, objectToAdd)
         }
     }
 
     private fun addPossibleObject(world: World, location: Point, objectToAdd: GameObject) {
-        if (world.roomIsValid(location) && knowns[location] == null) {
-            val gameObjects = possibles.getOrDefault(location, mutableSetOf())
-            gameObjects.add(objectToAdd)
-            possibles[location] = gameObjects
+        if (world.roomIsValid(location) && knowns.isNull(location)) {
+            possibles.add(location, objectToAdd)
         }
     }
 
