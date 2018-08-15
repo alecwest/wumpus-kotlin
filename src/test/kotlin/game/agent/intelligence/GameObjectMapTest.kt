@@ -4,7 +4,6 @@ import game.world.GameObject
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.awt.Point
-import kotlin.test.assertFails
 
 internal class GameObjectMapTest {
     val objectMap = GameObjectMap(mutableMapOf(Point(0, 1) to mutableSetOf(GameObject.SUPMUW, GameObject.GOLD),
@@ -50,5 +49,11 @@ internal class GameObjectMapTest {
         val map = objectMap.getMap()
         assertEquals(setOf(GameObject.ARROW), map[Point(3, 3)])
         assertEquals(null, map[Point(4, 4)])
+    }
+
+    @Test
+    fun `get value`() {
+        assertEquals(setOf(GameObject.SUPMUW, GameObject.GOLD), objectMap.getValue(Point(0, 1)))
+        assertEquals(setOf<GameObject>(), objectMap.getValue(Point(3, 45)))
     }
 }

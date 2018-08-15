@@ -25,4 +25,8 @@ data class GameObjectMap(private val gameObjectMap: MutableMap<Point, MutableSet
             it.key to it.value.toSet()
         }.toMap()
     }
+
+    fun getValue(point: Point): Set<GameObject> {
+        return gameObjectMap.getOrDefault(point, mutableSetOf()).toSet()
+    }
 }
