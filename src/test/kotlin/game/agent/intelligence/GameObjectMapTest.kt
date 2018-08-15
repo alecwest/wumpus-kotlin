@@ -4,6 +4,7 @@ import game.world.GameObject
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.awt.Point
+import kotlin.test.assertFails
 
 internal class GameObjectMapTest {
     val objectMap = GameObjectMap(mutableMapOf(Point(0, 1) to mutableSetOf(GameObject.SUPMUW, GameObject.GOLD),
@@ -42,5 +43,12 @@ internal class GameObjectMapTest {
     fun `remove non-existent object`() {
         objectMap.remove(Point(0, 2), GameObject.MOO)
         assertEquals(originalMap.gameObjectMap, objectMap.gameObjectMap)
+    }
+
+    @Test
+    fun `get map`() {
+        val map = objectMap.getMap()
+        assertEquals(setOf(GameObject.ARROW), map[Point(3, 3)])
+        assertEquals(null, map[Point(4, 4)])
     }
 }
