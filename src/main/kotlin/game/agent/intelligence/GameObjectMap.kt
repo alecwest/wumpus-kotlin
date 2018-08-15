@@ -3,7 +3,7 @@ package game.agent.intelligence
 import game.world.GameObject
 import java.awt.Point
 
-data class GameObjectMap(internal val gameObjectMap: MutableMap<Point, MutableSet<GameObject>> = mutableMapOf()) {
+data class GameObjectMap(private val gameObjectMap: MutableMap<Point, MutableSet<GameObject>> = mutableMapOf()) {
     fun add(point: Point, gameObject: GameObject) {
         val gameObjects = gameObjectMap.getOrDefault(point, mutableSetOf())
         gameObjects.add(gameObject)
