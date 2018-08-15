@@ -56,4 +56,10 @@ internal class GameObjectMapTest {
         assertEquals(setOf(GameObject.SUPMUW, GameObject.GOLD), objectMap.getValue(Point(0, 1)))
         assertEquals(setOf<GameObject>(), objectMap.getValue(Point(3, 45)))
     }
+
+    @Test
+    fun `is null`() {
+        assertTrue(objectMap.isNull(Point(4, 9)))
+        assertFalse(objectMap.isNull(Point(3, 3)))
+    }
 }

@@ -29,4 +29,8 @@ data class GameObjectMap(private val gameObjectMap: MutableMap<Point, MutableSet
     fun getValue(point: Point): Set<GameObject> {
         return gameObjectMap.getOrDefault(point, mutableSetOf()).toSet()
     }
+
+    fun isNull(point: Point): Boolean {
+        return gameObjectMap[point] == null
+    }
 }
