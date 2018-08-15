@@ -20,32 +20,24 @@ class KnowledgeBasedIntelligence: Intelligence() {
 
     // TODO needs refactoring
     private fun makeDeductions() {
-        // take everything we know
         val knownsToAdd = mutableMapOf<Point, MutableSet<GameObject>>()
-        var possibleToRemove: Point = Point(-1, -1)
+        var possibleCauseLocations: List<Point>
         knowns.forEach { point, gameObjects ->
             // look at each known object
             gameObjects.forEach { gameObject ->
                 // get world affecting objects that could have caused the object currently being looked at
                 val possibleCauses = gameObject.objectsThatCreateThis()
                 if (possibleCauses.size == 1) {
-                    if ((possibleCauses[0].getFeature(WorldAffecting()) as WorldAffecting).effects.filter { worldEffect ->
-                                worldEffect.roomsAffected(point).filter { roomAffected ->
-                                    val result = possibles.containsKey(roomAffected)
-                                    if (result) {
-                                        possibleToRemove = roomAffected
-                                    }
-                                    result
-                                }.size == 1
-                            }.size == 1) {
-                        val possiblesInRoom = possibles.getOrDefault(possibleToRemove, mutableSetOf())
+                    possibleCauseLocations = getPossibleCauseLocations(point, possibleCauses[0])
+                    if (possibleCauseLocations.size == 1) {
+                        val possiblesInRoom = possibles.getOrDefault(possibleCauseLocations[0], mutableSetOf())
                         possiblesInRoom.remove(possibleCauses[0])
                         if (possiblesInRoom.isEmpty()) {
-                            possibles.remove(possibleToRemove)
+                            possibles.remove(possibleCauseLocations[0])
                         } else {
-                            possibles[possibleToRemove] = possiblesInRoom
+                            possibles[possibleCauseLocations[0]] = possiblesInRoom
                         }
-                        knownsToAdd[possibleToRemove] = mutableSetOf(possibleCauses[0])
+                        knownsToAdd[possibleCauseLocations[0]] = mutableSetOf(possibleCauses[0])
                     }
                 } else {
                     //TODO what if there are multiple possible causes? They need to be whittled down
@@ -57,6 +49,31 @@ class KnowledgeBasedIntelligence: Intelligence() {
             gameObjects.addAll(it.value)
             knowns[it.key] = gameObjects
         }
+    }
+
+    private fun getPossibleCauseLocations(effectLocation: Point, cause: GameObject): List<Point> {
+        val locations = mutableListOf<Point>()
+        val causesEffects = (cause.getFeature(WorldAffecting()) as WorldAffecting).effects
+        causesEffects.filter { worldEffect ->
+            val result = numberOfNearbyRoomsAffected(worldEffect, effectLocation)
+            if (result.size == 1) {
+                locations.addAll(result)
+            }
+            result.size == 1
+        }
+        return locations
+    }
+
+    private fun numberOfNearbyRoomsAffected(worldEffect: WorldEffect, effectLocation: Point): List<Point> {
+        val locations = mutableListOf<Point>()
+        worldEffect.roomsAffected(effectLocation).filter { roomAffected ->
+            val result = possibles.containsKey(roomAffected)
+            if (result) {
+                locations.add(roomAffected)
+            }
+            result
+        }
+        return locations.toList()
     }
 
     // TODO needs refactoring
@@ -83,11 +100,15 @@ class KnowledgeBasedIntelligence: Intelligence() {
         val location = commandResult.getPlayerState().getLocation()
         val localObjects = getObjectsFromPerceptions(location, commandResult.getPerceptions())
         knowns[location] = mutableSetOf()
+
         localObjects.forEach { gameObjectToMatch ->
+
             val possibleNearbyObjects = gameObjectToMatch.objectsThatCreateThis()
             possibleNearbyObjects.forEach {possibleNearbyObject ->
+
                 val possibleEffects = getPossibleEffects(commandResult, possibleNearbyObject)
                 possibleEffects.forEach { worldEffect ->
+
                     worldEffect.roomsAffected(location).forEach { point ->
                         when (point) {
                             location -> addKnownObject(world, point, possibleNearbyObject)
