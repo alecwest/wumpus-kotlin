@@ -88,10 +88,10 @@ class KnowledgeBasedIntelligence: Intelligence() {
 
     private fun processPerceptions(world: World, commandResult: CommandResult) {
         val location = commandResult.getPlayerState().getLocation()
-        val localObjects = getObjectsFromPerceptions(location, commandResult.getPerceptions())
+        val perceivedObjects = getObjectsFromPerceptions(commandResult.getPerceptions())
         knowns.add(location)
 
-        localObjects.forEach { gameObjectToMatch ->
+        perceivedObjects.forEach { gameObjectToMatch ->
 
             val possibleNearbyObjects = gameObjectToMatch.objectsThatCreateThis()
             possibleNearbyObjects.forEach {possibleNearbyObject ->
@@ -120,9 +120,8 @@ class KnowledgeBasedIntelligence: Intelligence() {
         return commandResult.getPerceptions().any { it.toGameObject() == gameObject }
     }
 
-    // TODO this can probably be refactored due to GameObjectMap
-    private fun getObjectsFromPerceptions(location: Point, perceptions: ArrayList<Perception>): MutableSet<GameObject> {
-        val knownObjects = knowns.getValue(location).toMutableSet()
+    private fun getObjectsFromPerceptions(perceptions: ArrayList<Perception>): MutableSet<GameObject> {
+        val knownObjects = mutableSetOf<GameObject>()
         perceptions.forEach { perception ->
             val gameObjectToMatch = perception.toGameObject() ?: return@forEach
             knownObjects.add(gameObjectToMatch)
