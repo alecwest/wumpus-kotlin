@@ -42,6 +42,12 @@ internal class GameObjectMapTest {
     }
 
     @Test
+    fun `add empty point where content already exists`() {
+        objectMap.add(Point(0, 1))
+        assertEquals(originalMap.getMap(), objectMap.getMap())
+    }
+
+    @Test
     fun `remove object`() {
         objectMap.remove(Point(0, 1), GameObject.SUPMUW)
         assertEquals(mutableMapOf(Point(0, 1) to mutableSetOf<GameObject>(GameObject.GOLD),
