@@ -10,6 +10,14 @@ data class GameObjectMap(private val gameObjectMap: MutableMap<Point, MutableSet
         gameObjectMap[point] = gameObjects
     }
 
+    fun add(entry: Map<Point, Set<GameObject>>) {
+        entry.forEach { point, gameObjects ->
+            gameObjects.forEach { gameObject ->
+                add(point, gameObject)
+            }
+        }
+    }
+
     fun remove(point: Point, gameObject: GameObject) {
         val gameObjects = gameObjectMap.getOrDefault(point, mutableSetOf())
         gameObjects.remove(gameObject)
