@@ -5,6 +5,7 @@ import game.command.CommandResult
 import game.world.GameObject
 import game.world.Perception
 import game.world.effect.AdjacentEffect
+import game.world.effect.DiagonalEffect
 import game.world.effect.WorldEffect
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
@@ -101,7 +102,13 @@ internal class KnowledgeBasedIntelligenceTest {
         @JvmStatic
         fun validPossibleEffectsTestDataProvider() = Stream.of(
                 ValidResultAndObjectTestData(lastMove, GameObject.PIT, listOf(AdjacentEffect(GameObject.BREEZE))),
-                ValidResultAndObjectTestData(lastMove, GameObject.SUPMUW, listOf<WorldEffect>())
+                ValidResultAndObjectTestData(lastMove, GameObject.SUPMUW, listOf<WorldEffect>()),
+                ValidResultAndObjectTestData(lastMove.copyThis(arrayListOf(Perception.MOO, Perception.STENCH)),
+                        GameObject.SUPMUW,
+                        listOf(AdjacentEffect(GameObject.MOO), DiagonalEffect(GameObject.MOO))),
+                ValidResultAndObjectTestData(lastMove.copyThis(arrayListOf(Perception.MOO, Perception.STENCH)),
+                        GameObject.WUMPUS,
+                        listOf<WorldEffect>(AdjacentEffect(GameObject.STENCH)))
         )
     }
 }
