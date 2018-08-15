@@ -1,12 +1,11 @@
 package game.world.effect
 
 import game.world.GameObject
-import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import util.adjacents
 import util.diagonals
 import game.world.World
-import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.*
 import java.awt.Point
 import kotlin.test.assertFalse
 
@@ -38,5 +37,11 @@ class AdjacentEffectTest {
     fun `get rooms affected`() {
         assertEquals(AdjacentEffect(GameObject.SUPMUW).roomsAffected(Point(2, 2)),
                 setOf(Point(1, 2), Point(3, 2), Point(2, 3), Point(2, 1)))
+    }
+
+    @Test
+    fun `test equality`() {
+        assertEquals(AdjacentEffect(GameObject.PIT), AdjacentEffect(GameObject.PIT))
+        assertNotEquals(AdjacentEffect(GameObject.PIT), AdjacentEffect(GameObject.BREEZE))
     }
 }
