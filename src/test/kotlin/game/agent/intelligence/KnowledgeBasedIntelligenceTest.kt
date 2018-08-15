@@ -30,6 +30,8 @@ internal class KnowledgeBasedIntelligenceTest {
         assertEquals(testData.expectedKnowns, companionIntelligence.knowns)
     }
 
+
+
     companion object {
         val lastMove = Helpers.createCommandResult(arrayListOf(Perception.BREEZE),
                 Helpers.createPlayerState(location = Point(0, 1)))

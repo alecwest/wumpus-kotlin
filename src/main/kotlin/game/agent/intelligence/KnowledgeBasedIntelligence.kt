@@ -45,16 +45,6 @@ class KnowledgeBasedIntelligence: Intelligence() {
         }
     }
 
-    private fun removePossibleObject(point: Point, gameObject: GameObject) {
-        val possiblesInRoom = possibles.getOrDefault(point, mutableSetOf())
-        possiblesInRoom.remove(gameObject)
-        if (possiblesInRoom.isEmpty()) {
-            possibles.remove(point)
-        } else {
-            possibles[point] = possiblesInRoom
-        }
-    }
-
     private fun getPossibleCauseLocations(effectLocation: Point, cause: GameObject): List<Point> {
         val locations = mutableListOf<Point>()
         val causesEffects = (cause.getFeature(WorldAffecting()) as WorldAffecting).effects
@@ -143,6 +133,16 @@ class KnowledgeBasedIntelligence: Intelligence() {
         return knownObjects
     }
 
+    private fun removePossibleObject(point: Point, gameObject: GameObject) {
+        val possiblesInRoom = possibles.getOrDefault(point, mutableSetOf())
+        possiblesInRoom.remove(gameObject)
+        if (possiblesInRoom.isEmpty()) {
+            possibles.remove(point)
+        } else {
+            possibles[point] = possiblesInRoom
+        }
+    }
+
     private fun addKnownObject(world: World, location: Point, objectToAdd: GameObject) {
         if (world.roomIsValid(location)) {
             val gameObjects = knowns.getOrDefault(location, mutableSetOf())
@@ -161,5 +161,23 @@ class KnowledgeBasedIntelligence: Intelligence() {
 
     override fun chooseNextMove(world: World, commandResult: CommandResult): Command {
         return super.chooseNextMove(world, commandResult)
+    }
+}
+
+data class GameObjectMap(internal val gameObjectMap: MutableMap<Point, MutableSet<GameObject>> = mutableMapOf()) {
+    fun add(point: Point, gameObject: GameObject) {
+        val gameObjects = gameObjectMap.getOrDefault(point, mutableSetOf())
+        gameObjects.add(gameObject)
+        gameObjectMap[point] = gameObjects
+    }
+
+    fun remove(point: Point, gameObject: GameObject) {
+        val gameObjects = gameObjectMap.getOrDefault(point, mutableSetOf())
+        gameObjects.remove(gameObject)
+        if (gameObjects.isEmpty()) {
+            gameObjectMap.remove(point)
+        } else {
+            gameObjectMap[point] = gameObjects
+        }
     }
 }
