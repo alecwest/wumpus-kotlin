@@ -40,6 +40,13 @@ internal class KnowledgeBasedIntelligenceTest {
                 intelligence.getPossibleEffects(testData.commandResult, testData.gameObject))
     }
 
+    @ParameterizedTest
+    @MethodSource("validWasPerceivedTestDataProvider")
+    fun `object was perceived`(testData: ValidResultAndObjectTestData) {
+        assertEquals(testData.expectedResult,
+                intelligence.wasPerceived(testData.commandResult, testData.gameObject))
+    }
+
     companion object {
         val lastMove = Helpers.createCommandResult(arrayListOf(Perception.BREEZE),
                 Helpers.createPlayerState(location = Point(0, 1)))
@@ -109,6 +116,15 @@ internal class KnowledgeBasedIntelligenceTest {
                 ValidResultAndObjectTestData(lastMove.copyThis(arrayListOf(Perception.MOO, Perception.STENCH)),
                         GameObject.WUMPUS,
                         listOf<WorldEffect>(AdjacentEffect(GameObject.STENCH)))
+        )
+
+        @JvmStatic
+        fun validWasPerceivedTestDataProvider() = Stream.of(
+                ValidResultAndObjectTestData(lastMove, GameObject.STENCH, false),
+                ValidResultAndObjectTestData(lastMove, GameObject.BREEZE, true),
+                ValidResultAndObjectTestData(lastMove.copyThis(arrayListOf(Perception.GLITTER, Perception.FOOD)),
+                        GameObject.GLITTER, true)
+
         )
     }
 }

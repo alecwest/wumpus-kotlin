@@ -116,7 +116,7 @@ class KnowledgeBasedIntelligence: Intelligence() {
                 .filter { wasPerceived(commandResult, it.gameObject) }
     }
 
-    private fun wasPerceived(commandResult: CommandResult, gameObject: GameObject): Boolean {
+    internal fun wasPerceived(commandResult: CommandResult, gameObject: GameObject): Boolean {
         return commandResult.getPerceptions().any { it.toGameObject() == gameObject }
     }
 
