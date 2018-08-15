@@ -111,7 +111,7 @@ class KnowledgeBasedIntelligence: Intelligence() {
         }
     }
 
-    private fun getPossibleEffects(commandResult: CommandResult, gameObject: GameObject): List<WorldEffect> {
+    internal fun getPossibleEffects(commandResult: CommandResult, gameObject: GameObject): List<WorldEffect> {
         return (gameObject.getFeature(WorldAffecting()) as WorldAffecting).effects
                 .filter { wasPerceived(commandResult, it.gameObject) }
     }

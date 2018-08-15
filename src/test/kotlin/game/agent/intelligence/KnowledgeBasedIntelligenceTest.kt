@@ -4,6 +4,8 @@ import game.agent.intelligence.IntelligenceTest.Companion.world
 import game.command.CommandResult
 import game.world.GameObject
 import game.world.Perception
+import game.world.effect.AdjacentEffect
+import game.world.effect.WorldEffect
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
@@ -30,7 +32,12 @@ internal class KnowledgeBasedIntelligenceTest {
         assertEquals(testData.expectedKnowns, companionIntelligence.knowns.getMap())
     }
 
-
+    @ParameterizedTest
+    @MethodSource("validPossibleEffectsTestDataProvider")
+    fun `get possible effects`(testData: ValidResultAndObjectTestData) {
+        assertEquals(testData.expectedResult,
+                intelligence.getPossibleEffects(testData.commandResult, testData.gameObject))
+    }
 
     companion object {
         val lastMove = Helpers.createCommandResult(arrayListOf(Perception.BREEZE),
@@ -90,6 +97,12 @@ internal class KnowledgeBasedIntelligenceTest {
                                 Point(2, 0) to mutableSetOf(),
                                 Point(1, 2) to mutableSetOf<GameObject>(GameObject.PIT)))
         )
+
+        @JvmStatic
+        fun validPossibleEffectsTestDataProvider() = Stream.of(
+                ValidResultAndObjectTestData(lastMove, GameObject.PIT, listOf(AdjacentEffect(GameObject.BREEZE))),
+                ValidResultAndObjectTestData(lastMove, GameObject.SUPMUW, listOf<WorldEffect>())
+        )
     }
 }
 
@@ -97,4 +110,10 @@ data class ValidMoveProcessingTestData (
         val lastMove: CommandResult,
         val expectedPossibles: MutableMap<Point, MutableSet<GameObject>>,
         val expectedKnowns: MutableMap<Point, MutableSet<GameObject>>
+)
+
+data class ValidResultAndObjectTestData (
+        val commandResult: CommandResult,
+        val gameObject: GameObject,
+        val expectedResult: Any
 )
