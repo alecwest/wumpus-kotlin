@@ -28,6 +28,12 @@ data class GameObjectMap(private val gameObjectMap: MutableMap<Point, MutableSet
         }
     }
 
+    fun remove(point: Point) {
+        getValue(point).forEach { gameObject ->
+            remove(point, gameObject)
+        }
+    }
+
     fun getMap(): Map<Point, Set<GameObject>> {
         return gameObjectMap.map {
             it.key to it.value.toSet()

@@ -41,6 +41,12 @@ internal class GameObjectMapTest {
     }
 
     @Test
+    fun `remove objects`() {
+        objectMap.remove(Point(0, 1))
+        assertEquals(mutableMapOf(Point(3, 3) to mutableSetOf<GameObject>(GameObject.ARROW)), objectMap.getMap())
+    }
+
+    @Test
     fun `remove only object at point`() {
         objectMap.remove(Point(3, 3), GameObject.ARROW)
         assertEquals(mutableMapOf(Point(0, 1) to mutableSetOf(GameObject.SUPMUW, GameObject.GOLD)), objectMap.getMap())
