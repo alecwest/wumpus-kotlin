@@ -27,6 +27,11 @@ sealed class GameObject(val features: Set<GameObjectFeature> = setOf()) {
     fun hasFeature(feature: GameObjectFeature): Boolean {
         return this.features.any { it::class == feature::class }
     }
+
+    fun objectsThatCreateThis(): List<GameObject> {
+        return gameObjectsWithFeatures(setOf(WorldAffecting())).filter { worldEffector ->
+            (worldEffector.getFeature(WorldAffecting()) as WorldAffecting).createsObject(this) }
+    }
 }
 
 fun gameObjectsWithFeatures(features: Set<GameObjectFeature>): List<GameObject> {

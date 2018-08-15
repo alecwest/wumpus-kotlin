@@ -27,10 +27,7 @@ class KnowledgeBasedIntelligence: Intelligence() {
             // look at each known object
             gameObjects.forEach { gameObject ->
                 // get world affecting objects that could have caused the object currently being looked at
-                // TODO code duplication in processPerceptions
-                val possibleCauses = gameObjectsWithFeatures(setOf(WorldAffecting())).filter { worldEffector ->
-                    (worldEffector.getFeature(WorldAffecting()) as WorldAffecting).createsObject(gameObject)
-                }
+                val possibleCauses = gameObject.objectsThatCreateThis()
                 if (possibleCauses.size == 1) {
                     if ((possibleCauses[0].getFeature(WorldAffecting()) as WorldAffecting).effects.filter { worldEffect ->
                                 worldEffect.roomsAffected(point).filter { roomAffected ->
@@ -87,9 +84,7 @@ class KnowledgeBasedIntelligence: Intelligence() {
         val localObjects = getObjectsFromPerceptions(location, commandResult.getPerceptions())
         knowns[location] = mutableSetOf()
         localObjects.forEach { gameObjectToMatch ->
-            val possibleNearbyObjects = gameObjectsWithFeatures(setOf(WorldAffecting())).filter { worldAffecting ->
-                (worldAffecting.getFeature(WorldAffecting()) as WorldAffecting).createsObject(gameObjectToMatch)
-            }
+            val possibleNearbyObjects = gameObjectToMatch.objectsThatCreateThis()
             possibleNearbyObjects.forEach {possibleNearbyObject ->
                 val possibleEffects = getPossibleEffects(commandResult, possibleNearbyObject)
                 possibleEffects.forEach { worldEffect ->

@@ -54,6 +54,14 @@ internal class GameObjectTest {
     }
 
     @Test
+    fun `get objects that create another game object`() {
+        assertEquals(listOf(GameObject.SUPMUW, GameObject.SUPMUW_EVIL), GameObject.MOO.objectsThatCreateThis())
+        assertEquals(listOf(GameObject.GOLD), GameObject.GLITTER.objectsThatCreateThis())
+        assertEquals(listOf(GameObject.PIT), GameObject.BREEZE.objectsThatCreateThis())
+        assertEquals(listOf<GameObject>(), GameObject.ARROW.objectsThatCreateThis())
+    }
+
+    @Test
     fun `has feature`() {
         assertTrue(STENCH.hasFeature(Perceptable()))
         assertFalse(GOLD.hasFeature(Perceptable()))
