@@ -18,6 +18,12 @@ data class GameObjectMap(private val gameObjectMap: MutableMap<Point, MutableSet
         }
     }
 
+    fun add(point: Point) {
+        if (getValue(point).isEmpty()) {
+            gameObjectMap[point] = mutableSetOf()
+        }
+    }
+
     fun remove(point: Point, gameObject: GameObject) {
         val gameObjects = gameObjectMap.getOrDefault(point, mutableSetOf())
         gameObjects.remove(gameObject)
