@@ -15,7 +15,45 @@ class KnowledgeBasedIntelligence: Intelligence() {
         super.processLastMove(world, commandResult)
         processPerceptions(world, commandResult)
         clearContradictions()
-
+        // take everything we know
+        val knownsToAdd = mutableMapOf<Point, MutableSet<GameObject>>()
+        var possibleToRemove: Point = Point(-1, -1)
+        knowns.forEach { point, gameObjects ->
+            // look at each known object
+            gameObjects.forEach { gameObject ->
+                // get world affecting objects that could have caused the object currently being looked at
+                val possibleCauses = gameObjectsWithFeatures(setOf(WorldAffecting())).filter { worldEffector ->
+                    (worldEffector.getFeature(WorldAffecting()) as WorldAffecting).createsObject(gameObject)
+                }
+                if (possibleCauses.size == 1) {
+                    if ((possibleCauses[0].getFeature(WorldAffecting()) as WorldAffecting).effects.filter { worldEffect ->
+                        worldEffect.roomsAffected(point).filter { roomAffected ->
+                            val result = possibles.containsKey(roomAffected)
+                            if (result) {
+                                possibleToRemove = roomAffected
+                            }
+                            result
+                        }.size == 1
+                    }.size == 1) {
+                        val possiblesInRoom = possibles.getOrDefault(possibleToRemove, mutableSetOf())
+                        possiblesInRoom.remove(possibleCauses[0])
+                        if (possiblesInRoom.isEmpty()) {
+                            possibles.remove(possibleToRemove)
+                        } else {
+                            possibles[possibleToRemove] = possiblesInRoom
+                        }
+                        knownsToAdd[possibleToRemove] = mutableSetOf(possibleCauses[0])
+                    }
+                } else {
+                    //TODO what if there are multiple possible causes? They need to be whittled down
+                }
+            }
+        }
+        knownsToAdd.forEach {
+            val gameObjects = knowns.getOrDefault(it.key, mutableSetOf())
+            gameObjects.addAll(it.value)
+            knowns[it.key] = gameObjects
+        }
     }
 
     private fun clearContradictions() {
