@@ -47,6 +47,13 @@ internal class KnowledgeBasedIntelligenceTest {
                 intelligence.wasPerceived(testData.commandResult, testData.gameObject))
     }
 
+    @Test
+    fun `add known object`() {
+        intelligence.addKnownObject(world, Point(0, 3), GameObject.WUMPUS)
+        intelligence.addKnownObject(world, Point(12, 13), GameObject.FOOD)
+        assertEquals(mutableMapOf(Point(0, 3) to mutableSetOf<GameObject>(GameObject.WUMPUS)), intelligence.knowns.getMap())
+    }
+
     companion object {
         val lastMove = Helpers.createCommandResult(arrayListOf(Perception.BREEZE),
                 Helpers.createPlayerState(location = Point(0, 1)))

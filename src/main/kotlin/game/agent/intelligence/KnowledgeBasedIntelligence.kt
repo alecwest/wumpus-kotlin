@@ -120,7 +120,7 @@ class KnowledgeBasedIntelligence: Intelligence() {
         return commandResult.getPerceptions().any { it.toGameObject() == gameObject }
     }
 
-    private fun addKnownObject(world: World, location: Point, objectToAdd: GameObject) {
+    internal fun addKnownObject(world: World, location: Point, objectToAdd: GameObject) {
         if (world.roomIsValid(location)) {
             knowns.add(location, objectToAdd)
         }
