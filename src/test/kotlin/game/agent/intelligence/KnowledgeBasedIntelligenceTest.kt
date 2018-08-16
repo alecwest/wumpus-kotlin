@@ -28,9 +28,17 @@ internal class KnowledgeBasedIntelligenceTest {
     @ParameterizedTest
     @MethodSource("validMovePitDeductionTestDataProvider")
     fun `process multiple moves to deduce location of pit`(testData: ValidMoveProcessingTestData) {
-        companionIntelligence.processLastMove(world, testData.lastMove)
-        assertEquals(testData.expectedPossibles, companionIntelligence.possibles.getMap())
-        assertEquals(testData.expectedKnowns, companionIntelligence.knowns.getMap())
+        pitDeductionIntelligence.processLastMove(world, testData.lastMove)
+        assertEquals(testData.expectedPossibles, pitDeductionIntelligence.possibles.getMap())
+        assertEquals(testData.expectedKnowns, pitDeductionIntelligence.knowns.getMap())
+    }
+
+    @ParameterizedTest
+    @MethodSource("validMoveSupmuwDeductionTestDataProvider")
+    fun `process multiple moves to deduce location of supmuw`(testData: ValidMoveProcessingTestData) {
+        supmuwDeductionIntelligence.processLastMove(world, testData.lastMove)
+        assertEquals(testData.expectedPossibles, supmuwDeductionIntelligence.possibles.getMap())
+        assertEquals(testData.expectedKnowns, supmuwDeductionIntelligence.knowns.getMap())
     }
 
     @ParameterizedTest
@@ -72,7 +80,8 @@ internal class KnowledgeBasedIntelligenceTest {
         val lastMove = Helpers.createCommandResult(arrayListOf(Perception.BREEZE),
                 Helpers.createPlayerState(location = Point(0, 1)))
 
-        val companionIntelligence = KnowledgeBasedIntelligence()
+        val pitDeductionIntelligence = KnowledgeBasedIntelligence()
+        val supmuwDeductionIntelligence = KnowledgeBasedIntelligence()
 
         @JvmStatic
         fun validMoveProcessingTestDataProvider() = Stream.of(
@@ -125,6 +134,37 @@ internal class KnowledgeBasedIntelligenceTest {
                                 Point(1, 0) to mutableSetOf(),
                                 Point(2, 0) to mutableSetOf(),
                                 Point(1, 2) to mutableSetOf<GameObject>(GameObject.PIT)))
+        )
+
+        @JvmStatic
+        fun validMoveSupmuwDeductionTestDataProvider() = Stream.of(
+                ValidMoveProcessingTestData(lastMove.copyThis(arrayListOf(Perception.MOO),
+                        Helpers.createPlayerState(location = Point(4, 3))),
+                        mutableMapOf(Point(4, 4) to mutableSetOf(GameObject.SUPMUW, GameObject.SUPMUW_EVIL),
+                                Point(3, 4) to mutableSetOf(GameObject.SUPMUW, GameObject.SUPMUW_EVIL),
+                                Point(5, 4) to mutableSetOf(GameObject.SUPMUW, GameObject.SUPMUW_EVIL),
+                                Point(3, 3) to mutableSetOf(GameObject.SUPMUW, GameObject.SUPMUW_EVIL),
+                                Point(5, 3) to mutableSetOf(GameObject.SUPMUW, GameObject.SUPMUW_EVIL),
+                                Point(3, 2) to mutableSetOf(GameObject.SUPMUW, GameObject.SUPMUW_EVIL),
+                                Point(4, 2) to mutableSetOf(GameObject.SUPMUW, GameObject.SUPMUW_EVIL),
+                                Point(5, 2) to mutableSetOf(GameObject.SUPMUW, GameObject.SUPMUW_EVIL)),
+                        mutableMapOf(Point(4, 3) to mutableSetOf<GameObject>(GameObject.MOO))),
+                ValidMoveProcessingTestData(lastMove.copyThis(arrayListOf(Perception.MOO),
+                        Helpers.createPlayerState(location = Point(3, 3))),
+                        mutableMapOf(Point(4, 4) to mutableSetOf(GameObject.SUPMUW, GameObject.SUPMUW_EVIL),
+                                Point(3, 4) to mutableSetOf(GameObject.SUPMUW, GameObject.SUPMUW_EVIL),
+                                Point(3, 2) to mutableSetOf(GameObject.SUPMUW, GameObject.SUPMUW_EVIL),
+                                Point(4, 2) to mutableSetOf(GameObject.SUPMUW, GameObject.SUPMUW_EVIL),
+                                Point(5, 2) to mutableSetOf(GameObject.SUPMUW, GameObject.SUPMUW_EVIL)),
+                        mutableMapOf(Point(4, 3) to mutableSetOf<GameObject>(GameObject.MOO),
+                                Point(3, 3) to mutableSetOf<GameObject>(GameObject.MOO))),
+                ValidMoveProcessingTestData(lastMove.copyThis(arrayListOf(Perception.MOO),
+                        Helpers.createPlayerState(location = Point(3, 4))),
+                        mutableMapOf(),
+                        mutableMapOf(Point(4, 3) to mutableSetOf<GameObject>(GameObject.MOO),
+                                Point(3, 3) to mutableSetOf<GameObject>(GameObject.MOO),
+                                Point(3, 4) to mutableSetOf<GameObject>(GameObject.MOO),
+                                Point(4, 4) to mutableSetOf(GameObject.SUPMUW, GameObject.SUPMUW_EVIL)))
         )
 
         @JvmStatic
