@@ -54,6 +54,19 @@ internal class KnowledgeBasedIntelligenceTest {
         assertEquals(mutableMapOf(Point(0, 3) to mutableSetOf<GameObject>(GameObject.WUMPUS)), intelligence.knowns.getMap())
     }
 
+    @Test
+    fun `add possible object`() {
+        intelligence.addPossibleObject(world, Point(0, 3), GameObject.WUMPUS)
+        intelligence.addPossibleObject(world, Point(12, 13), GameObject.FOOD)
+        assertEquals(mutableMapOf(Point(0, 3) to mutableSetOf<GameObject>(GameObject.WUMPUS)), intelligence.possibles.getMap())
+    }
+
+    @Test
+    fun `add possible object to room with knowns`() {
+        intelligence.addKnownObject(world, Point(0, 3), GameObject.WUMPUS)
+
+    }
+
     companion object {
         val lastMove = Helpers.createCommandResult(arrayListOf(Perception.BREEZE),
                 Helpers.createPlayerState(location = Point(0, 1)))

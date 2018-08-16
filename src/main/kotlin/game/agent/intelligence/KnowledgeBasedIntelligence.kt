@@ -126,7 +126,7 @@ class KnowledgeBasedIntelligence: Intelligence() {
         }
     }
 
-    private fun addPossibleObject(world: World, location: Point, objectToAdd: GameObject) {
+    internal fun addPossibleObject(world: World, location: Point, objectToAdd: GameObject) {
         if (world.roomIsValid(location) && knowns.isNull(location)) {
             possibles.add(location, objectToAdd)
         }
