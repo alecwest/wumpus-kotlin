@@ -18,14 +18,11 @@ class KnowledgeBasedIntelligence: Intelligence() {
         makeDeductions()
     }
 
-    // TODO needs refactoring
     private fun makeDeductions() {
         val knownsToAdd = mutableMapOf<Point, MutableSet<GameObject>>()
         var possibleCauseLocations: List<Point>
         knowns.getMap().forEach { point, gameObjects ->
-            // look at each known object
             gameObjects.forEach { gameObject ->
-                // get world affecting objects that could have caused the object currently being looked at
                 val possibleCauses = gameObject.objectsThatCreateThis()
                 if (possibleCauses.size == 1) {
                     possibleCauseLocations = getPossibleCauseLocations(point, possibleCauses[0])
@@ -34,7 +31,10 @@ class KnowledgeBasedIntelligence: Intelligence() {
                         knownsToAdd[possibleCauseLocations[0]] = mutableSetOf(possibleCauses[0])
                     }
                 } else {
-                    //TODO what if there are multiple possible causes? They need to be whittled down
+                    /**
+                     *  TODO what if there are multiple possible causes? They need to be whittled down
+                     *  Currently none exist, so this shouldn't be an issue
+                     */
                 }
             }
         }
@@ -66,7 +66,6 @@ class KnowledgeBasedIntelligence: Intelligence() {
         return locations.toList()
     }
 
-    // TODO needs refactoring
     private fun clearContradictions() {
         val pointsToRemove = mutableSetOf<Point>()
         possibles.getMap().forEach { point, gameObjects ->
