@@ -63,8 +63,9 @@ internal class KnowledgeBasedIntelligenceTest {
 
     @Test
     fun `add possible object to room with knowns`() {
-        intelligence.addKnownObject(world, Point(0, 3), GameObject.WUMPUS)
-
+        intelligence.addKnownObject(world, Point(0, 3), GameObject.SUPMUW)
+        intelligence.addPossibleObject(world, Point(0, 3), GameObject.WUMPUS)
+        assertEquals(mutableMapOf(Point(0, 3) to mutableSetOf<GameObject>(GameObject.WUMPUS)), intelligence.possibles.getMap())
     }
 
     companion object {
