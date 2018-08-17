@@ -16,6 +16,11 @@ class KnowledgeBasedIntelligence2 : Intelligence() {
 
     override fun processLastMove(world: World, commandResult: CommandResult) {
         super.processLastMove(world, commandResult)
+        assessCurrentRoom(world, commandResult)
+        assessNearbyRooms(world, commandResult)
+    }
+
+    private fun assessCurrentRoom(world: World, commandResult: CommandResult) {
         val perceivedObjects = toGameObjects(commandResult.getPerceptions().toSet()) // TODO change perceptions to a set
         val playerLocation = commandResult.getPlayerState().getLocation()
         gameObjectValues().forEach { gameObject ->
@@ -24,6 +29,10 @@ class KnowledgeBasedIntelligence2 : Intelligence() {
                     if (perceivedObjects.contains(gameObject)) HAS else HAS_NO,
                     gameObject)
         }
+    }
+
+    private fun assessNearbyRooms(world: World, commandResult: CommandResult) {
+        val playerLocation = commandResult.getPlayerState().getLocation()
         gameObjectsWithFeatures(setOf(WorldAffecting())).forEach { gameObject ->
             val worldAffecting = gameObject.getFeature(WorldAffecting()) as WorldAffecting
             worldAffecting.effects.forEach { worldEffect ->
