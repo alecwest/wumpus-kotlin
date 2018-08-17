@@ -201,9 +201,9 @@ class WorldTest {
 
     @Test
     fun `check for room content on world map edge`() {
-        world.addGameObject(Point(0, 0), GameObject.SUPMUW_EVIL)
+        world.addGameObject(Point(0, 0), GameObject.SUPMUW)
         val worldMap = world.getWorldMap()
-        val target1 = (GameObject.SUPMUW_EVIL.getFeature(Mappable()) as Mappable).character
+        val target1 = (GameObject.SUPMUW.getFeature(Mappable()) as Mappable).character
         val target2 = (GameObject.MOO.getFeature(Mappable()) as Mappable).character
         assertContains(worldMap, target1, 1)
         assertContains(worldMap, target2, 3)

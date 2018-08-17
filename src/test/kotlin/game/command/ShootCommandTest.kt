@@ -35,7 +35,7 @@ internal class ShootCommandTest {
                 InventoryItem.ARROW to 4
         ))
         private val initialWorld = Helpers.createWorld(gameObject = mapOf(
-                Point(0, 9) to arrayListOf(GameObject.SUPMUW_EVIL),
+                Point(0, 9) to arrayListOf(GameObject.SUPMUW),
                 Point(0, 8) to arrayListOf(GameObject.WUMPUS),
                 Point(0, 3) to arrayListOf(GameObject.SUPMUW)))
         private val initialGame = Helpers.createGame(player = initialPlayer, world = initialWorld)

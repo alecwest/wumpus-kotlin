@@ -15,7 +15,7 @@ class JsonParserTest {
         assertEquals(jsonParser::class, JsonParser::class)
         val game: Game = JsonParser.buildFromJsonFile(Helpers.testFilePath + "testFile.json")
         assertTrue(game.hasGameObject(Point(3, 5), GameObject.GOLD))
-        assertTrue(game.hasGameObject(Point(3, 5), GameObject.SUPMUW_EVIL))
+        assertTrue(game.hasGameObject(Point(3, 5), GameObject.SUPMUW))
         assertTrue(game.hasGameObject(Point(10, 9), GameObject.PIT))
         assertEquals(game.getPlayerDirection(), Direction.EAST)
         assertEquals(game.getPlayerLocation(), Point(3, 7))

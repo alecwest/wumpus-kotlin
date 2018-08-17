@@ -21,7 +21,7 @@ internal class GameObjectTest {
 
     @Test
     fun `filter game object values by features that exist together`() {
-        assertTrue(setOf(SUPMUW, SUPMUW_EVIL, WUMPUS).containsAll(
+        assertTrue(setOf(SUPMUW, WUMPUS).containsAll(
                 gameObjectsWithFeatures(setOf(Dangerous(), Destructable()))))
     }
 
@@ -55,7 +55,7 @@ internal class GameObjectTest {
 
     @Test
     fun `get objects that create another game object`() {
-        assertEquals(listOf(GameObject.SUPMUW, GameObject.SUPMUW_EVIL), GameObject.MOO.objectsThatCreateThis())
+        assertEquals(listOf(GameObject.SUPMUW), GameObject.MOO.objectsThatCreateThis())
         assertEquals(listOf(GameObject.GOLD), GameObject.GLITTER.objectsThatCreateThis())
         assertEquals(listOf(GameObject.PIT), GameObject.BREEZE.objectsThatCreateThis())
         assertEquals(listOf<GameObject>(), GameObject.ARROW.objectsThatCreateThis())
