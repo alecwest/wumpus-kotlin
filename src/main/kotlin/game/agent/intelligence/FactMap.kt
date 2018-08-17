@@ -17,6 +17,10 @@ class FactMap(internal val factMap: MutableMap<Point, MutableSet<Pair<GameObject
                     pair.first == gameObject && pair.second == fact
                 }) TRUE else FALSE
     }
+
+    fun factExists(point: Point, gameObject: GameObject): Boolean {
+        return factMap[point] != null && factMap[point]!!.any { it.first == gameObject }
+    }
 }
 
 enum class Fact {

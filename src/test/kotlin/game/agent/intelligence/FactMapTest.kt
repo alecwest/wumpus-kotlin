@@ -25,4 +25,11 @@ internal class FactMapTest {
         assertEquals(UNKNOWN, factMap.isTrue(Point(2, 5), HAS, SUPMUW))
         assertEquals(UNKNOWN, factMap.isTrue(Point(2, 3), HAS, BREEZE))
     }
+
+    @Test
+    fun `test for fact existence`() {
+        assertEquals(false, factMap.factExists(Point(2, 3), SUPMUW))
+        factMap.addFact(Point(2, 3), HAS, SUPMUW)
+        assertEquals(true, factMap.factExists(Point(2, 3), SUPMUW))
+    }
 }
