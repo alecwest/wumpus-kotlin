@@ -33,8 +33,8 @@ internal class KnowledgeBasedIntelligenceTest {
         assertEquals(testData.expectedKnowns, pitDeductionIntelligence.knowns.getMap())
     }
 
-    @ParameterizedTest
-    @MethodSource("validMoveSupmuwDeductionTestDataProvider")
+//    @ParameterizedTest
+//    @MethodSource("validMoveSupmuwDeductionTestDataProvider")
     fun `process multiple moves to deduce location of supmuw`(testData: ValidMoveProcessingTestData) {
         supmuwDeductionIntelligence.processLastMove(world, testData.lastMove)
         assertEquals(testData.expectedPossibles, supmuwDeductionIntelligence.possibles.getMap())
