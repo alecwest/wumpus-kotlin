@@ -18,6 +18,14 @@ internal class FactMapTest {
     }
 
     @Test
+    fun `update fact that already exists`() {
+        factMap.addFact(Point(2, 3), HAS, SUPMUW)
+        assertEquals(mapOf(Point(2, 3) to setOf(Pair(SUPMUW, HAS))), factMap.factMap)
+        factMap.addFact(Point(2, 3), HAS_NO, SUPMUW)
+        assertEquals(mapOf(Point(2, 3) to setOf(Pair(SUPMUW, HAS_NO))), factMap.factMap)
+    }
+
+    @Test
     fun `test for truthfulness`() {
         factMap.addFact(Point(2, 3), HAS, SUPMUW)
         assertEquals(TRUE, factMap.isTrue(Point(2, 3), HAS, SUPMUW))
