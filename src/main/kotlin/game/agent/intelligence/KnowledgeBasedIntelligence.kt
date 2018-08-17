@@ -72,7 +72,7 @@ class KnowledgeBasedIntelligence: Intelligence() {
             gameObjects.forEach { gameObject ->
                 (gameObject.getFeature(WorldAffecting()) as WorldAffecting).effects.forEach { effect ->
                     effect.roomsAffected(point).forEach { roomAffected ->
-                        if (!knowns.isNull(roomAffected) && knowns.getValue(roomAffected).isEmpty()) {
+                        if (roomIsKnownToNotHaveThis(roomAffected, effect.gameObject)) {
                             pointsToRemove.add(point)
                             return@forEach
                         }
@@ -83,6 +83,10 @@ class KnowledgeBasedIntelligence: Intelligence() {
         pointsToRemove.forEach {
             possibles.remove(it)
         }
+    }
+
+    private fun roomIsKnownToNotHaveThis(point: Point, gameObject: GameObject): Boolean {
+        return !knowns.isNull(point) && !knowns.getValue(point).contains(gameObject)
     }
 
     private fun processPerceptions(world: World, commandResult: CommandResult) {
