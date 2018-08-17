@@ -45,7 +45,7 @@ class KnowledgeBasedIntelligence: Intelligence() {
         val locations = mutableListOf<Point>()
         val causesEffects = (cause.getFeature(WorldAffecting()) as WorldAffecting).effects
         causesEffects.filter { worldEffect ->
-            val result = numberOfNearbyRoomsAffected(worldEffect, effectLocation)
+            val result = nearbyRoomsAffected(worldEffect, effectLocation)
             if (result.size == 1) {
                 locations.addAll(result)
             }
@@ -54,7 +54,7 @@ class KnowledgeBasedIntelligence: Intelligence() {
         return locations
     }
 
-    private fun numberOfNearbyRoomsAffected(worldEffect: WorldEffect, effectLocation: Point): List<Point> {
+    private fun nearbyRoomsAffected(worldEffect: WorldEffect, effectLocation: Point): List<Point> {
         val locations = mutableListOf<Point>()
         worldEffect.roomsAffected(effectLocation).filter { roomAffected ->
             val result = possibles.getMap().containsKey(roomAffected)
