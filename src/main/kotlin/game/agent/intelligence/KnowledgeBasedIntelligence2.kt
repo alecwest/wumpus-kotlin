@@ -6,8 +6,8 @@ import game.world.GameObject
 import game.world.World
 import java.awt.Point
 
-class KnowledgeBasedIntelligence2: Intelligence() {
-    internal val facts: Map<Point, Set<Pair<GameObject, Boolean>>> = mapOf()
+class KnowledgeBasedIntelligence2 : Intelligence() {
+    internal val facts = FactMap()
 
     override fun chooseNextMove(world: World, commandResult: CommandResult): Command {
         return super.chooseNextMove(world, commandResult)
