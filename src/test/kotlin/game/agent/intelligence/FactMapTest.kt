@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.awt.Point
 
+import game.agent.intelligence.Answer.*
 import game.agent.intelligence.Fact.*
 import game.world.GameObject.*
 
@@ -14,5 +15,14 @@ internal class FactMapTest {
     fun `add fact`() {
         factMap.addFact(Point(2, 3), HAS, SUPMUW)
         assertEquals(mapOf(Point(2, 3) to setOf(Pair(SUPMUW, HAS))), factMap.factMap)
+    }
+
+    @Test
+    fun `test for truthfulness`() {
+        factMap.addFact(Point(2, 3), HAS, SUPMUW)
+        assertEquals(TRUE, factMap.isTrue(Point(2, 3), HAS, SUPMUW))
+        assertEquals(FALSE, factMap.isTrue(Point(2, 3), HAS_NO, SUPMUW))
+        assertEquals(UNKNOWN, factMap.isTrue(Point(2, 5), HAS, SUPMUW))
+        assertEquals(UNKNOWN, factMap.isTrue(Point(2, 3), HAS, BREEZE))
     }
 }
