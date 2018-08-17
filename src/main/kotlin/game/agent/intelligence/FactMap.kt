@@ -11,9 +11,8 @@ class FactMap(internal val factMap: MutableMap<Point, MutableSet<Pair<GameObject
     }
 
     fun isTrue(point: Point, fact: Fact, gameObject: GameObject): Answer {
-        if (factMap[point] == null) return UNKNOWN
-        if (!factMap[point]!!.any { it.first == gameObject }) return UNKNOWN
-        return if (factMap[point]!!.any { pair ->
+        return  if (!factExists(point, gameObject)) UNKNOWN
+                else if (factMap[point]!!.any { pair ->
                     pair.first == gameObject && pair.second == fact
                 }) TRUE else FALSE
     }
