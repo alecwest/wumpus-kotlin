@@ -26,35 +26,7 @@ class KnowledgeBasedIntelligence2 : Intelligence() {
         }
         assessCurrentRoom()
         assessNearbyRooms()
-        val factsToAdd = FactMap()
-        facts.getMap().forEach { point, factSet ->
-            val effectSet = factSet.filter { fact ->
-                fact.second == HAS && fact.first.objectsThatCreateThis().isNotEmpty()
-            }.map {
-                fact -> fact.first
-            }
-            effectSet.forEach { effectGameObject ->
-                val objectsThatCreateThis = effectGameObject.objectsThatCreateThis()
-                objectsThatCreateThis.forEach { objectThatCreatesThis ->
-                    val worldAffecting = objectThatCreatesThis.getFeature(WorldAffecting()) as WorldAffecting
-                    worldAffecting.effects.forEach { worldEffect ->
-                        if (worldEffect.gameObject == effectGameObject) {
-                            val potentialRoomsLeftForObjectThatCreatesThis = worldEffect.roomsAffected(point).filter { roomAffected ->
-                                facts.isTrue(roomAffected, HAS_NO, objectThatCreatesThis) != TRUE
-                            }
-                            if (potentialRoomsLeftForObjectThatCreatesThis.size == 1) {
-                                factsToAdd.addFact(potentialRoomsLeftForObjectThatCreatesThis[0], HAS, objectThatCreatesThis)
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        factsToAdd.getMap().forEach { point, factSet ->
-            factSet.forEach { fact ->
-                facts.addFact(point, fact.second, fact.first)
-            }
-        }
+        reassessForNewInsight()
     }
 
     internal fun playerOnEdge(): Boolean {
@@ -94,6 +66,38 @@ class KnowledgeBasedIntelligence2 : Intelligence() {
                         facts.addFact(roomAffected, HAS_NO, gameObject)
                     }
                 }
+            }
+        }
+    }
+
+    private fun reassessForNewInsight() {
+        val factsToAdd = FactMap()
+        facts.getMap().forEach { point, factSet ->
+            val effectSet = factSet.filter { fact ->
+                fact.second == HAS && fact.first.objectsThatCreateThis().isNotEmpty()
+            }.map {
+                fact -> fact.first
+            }
+            effectSet.forEach { effectGameObject ->
+                val objectsThatCreateThis = effectGameObject.objectsThatCreateThis()
+                objectsThatCreateThis.forEach { objectThatCreatesThis ->
+                    val worldAffecting = objectThatCreatesThis.getFeature(WorldAffecting()) as WorldAffecting
+                    worldAffecting.effects.forEach { worldEffect ->
+                        if (worldEffect.gameObject == effectGameObject) {
+                            val potentialRoomsLeftForObjectThatCreatesThis = worldEffect.roomsAffected(point).filter { roomAffected ->
+                                facts.isTrue(roomAffected, HAS_NO, objectThatCreatesThis) != TRUE
+                            }
+                            if (potentialRoomsLeftForObjectThatCreatesThis.size == 1) {
+                                factsToAdd.addFact(potentialRoomsLeftForObjectThatCreatesThis[0], HAS, objectThatCreatesThis)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        factsToAdd.getMap().forEach { point, factSet ->
+            factSet.forEach { fact ->
+                facts.addFact(point, fact.second, fact.first)
             }
         }
     }
