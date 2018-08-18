@@ -52,4 +52,16 @@ internal class KnowledgeBasedIntelligence2Test {
                 Helpers.createPlayerState(location = Point(0, 4))))
         assertEquals(true, intelligence.playerOnEdge())
     }
+
+    @Test
+    fun `reassess rooms for new insight into danger locations based on most recent perceptions`() {
+        intelligence.processLastMove(world, Helpers.createCommandResult(
+                arrayListOf(Perception.BREEZE),
+                Helpers.createPlayerState(location = Point(0, 0))))
+        intelligence.processLastMove(world, Helpers.createCommandResult(
+                arrayListOf(Perception.BREEZE),
+                Helpers.createPlayerState(location = Point(0, 0).north())))
+        assertEquals(TRUE, intelligence.facts.isTrue(Point(0, 0).north(), HAS_NO, PIT))
+        assertEquals(TRUE, intelligence.facts.isTrue(Point(0, 0).east(), HAS, PIT))
+    }
 }
