@@ -44,4 +44,12 @@ internal class KnowledgeBasedIntelligence2Test {
         assertEquals(UNKNOWN, intelligence.facts.isTrue(Point(0, 0).north(), HAS, PIT))
         assertEquals(UNKNOWN, intelligence.facts.isTrue(Point(0, 0).east(), HAS, PIT))
     }
+
+    @Test
+    fun `assess edge room case`() {
+        intelligence.processLastMove(world, Helpers.createCommandResult(
+                arrayListOf(Perception.BREEZE),
+                Helpers.createPlayerState(location = Point(0, 4))))
+        assertEquals(true, intelligence.playerOnEdge())
+    }
 }

@@ -6,6 +6,7 @@ import game.command.Command
 import game.command.CommandResult
 import game.world.*
 import game.world.GameObjectFeature.*
+import util.adjacents
 
 class KnowledgeBasedIntelligence2 : Intelligence() {
     internal val facts = FactMap()
@@ -22,6 +23,12 @@ class KnowledgeBasedIntelligence2 : Intelligence() {
         this.commandResult = commandResult
         assessCurrentRoom()
         assessNearbyRooms()
+    }
+
+    internal fun playerOnEdge(): Boolean {
+        return commandResult.getPlayerState().getLocation().adjacents().any {
+            !world.roomIsValid(it)
+        }
     }
 
     private fun assessCurrentRoom() {
