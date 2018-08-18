@@ -14,15 +14,15 @@ internal class FactMapTest {
     @Test
     fun `add fact`() {
         factMap.addFact(Point(2, 3), HAS, SUPMUW)
-        assertEquals(mapOf(Point(2, 3) to setOf(Pair(SUPMUW, HAS))), factMap.factMap)
+        assertEquals(mapOf(Point(2, 3) to setOf(Pair(SUPMUW, HAS))), factMap.getMap())
     }
 
     @Test
     fun `update fact that already exists`() {
         factMap.addFact(Point(2, 3), HAS, SUPMUW)
-        assertEquals(mapOf(Point(2, 3) to setOf(Pair(SUPMUW, HAS))), factMap.factMap)
+        assertEquals(mapOf(Point(2, 3) to setOf(Pair(SUPMUW, HAS))), factMap.getMap())
         factMap.addFact(Point(2, 3), HAS_NO, SUPMUW)
-        assertEquals(mapOf(Point(2, 3) to setOf(Pair(SUPMUW, HAS_NO))), factMap.factMap)
+        assertEquals(mapOf(Point(2, 3) to setOf(Pair(SUPMUW, HAS_NO))), factMap.getMap())
     }
 
     @Test

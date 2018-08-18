@@ -4,7 +4,13 @@ import game.agent.intelligence.Answer.*
 import game.world.GameObject
 import java.awt.Point
 
-class FactMap(internal val factMap: MutableMap<Point, MutableSet<Pair<GameObject, Fact>>> = mutableMapOf()) {
+class FactMap(private val factMap: MutableMap<Point, MutableSet<Pair<GameObject, Fact>>> = mutableMapOf()) {
+    fun getMap(): Map<Point, Set<Pair<GameObject, Fact>>> {
+        return factMap.map {
+            it.key to it.value.toSet()
+        }.toMap()
+    }
+
     fun addFact(point: Point, fact: Fact, gameObject: GameObject) {
         if (factMap[point] == null) factMap[point] = mutableSetOf()
         factMap[point]!!.removeIf { it.first == gameObject }
