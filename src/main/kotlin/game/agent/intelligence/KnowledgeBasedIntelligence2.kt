@@ -21,6 +21,9 @@ class KnowledgeBasedIntelligence2 : Intelligence() {
         super.processLastMove(world, commandResult)
         this.world = world
         this.commandResult = commandResult
+        if(playerOnEdge()) {
+            markEdgeRooms()
+        }
         assessCurrentRoom()
         assessNearbyRooms()
     }
@@ -28,6 +31,16 @@ class KnowledgeBasedIntelligence2 : Intelligence() {
     internal fun playerOnEdge(): Boolean {
         return commandResult.getPlayerState().getLocation().adjacents().any {
             !world.roomIsValid(it)
+        }
+    }
+
+
+    internal fun markEdgeRooms() {
+        val edgeRooms = commandResult.getPlayerState().getLocation().adjacents().filter { !world.roomIsValid(it) }
+        edgeRooms.forEach { edgeRoom ->
+            gameObjectValues().forEach { gameObject ->
+                facts.addFact(edgeRoom, HAS_NO, gameObject)
+            }
         }
     }
 
