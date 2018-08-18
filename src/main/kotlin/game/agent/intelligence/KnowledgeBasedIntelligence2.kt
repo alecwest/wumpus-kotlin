@@ -9,6 +9,8 @@ import game.world.GameObjectFeature.*
 
 class KnowledgeBasedIntelligence2 : Intelligence() {
     internal val facts = FactMap()
+    private lateinit var world: World
+    private lateinit var commandResult: CommandResult
 
     override fun chooseNextMove(world: World, commandResult: CommandResult): Command {
         return super.chooseNextMove(world, commandResult)
@@ -16,11 +18,13 @@ class KnowledgeBasedIntelligence2 : Intelligence() {
 
     override fun processLastMove(world: World, commandResult: CommandResult) {
         super.processLastMove(world, commandResult)
-        assessCurrentRoom(commandResult)
-        assessNearbyRooms(commandResult)
+        this.world = world
+        this.commandResult = commandResult
+        assessCurrentRoom()
+        assessNearbyRooms()
     }
 
-    private fun assessCurrentRoom(commandResult: CommandResult) {
+    private fun assessCurrentRoom() {
         val perceivedObjects = toGameObjects(commandResult.getPerceptions().toSet()) // TODO change perceptions to a set
         val playerLocation = commandResult.getPlayerState().getLocation()
         gameObjectValues().forEach { gameObject ->
@@ -31,7 +35,7 @@ class KnowledgeBasedIntelligence2 : Intelligence() {
         }
     }
 
-    private fun assessNearbyRooms(commandResult: CommandResult) {
+    private fun assessNearbyRooms() {
         val playerLocation = commandResult.getPlayerState().getLocation()
         gameObjectsWithFeatures(setOf(WorldAffecting())).forEach { gameObject ->
             val worldAffecting = gameObject.getFeature(WorldAffecting()) as WorldAffecting

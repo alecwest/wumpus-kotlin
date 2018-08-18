@@ -33,4 +33,15 @@ internal class KnowledgeBasedIntelligence2Test {
         assertEquals(TRUE, intelligence.facts.isTrue(Point(2, 2), HAS_NO, PIT))
         assertEquals(UNKNOWN, intelligence.facts.isTrue(Point(2, 2).north(), HAS, PIT))
     }
+
+    @Test
+    fun `process last move in a corner room`() {
+        intelligence.processLastMove(world, Helpers.createCommandResult(
+                arrayListOf(Perception.BREEZE),
+                Helpers.createPlayerState(location = Point(0, 0))))
+        assertEquals(FALSE, intelligence.facts.isTrue(Point(0, 0).south(), HAS, PIT))
+        assertEquals(FALSE, intelligence.facts.isTrue(Point(0, 0).west(), HAS, PIT))
+        assertEquals(UNKNOWN, intelligence.facts.isTrue(Point(0, 0).north(), HAS, PIT))
+        assertEquals(UNKNOWN, intelligence.facts.isTrue(Point(0, 0).east(), HAS, PIT))
+    }
 }
