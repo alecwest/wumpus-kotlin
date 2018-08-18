@@ -4,6 +4,7 @@ import game.agent.intelligence.Answer.*
 import game.agent.intelligence.Fact.*
 import game.agent.intelligence.IntelligenceTest.Companion.world
 import game.world.GameObject.*
+import game.world.Perception
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import util.*
@@ -21,5 +22,15 @@ internal class KnowledgeBasedIntelligence2Test {
         assertEquals(TRUE, intelligence.facts.isTrue(Point(2, 2).north(), HAS_NO, PIT))
         assertEquals(TRUE, intelligence.facts.isTrue(Point(2, 2).southEast(), HAS_NO, SUPMUW))
         assertEquals(UNKNOWN, intelligence.facts.isTrue(Point(2, 2).southEast(), HAS_NO, GLITTER))
+    }
+
+    @Test
+    fun `process last move in a breeze room`() {
+        intelligence.processLastMove(world, Helpers.createCommandResult(
+                arrayListOf(Perception.BREEZE),
+                Helpers.createPlayerState(location = Point(2, 2))))
+        assertEquals(TRUE, intelligence.facts.isTrue(Point(2, 2), HAS, BREEZE))
+        assertEquals(TRUE, intelligence.facts.isTrue(Point(2, 2), HAS_NO, PIT))
+        assertEquals(UNKNOWN, intelligence.facts.isTrue(Point(2, 2).north(), HAS, PIT))
     }
 }
