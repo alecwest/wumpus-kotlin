@@ -64,4 +64,20 @@ internal class KnowledgeBasedIntelligence2Test {
         assertEquals(TRUE, intelligence.facts.isTrue(Point(0, 0).north(), HAS_NO, PIT))
         assertEquals(TRUE, intelligence.facts.isTrue(Point(0, 0).east(), HAS, PIT))
     }
+
+    @Test
+    fun `use sequence of moves to identify supmuw location`() {
+        intelligence.processLastMove(world, Helpers.createCommandResult(
+                arrayListOf(Perception.MOO),
+                Helpers.createPlayerState(location = Point(0, 0))))
+        assertEquals(UNKNOWN, intelligence.facts.isTrue(Point(1, 0), HAS, SUPMUW))
+        intelligence.processLastMove(world, Helpers.createCommandResult(
+                arrayListOf(Perception.MOO),
+                Helpers.createPlayerState(location = Point(0, 1))))
+        assertEquals(UNKNOWN, intelligence.facts.isTrue(Point(1, 0), HAS, SUPMUW))
+        intelligence.processLastMove(world, Helpers.createCommandResult(
+                arrayListOf(),
+                Helpers.createPlayerState(location = Point(0, 2))))
+        assertEquals(TRUE, intelligence.facts.isTrue(Point(1, 0), HAS, SUPMUW))
+    }
 }

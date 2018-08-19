@@ -7,6 +7,7 @@ import game.command.CommandResult
 import game.world.*
 import game.world.GameObjectFeature.*
 import util.adjacents
+import java.awt.Point
 
 class KnowledgeBasedIntelligence2 : Intelligence() {
     internal val facts = FactMap()
@@ -82,15 +83,16 @@ class KnowledgeBasedIntelligence2 : Intelligence() {
                 val objectsThatCreateThis = effectGameObject.objectsThatCreateThis()
                 objectsThatCreateThis.forEach { objectThatCreatesThis ->
                     val worldAffecting = objectThatCreatesThis.getFeature(WorldAffecting()) as WorldAffecting
+                    val potentialRoomsLeftForObjectThatCreatesThis = mutableListOf<Point>()
                     worldAffecting.effects.forEach { worldEffect ->
                         if (worldEffect.gameObject == effectGameObject) {
-                            val potentialRoomsLeftForObjectThatCreatesThis = worldEffect.roomsAffected(point).filter { roomAffected ->
+                            potentialRoomsLeftForObjectThatCreatesThis.addAll(worldEffect.roomsAffected(point).filter { roomAffected ->
                                 facts.isTrue(roomAffected, HAS_NO, objectThatCreatesThis) != TRUE
-                            }
-                            if (potentialRoomsLeftForObjectThatCreatesThis.size == 1) {
-                                factsToAdd.addFact(potentialRoomsLeftForObjectThatCreatesThis[0], HAS, objectThatCreatesThis)
-                            }
+                            })
                         }
+                    }
+                    if (potentialRoomsLeftForObjectThatCreatesThis.size == 1) {
+                        factsToAdd.addFact(potentialRoomsLeftForObjectThatCreatesThis[0], HAS, objectThatCreatesThis)
                     }
                 }
             }
