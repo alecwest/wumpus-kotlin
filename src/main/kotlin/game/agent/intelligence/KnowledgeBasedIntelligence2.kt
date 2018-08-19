@@ -21,13 +21,16 @@ class KnowledgeBasedIntelligence2 : Intelligence() {
 
     override fun chooseNextMove(world: World, commandResult: CommandResult): Command {
         processLastMove(world, commandResult)
-        val playerLocation = commandResult.getPlayerState().getLocation()
-        if (getEffectsInRoom(playerLocation).any { effect ->
-            effect.objectsThatCreateThis().any { it.hasFeature(Dangerous()) }
-        }) {
+        if (currentRoomHasDangers(commandResult)) {
             return turnToSafeRoom(world, commandResult)
         }
         return MoveCommand()
+    }
+
+    private fun currentRoomHasDangers(commandResult: CommandResult): Boolean {
+        return getEffectsInRoom(commandResult.getPlayerState().getLocation()).any { effect ->
+            effect.objectsThatCreateThis().any { it.hasFeature(Dangerous()) }
+        }
     }
 
     private fun turnToSafeRoom(world: World, commandResult: CommandResult): TurnCommand {
