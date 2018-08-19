@@ -4,6 +4,7 @@ import game.agent.intelligence.Answer.*
 import game.agent.intelligence.Fact.*
 import game.command.Command
 import game.command.CommandResult
+import game.command.MoveCommand
 import game.world.*
 import game.world.GameObjectFeature.*
 import util.adjacents
@@ -15,7 +16,10 @@ class KnowledgeBasedIntelligence2 : Intelligence() {
     private lateinit var commandResult: CommandResult
 
     override fun chooseNextMove(world: World, commandResult: CommandResult): Command {
-        return super.chooseNextMove(world, commandResult)
+        processLastMove(world, commandResult)
+        val roomsToChooseFrom = commandResult.getPlayerState().getLocation().adjacents()
+                .filter { world.roomIsValid(it) }
+        return MoveCommand()
     }
 
     override fun processLastMove(world: World, commandResult: CommandResult) {

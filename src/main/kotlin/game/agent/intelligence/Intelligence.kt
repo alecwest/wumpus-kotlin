@@ -13,7 +13,7 @@ abstract class Intelligence {
         return MoveCommand()
     }
 
-    open fun processLastMove(world: World, commandResult: CommandResult) {
+    internal open fun processLastMove(world: World, commandResult: CommandResult) {
         resetRoom(world, commandResult)
         for (perception in commandResult.getPerceptions()) {
             val gameObject = perception.toGameObject() ?: continue

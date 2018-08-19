@@ -3,6 +3,8 @@ package game.agent.intelligence
 import game.agent.intelligence.Answer.*
 import game.agent.intelligence.Fact.*
 import game.agent.intelligence.IntelligenceTest.Companion.world
+import game.command.MoveCommand
+import game.command.TurnCommand
 import game.world.GameObject.*
 import game.world.Perception
 import org.junit.jupiter.api.Assertions.*
@@ -79,5 +81,18 @@ internal class KnowledgeBasedIntelligence2Test {
                 arrayListOf(),
                 Helpers.createPlayerState(location = Point(0, 2))))
         assertEquals(TRUE, intelligence.facts.isTrue(Point(1, 0), HAS, SUPMUW))
+    }
+
+    @Test
+    fun `choose next move at starting space`() {
+        assertEquals(MoveCommand(), intelligence.chooseNextMove(world, Helpers.createCommandResult()))
+    }
+
+    @Test
+    fun `turn around when danger is met`() {
+        assertEquals(TurnCommand(Direction.WEST), intelligence.chooseNextMove(world,
+                Helpers.createCommandResult(arrayListOf(Perception.STENCH),
+                        Helpers.createPlayerState(location = Point(2, 2),
+                                facing = Direction.EAST))))
     }
 }
