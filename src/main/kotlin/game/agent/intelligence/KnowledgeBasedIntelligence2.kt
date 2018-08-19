@@ -2,10 +2,7 @@ package game.agent.intelligence
 
 import game.agent.intelligence.Answer.*
 import game.agent.intelligence.Fact.*
-import game.command.Command
-import game.command.CommandResult
-import game.command.MoveCommand
-import game.command.TurnCommand
+import game.command.*
 import game.world.*
 import game.world.GameObjectFeature.*
 import util.adjacent
@@ -21,7 +18,16 @@ class KnowledgeBasedIntelligence2 : Intelligence() {
 
     override fun chooseNextMove(world: World, commandResult: CommandResult): Command {
         processLastMove(world, commandResult)
-        if (forwardFacingRoomIsSafe(commandResult)) {
+        val grabbables = getEffectsInRoom(commandResult.getPlayerState().getLocation()).filter { gameObject ->
+            gameObject.objectsThatCreateThis().any { objectThatCreatesThis ->
+                objectThatCreatesThis.hasFeature(Grabbable())
+            }
+        }.map { gameObject ->
+            gameObject.objectsThatCreateThis().first { it.hasFeature(Grabbable()) }
+        }
+        if (grabbables.isNotEmpty()) {
+            return GrabCommand((grabbables.first().getFeature(Grabbable()) as Grabbable).inventoryItem!!)
+        } else if (forwardFacingRoomIsSafe(commandResult)) {
             return MoveCommand()
         }
         return turnToSafeRoom(world, commandResult)

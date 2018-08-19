@@ -3,8 +3,10 @@ package game.agent.intelligence
 import game.agent.intelligence.Answer.*
 import game.agent.intelligence.Fact.*
 import game.agent.intelligence.IntelligenceTest.Companion.world
+import game.command.GrabCommand
 import game.command.MoveCommand
 import game.command.TurnCommand
+import game.player.InventoryItem
 import game.world.GameObject.*
 import game.world.Perception
 import org.junit.jupiter.api.Assertions.*
@@ -114,6 +116,13 @@ internal class KnowledgeBasedIntelligence2Test {
                 Helpers.createPlayerState(location = Point(2, 2))))
         assertEquals(MoveCommand(), intelligence.chooseNextMove(world, Helpers.createCommandResult(
                 arrayListOf(Perception.BREEZE),
+                Helpers.createPlayerState(location = Point(2, 1), facing = Direction.NORTH))))
+    }
+
+    @Test
+    fun `grab item in room`() {
+        assertEquals(GrabCommand(InventoryItem.GOLD), intelligence.chooseNextMove(world, Helpers.createCommandResult(
+                arrayListOf(Perception.GLITTER, Perception.STENCH, Perception.BREEZE),
                 Helpers.createPlayerState(location = Point(2, 1), facing = Direction.NORTH))))
     }
 }
