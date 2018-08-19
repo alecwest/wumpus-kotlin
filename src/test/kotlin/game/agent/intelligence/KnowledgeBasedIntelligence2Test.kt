@@ -95,4 +95,15 @@ internal class KnowledgeBasedIntelligence2Test {
                         Helpers.createPlayerState(location = Point(2, 2),
                                 facing = Direction.EAST))))
     }
+
+    @Test
+    fun `turn to the safe room on right or left when danger is met if it exists`() {
+        intelligence.processLastMove(world, Helpers.createCommandResult(
+                arrayListOf(),
+                Helpers.createPlayerState(location = Point(2, 1))))
+        assertEquals(TurnCommand(Direction.SOUTH), intelligence.chooseNextMove(world,
+                Helpers.createCommandResult(arrayListOf(Perception.STENCH),
+                        Helpers.createPlayerState(location = Point(2, 2),
+                                facing = Direction.EAST))))
+    }
 }

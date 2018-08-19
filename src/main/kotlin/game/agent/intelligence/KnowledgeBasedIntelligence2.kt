@@ -8,7 +8,9 @@ import game.command.MoveCommand
 import game.command.TurnCommand
 import game.world.*
 import game.world.GameObjectFeature.*
+import util.adjacent
 import util.adjacents
+import util.left
 import util.right
 import java.awt.Point
 
@@ -20,11 +22,17 @@ class KnowledgeBasedIntelligence2 : Intelligence() {
     override fun chooseNextMove(world: World, commandResult: CommandResult): Command {
         processLastMove(world, commandResult)
         val playerLocation = commandResult.getPlayerState().getLocation()
+        val playerDirection = commandResult.getPlayerState().getDirection()
         val validRooms = playerLocation.adjacents().filter { world.roomIsValid(it) }
         if (getEffectsInRoom(playerLocation).any { effect ->
             effect.objectsThatCreateThis().any { it.hasFeature(Dangerous()) }
         }) {
-            return TurnCommand(commandResult.getPlayerState().getDirection().right().right())
+            val safeRooms = validRooms.filter { facts.roomIsSafe(it) == TRUE }
+            return when {
+                safeRooms.contains(playerLocation.adjacent(playerDirection.right())) -> TurnCommand(playerDirection.right())
+                safeRooms.contains(playerLocation.adjacent(playerDirection.left())) -> TurnCommand(playerDirection.left())
+                else -> TurnCommand(playerDirection.right().right())
+            }
         }
         return MoveCommand()
     }
