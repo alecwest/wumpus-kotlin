@@ -1,15 +1,16 @@
 package game.world
 
+import game.player.InventoryItem
 import game.world.GameObjectFeature.*
 import game.world.effect.*
 
 sealed class GameObject(val features: Set<GameObjectFeature> = setOf()) {
-    object ARROW : GameObject(setOf(Shootable(), Grabbable()))
+    object ARROW : GameObject(setOf(Shootable(), Grabbable(InventoryItem.ARROW)))
     object BLOCKADE : GameObject(setOf(Blocking(), Mappable("X"), Perceptable(Perception.BLOCKADE_BUMP), RoomFilling()))
     object BREEZE : GameObject(setOf(Mappable("="), Perceptable(Perception.BREEZE)))
-    object FOOD : GameObject(setOf(Mappable("F"), Grabbable(), Perceptable(Perception.FOOD)))
+    object FOOD : GameObject(setOf(Mappable("F"), Grabbable(InventoryItem.FOOD), Perceptable(Perception.FOOD)))
     object GLITTER : GameObject(setOf(Mappable("*"), Perceptable(Perception.GLITTER)))
-    object GOLD : GameObject(setOf(Mappable("G"), Grabbable(), WorldAffecting(arrayListOf(HereEffect(GameObject.GLITTER)))))
+    object GOLD : GameObject(setOf(Mappable("G"), Grabbable(InventoryItem.GOLD), WorldAffecting(arrayListOf(HereEffect(GameObject.GLITTER)))))
     object MOO : GameObject(setOf(Mappable("!"), Perceptable(Perception.MOO)))
     object PIT : GameObject(setOf(Dangerous(), Mappable("P"), WorldAffecting(arrayListOf(AdjacentEffect(GameObject.BREEZE)))))
     object STENCH : GameObject(setOf(Mappable("~"), Perceptable(Perception.STENCH)))
@@ -68,7 +69,7 @@ sealed class GameObjectFeature {
     class Blocking: GameObjectFeature() // For things that block a player from entering
     class Dangerous: GameObjectFeature()
     class Destructable(val weaknesses: Set<GameObject> = setOf()): GameObjectFeature()
-    class Grabbable: GameObjectFeature()
+    class Grabbable(val inventoryItem: InventoryItem? = null): GameObjectFeature()
     class Mappable(val character: String = ""): GameObjectFeature()
     class Perceptable(val perception: Perception? = null): GameObjectFeature()
     class RoomFilling: GameObjectFeature() // For things that must exist in a Room alone
