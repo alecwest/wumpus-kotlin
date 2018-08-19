@@ -125,4 +125,14 @@ internal class KnowledgeBasedIntelligence2Test {
                 arrayListOf(Perception.GLITTER, Perception.STENCH, Perception.BREEZE),
                 Helpers.createPlayerState(location = Point(2, 1), facing = Direction.NORTH))))
     }
+
+    @Test
+    fun `grab multiple items in room`() {
+        assertEquals(GrabCommand(InventoryItem.FOOD), intelligence.chooseNextMove(world, Helpers.createCommandResult(
+                arrayListOf(Perception.GLITTER, Perception.STENCH, Perception.FOOD, Perception.BREEZE),
+                Helpers.createPlayerState(location = Point(2, 1), facing = Direction.NORTH))))
+        assertEquals(GrabCommand(InventoryItem.GOLD), intelligence.chooseNextMove(world, Helpers.createCommandResult(
+                arrayListOf(Perception.STENCH, Perception.GLITTER, Perception.BREEZE),
+                Helpers.createPlayerState(location = Point(2, 1), facing = Direction.NORTH))))
+    }
 }
