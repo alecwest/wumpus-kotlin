@@ -21,10 +21,16 @@ class KnowledgeBasedIntelligence2 : Intelligence() {
 
     override fun chooseNextMove(world: World, commandResult: CommandResult): Command {
         processLastMove(world, commandResult)
-        if (currentRoomHasDangers(commandResult)) {
-            return turnToSafeRoom(world, commandResult)
+        if (forwardFacingRoomIsSafe(commandResult)) {
+            return MoveCommand()
         }
-        return MoveCommand()
+        return turnToSafeRoom(world, commandResult)
+    }
+
+    private fun forwardFacingRoomIsSafe(commandResult: CommandResult): Boolean {
+        val forwardFacingRoom = commandResult.getPlayerState().getLocation()
+                .adjacent(commandResult.getPlayerState().getDirection())
+        return facts.roomIsSafe(forwardFacingRoom) == TRUE || !currentRoomHasDangers(commandResult)
     }
 
     private fun currentRoomHasDangers(commandResult: CommandResult): Boolean {

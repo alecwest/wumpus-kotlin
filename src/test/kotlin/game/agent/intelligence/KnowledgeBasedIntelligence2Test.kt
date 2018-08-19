@@ -106,4 +106,14 @@ internal class KnowledgeBasedIntelligence2Test {
                         Helpers.createPlayerState(location = Point(2, 2),
                                 facing = Direction.EAST))))
     }
+
+    @Test
+    fun `go forward when danger is met if forward facing room is known to be safe`() {
+        intelligence.processLastMove(world, Helpers.createCommandResult(
+                arrayListOf(),
+                Helpers.createPlayerState(location = Point(2, 2))))
+        assertEquals(MoveCommand(), intelligence.chooseNextMove(world, Helpers.createCommandResult(
+                arrayListOf(Perception.BREEZE),
+                Helpers.createPlayerState(location = Point(2, 1), facing = Direction.NORTH))))
+    }
 }
