@@ -45,4 +45,8 @@ class ShootCommand: Command() {
 
         return true
     }
+
+    override fun toString(): String {
+        return "ShootCommand(perceptionList=$perceptionList)"
+    }
 }

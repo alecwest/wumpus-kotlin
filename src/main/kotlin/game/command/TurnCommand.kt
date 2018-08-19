@@ -29,6 +29,10 @@ class TurnCommand(private val targetDirection: Direction): Command() {
 
         return true
     }
+
+    override fun toString(): String {
+        return "TurnCommand(targetDirection=$targetDirection)"
+    }
 }
 
 private class TurnLeftCommand: Command() {

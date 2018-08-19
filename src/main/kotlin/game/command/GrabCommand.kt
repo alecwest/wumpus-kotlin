@@ -23,6 +23,10 @@ class GrabCommand(private val inventoryItem: InventoryItem): Command() {
 
         return true
     }
+
+    override fun toString(): String {
+        return "GrabCommand(inventoryItem=$inventoryItem)"
+    }
 }
 
 private class GrabArrowCommand: Command() {

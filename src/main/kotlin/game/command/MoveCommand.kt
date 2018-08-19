@@ -53,6 +53,10 @@ class MoveCommand: Command() {
         if (other !is MoveCommand) return false
         return true
     }
+
+    override fun toString(): String {
+        return "MoveCommand()"
+    }
 }
 
 private class MoveNorthCommand: Command() {
