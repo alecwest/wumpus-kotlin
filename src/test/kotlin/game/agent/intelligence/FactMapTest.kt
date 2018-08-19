@@ -7,6 +7,8 @@ import java.awt.Point
 import game.agent.intelligence.Answer.*
 import game.agent.intelligence.Fact.*
 import game.world.GameObject.*
+import game.world.GameObjectFeature
+import game.world.gameObjectsWithFeatures
 
 internal class FactMapTest {
     private val factMap = FactMap()
@@ -39,5 +41,16 @@ internal class FactMapTest {
         assertEquals(false, factMap.factExists(Point(2, 3), SUPMUW))
         factMap.addFact(Point(2, 3), HAS, SUPMUW)
         assertEquals(true, factMap.factExists(Point(2, 3), SUPMUW))
+    }
+
+    @Test
+    fun `test room is safe`() {
+        assertEquals(FALSE, factMap.roomIsSafe(Point(2, 2)))
+        factMap.addFact(Point(2, 2), HAS, SUPMUW)
+        assertEquals(FALSE, factMap.roomIsSafe(Point(2, 2)))
+        gameObjectsWithFeatures(setOf(GameObjectFeature.Dangerous())).forEach {
+            factMap.addFact(Point(4, 4), HAS_NO, it)
+        }
+        assertEquals(TRUE, factMap.roomIsSafe(Point(4, 4)))
     }
 }

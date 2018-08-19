@@ -95,4 +95,15 @@ internal class KnowledgeBasedIntelligence2Test {
                         Helpers.createPlayerState(location = Point(2, 2),
                                 facing = Direction.EAST))))
     }
+
+    @Test
+    fun `check room is safe`() {
+        intelligence.processLastMove(world, Helpers.createCommandResult(
+                arrayListOf(),
+                Helpers.createPlayerState(location = Point(0, 2))))
+        intelligence.processLastMove(world, Helpers.createCommandResult(
+                arrayListOf(Perception.MOO),
+                Helpers.createPlayerState(location = Point(0, 3))))
+        assertEquals(TRUE, intelligence.facts.roomIsSafe(Point(0, 2)))
+    }
 }

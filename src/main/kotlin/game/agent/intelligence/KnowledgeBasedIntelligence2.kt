@@ -22,6 +22,10 @@ class KnowledgeBasedIntelligence2 : Intelligence() {
         return MoveCommand()
     }
 
+    internal fun roomIsSafe(): Boolean {
+        return true
+    }
+
     override fun processLastMove(world: World, commandResult: CommandResult) {
         super.processLastMove(world, commandResult)
         this.world = world
