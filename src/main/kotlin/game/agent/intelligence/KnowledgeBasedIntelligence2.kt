@@ -5,9 +5,11 @@ import game.agent.intelligence.Fact.*
 import game.command.Command
 import game.command.CommandResult
 import game.command.MoveCommand
+import game.command.TurnCommand
 import game.world.*
 import game.world.GameObjectFeature.*
 import util.adjacents
+import util.right
 import java.awt.Point
 
 class KnowledgeBasedIntelligence2 : Intelligence() {
@@ -17,8 +19,13 @@ class KnowledgeBasedIntelligence2 : Intelligence() {
 
     override fun chooseNextMove(world: World, commandResult: CommandResult): Command {
         processLastMove(world, commandResult)
-        val roomsToChooseFrom = commandResult.getPlayerState().getLocation().adjacents()
-                .filter { world.roomIsValid(it) }
+        val playerLocation = commandResult.getPlayerState().getLocation()
+        val validRooms = playerLocation.adjacents().filter { world.roomIsValid(it) }
+        if (getEffectsInRoom(playerLocation).any { effect ->
+            effect.objectsThatCreateThis().any { it.hasFeature(Dangerous()) }
+        }) {
+            return TurnCommand(commandResult.getPlayerState().getDirection().right().right())
+        }
         return MoveCommand()
     }
 
@@ -77,12 +84,8 @@ class KnowledgeBasedIntelligence2 : Intelligence() {
 
     private fun reassessForNewInsight() {
         val factsToAdd = FactMap()
-        facts.getMap().forEach { point, factSet ->
-            val effectSet = factSet.filter { fact ->
-                fact.second == HAS && fact.first.objectsThatCreateThis().isNotEmpty()
-            }.map {
-                fact -> fact.first
-            }
+        facts.getMap().forEach { fact ->
+            val effectSet = getEffectsInRoom(fact.key)
             effectSet.forEach { effectGameObject ->
                 val objectsThatCreateThis = effectGameObject.objectsThatCreateThis()
                 objectsThatCreateThis.forEach { objectThatCreatesThis ->
@@ -90,7 +93,7 @@ class KnowledgeBasedIntelligence2 : Intelligence() {
                     val potentialRoomsLeftForObjectThatCreatesThis = mutableListOf<Point>()
                     worldAffecting.effects.forEach { worldEffect ->
                         if (worldEffect.gameObject == effectGameObject) {
-                            potentialRoomsLeftForObjectThatCreatesThis.addAll(worldEffect.roomsAffected(point).filter { roomAffected ->
+                            potentialRoomsLeftForObjectThatCreatesThis.addAll(worldEffect.roomsAffected(fact.key).filter { roomAffected ->
                                 facts.isTrue(roomAffected, HAS_NO, objectThatCreatesThis) != TRUE
                             })
                         }
@@ -106,5 +109,13 @@ class KnowledgeBasedIntelligence2 : Intelligence() {
                 facts.addFact(point, fact.second, fact.first)
             }
         }
+    }
+
+    private fun getEffectsInRoom(point: Point): Set<GameObject> {
+        return facts.getMap().getOrDefault(point, setOf()).filter { fact ->
+            fact.second == HAS && fact.first.objectsThatCreateThis().isNotEmpty()
+        }.map {
+            fact -> fact.first
+        }.toSet()
     }
 }
