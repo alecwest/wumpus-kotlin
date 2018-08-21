@@ -221,4 +221,14 @@ internal class KnowledgeBasedIntelligence2Test {
         assertEquals(TRUE, intelligence.facts.isTrue(Point(5, 5), HAS_NO, GameObject.WALL))
         assertEquals(TRUE, intelligence.facts.isTrue(Point(5, 6), HAS, GameObject.WALL))
     }
+
+    @Test
+    fun `turn away from blocking rooms`() {
+        val commandResult = Helpers.createCommandResult(
+                setOf(Perception.WALL_BUMP),
+                Helpers.createPlayerState(location = Point(5, 5),
+                        facing = Direction.NORTH))
+        intelligence.processLastMove(world, commandResult)
+        assertEquals(TurnCommand(Direction.EAST), intelligence.chooseNextMove(world, commandResult))
+    }
 }

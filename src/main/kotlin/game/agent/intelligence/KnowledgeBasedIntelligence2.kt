@@ -27,7 +27,7 @@ class KnowledgeBasedIntelligence2 : Intelligence() {
 
         if (inventoryItems.isNotEmpty()) {
             return GrabCommand(inventoryItems.first()!!)
-        } else if (forwardFacingRoomIsSafe(commandResult)) {
+        } else if (canMoveForward(commandResult)) {
             return MoveCommand()
         }
         return turnToSafeRoom(world, commandResult)
@@ -40,6 +40,16 @@ class KnowledgeBasedIntelligence2 : Intelligence() {
             effect::class == HereEffect::class
                     && facts.isTrue(commandResult.getPlayerState().getLocation(), HAS, effect.gameObject) == TRUE
         } ?: false
+    }
+
+    private fun canMoveForward(commandResult: CommandResult): Boolean {
+        val playerState = commandResult.getPlayerState()
+        for (gameObject in gameObjectsWithFeatures(setOf(Blocking()))) {
+            if (facts.isTrue(playerState.getLocation().adjacent(playerState.getDirection()), HAS, gameObject) == TRUE) {
+                return false
+            }
+        }
+        return forwardFacingRoomIsSafe(commandResult)
     }
 
     internal fun forwardFacingRoomIsSafe(commandResult: CommandResult): Boolean {
