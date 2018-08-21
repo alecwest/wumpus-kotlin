@@ -181,4 +181,33 @@ internal class KnowledgeBasedIntelligence2Test {
         intelligence.processLastMove(world, commandResult2)
         assertTrue(intelligence.dangerousEffectsInRoom(commandResult2))
     }
+
+    @Test
+    fun `turn to safe room`() {
+        val commandResult1 = Helpers.createCommandResult(
+                arrayListOf(Perception.GLITTER, Perception.BREEZE),
+                Helpers.createPlayerState(location = Point(2, 2),
+                        facing = Direction.NORTH))
+        val commandResult2 = Helpers.createCommandResult(
+                arrayListOf(Perception.GLITTER, Perception.BREEZE),
+                Helpers.createPlayerState(location = Point(1, 2),
+                        facing = Direction.NORTH))
+        intelligence.processLastMove(world, commandResult1)
+        assertEquals(TurnCommand(Direction.SOUTH),
+                intelligence.turnToSafeRoom(world, commandResult1))
+        intelligence.processLastMove(world, commandResult2)
+        assertEquals(TurnCommand(Direction.EAST),
+                intelligence.turnToSafeRoom(world, commandResult2))
+    }
+
+    @Test
+    fun `turn to safe room when not necessary`() {
+        val commandResult = Helpers.createCommandResult(
+                arrayListOf(),
+                Helpers.createPlayerState(location = Point(5, 5),
+                        facing = Direction.NORTH))
+        intelligence.processLastMove(world, commandResult)
+        assertEquals(TurnCommand(Direction.EAST),
+                intelligence.turnToSafeRoom(world, commandResult))
+    }
 }

@@ -57,10 +57,13 @@ class KnowledgeBasedIntelligence2 : Intelligence() {
         }
     }
 
-    private fun turnToSafeRoom(world: World, commandResult: CommandResult): TurnCommand {
+    // Assumes you've already determined that the room in front is not safe
+    internal fun turnToSafeRoom(world: World, commandResult: CommandResult): TurnCommand {
         val playerLocation = commandResult.getPlayerState().getLocation()
         val playerDirection = commandResult.getPlayerState().getDirection()
-        val validRooms = playerLocation.adjacents().filter { world.roomIsValid(it) }
+        val validRooms = playerLocation.adjacents().filter {
+            it != playerLocation.adjacent(playerDirection) && world.roomIsValid(it)
+        }
         val safeRooms = validRooms.filter { facts.roomIsSafe(it) == TRUE }
         return when {
             safeRooms.contains(playerLocation.adjacent(playerDirection.right())) -> TurnCommand(playerDirection.right())
