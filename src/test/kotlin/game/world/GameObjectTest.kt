@@ -1,5 +1,6 @@
 package game.world
 
+import game.player.InventoryItem
 import game.world.GameObject.*
 import game.world.GameObjectFeature.*
 import game.world.effect.HereEffect
@@ -65,6 +66,15 @@ internal class GameObjectTest {
     fun `has feature`() {
         assertTrue(STENCH.hasFeature(Perceptable()))
         assertFalse(GOLD.hasFeature(Perceptable()))
+    }
+
+    @Test
+    fun `convert object to inventory item`() {
+        assertEquals(InventoryItem.GOLD, GameObject.GOLD.toInventoryItem())
+        assertEquals(InventoryItem.GOLD, GameObject.GLITTER.toInventoryItem())
+        assertEquals(InventoryItem.FOOD, GameObject.FOOD.toInventoryItem())
+        assertEquals(InventoryItem.ARROW, GameObject.ARROW.toInventoryItem())
+        assertEquals(null, GameObject.SUPMUW.toInventoryItem())
     }
 
     @Test

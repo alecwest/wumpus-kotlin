@@ -31,6 +31,11 @@ sealed class GameObject(val features: Set<GameObjectFeature> = setOf()) {
         return gameObjectsWithFeatures(setOf(WorldAffecting())).filter { worldEffector ->
             (worldEffector.getFeature(WorldAffecting()) as WorldAffecting).createsObject(this) }
     }
+
+    fun toInventoryItem(): InventoryItem? {
+        return ((this.objectsThatCreateThis().firstOrNull { it.hasFeature(Grabbable()) }
+                ?: this).getFeature(Grabbable()) as Grabbable?)?.inventoryItem
+    }
 }
 
 fun gameObjectsWithFeatures(features: Set<GameObjectFeature>): List<GameObject> {

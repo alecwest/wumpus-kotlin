@@ -21,7 +21,7 @@ class KnowledgeBasedIntelligence2 : Intelligence() {
     override fun chooseNextMove(world: World, commandResult: CommandResult): Command {
         processLastMove(world, commandResult)
         val inventoryItems = gameObjectsWithFeatures(setOf(Grabbable()))
-                .filter { objectOrHereEffectInRoom(it) }.map { toInventoryItem(it) }
+                .filter { objectOrHereEffectInRoom(it) }.map { it.toInventoryItem() }
 
         if (inventoryItems.isNotEmpty()) {
             return GrabCommand(inventoryItems.first()!!)
@@ -38,11 +38,6 @@ class KnowledgeBasedIntelligence2 : Intelligence() {
             effect::class == HereEffect::class
                     && facts.isTrue(commandResult.getPlayerState().getLocation(), HAS, effect.gameObject) == TRUE
         } ?: false
-    }
-
-    private fun toInventoryItem(gameObject: GameObject): InventoryItem? {
-        return ((gameObject.objectsThatCreateThis().firstOrNull { it.hasFeature(Grabbable()) }
-                    ?: gameObject).getFeature(Grabbable()) as Grabbable).inventoryItem
     }
 
     private fun forwardFacingRoomIsSafe(commandResult: CommandResult): Boolean {
