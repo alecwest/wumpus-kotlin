@@ -3,7 +3,6 @@ package game.agent.intelligence
 import game.agent.intelligence.Answer.*
 import game.agent.intelligence.Fact.*
 import game.command.*
-import game.player.InventoryItem
 import game.world.*
 import game.world.GameObjectFeature.*
 import game.world.effect.HereEffect
@@ -31,9 +30,9 @@ class KnowledgeBasedIntelligence2 : Intelligence() {
         return turnToSafeRoom(world, commandResult)
     }
 
-    private fun objectOrHereEffectInRoom(grabbable: GameObject): Boolean {
-        val worldEffects = grabbable.getFeature(WorldAffecting()) as WorldAffecting?
-        return facts.isTrue(commandResult.getPlayerState().getLocation(), HAS, grabbable) == TRUE
+    internal fun objectOrHereEffectInRoom(gameObject: GameObject): Boolean {
+        val worldEffects = gameObject.getFeature(WorldAffecting()) as WorldAffecting?
+        return facts.isTrue(commandResult.getPlayerState().getLocation(), HAS, gameObject) == TRUE
                 || worldEffects?.effects?.any { effect ->
             effect::class == HereEffect::class
                     && facts.isTrue(commandResult.getPlayerState().getLocation(), HAS, effect.gameObject) == TRUE

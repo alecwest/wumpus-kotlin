@@ -7,6 +7,7 @@ import game.command.GrabCommand
 import game.command.MoveCommand
 import game.command.TurnCommand
 import game.player.InventoryItem
+import game.world.GameObject
 import game.world.GameObject.*
 import game.world.Perception
 import org.junit.jupiter.api.Assertions.*
@@ -134,5 +135,16 @@ internal class KnowledgeBasedIntelligence2Test {
         assertEquals(GrabCommand(InventoryItem.GOLD), intelligence.chooseNextMove(world, Helpers.createCommandResult(
                 arrayListOf(Perception.STENCH, Perception.GLITTER, Perception.BREEZE),
                 Helpers.createPlayerState(location = Point(2, 1), facing = Direction.NORTH))))
+    }
+
+    @Test
+    fun `check object or HereEffect in room`() {
+        intelligence.processLastMove(world, Helpers.createCommandResult(
+                arrayListOf(Perception.GLITTER, Perception.BREEZE, Perception.FOOD),
+                Helpers.createPlayerState(location = Point(2, 2))))
+        assertTrue(intelligence.objectOrHereEffectInRoom(GameObject.GOLD))
+        assertTrue(intelligence.objectOrHereEffectInRoom(GameObject.GLITTER))
+        assertTrue(intelligence.objectOrHereEffectInRoom(GameObject.FOOD))
+        assertFalse(intelligence.objectOrHereEffectInRoom(GameObject.PIT))
     }
 }
