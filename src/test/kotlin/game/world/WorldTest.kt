@@ -47,16 +47,16 @@ class WorldTest {
     companion object {
         @JvmStatic
         fun validAddGameObjectProvider() = Stream.of(
-                ValidGameObjectTestData(arrayListOf(), arrayListOf(GameObject.GOLD), arrayListOf(GameObject.GOLD, GameObject.GLITTER)),
-                ValidGameObjectTestData(arrayListOf(), arrayListOf(GameObject.MOO), arrayListOf(GameObject.MOO)),
-                ValidGameObjectTestData(arrayListOf(), arrayListOf(GameObject.ARROW), arrayListOf(GameObject.ARROW))
+                ValidGameObjectTestData(setOf(), arrayListOf(GameObject.GOLD), arrayListOf(GameObject.GOLD, GameObject.GLITTER)),
+                ValidGameObjectTestData(setOf(), arrayListOf(GameObject.MOO), arrayListOf(GameObject.MOO)),
+                ValidGameObjectTestData(setOf(), arrayListOf(GameObject.ARROW), arrayListOf(GameObject.ARROW))
         )
 
         @JvmStatic
         fun validRemoveGameObjectProvider() = Stream.of(
-                ValidGameObjectTestData(arrayListOf(GameObject.PIT), arrayListOf(GameObject.PIT), arrayListOf()),
-                ValidGameObjectTestData(arrayListOf(GameObject.GOLD, GameObject.GLITTER), arrayListOf(GameObject.GOLD), arrayListOf()),
-                ValidGameObjectTestData(arrayListOf(GameObject.ARROW, GameObject.WUMPUS), arrayListOf(GameObject.ARROW), arrayListOf(GameObject.WUMPUS))
+                ValidGameObjectTestData(setOf(GameObject.PIT), arrayListOf(GameObject.PIT), arrayListOf()),
+                ValidGameObjectTestData(setOf(GameObject.GOLD, GameObject.GLITTER), arrayListOf(GameObject.GOLD), arrayListOf()),
+                ValidGameObjectTestData(setOf(GameObject.ARROW, GameObject.WUMPUS), arrayListOf(GameObject.ARROW), arrayListOf(GameObject.WUMPUS))
         )
 
         @JvmStatic
@@ -227,7 +227,7 @@ class WorldTest {
 }
 
 data class ValidGameObjectTestData (
-        val initialContent: ArrayList<GameObject>,
+        val initialContent: Set<GameObject>,
         val contentToAddOrRemove: ArrayList<GameObject>,
         val finalContent: ArrayList<GameObject>
 )

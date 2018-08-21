@@ -25,8 +25,8 @@ class Helpers {
         }
 
         fun createWorld(size: Int = 10,
-                        gameObject: Map<Point, ArrayList<out GameObject>> =
-                                mapOf(Point(2, 2) to arrayListOf(GameObject.PIT))): World {
+                        gameObject: Map<Point, Set<out GameObject>> =
+                                mapOf(Point(2, 2) to setOf(GameObject.PIT))): World {
             val world = World(size)
             for (point in gameObject.keys) {
                 for (content in gameObject.getValue(point)) {

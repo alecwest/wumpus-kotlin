@@ -26,7 +26,7 @@ class AdjacentEffectTest {
 
     @Test
     fun `remove breeze from adjacent rooms as result of pit removal`() {
-        val world = Helpers.createWorld(gameObject = mapOf(point to arrayListOf(GameObject.PIT)))
+        val world = Helpers.createWorld(gameObject = mapOf(point to setOf(GameObject.PIT)))
         world.removeGameObject(point, GameObject.PIT)
         for (point in point.adjacents() + point.diagonals()) {
             assertFalse(world.hasGameObject(point, GameObject.BREEZE))

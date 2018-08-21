@@ -24,7 +24,7 @@ class DiagonalEffectTest {
 
     @Test
     fun `remove moo from surrounding rooms as result of supmuw removal`() {
-        val world = Helpers.createWorld(gameObject = mapOf(point to arrayListOf(GameObject.SUPMUW)))
+        val world = Helpers.createWorld(gameObject = mapOf(point to setOf(GameObject.SUPMUW)))
         world.removeGameObject(point, GameObject.SUPMUW)
         for (point in point.adjacents() + point.diagonals()) {
             assertFalse(world.hasGameObject(point, GameObject.MOO))

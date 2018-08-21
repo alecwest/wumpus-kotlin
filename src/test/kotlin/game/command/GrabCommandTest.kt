@@ -45,7 +45,7 @@ class GrabCommandTest {
         private val initialGame = Helpers.createGame(
                 world = Helpers.createWorld(
                         gameObject = mapOf(
-                                Point(2, 2) to arrayListOf(GameObject.GOLD, GameObject.SUPMUW, GameObject.ARROW))),
+                                Point(2, 2) to setOf(GameObject.GOLD, GameObject.SUPMUW, GameObject.ARROW))),
                 player = Helpers.createPlayer(
                         location = testPoint,
                         facing = Direction.SOUTH,

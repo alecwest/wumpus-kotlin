@@ -34,7 +34,7 @@ internal class TurnCommandTest {
 
     companion object {
         private val initialPlayer = Helpers.createPlayer(location = Point(2, 2), facing = Direction.SOUTH)
-        private val initialWorld = Helpers.createWorld(gameObject = mapOf(Point(3, 2) to arrayListOf(GameObject.PIT)))
+        private val initialWorld = Helpers.createWorld(gameObject = mapOf(Point(3, 2) to setOf(GameObject.PIT)))
         private val initialGame = Helpers.createGame(player = initialPlayer, world = initialWorld)
 
         @JvmStatic

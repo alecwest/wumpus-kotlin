@@ -48,8 +48,8 @@ internal class MoveCommandTest {
                 location = Point(0, 0), facing = Direction.SOUTH, inventoryContent = mapOf(InventoryItem.ARROW to 2))
         private val initialPlayerInCornerWorld = Helpers.createWorld(
                 gameObject = mapOf(
-                        Point(0, 1) to arrayListOf(GameObject.BLOCKADE),
-                        Point(1, 0) to arrayListOf(GameObject.GOLD)))
+                        Point(0, 1) to setOf(GameObject.BLOCKADE),
+                        Point(1, 0) to setOf(GameObject.GOLD)))
         private val playerInCornerGame = Helpers.createGame(player = initialPlayerInCorner, world = initialPlayerInCornerWorld)
 
         // TODO initialGame is not initialized at the start of every test, so these must run in succession to pass

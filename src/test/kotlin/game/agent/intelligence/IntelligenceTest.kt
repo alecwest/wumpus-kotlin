@@ -28,7 +28,7 @@ internal class IntelligenceTest {
 
     companion object {
         val world = Helpers.createWorld(
-                gameObject = mapOf(Point(0, 4) to arrayListOf(GameObject.BLOCKADE)))
+                gameObject = mapOf(Point(0, 4) to setOf(GameObject.BLOCKADE)))
         val commandResult = CommandResult()
     }
 }

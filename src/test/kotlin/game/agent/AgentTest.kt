@@ -57,7 +57,7 @@ internal class AgentTest {
     val basicIntelligenceClient = createClient(Helpers.testFilePath + "basicIntelligenceTestFile.json")
         val basicIntelligenceAgent = createAgent(basicIntelligenceClient, BasicIntelligence())
         val world = createWorld(
-                gameObject = mapOf(Point(0, 1) to arrayListOf(GameObject.BLOCKADE)))
+                gameObject = mapOf(Point(0, 1) to setOf(GameObject.BLOCKADE)))
         val commandResult = createCommandResult(
                 playerState = createPlayerState(
                         inventoryContent = mapOf(InventoryItem.ARROW to 1)
