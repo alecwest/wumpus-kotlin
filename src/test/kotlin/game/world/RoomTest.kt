@@ -11,7 +11,7 @@ class RoomTest {
 
     @Test
     fun `get room content`() {
-        assertEquals(arrayListOf(GameObject.BREEZE, GameObject.STENCH), room.getGameObjects())
+        assertEquals(setOf(GameObject.BREEZE, GameObject.STENCH), room.getGameObjects())
     }
 
     @Test
@@ -28,7 +28,7 @@ class RoomTest {
 
     @Test
     fun `add content to full room`() {
-        val room = Room(arrayListOf(GameObject.BLOCKADE))
+        val room = Room(mutableSetOf(GameObject.BLOCKADE))
         room.addGameObject(GameObject.WUMPUS)
         assertEquals(1, room.getAmountOfObjects())
     }

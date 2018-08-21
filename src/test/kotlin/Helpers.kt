@@ -19,9 +19,8 @@ class Helpers {
     companion object {
         const val testFilePath = "src/test/resources/"
 
-        // TODO all of these create functions shouldn't just be test helpers
-        fun createRoom(gameObject: ArrayList<GameObject>
-                       = arrayListOf(GameObject.BREEZE, GameObject.STENCH)): Room {
+        fun createRoom(gameObject: MutableSet<GameObject>
+                       = mutableSetOf(GameObject.BREEZE, GameObject.STENCH)): Room {
             return Room(gameObject)
         }
 

@@ -10,8 +10,8 @@ import util.toPlayerMapRepresentation
  *      A room only contains information on what exists inside it.
  *      It is up to the client to determine any "status" or "inferences" about any room.
  */
-class Room(private val gameObjects: ArrayList<GameObject> = arrayListOf()) {
-    fun getGameObjects() = gameObjects
+class Room(private val gameObjects: MutableSet<GameObject> = mutableSetOf()) {
+    fun getGameObjects() = gameObjects.toSet()
 
     fun addGameObject(content: GameObject) {
         if (!hasGameObject(content) && !isFull()) {

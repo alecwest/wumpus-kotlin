@@ -15,7 +15,7 @@ internal class IntelligenceTest {
     @Test
     fun `process last move with base method`() {
         intelligence.processLastMove(world, lastMove)
-        assertEquals(arrayListOf(GameObject.BREEZE, GameObject.GLITTER), world.getGameObjects(lastMove.getPlayerState().getLocation()))
+        assertEquals(setOf(GameObject.BREEZE, GameObject.GLITTER), world.getGameObjects(lastMove.getPlayerState().getLocation()))
     }
 
     @Test
@@ -23,7 +23,7 @@ internal class IntelligenceTest {
         val lastMove2 = lastMove.copyThis(perceptions = setOf(Perception.BREEZE))
         intelligence.processLastMove(world, lastMove)
         intelligence.processLastMove(world, lastMove2)
-        assertEquals(arrayListOf(GameObject.BREEZE), world.getGameObjects(lastMove.getPlayerState().getLocation()))
+        assertEquals(setOf(GameObject.BREEZE), world.getGameObjects(lastMove.getPlayerState().getLocation()))
     }
 
     companion object {

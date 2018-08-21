@@ -64,8 +64,8 @@ class GameTest {
 
     @Test
     fun `get room content`() {
-        assertEquals(arrayListOf<GameObject>(), world.getGameObjects(Point(0, 0)))
-        assertEquals(arrayListOf(GameObject.PIT), world.getGameObjects(Point(2, 2)))
+        assertEquals(setOf<GameObject>(), world.getGameObjects(Point(0, 0)))
+        assertEquals(setOf(GameObject.PIT), world.getGameObjects(Point(2, 2)))
     }
 
     @Test
