@@ -47,32 +47,32 @@ class WorldTest {
     companion object {
         @JvmStatic
         fun validAddGameObjectProvider() = Stream.of(
-                ValidGameObjectTestData(setOf(), arrayListOf(GameObject.GOLD), arrayListOf(GameObject.GOLD, GameObject.GLITTER)),
-                ValidGameObjectTestData(setOf(), arrayListOf(GameObject.MOO), arrayListOf(GameObject.MOO)),
-                ValidGameObjectTestData(setOf(), arrayListOf(GameObject.ARROW), arrayListOf(GameObject.ARROW))
+                ValidGameObjectTestData(setOf(), setOf(GameObject.GOLD), setOf(GameObject.GOLD, GameObject.GLITTER)),
+                ValidGameObjectTestData(setOf(), setOf(GameObject.MOO), setOf(GameObject.MOO)),
+                ValidGameObjectTestData(setOf(), setOf(GameObject.ARROW), setOf(GameObject.ARROW))
         )
 
         @JvmStatic
         fun validRemoveGameObjectProvider() = Stream.of(
-                ValidGameObjectTestData(setOf(GameObject.PIT), arrayListOf(GameObject.PIT), arrayListOf()),
-                ValidGameObjectTestData(setOf(GameObject.GOLD, GameObject.GLITTER), arrayListOf(GameObject.GOLD), arrayListOf()),
-                ValidGameObjectTestData(setOf(GameObject.ARROW, GameObject.WUMPUS), arrayListOf(GameObject.ARROW), arrayListOf(GameObject.WUMPUS))
+                ValidGameObjectTestData(setOf(GameObject.PIT), setOf(GameObject.PIT), setOf()),
+                ValidGameObjectTestData(setOf(GameObject.GOLD, GameObject.GLITTER), setOf(GameObject.GOLD), setOf()),
+                ValidGameObjectTestData(setOf(GameObject.ARROW, GameObject.WUMPUS), setOf(GameObject.ARROW), setOf(GameObject.WUMPUS))
         )
 
         @JvmStatic
         fun validSimilarGameObjectWithEffectsProvider() = Stream.of(
                 ValidSimilarGameObjectWithEffectsTestData(GameObject.PIT, GameObject.BREEZE,
-                        arrayListOf(Point(4, 4), Point(4, 4).northEast(), Point(4, 4).northEast().north(), Point(4, 4).south().south()),
+                        setOf(Point(4, 4), Point(4, 4).northEast(), Point(4, 4).northEast().north(), Point(4, 4).south().south()),
                         Point(4, 4),
-                        arrayListOf(Point(4, 4).north(), Point(4, 4).east(), Point(4, 4).south(), Point(4, 4).northEast())),
+                        setOf(Point(4, 4).north(), Point(4, 4).east(), Point(4, 4).south(), Point(4, 4).northEast())),
                 ValidSimilarGameObjectWithEffectsTestData(GameObject.WUMPUS, GameObject.STENCH,
-                        arrayListOf(Point(4, 4), Point(4, 4).northEast(), Point(4, 4).south().south()),
+                        setOf(Point(4, 4), Point(4, 4).northEast(), Point(4, 4).south().south()),
                         Point(4, 4),
-                        arrayListOf(Point(4, 4).north(), Point(4, 4).east(), Point(4, 4).south())),
+                        setOf(Point(4, 4).north(), Point(4, 4).east(), Point(4, 4).south())),
                 ValidSimilarGameObjectWithEffectsTestData(GameObject.SUPMUW, GameObject.MOO,
-                        arrayListOf(Point(4, 4), Point(4, 4).northEast(), Point(4, 4).south().south()),
+                        setOf(Point(4, 4), Point(4, 4).northEast(), Point(4, 4).south().south()),
                         Point(4, 4),
-                        arrayListOf(Point(4, 4), Point(4, 4).north(), Point(4, 4).east(),
+                        setOf(Point(4, 4), Point(4, 4).north(), Point(4, 4).east(),
                                 Point(4, 4).southWest(), Point(4, 4).south(), Point(4, 4).southEast()))
         )
 
@@ -228,14 +228,14 @@ class WorldTest {
 
 data class ValidGameObjectTestData (
         val initialContent: Set<GameObject>,
-        val contentToAddOrRemove: ArrayList<GameObject>,
-        val finalContent: ArrayList<GameObject>
+        val contentToAddOrRemove: Set<GameObject>,
+        val finalContent: Set<GameObject>
 )
 
 data class ValidSimilarGameObjectWithEffectsTestData (
         val contentTested: GameObject,
         val effectTested: GameObject,
-        val locationsOfContent: ArrayList<Point>,
+        val locationsOfContent: Set<Point>,
         val locationToRemoveContent: Point,
-        val locationsThatShouldStillHaveContentEffect: ArrayList<Point>
+        val locationsThatShouldStillHaveContentEffect: Set<Point>
 )
