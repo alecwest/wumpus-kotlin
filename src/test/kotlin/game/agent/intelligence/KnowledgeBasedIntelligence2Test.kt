@@ -147,4 +147,38 @@ internal class KnowledgeBasedIntelligence2Test {
         assertTrue(intelligence.objectOrHereEffectInRoom(GameObject.FOOD))
         assertFalse(intelligence.objectOrHereEffectInRoom(GameObject.PIT))
     }
+
+    @Test
+    fun `forward facing room is safe`() {
+        val commandResult1 = Helpers.createCommandResult(
+                arrayListOf(Perception.GLITTER, Perception.FOOD),
+                Helpers.createPlayerState(location = Point(2, 2)))
+        val commandResult2 = Helpers.createCommandResult(
+                arrayListOf(Perception.SCREAM, Perception.BREEZE, Perception.FOOD),
+                Helpers.createPlayerState(location = Point(5, 5)))
+        val commandResult3 = Helpers.createCommandResult(
+                arrayListOf(Perception.SCREAM, Perception.BREEZE, Perception.FOOD),
+                Helpers.createPlayerState(location = Point(5, 6),
+                        facing = Direction.SOUTH))
+        intelligence.processLastMove(world, commandResult1)
+        assertTrue(intelligence.forwardFacingRoomIsSafe(commandResult1))
+        intelligence.processLastMove(world, commandResult2)
+        assertFalse(intelligence.forwardFacingRoomIsSafe(commandResult2))
+        intelligence.processLastMove(world, commandResult3)
+        assertTrue(intelligence.forwardFacingRoomIsSafe(commandResult3))
+    }
+
+    @Test
+    fun `dangerous effects in room`() {
+        val commandResult1 = Helpers.createCommandResult(
+                arrayListOf(Perception.GLITTER, Perception.FOOD),
+                Helpers.createPlayerState(location = Point(2, 2)))
+        val commandResult2 = Helpers.createCommandResult(
+                arrayListOf(Perception.SCREAM, Perception.BREEZE, Perception.FOOD),
+                Helpers.createPlayerState(location = Point(5, 5)))
+        intelligence.processLastMove(world, commandResult1)
+        assertFalse(intelligence.dangerousEffectsInRoom(commandResult1))
+        intelligence.processLastMove(world, commandResult2)
+        assertTrue(intelligence.dangerousEffectsInRoom(commandResult2))
+    }
 }

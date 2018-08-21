@@ -39,15 +39,21 @@ class KnowledgeBasedIntelligence2 : Intelligence() {
         } ?: false
     }
 
-    private fun forwardFacingRoomIsSafe(commandResult: CommandResult): Boolean {
+    internal fun forwardFacingRoomIsSafe(commandResult: CommandResult): Boolean {
         val forwardFacingRoom = commandResult.getPlayerState().getLocation()
                 .adjacent(commandResult.getPlayerState().getDirection())
-        return facts.roomIsSafe(forwardFacingRoom) == TRUE || !currentRoomHasDangers(commandResult)
+        return facts.roomIsSafe(forwardFacingRoom) == TRUE || !dangerousEffectsInRoom(commandResult)
     }
 
-    private fun currentRoomHasDangers(commandResult: CommandResult): Boolean {
+    internal fun dangerousEffectsInRoom(commandResult: CommandResult): Boolean {
         return getEffectsInRoom(commandResult.getPlayerState().getLocation()).any { effect ->
-            effect.objectsThatCreateThis().any { it.hasFeature(Dangerous()) }
+                    effect.objectsThatCreateThis().any {
+                        // Effect is not "dangerous" if the object creating it is in the
+                        // same room, otherwise we'd be dead already
+                        !(it.getFeature(WorldAffecting()) as WorldAffecting)
+                                .effects.contains(HereEffect(effect))
+                                && it.hasFeature(Dangerous())
+                    }
         }
     }
 
