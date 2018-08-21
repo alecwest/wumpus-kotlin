@@ -210,4 +210,15 @@ internal class KnowledgeBasedIntelligence2Test {
         assertEquals(TurnCommand(Direction.EAST),
                 intelligence.turnToSafeRoom(world, commandResult))
     }
+
+    @Test
+    fun `perceiving a blocking object should add a fact about it to the forward facing room`() {
+        val commandResult = Helpers.createCommandResult(
+                setOf(Perception.WALL_BUMP),
+                Helpers.createPlayerState(location = Point(5, 5),
+                        facing = Direction.NORTH))
+        intelligence.processLastMove(world, commandResult)
+        assertEquals(TRUE, intelligence.facts.isTrue(Point(5, 5), HAS_NO, GameObject.WALL))
+        assertEquals(TRUE, intelligence.facts.isTrue(Point(5, 6), HAS, GameObject.WALL))
+    }
 }

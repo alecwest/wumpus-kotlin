@@ -107,11 +107,24 @@ class KnowledgeBasedIntelligence2 : Intelligence() {
         val perceivedObjects = toGameObjects(commandResult.getPerceptions())
         val playerLocation = commandResult.getPlayerState().getLocation()
         gameObjectValues().forEach { gameObject ->
-            facts.addFact(
-                    playerLocation,
-                    if (perceivedObjects.contains(gameObject)) HAS else HAS_NO,
-                    gameObject)
+            if (gameObject.hasFeature(Blocking()) && perceivedObjects.contains(gameObject)) {
+                addPerceivedBlocker(gameObject)
+            } else {
+                facts.addFact(
+                        playerLocation,
+                        if (perceivedObjects.contains(gameObject)) HAS else HAS_NO,
+                        gameObject)
+            }
         }
+    }
+
+    private fun addPerceivedBlocker(gameObject: GameObject) {
+        val playerLocation = commandResult.getPlayerState().getLocation()
+        facts.addFact(playerLocation, HAS_NO, gameObject)
+        facts.addFact(
+                playerLocation.adjacent(commandResult.getPlayerState().getDirection()),
+                HAS,
+                gameObject)
     }
 
     private fun assessNearbyRooms() {
