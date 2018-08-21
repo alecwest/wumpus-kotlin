@@ -120,11 +120,10 @@ class KnowledgeBasedIntelligence2 : Intelligence() {
 
     private fun addPerceivedBlocker(gameObject: GameObject) {
         val playerLocation = commandResult.getPlayerState().getLocation()
+        val blockerLocation = playerLocation.adjacent(commandResult.getPlayerState().getDirection())
         facts.addFact(playerLocation, HAS_NO, gameObject)
-        facts.addFact(
-                playerLocation.adjacent(commandResult.getPlayerState().getDirection()),
-                HAS,
-                gameObject)
+        facts.addFact(blockerLocation, HAS, gameObject)
+        world.addGameObject(blockerLocation, gameObject)
     }
 
     private fun assessNearbyRooms() {
