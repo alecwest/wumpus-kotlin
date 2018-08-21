@@ -3,8 +3,10 @@ package game.agent.intelligence
 import game.agent.intelligence.Answer.*
 import game.agent.intelligence.Fact.*
 import game.command.*
+import game.player.InventoryItem
 import game.world.*
 import game.world.GameObjectFeature.*
+import game.world.effect.HereEffect
 import util.adjacent
 import util.adjacents
 import util.left
@@ -18,22 +20,29 @@ class KnowledgeBasedIntelligence2 : Intelligence() {
 
     override fun chooseNextMove(world: World, commandResult: CommandResult): Command {
         processLastMove(world, commandResult)
-        val inventoryItems = gameObjectsWithFeatures(setOf(Grabbable())).filter { grabbable ->
-            val worldEffects = grabbable.getFeature(WorldAffecting()) as WorldAffecting?
-            facts.isTrue(commandResult.getPlayerState().getLocation(), HAS, grabbable) == TRUE
-                || worldEffects?.effects?.any { effect ->
-                facts.isTrue(commandResult.getPlayerState().getLocation(), HAS, effect.gameObject) == TRUE
-            } ?: false
-        }.map { gameObject ->
-            ((gameObject.objectsThatCreateThis().firstOrNull { it.hasFeature(Grabbable()) }
-                    ?: gameObject).getFeature(Grabbable()) as Grabbable).inventoryItem
-        }
+        val inventoryItems = gameObjectsWithFeatures(setOf(Grabbable()))
+                .filter { objectOrHereEffectInRoom(it) }.map { toInventoryItem(it) }
+
         if (inventoryItems.isNotEmpty()) {
             return GrabCommand(inventoryItems.first()!!)
         } else if (forwardFacingRoomIsSafe(commandResult)) {
             return MoveCommand()
         }
         return turnToSafeRoom(world, commandResult)
+    }
+
+    private fun objectOrHereEffectInRoom(grabbable: GameObject): Boolean {
+        val worldEffects = grabbable.getFeature(WorldAffecting()) as WorldAffecting?
+        return facts.isTrue(commandResult.getPlayerState().getLocation(), HAS, grabbable) == TRUE
+                || worldEffects?.effects?.any { effect ->
+            effect::class == HereEffect::class
+                    && facts.isTrue(commandResult.getPlayerState().getLocation(), HAS, effect.gameObject) == TRUE
+        } ?: false
+    }
+
+    private fun toInventoryItem(gameObject: GameObject): InventoryItem? {
+        return ((gameObject.objectsThatCreateThis().firstOrNull { it.hasFeature(Grabbable()) }
+                    ?: gameObject).getFeature(Grabbable()) as Grabbable).inventoryItem
     }
 
     private fun forwardFacingRoomIsSafe(commandResult: CommandResult): Boolean {
