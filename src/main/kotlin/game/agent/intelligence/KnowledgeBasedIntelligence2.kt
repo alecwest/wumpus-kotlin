@@ -101,7 +101,7 @@ class KnowledgeBasedIntelligence2 : Intelligence() {
     }
 
     private fun assessCurrentRoom() {
-        val perceivedObjects = toGameObjects(commandResult.getPerceptions().toSet()) // TODO change perceptions to a set
+        val perceivedObjects = toGameObjects(commandResult.getPerceptions())
         val playerLocation = commandResult.getPlayerState().getLocation()
         gameObjectValues().forEach { gameObject ->
             facts.addFact(

@@ -9,7 +9,7 @@ class MoveCommand: Command() {
     override fun execute() {
         val direction = game.getPlayerDirection()
         val targetLocation = game.getPlayerLocation().adjacent(direction)
-        val perceptionList = arrayListOf<Perception>()
+        val perceptionList = mutableSetOf<Perception>()
         when {
             canEnterRoom(targetLocation) -> {
                 deferExecution(direction)

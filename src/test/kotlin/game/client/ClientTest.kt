@@ -36,6 +36,7 @@ internal class ClientTest {
         moveCommand.execute()
 
         assertEquals(1, client.getMoveResult().getPerceptions().size)
-        assertEquals(Perception.BREEZE, client.getMoveResult().getPerceptions()[0])
+        assertEquals(Perception.BREEZE,
+                client.getMoveResult().getPerceptions().elementAt(0))
     }
 }

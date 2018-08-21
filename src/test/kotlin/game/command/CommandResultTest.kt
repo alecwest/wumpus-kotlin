@@ -10,14 +10,14 @@ import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 internal class CommandResultTest {
-    private val commandResult = CommandResult(arrayListOf(Perception.BLOCKADE_BUMP),
+    private val commandResult = CommandResult(setOf(Perception.BLOCKADE_BUMP),
             PlayerState(location = Point(44, 23)))
     private val plainCommandResult = CommandResult()
 
     @Test
     fun `get perceptions`() {
-        assertEquals(arrayListOf(Perception.BLOCKADE_BUMP), commandResult.getPerceptions())
-        assertEquals(arrayListOf(), plainCommandResult.getPerceptions())
+        assertEquals(setOf(Perception.BLOCKADE_BUMP), commandResult.getPerceptions())
+        assertEquals(setOf(), plainCommandResult.getPerceptions())
     }
 
     @Test

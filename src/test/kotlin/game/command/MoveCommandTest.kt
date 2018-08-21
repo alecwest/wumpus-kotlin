@@ -56,7 +56,7 @@ internal class MoveCommandTest {
         @JvmStatic
         fun validMoveCommandTestDataProvider() = Stream.of(
             ValidMoveCommandTestData(initialGame, MoveCommand(),
-                    CommandResult(arrayListOf(Perception.BREEZE),
+                    CommandResult(setOf(Perception.BREEZE),
                             initialPlayer.getPlayerState().copyThis(location = Point(2, 3), facing = Direction.SOUTH))),
             ValidMoveCommandTestData(initialGame, MoveCommand(),
                     CommandResult(playerState = initialPlayer.getPlayerState().copyThis(location = Point(1, 3), facing = Direction.WEST))),
@@ -65,16 +65,16 @@ internal class MoveCommandTest {
             ValidMoveCommandTestData(initialGame, MoveCommand(),
                     CommandResult(playerState = initialPlayer.getPlayerState().copyThis(location = Point(2, 4), facing = Direction.EAST))),
             ValidMoveCommandTestData(playerInCornerGame, MoveCommand(),
-                    CommandResult(arrayListOf(Perception.WALL_BUMP), initialPlayerInCorner.getPlayerState().copyThis(
+                    CommandResult(setOf(Perception.WALL_BUMP), initialPlayerInCorner.getPlayerState().copyThis(
                             location = Point(0, 0), facing = Direction.SOUTH))),
             ValidMoveCommandTestData(playerInCornerGame, MoveCommand(),
-                    CommandResult(arrayListOf(Perception.WALL_BUMP), initialPlayerInCorner.getPlayerState().copyThis(
+                    CommandResult(setOf(Perception.WALL_BUMP), initialPlayerInCorner.getPlayerState().copyThis(
                             location = Point(0, 0), facing = Direction.WEST))),
             ValidMoveCommandTestData(playerInCornerGame, MoveCommand(),
-                    CommandResult(arrayListOf(Perception.BLOCKADE_BUMP), initialPlayerInCorner.getPlayerState().copyThis(
+                    CommandResult(setOf(Perception.BLOCKADE_BUMP), initialPlayerInCorner.getPlayerState().copyThis(
                             location = Point(0, 0), facing = Direction.NORTH))),
             ValidMoveCommandTestData(playerInCornerGame, MoveCommand(),
-                    CommandResult(arrayListOf(Perception.GLITTER), initialPlayerInCorner.getPlayerState().copyThis(
+                    CommandResult(setOf(Perception.GLITTER), initialPlayerInCorner.getPlayerState().copyThis(
                             location = Point(1, 0), facing = Direction.EAST)))
         )
     }

@@ -13,7 +13,7 @@ import java.awt.Point
  */
 data class Game(private var gameState: GameState = GameState()) {
     private var lastCommandResult: CommandResult = CommandResult(
-            perceptions = arrayListOf(),
+            perceptions = setOf(),
             playerState = getPlayerState())
 
     fun getGameState() = gameState

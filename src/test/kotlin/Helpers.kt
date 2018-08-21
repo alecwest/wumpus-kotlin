@@ -69,7 +69,7 @@ class Helpers {
             return Server.newSession(fileName = fileName, worldSize = worldSize)
         }
 
-        fun createCommandResult(perceptions: ArrayList<Perception> = arrayListOf(),
+        fun createCommandResult(perceptions: Set<Perception> = setOf(),
                                 playerState: PlayerState = Helpers.createPlayerState()): CommandResult {
             return CommandResult(perceptions, playerState)
         }

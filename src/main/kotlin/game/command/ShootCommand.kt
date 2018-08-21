@@ -8,7 +8,7 @@ import util.adjacent
 import java.awt.Point
 
 class ShootCommand: Command() {
-    private val perceptionList = arrayListOf<Perception>()
+    private val perceptionList = mutableSetOf<Perception>()
 
     override fun execute() {
         if (game.playerHasItem(InventoryItem.ARROW)) {

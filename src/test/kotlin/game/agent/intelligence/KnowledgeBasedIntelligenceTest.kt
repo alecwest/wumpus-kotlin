@@ -77,7 +77,7 @@ internal class KnowledgeBasedIntelligenceTest {
     }
 
     companion object {
-        val lastMove = Helpers.createCommandResult(arrayListOf(Perception.BREEZE),
+        val lastMove = Helpers.createCommandResult(setOf(Perception.BREEZE),
                 Helpers.createPlayerState(location = Point(0, 1)))
 
         val pitDeductionIntelligence = KnowledgeBasedIntelligence()
@@ -90,24 +90,24 @@ internal class KnowledgeBasedIntelligenceTest {
                                 Point(0, 2) to mutableSetOf<GameObject>(GameObject.PIT),
                                 Point(1, 1) to mutableSetOf<GameObject>(GameObject.PIT)),
                         mutableMapOf(Point(0, 1) to mutableSetOf<GameObject>(GameObject.BREEZE))),
-                ValidMoveProcessingTestData(lastMove.copyThis(arrayListOf(Perception.MOO)),
+                ValidMoveProcessingTestData(lastMove.copyThis(setOf(Perception.MOO)),
                         mutableMapOf(Point(0, 0) to mutableSetOf<GameObject>(GameObject.SUPMUW),
                                 Point(0, 2) to mutableSetOf<GameObject>(GameObject.SUPMUW),
                                 Point(1, 2) to mutableSetOf<GameObject>(GameObject.SUPMUW),
                                 Point(1, 0) to mutableSetOf<GameObject>(GameObject.SUPMUW),
                                 Point(1, 1) to mutableSetOf<GameObject>(GameObject.SUPMUW)),
                         mutableMapOf(Point(0, 1) to mutableSetOf<GameObject>(GameObject.MOO))),
-                ValidMoveProcessingTestData(lastMove.copyThis(arrayListOf(Perception.GLITTER)),
+                ValidMoveProcessingTestData(lastMove.copyThis(setOf(Perception.GLITTER)),
                         mutableMapOf(),
                         mutableMapOf(Point(0, 1) to mutableSetOf(GameObject.GLITTER, GameObject.GOLD)))
         )
 
         @JvmStatic
         fun validMovePitDeductionTestDataProvider() = Stream.of(
-                ValidMoveProcessingTestData(lastMove.copyThis(arrayListOf(), Helpers.createPlayerState(location = Point(0, 0))),
+                ValidMoveProcessingTestData(lastMove.copyThis(setOf(), Helpers.createPlayerState(location = Point(0, 0))),
                         mutableMapOf(),
                         mutableMapOf(Point(0, 0) to mutableSetOf())),
-                ValidMoveProcessingTestData(lastMove.copyThis(arrayListOf(), Helpers.createPlayerState(location = Point(0, 1))),
+                ValidMoveProcessingTestData(lastMove.copyThis(setOf(), Helpers.createPlayerState(location = Point(0, 1))),
                         mutableMapOf(),
                         mutableMapOf(Point(0, 0) to mutableSetOf(), Point(0, 1) to mutableSetOf())),
                 // Player should be able to deduce that both (0, 1) and (1, 0) are not possible pit locations
@@ -118,7 +118,7 @@ internal class KnowledgeBasedIntelligenceTest {
                         mutableMapOf(Point(0, 0) to mutableSetOf(),
                                 Point(0, 1) to mutableSetOf(),
                                 Point(1, 1) to mutableSetOf<GameObject>(GameObject.BREEZE))),
-                ValidMoveProcessingTestData(lastMove.copyThis(arrayListOf(), Helpers.createPlayerState(location = Point(1, 0))),
+                ValidMoveProcessingTestData(lastMove.copyThis(setOf(), Helpers.createPlayerState(location = Point(1, 0))),
                         mutableMapOf(Point(1, 2) to mutableSetOf<GameObject>(GameObject.PIT),
                                 Point(2, 1) to mutableSetOf<GameObject>(GameObject.PIT)),
                         mutableMapOf(Point(0, 0) to mutableSetOf(),
@@ -126,7 +126,7 @@ internal class KnowledgeBasedIntelligenceTest {
                                 Point(1, 1) to mutableSetOf<GameObject>(GameObject.BREEZE),
                                 Point(1, 0) to mutableSetOf())),
                 // Player should be able to deduce the location of a pit upon finding (2, 0) to be empty
-                ValidMoveProcessingTestData(lastMove.copyThis(arrayListOf(), Helpers.createPlayerState(location = Point(2, 0))),
+                ValidMoveProcessingTestData(lastMove.copyThis(setOf(), Helpers.createPlayerState(location = Point(2, 0))),
                         mutableMapOf(),
                         mutableMapOf(Point(0, 0) to mutableSetOf(),
                                 Point(0, 1) to mutableSetOf(),
@@ -138,18 +138,18 @@ internal class KnowledgeBasedIntelligenceTest {
 
         @JvmStatic
         fun validMoveSupmuwDeductionTestDataProvider() = Stream.of(
-                ValidMoveProcessingTestData(lastMove.copyThis(arrayListOf(),
+                ValidMoveProcessingTestData(lastMove.copyThis(setOf(),
                         Helpers.createPlayerState(location = Point(6, 3))),
                         mutableMapOf(),
                         mutableMapOf(Point(6, 3) to mutableSetOf())),
-                ValidMoveProcessingTestData(lastMove.copyThis(arrayListOf(Perception.MOO),
+                ValidMoveProcessingTestData(lastMove.copyThis(setOf(Perception.MOO),
                         Helpers.createPlayerState(location = Point(5, 3))),
                         mutableMapOf(Point(4, 4) to mutableSetOf<GameObject>(GameObject.SUPMUW),
                                 Point(4, 3) to mutableSetOf<GameObject>(GameObject.SUPMUW),
                                 Point(4, 2) to mutableSetOf<GameObject>(GameObject.SUPMUW)),
                         mutableMapOf(Point(6, 3) to mutableSetOf(),
                                 Point(5, 3) to mutableSetOf<GameObject>(GameObject.MOO))),
-                ValidMoveProcessingTestData(lastMove.copyThis(arrayListOf(Perception.MOO),
+                ValidMoveProcessingTestData(lastMove.copyThis(setOf(Perception.MOO),
                         Helpers.createPlayerState(location = Point(4, 3))),
                         mutableMapOf(Point(4, 4) to mutableSetOf<GameObject>(GameObject.SUPMUW),
                                 Point(4, 2) to mutableSetOf<GameObject>(GameObject.SUPMUW),
@@ -159,7 +159,7 @@ internal class KnowledgeBasedIntelligenceTest {
                         mutableMapOf(Point(6, 3) to mutableSetOf(),
                                 Point(5, 3) to mutableSetOf<GameObject>(GameObject.MOO),
                                 Point(4, 3) to mutableSetOf<GameObject>(GameObject.MOO))),
-                ValidMoveProcessingTestData(lastMove.copyThis(arrayListOf(Perception.MOO),
+                ValidMoveProcessingTestData(lastMove.copyThis(setOf(Perception.MOO),
                         Helpers.createPlayerState(location = Point(3, 3))),
                         mutableMapOf(Point(4, 4) to mutableSetOf<GameObject>(GameObject.SUPMUW),
                                 Point(4, 2) to mutableSetOf<GameObject>(GameObject.SUPMUW),
@@ -172,7 +172,7 @@ internal class KnowledgeBasedIntelligenceTest {
                                 Point(5, 3) to mutableSetOf<GameObject>(GameObject.MOO),
                                 Point(4, 3) to mutableSetOf<GameObject>(GameObject.MOO),
                                 Point(3, 3) to mutableSetOf<GameObject>(GameObject.MOO))),
-                ValidMoveProcessingTestData(lastMove.copyThis(arrayListOf(),
+                ValidMoveProcessingTestData(lastMove.copyThis(setOf(),
                         Helpers.createPlayerState(location = Point(2, 3))),
                         mutableMapOf(Point(4, 4) to mutableSetOf<GameObject>(GameObject.SUPMUW),
                                 Point(4, 2) to mutableSetOf<GameObject>(GameObject.SUPMUW)),
@@ -181,7 +181,7 @@ internal class KnowledgeBasedIntelligenceTest {
                                 Point(4, 3) to mutableSetOf<GameObject>(GameObject.MOO),
                                 Point(3, 3) to mutableSetOf<GameObject>(GameObject.MOO),
                                 Point(2, 3) to mutableSetOf())),
-                ValidMoveProcessingTestData(lastMove.copyThis(arrayListOf(),
+                ValidMoveProcessingTestData(lastMove.copyThis(setOf(),
                         Helpers.createPlayerState(location = Point(3, 2))),
                         mutableMapOf(),
                         mutableMapOf(Point(6, 3) to mutableSetOf(),
@@ -197,10 +197,10 @@ internal class KnowledgeBasedIntelligenceTest {
         fun validPossibleEffectsTestDataProvider() = Stream.of(
                 ValidResultAndObjectTestData(lastMove, GameObject.PIT, listOf(AdjacentEffect(GameObject.BREEZE))),
                 ValidResultAndObjectTestData(lastMove, GameObject.SUPMUW, listOf<WorldEffect>()),
-                ValidResultAndObjectTestData(lastMove.copyThis(arrayListOf(Perception.MOO, Perception.STENCH)),
+                ValidResultAndObjectTestData(lastMove.copyThis(setOf(Perception.MOO, Perception.STENCH)),
                         GameObject.SUPMUW,
                         listOf(AdjacentEffect(GameObject.MOO), DiagonalEffect(GameObject.MOO))),
-                ValidResultAndObjectTestData(lastMove.copyThis(arrayListOf(Perception.MOO, Perception.STENCH)),
+                ValidResultAndObjectTestData(lastMove.copyThis(setOf(Perception.MOO, Perception.STENCH)),
                         GameObject.WUMPUS,
                         listOf<WorldEffect>(AdjacentEffect(GameObject.STENCH)))
         )
@@ -209,7 +209,7 @@ internal class KnowledgeBasedIntelligenceTest {
         fun validWasPerceivedTestDataProvider() = Stream.of(
                 ValidResultAndObjectTestData(lastMove, GameObject.STENCH, false),
                 ValidResultAndObjectTestData(lastMove, GameObject.BREEZE, true),
-                ValidResultAndObjectTestData(lastMove.copyThis(arrayListOf(Perception.GLITTER, Perception.FOOD)),
+                ValidResultAndObjectTestData(lastMove.copyThis(setOf(Perception.GLITTER, Perception.FOOD)),
                         GameObject.GLITTER, true)
 
         )

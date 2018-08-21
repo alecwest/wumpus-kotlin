@@ -22,7 +22,7 @@ class BasicIntelligenceTest {
         fun validBasicIntelligenceTestDataProvider() = Stream.of(
                 ValidBasicIntelligenceTestData(IntelligenceTest.world, IntelligenceTest.commandResult, MoveCommand()),
                 ValidBasicIntelligenceTestData(IntelligenceTest.world, IntelligenceTest.commandResult.copyThis(
-                        perceptions = arrayListOf(Perception.BLOCKADE_BUMP),
+                        perceptions = setOf(Perception.BLOCKADE_BUMP),
                         playerState = Helpers.createPlayerState(location = Point(0, 3))),
                         TurnCommand(Direction.EAST))
         )

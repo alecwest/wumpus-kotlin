@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 import java.awt.Point
 internal class IntelligenceTest {
     val intelligence = BasicIntelligence()
-    val lastMove = Helpers.createCommandResult(arrayListOf(Perception.BREEZE, Perception.GLITTER),
+    val lastMove = Helpers.createCommandResult(setOf(Perception.BREEZE, Perception.GLITTER),
             Helpers.createPlayerState(location = Point(4, 4)))
 
     @Test
@@ -20,7 +20,7 @@ internal class IntelligenceTest {
 
     @Test
     fun `process removal of object(s) from room`() {
-        val lastMove2 = lastMove.copyThis(perceptions = arrayListOf(Perception.BREEZE))
+        val lastMove2 = lastMove.copyThis(perceptions = setOf(Perception.BREEZE))
         intelligence.processLastMove(world, lastMove)
         intelligence.processLastMove(world, lastMove2)
         assertEquals(arrayListOf(GameObject.BREEZE), world.getGameObjects(lastMove.getPlayerState().getLocation()))

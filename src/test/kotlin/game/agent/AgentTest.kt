@@ -68,7 +68,7 @@ internal class AgentTest {
         fun validBasicIntelligenceAgentTestDataProvider() = Stream.of(
                 ValidAgentTestData(world, commandResult, MoveCommand()),
                 ValidAgentTestData(world, commandResult.copyThis(
-                        perceptions = arrayListOf(Perception.BLOCKADE_BUMP),
+                        perceptions = setOf(Perception.BLOCKADE_BUMP),
                         playerState = commandResult.getPlayerState().copyThis(location = Point(0, 0))),
                         TurnCommand(Direction.EAST))
         )
@@ -79,7 +79,7 @@ internal class AgentTest {
                                 playerState = commandResult.getPlayerState().copyThis(location = Point(0, 3))
                         )),
                 ValidPostMoveAgentTestData(commandResult.copyThis(
-                                perceptions = arrayListOf(Perception.BLOCKADE_BUMP),
+                                perceptions = setOf(Perception.BLOCKADE_BUMP),
                                 playerState = commandResult.getPlayerState().copyThis(
                                         location = Point(0, 3))
                         )),
@@ -88,7 +88,7 @@ internal class AgentTest {
                                         location = Point(0, 3), facing = Direction.EAST)
                         )),
                 ValidPostMoveAgentTestData(commandResult.copyThis(
-                                arrayListOf(Perception.BREEZE),
+                                setOf(Perception.BREEZE),
                                 commandResult.getPlayerState().copyThis(
                                         location = Point(1, 3), facing = Direction.EAST)
                         ))

@@ -43,19 +43,19 @@ internal class ShootCommandTest {
         @JvmStatic
         fun validShootCommandTestDataProvider() = Stream.of(
                 ValidShootCommandTestData(initialGame, ShootCommand(),
-                        CommandResult(arrayListOf(Perception.SCREAM),
+                        CommandResult(setOf(Perception.SCREAM),
                                 initialGame.getPlayerState().copyThis(inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 3))))),
                  ValidShootCommandTestData(initialGame, ShootCommand(),
-                        CommandResult(arrayListOf(Perception.SCREAM),
+                        CommandResult(setOf(Perception.SCREAM),
                                 initialGame.getPlayerState().copyThis(inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 2))))),
                  ValidShootCommandTestData(initialGame, ShootCommand(),
-                        CommandResult(arrayListOf(Perception.SCREAM),
+                        CommandResult(setOf(Perception.SCREAM),
                                 initialGame.getPlayerState().copyThis(inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 1))))),
                 ValidShootCommandTestData(initialGame, ShootCommand(),
-                        CommandResult(arrayListOf(),
+                        CommandResult(setOf(),
                                 initialGame.getPlayerState().copyThis(inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 0))))),
                 ValidShootCommandTestData(initialGame, ShootCommand(),
-                        CommandResult(arrayListOf(),
+                        CommandResult(setOf(),
                                 initialGame.getPlayerState().copyThis(inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 0)))))
         )
     }

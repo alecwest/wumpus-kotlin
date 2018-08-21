@@ -32,7 +32,7 @@ internal class KnowledgeBasedIntelligence2Test {
     @Test
     fun `process last move in a breeze room`() {
         intelligence.processLastMove(world, Helpers.createCommandResult(
-                arrayListOf(Perception.BREEZE),
+                setOf(Perception.BREEZE),
                 Helpers.createPlayerState(location = Point(2, 2))))
         assertEquals(TRUE, intelligence.facts.isTrue(Point(2, 2), HAS, BREEZE))
         assertEquals(TRUE, intelligence.facts.isTrue(Point(2, 2), HAS_NO, PIT))
@@ -42,7 +42,7 @@ internal class KnowledgeBasedIntelligence2Test {
     @Test
     fun `process last move in a corner room`() {
         intelligence.processLastMove(world, Helpers.createCommandResult(
-                arrayListOf(Perception.BREEZE),
+                setOf(Perception.BREEZE),
                 Helpers.createPlayerState(location = Point(0, 0))))
         assertEquals(FALSE, intelligence.facts.isTrue(Point(0, 0).south(), HAS, PIT))
         assertEquals(FALSE, intelligence.facts.isTrue(Point(0, 0).west(), HAS, PIT))
@@ -53,7 +53,7 @@ internal class KnowledgeBasedIntelligence2Test {
     @Test
     fun `assess edge room case`() {
         intelligence.processLastMove(world, Helpers.createCommandResult(
-                arrayListOf(Perception.BREEZE),
+                setOf(Perception.BREEZE),
                 Helpers.createPlayerState(location = Point(0, 4))))
         assertEquals(true, intelligence.playerOnEdge())
     }
@@ -61,10 +61,10 @@ internal class KnowledgeBasedIntelligence2Test {
     @Test
     fun `reassess rooms for new insight into danger locations based on most recent perceptions`() {
         intelligence.processLastMove(world, Helpers.createCommandResult(
-                arrayListOf(Perception.BREEZE),
+                setOf(Perception.BREEZE),
                 Helpers.createPlayerState(location = Point(0, 0))))
         intelligence.processLastMove(world, Helpers.createCommandResult(
-                arrayListOf(Perception.BREEZE),
+                setOf(Perception.BREEZE),
                 Helpers.createPlayerState(location = Point(0, 0).north())))
         assertEquals(TRUE, intelligence.facts.isTrue(Point(0, 0).north(), HAS_NO, PIT))
         assertEquals(TRUE, intelligence.facts.isTrue(Point(0, 0).east(), HAS, PIT))
@@ -73,15 +73,15 @@ internal class KnowledgeBasedIntelligence2Test {
     @Test
     fun `use sequence of moves to identify supmuw location`() {
         intelligence.processLastMove(world, Helpers.createCommandResult(
-                arrayListOf(Perception.MOO),
+                setOf(Perception.MOO),
                 Helpers.createPlayerState(location = Point(0, 0))))
         assertEquals(UNKNOWN, intelligence.facts.isTrue(Point(1, 0), HAS, SUPMUW))
         intelligence.processLastMove(world, Helpers.createCommandResult(
-                arrayListOf(Perception.MOO),
+                setOf(Perception.MOO),
                 Helpers.createPlayerState(location = Point(0, 1))))
         assertEquals(UNKNOWN, intelligence.facts.isTrue(Point(1, 0), HAS, SUPMUW))
         intelligence.processLastMove(world, Helpers.createCommandResult(
-                arrayListOf(),
+                setOf(),
                 Helpers.createPlayerState(location = Point(0, 2))))
         assertEquals(TRUE, intelligence.facts.isTrue(Point(1, 0), HAS, SUPMUW))
     }
@@ -94,7 +94,7 @@ internal class KnowledgeBasedIntelligence2Test {
     @Test
     fun `turn around when danger is met`() {
         assertEquals(TurnCommand(Direction.WEST), intelligence.chooseNextMove(world,
-                Helpers.createCommandResult(arrayListOf(Perception.STENCH),
+                Helpers.createCommandResult(setOf(Perception.STENCH),
                         Helpers.createPlayerState(location = Point(2, 2),
                                 facing = Direction.EAST))))
     }
@@ -102,10 +102,10 @@ internal class KnowledgeBasedIntelligence2Test {
     @Test
     fun `turn to the safe room on right or left when danger is met if it exists`() {
         intelligence.processLastMove(world, Helpers.createCommandResult(
-                arrayListOf(),
+                setOf(),
                 Helpers.createPlayerState(location = Point(2, 1))))
         assertEquals(TurnCommand(Direction.SOUTH), intelligence.chooseNextMove(world,
-                Helpers.createCommandResult(arrayListOf(Perception.STENCH),
+                Helpers.createCommandResult(setOf(Perception.STENCH),
                         Helpers.createPlayerState(location = Point(2, 2),
                                 facing = Direction.EAST))))
     }
@@ -113,34 +113,34 @@ internal class KnowledgeBasedIntelligence2Test {
     @Test
     fun `go forward when danger is met if forward facing room is known to be safe`() {
         intelligence.processLastMove(world, Helpers.createCommandResult(
-                arrayListOf(),
+                setOf(),
                 Helpers.createPlayerState(location = Point(2, 2))))
         assertEquals(MoveCommand(), intelligence.chooseNextMove(world, Helpers.createCommandResult(
-                arrayListOf(Perception.BREEZE),
+                setOf(Perception.BREEZE),
                 Helpers.createPlayerState(location = Point(2, 1), facing = Direction.NORTH))))
     }
 
     @Test
     fun `grab item in room`() {
         assertEquals(GrabCommand(InventoryItem.GOLD), intelligence.chooseNextMove(world, Helpers.createCommandResult(
-                arrayListOf(Perception.GLITTER, Perception.STENCH, Perception.BREEZE),
+                setOf(Perception.GLITTER, Perception.STENCH, Perception.BREEZE),
                 Helpers.createPlayerState(location = Point(2, 1), facing = Direction.NORTH))))
     }
 
     @Test
     fun `grab multiple items in room`() {
         assertEquals(GrabCommand(InventoryItem.FOOD), intelligence.chooseNextMove(world, Helpers.createCommandResult(
-                arrayListOf(Perception.GLITTER, Perception.STENCH, Perception.FOOD, Perception.BREEZE),
+                setOf(Perception.GLITTER, Perception.STENCH, Perception.FOOD, Perception.BREEZE),
                 Helpers.createPlayerState(location = Point(2, 1), facing = Direction.NORTH))))
         assertEquals(GrabCommand(InventoryItem.GOLD), intelligence.chooseNextMove(world, Helpers.createCommandResult(
-                arrayListOf(Perception.STENCH, Perception.GLITTER, Perception.BREEZE),
+                setOf(Perception.STENCH, Perception.GLITTER, Perception.BREEZE),
                 Helpers.createPlayerState(location = Point(2, 1), facing = Direction.NORTH))))
     }
 
     @Test
     fun `check object or HereEffect in room`() {
         intelligence.processLastMove(world, Helpers.createCommandResult(
-                arrayListOf(Perception.GLITTER, Perception.BREEZE, Perception.FOOD),
+                setOf(Perception.GLITTER, Perception.BREEZE, Perception.FOOD),
                 Helpers.createPlayerState(location = Point(2, 2))))
         assertTrue(intelligence.objectOrHereEffectInRoom(GameObject.GOLD))
         assertTrue(intelligence.objectOrHereEffectInRoom(GameObject.GLITTER))
@@ -151,13 +151,13 @@ internal class KnowledgeBasedIntelligence2Test {
     @Test
     fun `forward facing room is safe`() {
         val commandResult1 = Helpers.createCommandResult(
-                arrayListOf(Perception.GLITTER, Perception.FOOD),
+                setOf(Perception.GLITTER, Perception.FOOD),
                 Helpers.createPlayerState(location = Point(2, 2)))
         val commandResult2 = Helpers.createCommandResult(
-                arrayListOf(Perception.SCREAM, Perception.BREEZE, Perception.FOOD),
+                setOf(Perception.SCREAM, Perception.BREEZE, Perception.FOOD),
                 Helpers.createPlayerState(location = Point(5, 5)))
         val commandResult3 = Helpers.createCommandResult(
-                arrayListOf(Perception.SCREAM, Perception.BREEZE, Perception.FOOD),
+                setOf(Perception.SCREAM, Perception.BREEZE, Perception.FOOD),
                 Helpers.createPlayerState(location = Point(5, 6),
                         facing = Direction.SOUTH))
         intelligence.processLastMove(world, commandResult1)
@@ -171,10 +171,10 @@ internal class KnowledgeBasedIntelligence2Test {
     @Test
     fun `dangerous effects in room`() {
         val commandResult1 = Helpers.createCommandResult(
-                arrayListOf(Perception.GLITTER, Perception.FOOD),
+                setOf(Perception.GLITTER, Perception.FOOD),
                 Helpers.createPlayerState(location = Point(2, 2)))
         val commandResult2 = Helpers.createCommandResult(
-                arrayListOf(Perception.SCREAM, Perception.BREEZE, Perception.FOOD),
+                setOf(Perception.SCREAM, Perception.BREEZE, Perception.FOOD),
                 Helpers.createPlayerState(location = Point(5, 5)))
         intelligence.processLastMove(world, commandResult1)
         assertFalse(intelligence.dangerousEffectsInRoom(commandResult1))
@@ -185,11 +185,11 @@ internal class KnowledgeBasedIntelligence2Test {
     @Test
     fun `turn to safe room`() {
         val commandResult1 = Helpers.createCommandResult(
-                arrayListOf(Perception.GLITTER, Perception.BREEZE),
+                setOf(Perception.GLITTER, Perception.BREEZE),
                 Helpers.createPlayerState(location = Point(2, 2),
                         facing = Direction.NORTH))
         val commandResult2 = Helpers.createCommandResult(
-                arrayListOf(Perception.GLITTER, Perception.BREEZE),
+                setOf(Perception.GLITTER, Perception.BREEZE),
                 Helpers.createPlayerState(location = Point(1, 2),
                         facing = Direction.NORTH))
         intelligence.processLastMove(world, commandResult1)
@@ -203,7 +203,7 @@ internal class KnowledgeBasedIntelligence2Test {
     @Test
     fun `turn to safe room when not necessary`() {
         val commandResult = Helpers.createCommandResult(
-                arrayListOf(),
+                setOf(),
                 Helpers.createPlayerState(location = Point(5, 5),
                         facing = Direction.NORTH))
         intelligence.processLastMove(world, commandResult)
