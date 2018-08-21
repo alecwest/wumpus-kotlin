@@ -9,5 +9,7 @@ val agent = Agent(Client("src/main/resources/originalMap.json"), KnowledgeBasedI
 
     while (Server.getGame(0).isPlayerAlive()) {
         agent.makeNextMove()
+        println("Enter to continue: ")
+        readLine()
     }
 }
