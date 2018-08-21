@@ -18,7 +18,10 @@ class KnowledgeBasedIntelligence2 : Intelligence() {
     private lateinit var commandResult: CommandResult
 
     override fun chooseNextMove(world: World, commandResult: CommandResult): Command {
+        super.chooseNextMove(world, commandResult)
         processLastMove(world, commandResult)
+        println(world.getWorldMap(commandResult.getPlayerState()))
+        println(commandResult.toString())
         val inventoryItems = gameObjectsWithFeatures(setOf(Grabbable()))
                 .filter { objectOrHereEffectInRoom(it) }.map { it.toInventoryItem() }
 
