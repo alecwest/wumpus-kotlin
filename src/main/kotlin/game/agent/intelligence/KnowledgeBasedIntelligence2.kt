@@ -6,10 +6,7 @@ import game.command.*
 import game.world.*
 import game.world.GameObjectFeature.*
 import game.world.effect.HereEffect
-import util.adjacent
-import util.adjacents
-import util.left
-import util.right
+import util.*
 import java.awt.Point
 
 class KnowledgeBasedIntelligence2 : Intelligence() {
@@ -25,12 +22,33 @@ class KnowledgeBasedIntelligence2 : Intelligence() {
         val inventoryItems = gameObjectsWithFeatures(setOf(Grabbable()))
                 .filter { objectOrHereEffectInRoom(it) }.map { it.toInventoryItem() }
 
-        if (inventoryItems.isNotEmpty()) {
-            return GrabCommand(inventoryItems.first()!!)
-        } else if (canMoveForward(commandResult)) {
-            return MoveCommand()
+        return if (inventoryItems.isNotEmpty()) {
+            GrabCommand(inventoryItems.first()!!)
+        } else {
+            bestExplorativeMove()
         }
-        return turnToSafeRoom(world, commandResult)
+    }
+
+    private fun bestExplorativeMove(): Command {
+        val playerState = commandResult.getPlayerState()
+        val orderOfRoomPreferences = arrayListOf<Point>()
+        for (direction in Direction.values()) {
+            val room = playerState.getLocation().adjacent(direction)
+            if (direction != playerState.getDirection() && canMoveInDirection(direction)) {
+                orderOfRoomPreferences.add(
+                        if (facts.featureFullyKnownInRoom(room, Perceptable()))
+                            orderOfRoomPreferences.size
+                        else 0, room)
+            }
+        }
+        return if (orderOfRoomPreferences.isEmpty()
+                || (!orderOfRoomPreferences.any {
+                    facts.featureFullyKnownInRoom(it, Perceptable())
+                }) && canMoveInDirection(playerState.getDirection())) {
+            MoveCommand()
+        } else {
+            TurnCommand(orderOfRoomPreferences.first().directionFrom(playerState.getLocation()) ?: playerState.getDirection())
+        }
     }
 
     internal fun objectOrHereEffectInRoom(gameObject: GameObject): Boolean {
@@ -42,20 +60,15 @@ class KnowledgeBasedIntelligence2 : Intelligence() {
         } ?: false
     }
 
-    private fun canMoveForward(commandResult: CommandResult): Boolean {
-        val playerState = commandResult.getPlayerState()
+    private fun canMoveInDirection(direction: Direction): Boolean {
+        val room = commandResult.getPlayerState().getLocation().adjacent(direction)
         for (gameObject in gameObjectsWithFeatures(setOf(Blocking()))) {
-            if (facts.isTrue(playerState.getLocation().adjacent(playerState.getDirection()), HAS, gameObject) == TRUE) {
+            if (facts.isTrue(room, HAS, gameObject) == TRUE) {
                 return false
             }
         }
-        return forwardFacingRoomIsSafe(commandResult)
-    }
-
-    internal fun forwardFacingRoomIsSafe(commandResult: CommandResult): Boolean {
-        val forwardFacingRoom = commandResult.getPlayerState().getLocation()
-                .adjacent(commandResult.getPlayerState().getDirection())
-        return facts.roomIsSafe(forwardFacingRoom) == TRUE || !dangerousEffectsInRoom(commandResult)
+        return world.roomIsValid(room)
+                && (facts.roomIsSafe(room) == TRUE || !dangerousEffectsInRoom(commandResult))
     }
 
     internal fun dangerousEffectsInRoom(commandResult: CommandResult): Boolean {
@@ -78,11 +91,15 @@ class KnowledgeBasedIntelligence2 : Intelligence() {
             it != playerLocation.adjacent(playerDirection) && world.roomIsValid(it)
         }
         val safeRooms = validRooms.filter { facts.roomIsSafe(it) == TRUE }
-        return when {
-            safeRooms.contains(playerLocation.adjacent(playerDirection.right())) -> TurnCommand(playerDirection.right())
-            safeRooms.contains(playerLocation.adjacent(playerDirection.left())) -> TurnCommand(playerDirection.left())
-            else -> TurnCommand(playerDirection.right().right())
-        }
+        val unknownRooms = validRooms.filter { !facts.everythingKnownAboutRoom(it) }
+
+        val roomToTurnTo = safeRooms.firstOrNull {
+            unknownRooms.contains(it)
+        } ?: safeRooms.sortedBy {
+            playerLocation.adjacent(playerDirection.right().right()) != it
+        }.firstOrNull() ?: playerLocation.adjacent(playerDirection.right().right())
+
+        return TurnCommand(roomToTurnTo.directionFrom(playerLocation) ?: playerDirection)
     }
 
     override fun processLastMove(world: World, commandResult: CommandResult) {

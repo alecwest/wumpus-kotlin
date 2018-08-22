@@ -93,9 +93,12 @@ internal class KnowledgeBasedIntelligence2Test {
 
     @Test
     fun `turn around when danger is met`() {
+        intelligence.processLastMove(world, Helpers.createCommandResult(
+                setOf(), Helpers.createPlayerState(location = Point(7, 2),
+                facing = Direction.EAST)))
         assertEquals(TurnCommand(Direction.WEST), intelligence.chooseNextMove(world,
                 Helpers.createCommandResult(setOf(Perception.STENCH),
-                        Helpers.createPlayerState(location = Point(2, 2),
+                        Helpers.createPlayerState(location = Point(8, 2),
                                 facing = Direction.EAST))))
     }
 
@@ -146,26 +149,6 @@ internal class KnowledgeBasedIntelligence2Test {
         assertTrue(intelligence.objectOrHereEffectInRoom(GameObject.GLITTER))
         assertTrue(intelligence.objectOrHereEffectInRoom(GameObject.FOOD))
         assertFalse(intelligence.objectOrHereEffectInRoom(GameObject.PIT))
-    }
-
-    @Test
-    fun `forward facing room is safe`() {
-        val commandResult1 = Helpers.createCommandResult(
-                setOf(Perception.GLITTER, Perception.FOOD),
-                Helpers.createPlayerState(location = Point(2, 2)))
-        val commandResult2 = Helpers.createCommandResult(
-                setOf(Perception.SCREAM, Perception.BREEZE, Perception.FOOD),
-                Helpers.createPlayerState(location = Point(5, 5)))
-        val commandResult3 = Helpers.createCommandResult(
-                setOf(Perception.SCREAM, Perception.BREEZE, Perception.FOOD),
-                Helpers.createPlayerState(location = Point(5, 6),
-                        facing = Direction.SOUTH))
-        intelligence.processLastMove(world, commandResult1)
-        assertTrue(intelligence.forwardFacingRoomIsSafe(commandResult1))
-        intelligence.processLastMove(world, commandResult2)
-        assertFalse(intelligence.forwardFacingRoomIsSafe(commandResult2))
-        intelligence.processLastMove(world, commandResult3)
-        assertTrue(intelligence.forwardFacingRoomIsSafe(commandResult3))
     }
 
     @Test
@@ -224,18 +207,25 @@ internal class KnowledgeBasedIntelligence2Test {
 
     @Test
     fun `turn away from blocking rooms`() {
-        val commandResult = Helpers.createCommandResult(
+        intelligence.processLastMove(world, Helpers.createCommandResult(
+                playerState = Helpers.createPlayerState(location = Point(4, 5))))
+        intelligence.processLastMove(world, Helpers.createCommandResult(
+                playerState = Helpers.createPlayerState(location = Point(5, 4))))
+        assertEquals(TurnCommand(Direction.EAST),
+                intelligence.chooseNextMove(world, Helpers.createCommandResult(
                 setOf(Perception.WALL_BUMP),
                 Helpers.createPlayerState(location = Point(5, 5),
-                        facing = Direction.NORTH))
-        intelligence.processLastMove(world, commandResult)
-        assertEquals(TurnCommand(Direction.EAST), intelligence.chooseNextMove(world, commandResult))
+                        facing = Direction.NORTH))))
     }
 
     @Test
     fun `choose to turn to an unknown room when safe`() {
         intelligence.processLastMove(world, Helpers.createCommandResult(setOf(),
                 Helpers.createPlayerState(location = Point(4, 5))))
+        intelligence.processLastMove(world, Helpers.createCommandResult(setOf(),
+                Helpers.createPlayerState(location = Point(3, 4))))
+        intelligence.processLastMove(world, Helpers.createCommandResult(setOf(),
+                Helpers.createPlayerState(location = Point(4, 3))))
         assertEquals(TurnCommand(Direction.EAST),
                 intelligence.chooseNextMove(world, Helpers.createCommandResult(setOf(),
                 Helpers.createPlayerState(location = Point(4, 4),
