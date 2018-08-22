@@ -4,6 +4,7 @@ import game.agent.intelligence.Answer.*
 import game.agent.intelligence.Fact.*
 import game.world.GameObject
 import game.world.GameObjectFeature.*
+import game.world.gameObjectValues
 import game.world.gameObjectsWithFeatures
 import java.awt.Point
 
@@ -39,6 +40,13 @@ class FactMap(private val factMap: MutableMap<Point, MutableSet<Pair<GameObject,
                 UNKNOWN -> return FALSE
             }
         }) return FALSE else return TRUE
+    }
+
+    fun everythingKnownAboutRoom(point: Point): Boolean {
+        for (gameObject in gameObjectValues()) {
+            if (!factExists(point, gameObject)) return false
+        }
+        return true
     }
 }
 

@@ -8,6 +8,7 @@ import game.agent.intelligence.Answer.*
 import game.agent.intelligence.Fact.*
 import game.world.GameObject.*
 import game.world.GameObjectFeature
+import game.world.gameObjectValues
 import game.world.gameObjectsWithFeatures
 
 internal class FactMapTest {
@@ -52,5 +53,14 @@ internal class FactMapTest {
             factMap.addFact(Point(4, 4), HAS_NO, it)
         }
         assertEquals(TRUE, factMap.roomIsSafe(Point(4, 4)))
+    }
+
+    @Test
+    fun `test everything about room is known`() {
+        for (gameObject in gameObjectValues()) {
+            factMap.addFact(Point(2, 2), HAS_NO, gameObject)
+        }
+        factMap.addFact(Point(2, 4), HAS_NO, PIT)
+        assertTrue(factMap.everythingKnownAboutRoom(Point(2, 2)))
     }
 }
