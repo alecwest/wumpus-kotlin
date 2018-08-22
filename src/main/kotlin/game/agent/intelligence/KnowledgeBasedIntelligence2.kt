@@ -3,6 +3,7 @@ package game.agent.intelligence
 import game.agent.intelligence.Answer.*
 import game.agent.intelligence.Fact.*
 import game.command.*
+import game.player.PlayerState
 import game.world.*
 import game.world.GameObjectFeature.*
 import game.world.effect.HereEffect
@@ -31,33 +32,40 @@ class KnowledgeBasedIntelligence2 : Intelligence() {
 
     private fun bestExplorativeMove(): Command {
         val playerState = commandResult.getPlayerState()
-        val orderOfCommandPreferences = Direction.values().filter {
+        val orderOfRoomPreferences = buildRoomPreferences(playerState)
+
+        return toCommand(playerState, orderOfRoomPreferences.firstOrNull())
+    }
+
+    private fun buildRoomPreferences(playerState: PlayerState): Set<Point> {
+        var noRoomFullyKnown = true
+        val orderOfRoomPreferences = Direction.values().filter {
             it != playerState.getDirection() && canMoveInDirection(it)
         }.map {
             playerState.getLocation().adjacent(it)
         }.toMutableList()
 
-        var noRoomFullyKnown = true
         // Ordered so any room not fully known shows first
-        orderOfCommandPreferences.sortBy {
+        orderOfRoomPreferences.sortBy {
             val result = facts.featureFullyKnownInRoom(it, Perceptable())
             if (!result) noRoomFullyKnown = false
             result
         }
 
         if (noRoomFullyKnown && canMoveInDirection(playerState.getDirection())) {
-            orderOfCommandPreferences.add(
+            orderOfRoomPreferences.add(
                     0, playerState.getLocation().adjacent(playerState.getDirection()))
         }
+        return orderOfRoomPreferences.toSet()
+    }
 
-        return orderOfCommandPreferences.firstOrNull().let {
-            val directionOfRoom = it?.directionFrom(playerState.getLocation())
-                    ?: playerState.getDirection()
-            if (directionOfRoom == playerState.getDirection()) {
-                MoveCommand()
-            } else {
-                TurnCommand(directionOfRoom)
-            }
+    private fun toCommand(playerState: PlayerState, point: Point?): Command {
+        val directionOfRoom = point?.directionFrom(playerState.getLocation())
+                ?: playerState.getDirection()
+        return if (directionOfRoom == playerState.getDirection()) {
+            MoveCommand()
+        } else {
+            TurnCommand(directionOfRoom)
         }
     }
 
