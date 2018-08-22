@@ -54,4 +54,10 @@ class PointUtilTest {
     fun `get west point`() {
         assertEquals(Point(1, 2), Point(2, 2).west())
     }
+
+    @Test
+    fun `get direction of point from current point`() {
+        assertEquals(Direction.WEST, Point(1, 2).directionFrom(Point(2, 2)))
+        assertEquals(null, Point(1, 2).directionFrom(Point(2, 3)))
+    }
 }

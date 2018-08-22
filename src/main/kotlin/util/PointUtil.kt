@@ -51,4 +51,12 @@ fun Point.diagonals(): ArrayList<Point> {
     return arrayListOf(northEast(), northWest(), southEast(), southWest())
 }
 
+fun Point.directionFrom(point: Point): Direction? {
+    for (direction in Direction.values()) {
+        if (point.adjacent(direction) == this)
+            return direction
+    }
+    return null
+}
+
 fun Point.copyThis(x: Int = this.x, y: Int = this.y) = Point(x, y)
