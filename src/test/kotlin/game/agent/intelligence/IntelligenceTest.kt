@@ -12,6 +12,7 @@ internal class IntelligenceTest {
     val lastMove = Helpers.createCommandResult(setOf(Perception.BREEZE, Perception.GLITTER),
             Helpers.createPlayerState(location = Point(4, 4)))
 
+
     @Test
     fun `process last move with base method`() {
         intelligence.processLastMove(world, lastMove)
@@ -28,13 +29,40 @@ internal class IntelligenceTest {
 
     @Test
     fun `reset room without removing content from other adjacent rooms`() {
-        world.addGameObject(Point(2, 1), GameObject.GLITTER)
-        world.addGameObject(Point(2, 2), GameObject.STENCH)
+        val world = Helpers.createWorld(
+                gameObject = mapOf(Point(2, 2) to setOf(GameObject.STENCH),
+                        Point(2, 1) to setOf(GameObject.GLITTER)))
 
         intelligence.resetRoom(world, Helpers.createCommandResult(setOf(Perception.GLITTER),
                 Helpers.createPlayerState(location = Point(2, 1))))
         assertFalse(world.hasGameObject(Point(2, 1), GameObject.GLITTER))
         assertTrue(world.hasGameObject(Point(2, 2), GameObject.STENCH))
+    }
+
+    @Test
+    fun `reset room and rightfully remove content from adjacent rooms`() {
+        val world = Helpers.createWorld(
+                gameObject = mapOf(Point(2, 2) to setOf(GameObject.BREEZE),
+                        Point(2, 1) to setOf(GameObject.PIT)))
+
+        intelligence.resetRoom(world, Helpers.createCommandResult(setOf(),
+                Helpers.createPlayerState(false, Point(2, 1))))
+        assertFalse(world.hasGameObject(Point(2, 1), GameObject.PIT))
+        assertFalse(world.hasGameObject(Point(2, 2), GameObject.BREEZE))
+    }
+
+    @Test
+    fun `reset room and leave effects in adjacent rooms created by other nearby rooms`() {
+        val world = Helpers.createWorld(
+                gameObject = mapOf(
+                        Point(2, 3) to setOf(GameObject.PIT),
+                        Point(2, 2) to setOf(GameObject.BREEZE),
+                        Point(2, 1) to setOf(GameObject.PIT)))
+
+        intelligence.resetRoom(world, Helpers.createCommandResult(setOf(),
+                Helpers.createPlayerState(false, Point(2, 1))))
+        assertFalse(world.hasGameObject(Point(2, 1), GameObject.PIT))
+        assertTrue(world.hasGameObject(Point(2, 2), GameObject.BREEZE))
     }
 
     companion object {
