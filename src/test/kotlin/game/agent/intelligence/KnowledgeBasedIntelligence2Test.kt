@@ -219,14 +219,12 @@ internal class KnowledgeBasedIntelligence2Test {
     }
 
     @Test
-    fun `choose to turn to an unknown room when safe`() {
+    fun `choose to make the shortest turn to an unknown room when safe`() {
         intelligence.processLastMove(world, Helpers.createCommandResult(setOf(),
                 Helpers.createPlayerState(location = Point(4, 5))))
         intelligence.processLastMove(world, Helpers.createCommandResult(setOf(),
-                Helpers.createPlayerState(location = Point(3, 4))))
-        intelligence.processLastMove(world, Helpers.createCommandResult(setOf(),
-                Helpers.createPlayerState(location = Point(4, 3))))
-        assertEquals(TurnCommand(Direction.EAST),
+                Helpers.createPlayerState(location = Point(5, 4))))
+        assertNotEquals(TurnCommand(Direction.SOUTH),
                 intelligence.chooseNextMove(world, Helpers.createCommandResult(setOf(),
                 Helpers.createPlayerState(location = Point(4, 4),
                         facing = Direction.NORTH))))

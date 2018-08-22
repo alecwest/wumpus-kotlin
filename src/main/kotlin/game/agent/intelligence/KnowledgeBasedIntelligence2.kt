@@ -38,7 +38,7 @@ class KnowledgeBasedIntelligence2 : Intelligence() {
     }
 
     private fun buildRoomPreferences(playerState: PlayerState): Set<Point> {
-        var noRoomFullyKnown = true
+        val fullyKnownRooms = arrayListOf<Point>()
         val orderOfRoomPreferences = Direction.values().filter {
             it != playerState.getDirection() && canMoveInDirection(it)
         }.map {
@@ -48,11 +48,11 @@ class KnowledgeBasedIntelligence2 : Intelligence() {
         // Ordered so any room not fully known shows first
         orderOfRoomPreferences.sortBy {
             val result = facts.featureFullyKnownInRoom(it, Perceptable())
-            if (!result) noRoomFullyKnown = false
+            if (!result) fullyKnownRooms.add(it)
             result
         }
 
-        if (noRoomFullyKnown && canMoveInDirection(playerState.getDirection())) {
+        if (fullyKnownRooms.isEmpty() && canMoveInDirection(playerState.getDirection())) {
             orderOfRoomPreferences.add(
                     0, playerState.getLocation().adjacent(playerState.getDirection()))
         }
@@ -101,6 +101,7 @@ class KnowledgeBasedIntelligence2 : Intelligence() {
         }
     }
 
+    // TODO unused
     // Assumes you've already determined that the room in front is not safe
     internal fun turnToSafeRoom(world: World, commandResult: CommandResult): TurnCommand {
         val playerLocation = commandResult.getPlayerState().getLocation()
