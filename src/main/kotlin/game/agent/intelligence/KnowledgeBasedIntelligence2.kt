@@ -39,6 +39,7 @@ class KnowledgeBasedIntelligence2 : Intelligence() {
 
     private fun buildRoomPreferences(playerState: PlayerState): Set<Point> {
         val fullyKnownRooms = arrayListOf<Point>()
+        val uncertainRooms = arrayListOf<Point>()
         val orderOfRoomPreferences = Direction.values().filter {
             it != playerState.getDirection() && canMoveInDirection(it)
         }.map {
@@ -49,6 +50,7 @@ class KnowledgeBasedIntelligence2 : Intelligence() {
         orderOfRoomPreferences.sortBy {
             val result = facts.featureFullyKnownInRoom(it, Perceptable())
             if (!result) fullyKnownRooms.add(it)
+            else uncertainRooms.add(it)
             result
         }
 
