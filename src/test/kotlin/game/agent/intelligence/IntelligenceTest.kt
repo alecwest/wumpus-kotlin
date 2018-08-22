@@ -26,6 +26,17 @@ internal class IntelligenceTest {
         assertEquals(setOf(GameObject.BREEZE), world.getGameObjects(lastMove.getPlayerState().getLocation()))
     }
 
+    @Test
+    fun `reset room without removing content from other adjacent rooms`() {
+        world.addGameObject(Point(2, 1), GameObject.GLITTER)
+        world.addGameObject(Point(2, 2), GameObject.STENCH)
+
+        intelligence.resetRoom(world, Helpers.createCommandResult(setOf(Perception.GLITTER),
+                Helpers.createPlayerState(location = Point(2, 1))))
+        assertFalse(world.hasGameObject(Point(2, 1), GameObject.GLITTER))
+        assertTrue(world.hasGameObject(Point(2, 2), GameObject.STENCH))
+    }
+
     companion object {
         val world = Helpers.createWorld(
                 gameObject = mapOf(Point(0, 4) to setOf(GameObject.BLOCKADE)))
