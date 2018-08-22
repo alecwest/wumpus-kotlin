@@ -63,4 +63,14 @@ internal class FactMapTest {
         factMap.addFact(Point(2, 4), HAS_NO, PIT)
         assertTrue(factMap.everythingKnownAboutRoom(Point(2, 2)))
     }
+
+    @Test
+    fun `test everything perceptable about room is known`() {
+        for (gameObject in
+        gameObjectsWithFeatures(setOf(GameObjectFeature.Perceptable()))) {
+            factMap.addFact(Point(2, 2), HAS_NO, gameObject)
+        }
+        factMap.addFact(Point(2, 4), HAS_NO, PIT)
+        assertTrue(factMap.featureFullyKnownInRoom(Point(2, 2), GameObjectFeature.Perceptable()))
+    }
 }

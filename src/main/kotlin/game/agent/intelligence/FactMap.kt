@@ -3,6 +3,7 @@ package game.agent.intelligence
 import game.agent.intelligence.Answer.*
 import game.agent.intelligence.Fact.*
 import game.world.GameObject
+import game.world.GameObjectFeature
 import game.world.GameObjectFeature.*
 import game.world.gameObjectValues
 import game.world.gameObjectsWithFeatures
@@ -42,8 +43,16 @@ class FactMap(private val factMap: MutableMap<Point, MutableSet<Pair<GameObject,
         }) return FALSE else return TRUE
     }
 
+    // TODO knowing everything about a room in KnowledgeBasedIntelligence2 is currently impossible since only facts about perceptables are created upon assessment
     fun everythingKnownAboutRoom(point: Point): Boolean {
         for (gameObject in gameObjectValues()) {
+            if (!factExists(point, gameObject)) return false
+        }
+        return true
+    }
+
+    fun featureFullyKnownInRoom(point: Point, feature: GameObjectFeature): Boolean {
+        for (gameObject in gameObjectsWithFeatures(setOf(feature))) {
             if (!factExists(point, gameObject)) return false
         }
         return true
