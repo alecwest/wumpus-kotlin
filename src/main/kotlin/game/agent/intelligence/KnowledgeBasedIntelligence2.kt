@@ -40,47 +40,43 @@ class KnowledgeBasedIntelligence2 : Intelligence() {
 
     // TODO needs cleaning again
     private fun buildRoomPreferences(playerState: PlayerState): Set<Point> {
-        val fullyKnownRooms = arrayListOf<Point>()
-        val uncertainRooms = arrayListOf<Point>()
         val orderOfRoomPreferences = arrayListOf<Point>()
+        val knownAndUncertainRooms = splitAdjacentRoomsByKnownAndUncertainRooms(playerState)
 
+        knownAndUncertainRooms.first.sortByDescending { getTurnCount(playerState, it) }
+        knownAndUncertainRooms.second.sortByDescending { getTurnCount(playerState, it) }
+
+         orderOfRoomPreferences.addAll(knownAndUncertainRooms.second + knownAndUncertainRooms.first)
+
+        if (knownAndUncertainRooms.first.isEmpty() && canMoveInDirection(playerState.getDirection())) {
+            orderOfRoomPreferences.add(
+                    0, playerState.getLocation().adjacent(playerState.getDirection()))
+        }
+        return orderOfRoomPreferences.toSet()
+    }
+
+    private fun splitAdjacentRoomsByKnownAndUncertainRooms(playerState: PlayerState): Pair<ArrayList<Point>, ArrayList<Point>> {
+        val knownAndUncertainRooms = Pair(arrayListOf<Point>(), arrayListOf<Point>())
         Direction.values().filter {
             it != playerState.getDirection() && canMoveInDirection(it)
         }.map {
             playerState.getLocation().adjacent(it)
         }.toMutableList().forEach {
             val result = facts.featureFullyKnownInRoom(it, Perceptable())
-            if (result) fullyKnownRooms.add(it)
-            else uncertainRooms.add(it)
+            if (result) knownAndUncertainRooms.first.add(it)
+            else knownAndUncertainRooms.second.add(it)
         }
+        return knownAndUncertainRooms
+    }
 
-        uncertainRooms.sortByDescending {
-            var count = 0
-            var currentDirection = playerState.getDirection()
-            while (currentDirection != it.directionFrom(playerState.getLocation())) {
-                count++
-                currentDirection = currentDirection.right()
-            }
-            count
+    private fun getTurnCount(playerState: PlayerState, point: Point): Int {
+        var count = 0
+        var currentDirection = playerState.getDirection()
+        while (currentDirection != point.directionFrom(playerState.getLocation())) {
+            count++
+            currentDirection = currentDirection.right()
         }
-
-        fullyKnownRooms.sortByDescending {
-            var count = 0
-            var currentDirection = playerState.getDirection()
-            while (currentDirection != it.directionFrom(playerState.getLocation())) {
-                count++
-                currentDirection = currentDirection.right()
-            }
-            count
-        }
-
-         orderOfRoomPreferences.addAll(uncertainRooms + fullyKnownRooms)
-
-        if (fullyKnownRooms.isEmpty() && canMoveInDirection(playerState.getDirection())) {
-            orderOfRoomPreferences.add(
-                    0, playerState.getLocation().adjacent(playerState.getDirection()))
-        }
-        return orderOfRoomPreferences.toSet()
+        return count
     }
 
     private fun toCommand(playerState: PlayerState, point: Point?): Command {
