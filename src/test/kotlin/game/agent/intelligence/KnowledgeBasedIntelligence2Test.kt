@@ -200,4 +200,16 @@ internal class KnowledgeBasedIntelligence2Test {
                 Helpers.createPlayerState(location = Point(4, 4),
                         facing = Direction.NORTH))))
     }
+
+    @Test
+    fun `move forward at beginning until danger met`() {
+        for (i in 0..3) {
+            assertEquals(MoveCommand(),
+                    intelligence.chooseNextMove(world, Helpers.createCommandResult(setOf(),
+                                    Helpers.createPlayerState(location = Point(0, i)))))
+        }
+        assertNotEquals(MoveCommand(),
+                intelligence.chooseNextMove(world, Helpers.createCommandResult(setOf(Perception.BREEZE),
+                Helpers.createPlayerState(location = Point(0, 4)))))
+    }
 }

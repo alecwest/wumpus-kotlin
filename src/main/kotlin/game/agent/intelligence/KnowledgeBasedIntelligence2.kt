@@ -43,12 +43,14 @@ class KnowledgeBasedIntelligence2 : Intelligence() {
         val orderOfRoomPreferences = arrayListOf<Point>()
         val knownAndUncertainRooms = splitAdjacentRoomsByKnownAndUncertainRooms(playerState)
 
-        knownAndUncertainRooms.first.sortByDescending { getTurnCount(playerState, it) }
-        knownAndUncertainRooms.second.sortByDescending { getTurnCount(playerState, it) }
+        knownAndUncertainRooms.first.sortBy { getTurnCount(playerState, it) }
+        knownAndUncertainRooms.second.sortBy { getTurnCount(playerState, it) }
 
          orderOfRoomPreferences.addAll(knownAndUncertainRooms.second + knownAndUncertainRooms.first)
 
-        if (knownAndUncertainRooms.first.isEmpty() && canMoveInDirection(playerState.getDirection())) {
+        // TODO this line is intended for making sure we don't turn around in the face of
+        // danger if we know we don't have to. It can probably get mixed in with splitAdjacentRooms...
+        if (knownAndUncertainRooms.first.contains(playerState.getLocation().adjacent(playerState.getDirection())) && canMoveInDirection(playerState.getDirection())) {
             orderOfRoomPreferences.add(
                     0, playerState.getLocation().adjacent(playerState.getDirection()))
         }
@@ -58,7 +60,7 @@ class KnowledgeBasedIntelligence2 : Intelligence() {
     private fun splitAdjacentRoomsByKnownAndUncertainRooms(playerState: PlayerState): Pair<ArrayList<Point>, ArrayList<Point>> {
         val knownAndUncertainRooms = Pair(arrayListOf<Point>(), arrayListOf<Point>())
         Direction.values().filter {
-            it != playerState.getDirection() && canMoveInDirection(it)
+            canMoveInDirection(it)
         }.map {
             playerState.getLocation().adjacent(it)
         }.toMutableList().forEach {

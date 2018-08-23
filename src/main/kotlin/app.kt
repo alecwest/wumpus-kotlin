@@ -9,7 +9,7 @@ fun main(args: Array<String>) {
 
     while (Server.getGame(0).isPlayerAlive()) {
         agent.makeNextMove()
-        println("Enter to continue: ")
-        readLine()
+//        println("Enter to continue: ")
+//        readLine()
     }
 }
