@@ -37,8 +37,6 @@ class KnowledgeBasedIntelligence : Intelligence() {
         return toCommand(playerState, orderOfRoomPreferences.firstOrNull())
     }
 
-
-    // TODO needs cleaning again
     private fun buildRoomPreferences(playerState: PlayerState): Set<Point> {
         val orderOfRoomPreferences = arrayListOf<Point>()
         val knownAndUncertainRooms = splitAdjacentRoomsByKnownAndUncertainRooms(playerState)
@@ -48,12 +46,6 @@ class KnowledgeBasedIntelligence : Intelligence() {
 
          orderOfRoomPreferences.addAll(knownAndUncertainRooms.second + knownAndUncertainRooms.first)
 
-        // TODO this line is intended for making sure we don't turn around in the face of
-        // danger if we know we don't have to. It can probably get mixed in with splitAdjacentRooms...
-//        if (knownAndUncertainRooms.first.contains(playerState.getLocation().adjacent(playerState.getDirection())) && canMoveInDirection(playerState.getDirection())) {
-//            orderOfRoomPreferences.add(
-//                    0, playerState.getLocation().adjacent(playerState.getDirection()))
-//        }
         return orderOfRoomPreferences.toSet()
     }
 
