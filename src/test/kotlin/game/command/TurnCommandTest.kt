@@ -27,6 +27,7 @@ internal class TurnCommandTest {
     fun `execute turn commands`(testData: ValidTurnCommandTestData) {
         testData.command.setGame(testData.givenGame)
         testData.command.execute()
+        assertEquals(testData.expectedTurnCost, testData.command.getMoveCost())
         assertEquals(testData.expectedCommandResult, testData.givenGame.getCommandResult())
         // Verify the rest of the player state is maintained
         assertEquals(Point(2, 2), testData.givenGame.getPlayerLocation())
@@ -39,15 +40,20 @@ internal class TurnCommandTest {
 
         @JvmStatic
         fun validTurnCommandTestDataProvider() = Stream.of(
-                ValidTurnCommandTestData(initialGame, TurnCommand(Direction.EAST), CommandResult(setOf(Perception.BREEZE),
+                ValidTurnCommandTestData(initialGame, TurnCommand(Direction.EAST),
+                        1, CommandResult(setOf(Perception.BREEZE),
                         initialPlayer.getPlayerState().copyThis(facing = Direction.EAST))),
-                ValidTurnCommandTestData(initialGame, TurnCommand(Direction.NORTH), CommandResult(setOf(Perception.BREEZE),
+                ValidTurnCommandTestData(initialGame, TurnCommand(Direction.NORTH),
+                        1, CommandResult(setOf(Perception.BREEZE),
                         initialPlayer.getPlayerState().copyThis(facing = Direction.NORTH))),
-                ValidTurnCommandTestData(initialGame, TurnCommand(Direction.EAST), CommandResult(setOf(Perception.BREEZE),
+                ValidTurnCommandTestData(initialGame, TurnCommand(Direction.EAST),
+                        1, CommandResult(setOf(Perception.BREEZE),
                         initialPlayer.getPlayerState().copyThis(facing = Direction.EAST))),
-                ValidTurnCommandTestData(initialGame, TurnCommand(Direction.SOUTH), CommandResult(setOf(Perception.BREEZE),
+                ValidTurnCommandTestData(initialGame, TurnCommand(Direction.SOUTH),
+                        1, CommandResult(setOf(Perception.BREEZE),
                         initialPlayer.getPlayerState().copyThis(facing = Direction.SOUTH))),
-                ValidTurnCommandTestData(initialGame, TurnCommand(Direction.NORTH), CommandResult(setOf(Perception.BREEZE),
+                ValidTurnCommandTestData(initialGame, TurnCommand(Direction.NORTH),
+                        2, CommandResult(setOf(Perception.BREEZE),
                         initialPlayer.getPlayerState().copyThis(facing = Direction.NORTH)))
         )
     }
@@ -56,5 +62,6 @@ internal class TurnCommandTest {
 data class ValidTurnCommandTestData (
         val givenGame: Game,
         val command: Command,
+        val expectedTurnCost: Int,
         val expectedCommandResult: CommandResult
 )

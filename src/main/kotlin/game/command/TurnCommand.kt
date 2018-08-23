@@ -5,8 +5,11 @@ import util.left
 import util.right
 
 class TurnCommand(private val targetDirection: Direction): Command() {
+    private var startingDirection: Direction? = null // For record keeping
+
     override fun execute() {
-        var currentDirection = game.getPlayerDirection()
+        startingDirection = game.getPlayerDirection()
+        var currentDirection = startingDirection!!
         while (currentDirection != targetDirection) {
             val command = when(currentDirection) {
                 Direction.NORTH -> if(targetDirection == Direction.EAST) TurnRightCommand() else TurnLeftCommand()
@@ -19,6 +22,12 @@ class TurnCommand(private val targetDirection: Direction): Command() {
             game.setCommandResult(createCommandResult())
             currentDirection = game.getPlayerDirection()
         }
+    }
+
+    override fun getMoveCost(): Int {
+        return if (targetDirection ==
+                (startingDirection ?: game.getPlayerDirection()).right().right())
+            2 else 1
     }
 
     override fun equals(other: Any?): Boolean {

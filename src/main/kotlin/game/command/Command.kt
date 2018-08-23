@@ -11,6 +11,10 @@ abstract class Command {
 
     abstract fun execute()
 
+    open fun getMoveCost(): Int {
+        return 1
+    }
+
     fun setGame(game: Game) {
         this.game = game
     }
