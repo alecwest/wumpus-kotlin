@@ -124,6 +124,16 @@ internal class KnowledgeBasedIntelligence2Test {
     }
 
     @Test
+    fun `do not turn around when danger is met if other nearby room is known to be safe`() {
+        intelligence.processLastMove(world, Helpers.createCommandResult(
+                setOf(),
+                Helpers.createPlayerState(location = Point(3, 8))))
+        assertEquals(TurnCommand(Direction.SOUTH), intelligence.chooseNextMove(world, Helpers.createCommandResult(
+                setOf(Perception.BREEZE),
+                Helpers.createPlayerState(location = Point(3, 9), facing = Direction.EAST))))
+    }
+
+    @Test
     fun `grab item in room`() {
         assertEquals(GrabCommand(InventoryItem.GOLD), intelligence.chooseNextMove(world, Helpers.createCommandResult(
                 setOf(Perception.GLITTER, Perception.STENCH, Perception.BREEZE),
