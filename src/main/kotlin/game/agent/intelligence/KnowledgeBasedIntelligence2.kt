@@ -37,22 +37,44 @@ class KnowledgeBasedIntelligence2 : Intelligence() {
         return toCommand(playerState, orderOfRoomPreferences.firstOrNull())
     }
 
+
+    // TODO needs cleaning again
     private fun buildRoomPreferences(playerState: PlayerState): Set<Point> {
         val fullyKnownRooms = arrayListOf<Point>()
         val uncertainRooms = arrayListOf<Point>()
-        val orderOfRoomPreferences = Direction.values().filter {
+        val orderOfRoomPreferences = arrayListOf<Point>()
+
+        Direction.values().filter {
             it != playerState.getDirection() && canMoveInDirection(it)
         }.map {
             playerState.getLocation().adjacent(it)
-        }.toMutableList()
-
-        // Ordered so any room not fully known shows first
-        orderOfRoomPreferences.sortBy {
+        }.toMutableList().forEach {
             val result = facts.featureFullyKnownInRoom(it, Perceptable())
-            if (!result) fullyKnownRooms.add(it)
+            if (result) fullyKnownRooms.add(it)
             else uncertainRooms.add(it)
-            result
         }
+
+        uncertainRooms.sortByDescending {
+            var count = 0
+            var currentDirection = playerState.getDirection()
+            while (currentDirection != it.directionFrom(playerState.getLocation())) {
+                count++
+                currentDirection = currentDirection.right()
+            }
+            count
+        }
+
+        fullyKnownRooms.sortByDescending {
+            var count = 0
+            var currentDirection = playerState.getDirection()
+            while (currentDirection != it.directionFrom(playerState.getLocation())) {
+                count++
+                currentDirection = currentDirection.right()
+            }
+            count
+        }
+
+         orderOfRoomPreferences.addAll(uncertainRooms + fullyKnownRooms)
 
         if (fullyKnownRooms.isEmpty() && canMoveInDirection(playerState.getDirection())) {
             orderOfRoomPreferences.add(
