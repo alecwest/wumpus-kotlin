@@ -10,7 +10,7 @@ import game.world.effect.HereEffect
 import util.*
 import java.awt.Point
 
-class KnowledgeBasedIntelligence2 : Intelligence() {
+class KnowledgeBasedIntelligence : Intelligence() {
     internal val facts = FactMap()
     private lateinit var world: World
     private lateinit var commandResult: CommandResult

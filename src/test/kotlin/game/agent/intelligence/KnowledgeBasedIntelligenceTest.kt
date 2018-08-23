@@ -2,7 +2,6 @@ package game.agent.intelligence
 
 import game.agent.intelligence.Answer.*
 import game.agent.intelligence.Fact.*
-import game.agent.intelligence.IntelligenceTest.Companion.world
 import game.command.GrabCommand
 import game.command.MoveCommand
 import game.command.TurnCommand
@@ -15,8 +14,8 @@ import org.junit.jupiter.api.Test
 import util.*
 import java.awt.Point
 
-internal class KnowledgeBasedIntelligence2Test {
-    val intelligence = KnowledgeBasedIntelligence2()
+internal class KnowledgeBasedIntelligenceTest {
+    val intelligence = KnowledgeBasedIntelligence()
     val world = Helpers.createWorld()
 
     @Test

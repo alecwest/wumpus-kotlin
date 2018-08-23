@@ -43,7 +43,7 @@ class FactMap(private val factMap: MutableMap<Point, MutableSet<Pair<GameObject,
         }) return FALSE else return TRUE
     }
 
-    // TODO knowing everything about a room in KnowledgeBasedIntelligence2 is currently impossible since only facts about perceptables are created upon assessment
+    // TODO knowing everything about a room in KnowledgeBasedIntelligence is currently impossible since only facts about perceptables are created upon assessment
     fun everythingKnownAboutRoom(point: Point): Boolean {
         for (gameObject in gameObjectValues()) {
             if (!factExists(point, gameObject)) return false
