@@ -223,4 +223,15 @@ internal class KnowledgeBasedIntelligence2Test {
                 intelligence.chooseNextMove(world, Helpers.createCommandResult(setOf(Perception.BREEZE),
                 Helpers.createPlayerState(location = Point(0, 4)))))
     }
+
+    @Test
+    fun `get turn count`() {
+        val playerState = Helpers.createPlayerState(location = Point(0, 5),
+                facing = Direction.NORTH)
+        assertEquals(0, intelligence.getTurnCount(playerState, Point(0, 5).north()))
+        assertEquals(1, intelligence.getTurnCount(playerState, Point(0, 5).east()))
+        assertEquals(2, intelligence.getTurnCount(playerState, Point(0, 5).south()))
+        assertEquals(1, intelligence.getTurnCount(playerState, Point(0, 5).west()))
+        assertEquals(null, intelligence.getTurnCount(playerState, Point(0, 5).northEast()))
+    }
 }

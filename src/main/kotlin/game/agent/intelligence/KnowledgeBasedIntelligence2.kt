@@ -50,10 +50,10 @@ class KnowledgeBasedIntelligence2 : Intelligence() {
 
         // TODO this line is intended for making sure we don't turn around in the face of
         // danger if we know we don't have to. It can probably get mixed in with splitAdjacentRooms...
-        if (knownAndUncertainRooms.first.contains(playerState.getLocation().adjacent(playerState.getDirection())) && canMoveInDirection(playerState.getDirection())) {
-            orderOfRoomPreferences.add(
-                    0, playerState.getLocation().adjacent(playerState.getDirection()))
-        }
+//        if (knownAndUncertainRooms.first.contains(playerState.getLocation().adjacent(playerState.getDirection())) && canMoveInDirection(playerState.getDirection())) {
+//            orderOfRoomPreferences.add(
+//                    0, playerState.getLocation().adjacent(playerState.getDirection()))
+//        }
         return orderOfRoomPreferences.toSet()
     }
 
@@ -71,12 +71,14 @@ class KnowledgeBasedIntelligence2 : Intelligence() {
         return knownAndUncertainRooms
     }
 
-    private fun getTurnCount(playerState: PlayerState, point: Point): Int {
+    internal fun getTurnCount(playerState: PlayerState, point: Point): Int? {
         var count = 0
         var currentDirection = playerState.getDirection()
-        while (currentDirection != point.directionFrom(playerState.getLocation())) {
+        val targetDirection = point.directionFrom(playerState.getLocation()) ?: return null
+        while (currentDirection != targetDirection) {
             count++
-            currentDirection = currentDirection.right()
+            currentDirection = if (currentDirection.left() == targetDirection)
+                currentDirection.left() else currentDirection.right()
         }
         return count
     }
