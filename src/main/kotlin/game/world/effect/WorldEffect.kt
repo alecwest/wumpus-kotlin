@@ -11,7 +11,6 @@ abstract class WorldEffect(internal val gameObject: GameObject) {
     abstract fun removeEffect(world: World, point: Point)
     abstract fun roomsAffected(point: Point): Set<Point>
 
-    // TODO really? A triple-nested loop? Gross
     fun nearbyContentHasAssociatedEffect(world: World, point: Point): Boolean {
         for (adjacentPoint in point.adjacents() + point.diagonals()) {
             for (content in gameObjectsWithFeatures(setOf(WorldAffecting()))) {
