@@ -25,9 +25,12 @@ class TurnCommand(private val targetDirection: Direction): Command() {
     }
 
     override fun getMoveCost(): Int {
-        return if (targetDirection ==
-                (startingDirection ?: game.getPlayerDirection()).right().right())
-            2 else 1
+        val startingDirection = startingDirection ?: game.getPlayerDirection()
+        return when (targetDirection) {
+            startingDirection.right().right() -> 2
+            startingDirection -> 0
+            else -> 1
+        }
     }
 
     override fun equals(other: Any?): Boolean {

@@ -54,6 +54,9 @@ internal class TurnCommandTest {
                         initialPlayer.getPlayerState().copyThis(facing = Direction.SOUTH))),
                 ValidTurnCommandTestData(initialGame, TurnCommand(Direction.NORTH),
                         2, CommandResult(setOf(Perception.BREEZE),
+                        initialPlayer.getPlayerState().copyThis(facing = Direction.NORTH))),
+                ValidTurnCommandTestData(initialGame, TurnCommand(Direction.NORTH),
+                        0, CommandResult(setOf(Perception.BREEZE),
                         initialPlayer.getPlayerState().copyThis(facing = Direction.NORTH)))
         )
     }
