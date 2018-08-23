@@ -166,35 +166,6 @@ internal class KnowledgeBasedIntelligence2Test {
     }
 
     @Test
-    fun `turn to safe room`() {
-        val commandResult1 = Helpers.createCommandResult(
-                setOf(Perception.GLITTER, Perception.BREEZE),
-                Helpers.createPlayerState(location = Point(2, 2),
-                        facing = Direction.NORTH))
-        val commandResult2 = Helpers.createCommandResult(
-                setOf(Perception.GLITTER, Perception.BREEZE),
-                Helpers.createPlayerState(location = Point(1, 2),
-                        facing = Direction.NORTH))
-        intelligence.processLastMove(world, commandResult1)
-        assertEquals(TurnCommand(Direction.SOUTH),
-                intelligence.turnToSafeRoom(world, commandResult1))
-        intelligence.processLastMove(world, commandResult2)
-        assertEquals(TurnCommand(Direction.EAST),
-                intelligence.turnToSafeRoom(world, commandResult2))
-    }
-
-    @Test
-    fun `turn to safe room when not necessary`() {
-        val commandResult = Helpers.createCommandResult(
-                setOf(),
-                Helpers.createPlayerState(location = Point(5, 5),
-                        facing = Direction.NORTH))
-        intelligence.processLastMove(world, commandResult)
-        assertEquals(TurnCommand(Direction.EAST),
-                intelligence.turnToSafeRoom(world, commandResult))
-    }
-
-    @Test
     fun `perceiving a blocking object should add a fact about it to the forward facing room`() {
         val commandResult = Helpers.createCommandResult(
                 setOf(Perception.WALL_BUMP),
