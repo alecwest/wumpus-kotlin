@@ -128,7 +128,7 @@ internal class KnowledgeBasedIntelligence2Test {
         intelligence.processLastMove(world, Helpers.createCommandResult(
                 setOf(),
                 Helpers.createPlayerState(location = Point(3, 8))))
-        assertEquals(TurnCommand(Direction.SOUTH), intelligence.chooseNextMove(world, Helpers.createCommandResult(
+        assertNotEquals(TurnCommand(Direction.WEST), intelligence.chooseNextMove(world, Helpers.createCommandResult(
                 setOf(Perception.BREEZE),
                 Helpers.createPlayerState(location = Point(3, 9), facing = Direction.EAST))))
     }
