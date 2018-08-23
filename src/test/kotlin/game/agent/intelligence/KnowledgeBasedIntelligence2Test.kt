@@ -17,6 +17,7 @@ import java.awt.Point
 
 internal class KnowledgeBasedIntelligence2Test {
     val intelligence = KnowledgeBasedIntelligence2()
+    val world = Helpers.createWorld()
 
     @Test
     fun `process last move in empty room`() {
