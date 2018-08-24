@@ -313,4 +313,16 @@ internal class KnowledgeBasedIntelligenceTest {
         intelligence.addBlockingObject(GameObject.STENCH)
         assertEquals(UNKNOWN, intelligence.facts.isTrue(Point(4, 5), HAS, STENCH))
     }
+
+    @Test
+    fun `assess nearby rooms`() {
+        intelligence.world = world
+        intelligence.commandResult = Helpers.createCommandResult(setOf(Perception.BREEZE),
+                playerState = Helpers.createPlayerState(location = Point(4, 4)))
+        intelligence.facts.addFact(Point(4, 4), HAS_NO, BREEZE)
+        intelligence.facts.addFact(Point(4, 4), HAS, STENCH)
+        intelligence.assessNearbyRooms(Point(4, 4))
+        assertEquals(TRUE, intelligence.facts.isTrue(Point(4, 5), HAS_NO, PIT))
+        assertEquals(UNKNOWN, intelligence.facts.isTrue(Point(4, 5), HAS_NO, WUMPUS))
+    }
 }

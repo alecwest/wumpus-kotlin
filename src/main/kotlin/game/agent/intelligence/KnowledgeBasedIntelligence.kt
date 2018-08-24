@@ -127,7 +127,7 @@ class KnowledgeBasedIntelligence : Intelligence() {
             markEdgeRooms()
         }
         assessCurrentRoom(this.commandResult)
-        assessNearbyRooms()
+        assessNearbyRooms(this.commandResult.getPlayerState().getLocation())
         reassessForNewInsight()
     }
 
@@ -171,8 +171,7 @@ class KnowledgeBasedIntelligence : Intelligence() {
         world.addGameObject(blockerLocation, gameObject)
     }
 
-    private fun assessNearbyRooms() {
-        val playerLocation = commandResult.getPlayerState().getLocation()
+    internal fun assessNearbyRooms(playerLocation: Point) {
         gameObjectsWithFeatures(setOf(WorldAffecting())).forEach { gameObject ->
             val worldAffecting = gameObject.getFeature(WorldAffecting()) as WorldAffecting
             worldAffecting.effects.forEach { worldEffect ->
