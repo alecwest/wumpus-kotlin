@@ -49,7 +49,7 @@ class KnowledgeBasedIntelligence : Intelligence() {
         return orderOfRoomPreferences.toSet()
     }
 
-    private fun getSafeRooms(playerState: PlayerState): Set<Point> {
+    internal fun getSafeRooms(playerState: PlayerState): Set<Point> {
         return Direction.values().filter { canMoveInDirection(it) }
                 .map{ playerState.getLocation().adjacent(it) }.toSet()
     }

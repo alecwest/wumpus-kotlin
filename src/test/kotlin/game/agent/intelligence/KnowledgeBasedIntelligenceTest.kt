@@ -269,6 +269,17 @@ internal class KnowledgeBasedIntelligenceTest {
     }
 
     @Test
+    fun `get safe rooms`() {
+        var playerState = Helpers.createPlayerState(location = Point(4, 4))
+        intelligence.processLastMove(world, Helpers.createCommandResult(playerState = playerState))
+        assertEquals(4, intelligence.getSafeRooms(playerState).size)
+        playerState = Helpers.createPlayerState(location = Point(4, 3))
+        intelligence.processLastMove(world, Helpers.createCommandResult(
+                setOf(Perception.BREEZE), playerState))
+        assertEquals(setOf(Point(4, 4)), intelligence.getSafeRooms(playerState))
+    }
+
+    @Test
     fun `split adjacent rooms into known and uncertain rooms`() {
         var result = intelligence.splitKnownAndUncertainRooms(Point(4, 4).adjacents())
         assertEquals(0, result.first.size)
