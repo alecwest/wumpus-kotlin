@@ -124,7 +124,7 @@ class KnowledgeBasedIntelligence : Intelligence() {
         this.world = world
         this.commandResult = commandResult
         if(playerOnEdge()) {
-            markEdgeRooms()
+            markEdgeRooms(this.commandResult)
         }
         assessCurrentRoom(this.commandResult)
         assessNearbyRooms(this.commandResult.getPlayerState().getLocation())
@@ -138,7 +138,7 @@ class KnowledgeBasedIntelligence : Intelligence() {
     }
 
 
-    internal fun markEdgeRooms() {
+    internal fun markEdgeRooms(commandResult: CommandResult) {
         val edgeRooms = commandResult.getPlayerState().getLocation().adjacents().filter { !world.roomIsValid(it) }
         edgeRooms.forEach { edgeRoom ->
             gameObjectValues().forEach { gameObject ->
@@ -152,7 +152,7 @@ class KnowledgeBasedIntelligence : Intelligence() {
         val playerLocation = commandResult.getPlayerState().getLocation()
         gameObjectValues().forEach { gameObject ->
             if (gameObject.hasFeature(Blocking()) && perceivedObjects.contains(gameObject)) {
-                addBlockingObject(gameObject)
+                addBlockingObject(commandResult, gameObject)
             } else {
                 facts.addFact(
                         playerLocation,
@@ -162,7 +162,7 @@ class KnowledgeBasedIntelligence : Intelligence() {
         }
     }
 
-    internal fun addBlockingObject(gameObject: GameObject) {
+    internal fun addBlockingObject(commandResult: CommandResult, gameObject: GameObject) {
         if (!gameObject.hasFeature(Blocking())) return
         val playerLocation = commandResult.getPlayerState().getLocation()
         val blockerLocation = playerLocation.adjacent(commandResult.getPlayerState().getDirection())

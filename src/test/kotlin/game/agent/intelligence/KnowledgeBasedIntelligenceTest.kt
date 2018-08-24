@@ -9,6 +9,7 @@ import game.player.InventoryItem
 import game.world.GameObject
 import game.world.GameObject.*
 import game.world.Perception
+import game.world.gameObjectValues
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import util.*
@@ -17,6 +18,11 @@ import java.awt.Point
 internal class KnowledgeBasedIntelligenceTest {
     val intelligence = KnowledgeBasedIntelligence()
     val world = Helpers.createWorld()
+
+    init {
+        intelligence.world = world
+        intelligence.commandResult = Helpers.createCommandResult()
+    }
 
     @Test
     fun `process last move in empty room`() {
@@ -294,7 +300,6 @@ internal class KnowledgeBasedIntelligenceTest {
 
     @Test
     fun `assess the current room`() {
-        intelligence.world = world
         intelligence.commandResult = Helpers.createCommandResult(setOf(Perception.BREEZE, Perception.WALL_BUMP))
         intelligence.assessCurrentRoom(intelligence.commandResult)
         assertTrue(intelligence.facts.isTrue(Point(0, 0), HAS, BREEZE) == TRUE)
@@ -304,19 +309,17 @@ internal class KnowledgeBasedIntelligenceTest {
 
     @Test
     fun `add blocking object`() {
-        intelligence.world = world
         intelligence.commandResult = Helpers.createCommandResult(
                 playerState = Helpers.createPlayerState(location = Point(4, 4)))
-        intelligence.addBlockingObject(GameObject.WALL)
+        intelligence.addBlockingObject(intelligence.commandResult, GameObject.WALL)
         assertEquals(TRUE, intelligence.facts.isTrue(Point(4, 4), HAS_NO, WALL))
         assertEquals(TRUE, intelligence.facts.isTrue(Point(4, 5), HAS, WALL))
-        intelligence.addBlockingObject(GameObject.STENCH)
+        intelligence.addBlockingObject(intelligence.commandResult, GameObject.STENCH)
         assertEquals(UNKNOWN, intelligence.facts.isTrue(Point(4, 5), HAS, STENCH))
     }
 
     @Test
     fun `assess nearby rooms`() {
-        intelligence.world = world
         intelligence.commandResult = Helpers.createCommandResult(setOf(Perception.BREEZE),
                 playerState = Helpers.createPlayerState(location = Point(4, 4)))
         intelligence.facts.addFact(Point(4, 4), HAS_NO, BREEZE)
@@ -328,8 +331,6 @@ internal class KnowledgeBasedIntelligenceTest {
 
     @Test
     fun `reassess for new insight`() {
-        intelligence.world = world
-        intelligence.commandResult = Helpers.createCommandResult()
         intelligence.facts.addFact(Point(4, 4), HAS, BREEZE)
         intelligence.facts.addFact(Point(4, 5), HAS_NO, PIT)
         intelligence.facts.addFact(Point(4, 3), HAS_NO, PIT)
@@ -338,5 +339,18 @@ internal class KnowledgeBasedIntelligenceTest {
         intelligence.facts.addFact(Point(3, 4), HAS_NO, PIT)
         intelligence.reassessForNewInsight()
         assertEquals(TRUE, intelligence.facts.isTrue(Point(5, 4), HAS, PIT))
+    }
+
+    @Test
+    fun `mark edge rooms`() {
+        intelligence.markEdgeRooms(Helpers.createCommandResult(
+                playerState = Helpers.createPlayerState(location = Point(4, 4))))
+        assertEquals(0, intelligence.facts.getMap().size)
+        intelligence.markEdgeRooms(Helpers.createCommandResult(
+                playerState = Helpers.createPlayerState(location = Point(0, 4))))
+        assertEquals(1, intelligence.facts.getMap().size)
+        for (gameObject in gameObjectValues()) {
+            assertEquals(TRUE, intelligence.facts.isTrue(Point(-1, 4), HAS_NO, gameObject))
+        }
     }
 }
