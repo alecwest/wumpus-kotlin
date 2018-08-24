@@ -263,5 +263,8 @@ internal class KnowledgeBasedIntelligenceTest {
         assertEquals(MoveCommand(), intelligence.toCommand(
                 Helpers.createPlayerState(location = Point(4, 4), facing = Direction.NORTH),
                 Point(0, 0)))
+    assertEquals(MoveCommand(), intelligence.toCommand(
+                Helpers.createPlayerState(location = Point(4, 4), facing = Direction.NORTH),
+                null))
     }
 }

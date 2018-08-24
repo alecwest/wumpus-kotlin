@@ -75,6 +75,7 @@ class KnowledgeBasedIntelligence : Intelligence() {
         return count
     }
 
+    // TODO should return null if point is bad?
     internal fun toCommand(playerState: PlayerState, point: Point?): Command {
         val directionOfRoom = point?.directionFrom(playerState.getLocation())
                 ?: playerState.getDirection()
