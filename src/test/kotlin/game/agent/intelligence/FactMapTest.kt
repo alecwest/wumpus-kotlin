@@ -6,6 +6,7 @@ import java.awt.Point
 
 import game.agent.intelligence.Answer.*
 import game.agent.intelligence.Fact.*
+import game.world.GameObject
 import game.world.GameObject.*
 import game.world.GameObjectFeature
 import game.world.gameObjectValues
@@ -72,5 +73,15 @@ internal class FactMapTest {
         }
         factMap.addFact(Point(2, 4), HAS_NO, PIT)
         assertTrue(factMap.featureFullyKnownInRoom(Point(2, 2), GameObjectFeature.Perceptable()))
+    }
+
+    @Test
+    fun `get effects in room`() {
+        factMap.addFact(Point(3, 3), HAS, PIT)
+        factMap.addFact(Point(3, 3), HAS, BREEZE)
+        factMap.addFact(Point(3, 3), HAS, GLITTER)
+        factMap.addFact(Point(5, 5), HAS, SUPMUW)
+        assertEquals(setOf(GameObject.BREEZE, GameObject.GLITTER), factMap.getEffectsInRoom(Point(3, 3)))
+        assertEquals(setOf<GameObject>(), factMap.getEffectsInRoom(Point(5, 5)))
     }
 }

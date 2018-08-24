@@ -106,7 +106,7 @@ class KnowledgeBasedIntelligence : Intelligence() {
     }
 
     internal fun dangerousEffectsInRoom(commandResult: CommandResult): Boolean {
-        return getEffectsInRoom(commandResult.getPlayerState().getLocation()).any { effect ->
+        return facts.getEffectsInRoom(commandResult.getPlayerState().getLocation()).any { effect ->
                     effect.objectsThatCreateThis().any {
                         // Effect is not "dangerous" if the object creating it is in the
                         // same room, otherwise we'd be dead already
@@ -185,7 +185,7 @@ class KnowledgeBasedIntelligence : Intelligence() {
     private fun reassessForNewInsight() {
         val factsToAdd = FactMap()
         facts.getMap().forEach { fact ->
-            val effectSet = getEffectsInRoom(fact.key)
+            val effectSet = facts.getEffectsInRoom(fact.key)
             effectSet.forEach { effectGameObject ->
                 val objectsThatCreateThis = effectGameObject.objectsThatCreateThis()
                 objectsThatCreateThis.forEach { objectThatCreatesThis ->
@@ -209,13 +209,5 @@ class KnowledgeBasedIntelligence : Intelligence() {
                 facts.addFact(point, fact.second, fact.first)
             }
         }
-    }
-
-    private fun getEffectsInRoom(point: Point): Set<GameObject> {
-        return facts.getMap().getOrDefault(point, setOf()).filter { fact ->
-            fact.second == HAS && fact.first.objectsThatCreateThis().isNotEmpty()
-        }.map {
-            fact -> fact.first
-        }.toSet()
     }
 }

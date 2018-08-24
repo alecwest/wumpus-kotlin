@@ -57,6 +57,14 @@ class FactMap(private val factMap: MutableMap<Point, MutableSet<Pair<GameObject,
         }
         return true
     }
+
+    fun getEffectsInRoom(point: Point): Set<GameObject> {
+        return getMap().getOrDefault(point, setOf()).filter { fact ->
+            fact.second == HAS && fact.first.objectsThatCreateThis().isNotEmpty()
+        }.map {
+            fact -> fact.first
+        }.toSet()
+    }
 }
 
 enum class Fact {
