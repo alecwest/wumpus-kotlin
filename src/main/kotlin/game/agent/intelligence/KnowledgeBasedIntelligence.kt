@@ -37,7 +37,7 @@ class KnowledgeBasedIntelligence : Intelligence() {
         return toCommand(playerState, orderOfRoomPreferences.firstOrNull())
     }
 
-    private fun buildRoomPreferences(playerState: PlayerState): Set<Point> {
+    internal fun buildRoomPreferences(playerState: PlayerState): Set<Point> {
         val orderOfRoomPreferences = arrayListOf<Point>()
         val knownAndUncertainRooms = splitKnownAndUncertainRooms(getSafeRooms(playerState))
 

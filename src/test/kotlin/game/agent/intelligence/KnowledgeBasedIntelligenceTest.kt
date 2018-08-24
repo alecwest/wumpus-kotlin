@@ -353,4 +353,13 @@ internal class KnowledgeBasedIntelligenceTest {
             assertEquals(TRUE, intelligence.facts.isTrue(Point(-1, 4), HAS_NO, gameObject))
         }
     }
+
+    @Test
+    fun `build room preferences`() {
+        intelligence.facts.addFact(Point(4, 3), HAS, PIT)
+        val result = intelligence.buildRoomPreferences(Helpers.createPlayerState(
+                location = Point(4, 4)))
+        assertFalse(result.contains(Point(4, 3)))
+        assertTrue(result.contains(Point(4, 5)))
+    }
 }
