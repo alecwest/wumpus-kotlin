@@ -54,6 +54,8 @@ internal class FactMapTest {
             factMap.addFact(Point(4, 4), HAS_NO, it)
         }
         assertEquals(TRUE, factMap.roomIsSafe(Point(4, 4)))
+        factMap.addFact(Point(5, 5), HAS, PIT)
+        assertEquals(FALSE, factMap.roomIsSafe(Point(5, 5)))
     }
 
     @Test
