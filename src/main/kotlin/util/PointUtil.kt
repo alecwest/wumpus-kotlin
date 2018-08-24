@@ -43,12 +43,12 @@ fun Point.adjacent(direction: Direction): Point {
     }
 }
 
-fun Point.adjacents(): ArrayList<Point> {
-    return arrayListOf(north(), east(), south(), west())
+fun Point.adjacents(): Set<Point> {
+    return setOf(north(), east(), south(), west())
 }
 
-fun Point.diagonals(): ArrayList<Point> {
-    return arrayListOf(northEast(), northWest(), southEast(), southWest())
+fun Point.diagonals(): Set<Point> {
+    return setOf(northEast(), northWest(), southEast(), southWest())
 }
 
 fun Point.directionFrom(point: Point): Direction? {

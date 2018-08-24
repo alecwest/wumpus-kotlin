@@ -18,10 +18,10 @@ class PointUtilTest {
         val point = Point(3,5)
         val adjacentPoints = point.adjacents()
         assertEquals(4, adjacentPoints.size)
-        assertEquals(Point(3, 6), adjacentPoints[0])
-        assertEquals(Point(4, 5), adjacentPoints[1])
-        assertEquals(Point(3, 4), adjacentPoints[2])
-        assertEquals(Point(2, 5), adjacentPoints[3])
+        assertEquals(Point(3, 6), adjacentPoints.elementAt(0))
+        assertEquals(Point(4, 5), adjacentPoints.elementAt(1))
+        assertEquals(Point(3, 4), adjacentPoints.elementAt(2))
+        assertEquals(Point(2, 5), adjacentPoints.elementAt(3))
     }
 
     @Test
@@ -29,10 +29,10 @@ class PointUtilTest {
         val point = Point(3,5)
         val diagonalPoints = point.diagonals()
         assertEquals(4, diagonalPoints.size)
-        assertEquals(Point(4, 6), diagonalPoints[0])
-        assertEquals(Point(2, 6), diagonalPoints[1])
-        assertEquals(Point(4, 4), diagonalPoints[2])
-        assertEquals(Point(2, 4), diagonalPoints[3])
+        assertEquals(Point(4, 6), diagonalPoints.elementAt(0))
+        assertEquals(Point(2, 6), diagonalPoints.elementAt(1))
+        assertEquals(Point(4, 4), diagonalPoints.elementAt(2))
+        assertEquals(Point(2, 4), diagonalPoints.elementAt(3))
     }
 
     @Test
