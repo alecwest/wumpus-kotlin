@@ -184,7 +184,7 @@ class KnowledgeBasedIntelligence : Intelligence() {
         }
     }
 
-    private fun reassessForNewInsight() {
+    internal fun reassessForNewInsight() {
         val factsToAdd = FactMap()
         facts.getMap().forEach { fact ->
             val effectSet = facts.getEffectsInRoom(fact.key)

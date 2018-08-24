@@ -325,4 +325,18 @@ internal class KnowledgeBasedIntelligenceTest {
         assertEquals(TRUE, intelligence.facts.isTrue(Point(4, 5), HAS_NO, PIT))
         assertEquals(UNKNOWN, intelligence.facts.isTrue(Point(4, 5), HAS_NO, WUMPUS))
     }
+
+    @Test
+    fun `reassess for new insight`() {
+        intelligence.world = world
+        intelligence.commandResult = Helpers.createCommandResult()
+        intelligence.facts.addFact(Point(4, 4), HAS, BREEZE)
+        intelligence.facts.addFact(Point(4, 5), HAS_NO, PIT)
+        intelligence.facts.addFact(Point(4, 3), HAS_NO, PIT)
+        intelligence.reassessForNewInsight()
+        assertEquals(UNKNOWN, intelligence.facts.isTrue(Point(5, 4), HAS, PIT))
+        intelligence.facts.addFact(Point(3, 4), HAS_NO, PIT)
+        intelligence.reassessForNewInsight()
+        assertEquals(TRUE, intelligence.facts.isTrue(Point(5, 4), HAS, PIT))
+    }
 }
