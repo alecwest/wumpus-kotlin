@@ -39,7 +39,7 @@ class KnowledgeBasedIntelligence : Intelligence() {
 
     private fun buildRoomPreferences(playerState: PlayerState): Set<Point> {
         val orderOfRoomPreferences = arrayListOf<Point>()
-        val knownAndUncertainRooms = splitAdjacentRoomsByKnownAndUncertainRooms(playerState)
+        val knownAndUncertainRooms = splitKnownAndUncertainRooms(getSafeRooms(playerState))
 
         knownAndUncertainRooms.first.sortBy { getTurnCount(playerState, it) }
         knownAndUncertainRooms.second.sortBy { getTurnCount(playerState, it) }
@@ -49,13 +49,14 @@ class KnowledgeBasedIntelligence : Intelligence() {
         return orderOfRoomPreferences.toSet()
     }
 
-    private fun splitAdjacentRoomsByKnownAndUncertainRooms(playerState: PlayerState): Pair<ArrayList<Point>, ArrayList<Point>> {
+    private fun getSafeRooms(playerState: PlayerState): Set<Point> {
+        return Direction.values().filter { canMoveInDirection(it) }
+                .map{ playerState.getLocation().adjacent(it) }.toSet()
+    }
+
+    internal fun splitKnownAndUncertainRooms(rooms: Set<Point>): Pair<ArrayList<Point>, ArrayList<Point>> {
         val knownAndUncertainRooms = Pair(arrayListOf<Point>(), arrayListOf<Point>())
-        Direction.values().filter {
-            canMoveInDirection(it)
-        }.map {
-            playerState.getLocation().adjacent(it)
-        }.toMutableList().forEach {
+        rooms.forEach {
             val result = facts.featureFullyKnownInRoom(it, Perceptable())
             if (result) knownAndUncertainRooms.first.add(it)
             else knownAndUncertainRooms.second.add(it)
