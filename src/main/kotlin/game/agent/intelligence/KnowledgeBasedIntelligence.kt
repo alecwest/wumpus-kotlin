@@ -94,7 +94,7 @@ class KnowledgeBasedIntelligence : Intelligence() {
         } ?: false
     }
 
-    private fun canMoveInDirection(direction: Direction): Boolean {
+    internal fun canMoveInDirection(direction: Direction): Boolean {
         val room = commandResult.getPlayerState().getLocation().adjacent(direction)
         for (gameObject in gameObjectsWithFeatures(setOf(Blocking()))) {
             if (facts.isTrue(room, HAS, gameObject) == TRUE) {

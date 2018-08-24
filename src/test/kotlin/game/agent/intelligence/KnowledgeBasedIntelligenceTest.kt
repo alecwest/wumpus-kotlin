@@ -233,4 +233,16 @@ internal class KnowledgeBasedIntelligenceTest {
         assertEquals(1, intelligence.getTurnCount(playerState, Point(0, 5).west()))
         assertEquals(null, intelligence.getTurnCount(playerState, Point(0, 5).northEast()))
     }
+
+    @Test
+    fun `can move in direction`() {
+        intelligence.processLastMove(world, Helpers.createCommandResult(setOf(Perception.WALL_BUMP),
+                Helpers.createPlayerState(location = Point(4, 4))))
+        assertFalse(intelligence.canMoveInDirection(Direction.NORTH))
+        assertTrue(intelligence.canMoveInDirection(Direction.EAST))
+        intelligence.processLastMove(world, Helpers.createCommandResult(setOf(Perception.BREEZE),
+                Helpers.createPlayerState(location = Point(4, 3))))
+        assertFalse(intelligence.canMoveInDirection(Direction.WEST))
+        assertTrue(intelligence.canMoveInDirection(Direction.NORTH))
+    }
 }
