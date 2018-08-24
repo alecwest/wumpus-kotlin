@@ -362,4 +362,18 @@ internal class KnowledgeBasedIntelligenceTest {
         assertFalse(result.contains(Point(4, 3)))
         assertTrue(result.contains(Point(4, 5)))
     }
+
+    @Test
+    fun `get best explorative move`() {
+        intelligence.facts.addFact(Point(4, 5), HAS, PIT)
+        intelligence.commandResult = Helpers.createCommandResult(setOf(Perception.BREEZE),
+                Helpers.createPlayerState(location = Point(4, 4), facing = Direction.NORTH))
+        intelligence.facts.addFact(Point(4, 4), HAS, BREEZE)
+        for (gameObject in gameObjectValues()) {
+            intelligence.facts.addFact(Point(4, 3), HAS_NO, gameObject)
+        }
+        assertEquals(TurnCommand(Direction.SOUTH), intelligence.bestExplorativeMove(intelligence.commandResult.getPlayerState()))
+        assertEquals(MoveCommand(), intelligence.bestExplorativeMove(Helpers.createPlayerState(
+                location = Point(4, 4), facing = Direction.SOUTH)))
+    }
 }

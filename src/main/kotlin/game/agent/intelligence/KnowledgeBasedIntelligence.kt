@@ -26,14 +26,12 @@ class KnowledgeBasedIntelligence : Intelligence() {
         return if (inventoryItems.isNotEmpty()) {
             GrabCommand(inventoryItems.first()!!)
         } else {
-            bestExplorativeMove()
+            bestExplorativeMove(commandResult.getPlayerState())
         }
     }
 
-    private fun bestExplorativeMove(): Command {
-        val playerState = commandResult.getPlayerState()
+    internal fun bestExplorativeMove(playerState: PlayerState): Command {
         val orderOfRoomPreferences = buildRoomPreferences(playerState)
-
         return toCommand(playerState, orderOfRoomPreferences.firstOrNull())
     }
 
