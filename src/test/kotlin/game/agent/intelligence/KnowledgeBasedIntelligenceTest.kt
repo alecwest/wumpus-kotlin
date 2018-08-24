@@ -245,4 +245,23 @@ internal class KnowledgeBasedIntelligenceTest {
         assertFalse(intelligence.canMoveInDirection(Direction.WEST))
         assertTrue(intelligence.canMoveInDirection(Direction.NORTH))
     }
+
+    @Test
+    fun `convert target room to command`() {
+        assertEquals(MoveCommand(), intelligence.toCommand(
+                Helpers.createPlayerState(location = Point(4, 4), facing = Direction.NORTH),
+                Point(4, 5)))
+        assertEquals(TurnCommand(Direction.EAST), intelligence.toCommand(
+                Helpers.createPlayerState(location = Point(4, 4), facing = Direction.NORTH),
+                Point(5, 4)))
+        assertEquals(TurnCommand(Direction.SOUTH), intelligence.toCommand(
+                Helpers.createPlayerState(location = Point(4, 4), facing = Direction.NORTH),
+                Point(4, 3)))
+        assertEquals(TurnCommand(Direction.WEST), intelligence.toCommand(
+                Helpers.createPlayerState(location = Point(4, 4), facing = Direction.NORTH),
+                Point(3, 4)))
+        assertEquals(MoveCommand(), intelligence.toCommand(
+                Helpers.createPlayerState(location = Point(4, 4), facing = Direction.NORTH),
+                Point(0, 0)))
+    }
 }

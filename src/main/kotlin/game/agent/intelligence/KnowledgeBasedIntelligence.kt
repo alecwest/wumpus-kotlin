@@ -75,7 +75,7 @@ class KnowledgeBasedIntelligence : Intelligence() {
         return count
     }
 
-    private fun toCommand(playerState: PlayerState, point: Point?): Command {
+    internal fun toCommand(playerState: PlayerState, point: Point?): Command {
         val directionOfRoom = point?.directionFrom(playerState.getLocation())
                 ?: playerState.getDirection()
         return if (directionOfRoom == playerState.getDirection()) {
