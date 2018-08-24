@@ -12,8 +12,8 @@ import java.awt.Point
 
 class KnowledgeBasedIntelligence : Intelligence() {
     internal val facts = FactMap()
-    private lateinit var world: World
-    private lateinit var commandResult: CommandResult
+    internal lateinit var world: World
+    internal lateinit var commandResult: CommandResult
 
     override fun chooseNextMove(world: World, commandResult: CommandResult): Command {
         super.chooseNextMove(world, commandResult)
@@ -126,7 +126,7 @@ class KnowledgeBasedIntelligence : Intelligence() {
         if(playerOnEdge()) {
             markEdgeRooms()
         }
-        assessCurrentRoom()
+        assessCurrentRoom(this.commandResult)
         assessNearbyRooms()
         reassessForNewInsight()
     }
@@ -147,7 +147,7 @@ class KnowledgeBasedIntelligence : Intelligence() {
         }
     }
 
-    private fun assessCurrentRoom() {
+    internal fun assessCurrentRoom(commandResult: CommandResult) {
         val perceivedObjects = toGameObjects(commandResult.getPerceptions())
         val playerLocation = commandResult.getPlayerState().getLocation()
         gameObjectValues().forEach { gameObject ->

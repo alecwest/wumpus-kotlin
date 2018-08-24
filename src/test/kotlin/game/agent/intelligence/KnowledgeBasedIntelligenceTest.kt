@@ -291,4 +291,14 @@ internal class KnowledgeBasedIntelligenceTest {
         assertEquals(1, result.first.size)
         assertEquals(3, result.second.size)
     }
+
+    @Test
+    fun `assess the current room`() {
+        intelligence.world = world
+        intelligence.commandResult = Helpers.createCommandResult(setOf(Perception.BREEZE, Perception.WALL_BUMP))
+        intelligence.assessCurrentRoom(intelligence.commandResult)
+        assertTrue(intelligence.facts.isTrue(Point(0, 0), HAS, BREEZE) == TRUE)
+        assertTrue(intelligence.facts.isTrue(Point(0, 0), HAS, WALL) == FALSE)
+        assertTrue(intelligence.facts.isTrue(Point(0, 0), HAS_NO, STENCH) == TRUE)
+    }
 }
