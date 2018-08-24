@@ -152,7 +152,7 @@ class KnowledgeBasedIntelligence : Intelligence() {
         val playerLocation = commandResult.getPlayerState().getLocation()
         gameObjectValues().forEach { gameObject ->
             if (gameObject.hasFeature(Blocking()) && perceivedObjects.contains(gameObject)) {
-                addPerceivedBlocker(gameObject)
+                addBlockingObject(gameObject)
             } else {
                 facts.addFact(
                         playerLocation,
@@ -162,7 +162,8 @@ class KnowledgeBasedIntelligence : Intelligence() {
         }
     }
 
-    private fun addPerceivedBlocker(gameObject: GameObject) {
+    internal fun addBlockingObject(gameObject: GameObject) {
+        if (!gameObject.hasFeature(Blocking())) return
         val playerLocation = commandResult.getPlayerState().getLocation()
         val blockerLocation = playerLocation.adjacent(commandResult.getPlayerState().getDirection())
         facts.addFact(playerLocation, HAS_NO, gameObject)

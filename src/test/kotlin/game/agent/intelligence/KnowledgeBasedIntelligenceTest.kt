@@ -301,4 +301,16 @@ internal class KnowledgeBasedIntelligenceTest {
         assertTrue(intelligence.facts.isTrue(Point(0, 0), HAS, WALL) == FALSE)
         assertTrue(intelligence.facts.isTrue(Point(0, 0), HAS_NO, STENCH) == TRUE)
     }
+
+    @Test
+    fun `add blocking object`() {
+        intelligence.world = world
+        intelligence.commandResult = Helpers.createCommandResult(
+                playerState = Helpers.createPlayerState(location = Point(4, 4)))
+        intelligence.addBlockingObject(GameObject.WALL)
+        assertEquals(TRUE, intelligence.facts.isTrue(Point(4, 4), HAS_NO, WALL))
+        assertEquals(TRUE, intelligence.facts.isTrue(Point(4, 5), HAS, WALL))
+        intelligence.addBlockingObject(GameObject.STENCH)
+        assertEquals(UNKNOWN, intelligence.facts.isTrue(Point(4, 5), HAS, STENCH))
+    }
 }
