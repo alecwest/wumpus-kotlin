@@ -77,11 +77,11 @@ class KnowledgeBasedIntelligence : Intelligence() {
     internal fun toCommands(playerState: PlayerState, point: Point?): List<Command> {
         val directionOfRoom = point?.directionFrom(playerState.getLocation())
                 ?: playerState.getDirection()
-        return listOf(if (directionOfRoom == playerState.getDirection()) {
-            MoveCommand()
+        return if (directionOfRoom == playerState.getDirection()) {
+            listOf(MoveCommand())
         } else {
-            TurnCommand(directionOfRoom)
-        })
+            listOf(TurnCommand(directionOfRoom), MoveCommand())
+        }
     }
 
     internal fun objectOrHereEffectInRoom(gameObject: GameObject): Boolean {

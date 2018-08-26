@@ -90,22 +90,22 @@ internal class KnowledgeBasedIntelligenceTest {
     }
 
     @Test
-    fun `turn around when danger is met`() {
+    fun `move back when danger is met`() {
         intelligence.processLastMove(world, Helpers.createCommandResult(
                 setOf(), Helpers.createPlayerState(location = Point(7, 2),
                 facing = Direction.EAST)))
-        assertEquals(listOf(TurnCommand(Direction.WEST)), intelligence.chooseNextMoves(world,
+        assertEquals(listOf(TurnCommand(Direction.WEST), MoveCommand()), intelligence.chooseNextMoves(world,
                 Helpers.createCommandResult(setOf(Perception.STENCH),
                         Helpers.createPlayerState(location = Point(8, 2),
                                 facing = Direction.EAST))))
     }
 
     @Test
-    fun `turn to the safe room on right or left when danger is met if it exists`() {
+    fun `move to the safe room on right or left when danger is met if it exists`() {
         intelligence.processLastMove(world, Helpers.createCommandResult(
                 setOf(),
                 Helpers.createPlayerState(location = Point(2, 1))))
-        assertEquals(listOf(TurnCommand(Direction.SOUTH)), intelligence.chooseNextMoves(world,
+        assertEquals(listOf(TurnCommand(Direction.SOUTH), MoveCommand()), intelligence.chooseNextMoves(world,
                 Helpers.createCommandResult(setOf(Perception.STENCH),
                         Helpers.createPlayerState(location = Point(2, 2),
                                 facing = Direction.EAST))))
@@ -185,12 +185,12 @@ internal class KnowledgeBasedIntelligenceTest {
     }
 
     @Test
-    fun `turn away from blocking rooms`() {
+    fun `move away from blocking rooms`() {
         intelligence.processLastMove(world, Helpers.createCommandResult(
                 playerState = Helpers.createPlayerState(location = Point(4, 5))))
         intelligence.processLastMove(world, Helpers.createCommandResult(
                 playerState = Helpers.createPlayerState(location = Point(5, 4))))
-        assertEquals(listOf(TurnCommand(Direction.EAST)),
+        assertEquals(listOf(TurnCommand(Direction.EAST), MoveCommand()),
                 intelligence.chooseNextMoves(world, Helpers.createCommandResult(
                 setOf(Perception.WALL_BUMP),
                 Helpers.createPlayerState(location = Point(5, 5),
@@ -249,13 +249,13 @@ internal class KnowledgeBasedIntelligenceTest {
         assertEquals(listOf(MoveCommand()), intelligence.toCommands(
                 Helpers.createPlayerState(location = Point(4, 4), facing = Direction.NORTH),
                 Point(4, 5)))
-        assertEquals(listOf(TurnCommand(Direction.EAST)), intelligence.toCommands(
+        assertEquals(listOf(TurnCommand(Direction.EAST), MoveCommand()), intelligence.toCommands(
                 Helpers.createPlayerState(location = Point(4, 4), facing = Direction.NORTH),
                 Point(5, 4)))
-        assertEquals(listOf(TurnCommand(Direction.SOUTH)), intelligence.toCommands(
+        assertEquals(listOf(TurnCommand(Direction.SOUTH), MoveCommand()), intelligence.toCommands(
                 Helpers.createPlayerState(location = Point(4, 4), facing = Direction.NORTH),
                 Point(4, 3)))
-        assertEquals(listOf(TurnCommand(Direction.WEST)), intelligence.toCommands(
+        assertEquals(listOf(TurnCommand(Direction.WEST), MoveCommand()), intelligence.toCommands(
                 Helpers.createPlayerState(location = Point(4, 4), facing = Direction.NORTH),
                 Point(3, 4)))
         assertEquals(listOf(MoveCommand()), intelligence.toCommands(
@@ -300,7 +300,7 @@ internal class KnowledgeBasedIntelligenceTest {
     }
 
     @Test
-    fun `get best explorative move`() {
+    fun `get best explorative moves`() {
         intelligence.facts.addFact(Point(4, 5), HAS, PIT)
         intelligence.commandResult = Helpers.createCommandResult(setOf(Perception.BREEZE),
                 Helpers.createPlayerState(location = Point(4, 4), facing = Direction.NORTH))
@@ -308,7 +308,7 @@ internal class KnowledgeBasedIntelligenceTest {
         for (gameObject in gameObjectValues()) {
             intelligence.facts.addFact(Point(4, 3), HAS_NO, gameObject)
         }
-        assertEquals(listOf(TurnCommand(Direction.SOUTH)), intelligence.bestExplorativeMoves(intelligence.commandResult.getPlayerState()))
+        assertEquals(listOf(TurnCommand(Direction.SOUTH), MoveCommand()), intelligence.bestExplorativeMoves(intelligence.commandResult.getPlayerState()))
         assertEquals(listOf(MoveCommand()), intelligence.bestExplorativeMoves(Helpers.createPlayerState(
                 location = Point(4, 4), facing = Direction.SOUTH)))
     }
