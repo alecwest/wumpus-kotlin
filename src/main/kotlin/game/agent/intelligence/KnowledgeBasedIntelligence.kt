@@ -74,7 +74,6 @@ class KnowledgeBasedIntelligence : Intelligence() {
         return count
     }
 
-    // TODO should return null if point is bad?
     internal fun toCommand(playerState: PlayerState, point: Point?): Command {
         val directionOfRoom = point?.directionFrom(playerState.getLocation())
                 ?: playerState.getDirection()
@@ -121,93 +120,6 @@ class KnowledgeBasedIntelligence : Intelligence() {
         super.processLastMove(world, commandResult)
         this.world = world
         this.commandResult = commandResult
-        if(playerOnEdge()) {
-            markEdgeRooms(this.commandResult)
-        }
-        assessCurrentRoom(this.commandResult)
-        assessNearbyRooms(this.commandResult.getPlayerState().getLocation())
-        reassessForNewInsight()
-    }
-
-    internal fun playerOnEdge(): Boolean {
-        return commandResult.getPlayerState().getLocation().adjacents().any {
-            !world.roomIsValid(it)
-        }
-    }
-
-
-    internal fun markEdgeRooms(commandResult: CommandResult) {
-        val edgeRooms = commandResult.getPlayerState().getLocation().adjacents().filter { !world.roomIsValid(it) }
-        edgeRooms.forEach { edgeRoom ->
-            gameObjectValues().forEach { gameObject ->
-                facts.addFact(edgeRoom, HAS_NO, gameObject)
-            }
-        }
-    }
-
-    internal fun assessCurrentRoom(commandResult: CommandResult) {
-        val perceivedObjects = toGameObjects(commandResult.getPerceptions())
-        val playerLocation = commandResult.getPlayerState().getLocation()
-        gameObjectValues().forEach { gameObject ->
-            if (gameObject.hasFeature(Blocking()) && perceivedObjects.contains(gameObject)) {
-                addBlockingObject(commandResult, gameObject)
-            } else {
-                facts.addFact(
-                        playerLocation,
-                        if (perceivedObjects.contains(gameObject)) HAS else HAS_NO,
-                        gameObject)
-            }
-        }
-    }
-
-    internal fun addBlockingObject(commandResult: CommandResult, gameObject: GameObject) {
-        if (!gameObject.hasFeature(Blocking())) return
-        val playerLocation = commandResult.getPlayerState().getLocation()
-        val blockerLocation = playerLocation.adjacent(commandResult.getPlayerState().getDirection())
-        facts.addFact(playerLocation, HAS_NO, gameObject)
-        facts.addFact(blockerLocation, HAS, gameObject)
-        world.addGameObject(blockerLocation, gameObject)
-    }
-
-    internal fun assessNearbyRooms(playerLocation: Point) {
-        gameObjectsWithFeatures(setOf(WorldAffecting())).forEach { gameObject ->
-            val worldAffecting = gameObject.getFeature(WorldAffecting()) as WorldAffecting
-            worldAffecting.effects.forEach { worldEffect ->
-                if (facts.isTrue(playerLocation, HAS_NO, worldEffect.gameObject) == TRUE) {
-                    worldEffect.roomsAffected(playerLocation).forEach { roomAffected ->
-                        facts.addFact(roomAffected, HAS_NO, gameObject)
-                    }
-                }
-            }
-        }
-    }
-
-    internal fun reassessForNewInsight() {
-        val factsToAdd = FactMap()
-        facts.getMap().forEach { fact ->
-            val effectSet = facts.getEffectsInRoom(fact.key)
-            effectSet.forEach { effectGameObject ->
-                val objectsThatCreateThis = effectGameObject.objectsThatCreateThis()
-                objectsThatCreateThis.forEach { objectThatCreatesThis ->
-                    val worldAffecting = objectThatCreatesThis.getFeature(WorldAffecting()) as WorldAffecting
-                    val potentialRoomsLeftForObjectThatCreatesThis = mutableListOf<Point>()
-                    worldAffecting.effects.forEach { worldEffect ->
-                        if (worldEffect.gameObject == effectGameObject) {
-                            potentialRoomsLeftForObjectThatCreatesThis.addAll(worldEffect.roomsAffected(fact.key).filter { roomAffected ->
-                                facts.isTrue(roomAffected, HAS_NO, objectThatCreatesThis) != TRUE
-                            })
-                        }
-                    }
-                    if (potentialRoomsLeftForObjectThatCreatesThis.size == 1) {
-                        factsToAdd.addFact(potentialRoomsLeftForObjectThatCreatesThis[0], HAS, objectThatCreatesThis)
-                    }
-                }
-            }
-        }
-        factsToAdd.getMap().forEach { point, factSet ->
-            factSet.forEach { fact ->
-                facts.addFact(point, fact.second, fact.first)
-            }
-        }
+        FactProcessor.processLastMove(facts, this.world, this.commandResult)
     }
 }

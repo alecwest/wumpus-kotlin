@@ -57,14 +57,6 @@ internal class KnowledgeBasedIntelligenceTest {
     }
 
     @Test
-    fun `assess edge room case`() {
-        intelligence.processLastMove(world, Helpers.createCommandResult(
-                setOf(Perception.BREEZE),
-                Helpers.createPlayerState(location = Point(0, 4))))
-        assertEquals(true, intelligence.playerOnEdge())
-    }
-
-    @Test
     fun `reassess rooms for new insight into danger locations based on most recent perceptions`() {
         intelligence.processLastMove(world, Helpers.createCommandResult(
                 setOf(Perception.BREEZE),
@@ -296,62 +288,6 @@ internal class KnowledgeBasedIntelligenceTest {
         result = intelligence.splitKnownAndUncertainRooms(Point(4, 4).adjacents())
         assertEquals(1, result.first.size)
         assertEquals(3, result.second.size)
-    }
-
-    @Test
-    fun `assess the current room`() {
-        intelligence.commandResult = Helpers.createCommandResult(setOf(Perception.BREEZE, Perception.WALL_BUMP))
-        intelligence.assessCurrentRoom(intelligence.commandResult)
-        assertTrue(intelligence.facts.isTrue(Point(0, 0), HAS, BREEZE) == TRUE)
-        assertTrue(intelligence.facts.isTrue(Point(0, 0), HAS, WALL) == FALSE)
-        assertTrue(intelligence.facts.isTrue(Point(0, 0), HAS_NO, STENCH) == TRUE)
-    }
-
-    @Test
-    fun `add blocking object`() {
-        intelligence.commandResult = Helpers.createCommandResult(
-                playerState = Helpers.createPlayerState(location = Point(4, 4)))
-        intelligence.addBlockingObject(intelligence.commandResult, GameObject.WALL)
-        assertEquals(TRUE, intelligence.facts.isTrue(Point(4, 4), HAS_NO, WALL))
-        assertEquals(TRUE, intelligence.facts.isTrue(Point(4, 5), HAS, WALL))
-        intelligence.addBlockingObject(intelligence.commandResult, GameObject.STENCH)
-        assertEquals(UNKNOWN, intelligence.facts.isTrue(Point(4, 5), HAS, STENCH))
-    }
-
-    @Test
-    fun `assess nearby rooms`() {
-        intelligence.commandResult = Helpers.createCommandResult(setOf(Perception.BREEZE),
-                playerState = Helpers.createPlayerState(location = Point(4, 4)))
-        intelligence.facts.addFact(Point(4, 4), HAS_NO, BREEZE)
-        intelligence.facts.addFact(Point(4, 4), HAS, STENCH)
-        intelligence.assessNearbyRooms(Point(4, 4))
-        assertEquals(TRUE, intelligence.facts.isTrue(Point(4, 5), HAS_NO, PIT))
-        assertEquals(UNKNOWN, intelligence.facts.isTrue(Point(4, 5), HAS_NO, WUMPUS))
-    }
-
-    @Test
-    fun `reassess for new insight`() {
-        intelligence.facts.addFact(Point(4, 4), HAS, BREEZE)
-        intelligence.facts.addFact(Point(4, 5), HAS_NO, PIT)
-        intelligence.facts.addFact(Point(4, 3), HAS_NO, PIT)
-        intelligence.reassessForNewInsight()
-        assertEquals(UNKNOWN, intelligence.facts.isTrue(Point(5, 4), HAS, PIT))
-        intelligence.facts.addFact(Point(3, 4), HAS_NO, PIT)
-        intelligence.reassessForNewInsight()
-        assertEquals(TRUE, intelligence.facts.isTrue(Point(5, 4), HAS, PIT))
-    }
-
-    @Test
-    fun `mark edge rooms`() {
-        intelligence.markEdgeRooms(Helpers.createCommandResult(
-                playerState = Helpers.createPlayerState(location = Point(4, 4))))
-        assertEquals(0, intelligence.facts.getMap().size)
-        intelligence.markEdgeRooms(Helpers.createCommandResult(
-                playerState = Helpers.createPlayerState(location = Point(0, 4))))
-        assertEquals(1, intelligence.facts.getMap().size)
-        for (gameObject in gameObjectValues()) {
-            assertEquals(TRUE, intelligence.facts.isTrue(Point(-1, 4), HAS_NO, gameObject))
-        }
     }
 
     @Test
