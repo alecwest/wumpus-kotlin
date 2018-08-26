@@ -11,12 +11,12 @@ import util.right
  * BasicIntelligence is a proof on concept intelligence that either moves forward or turns right.
  */
 class BasicIntelligence : Intelligence() {
-    override fun chooseNextMove(world: World, commandResult: CommandResult): Command {
+    override fun chooseNextMove(world: World, commandResult: CommandResult): List<Command> {
         super.chooseNextMove(world, commandResult)
-        return if (commandResult.moveRejected()) {
+        return listOf(if (commandResult.moveRejected()) {
             TurnCommand(commandResult.getPlayerState().getDirection().right())
         } else {
             MoveCommand()
-        }
+        })
     }
 }

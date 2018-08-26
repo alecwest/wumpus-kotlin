@@ -43,7 +43,7 @@ internal class AgentTest {
     @ParameterizedTest
     @MethodSource("validBasicIntelligenceAgentTestDataProvider")
     fun `choose next move with basic intelligence`(testData: ValidAgentTestData) {
-        assertEquals(testData.expectedCommand, basicIntelligenceAgent.chooseNextMove(testData.givenWorld, testData.givenCommandResult))
+        assertEquals(testData.expectedCommands, basicIntelligenceAgent.chooseNextMove(testData.givenWorld, testData.givenCommandResult))
     }
 
     @ParameterizedTest
@@ -66,11 +66,11 @@ internal class AgentTest {
 
         @JvmStatic
         fun validBasicIntelligenceAgentTestDataProvider() = Stream.of(
-                ValidAgentTestData(world, commandResult, MoveCommand()),
+                ValidAgentTestData(world, commandResult, listOf(MoveCommand())),
                 ValidAgentTestData(world, commandResult.copyThis(
                         perceptions = setOf(Perception.BLOCKADE_BUMP),
                         playerState = commandResult.getPlayerState().copyThis(location = Point(0, 0))),
-                        TurnCommand(Direction.EAST))
+                        listOf(TurnCommand(Direction.EAST)))
         )
 
         @JvmStatic
@@ -99,7 +99,7 @@ internal class AgentTest {
 data class ValidAgentTestData (
         val givenWorld: World,
         val givenCommandResult: CommandResult,
-        val expectedCommand: Command
+        val expectedCommands: List<Command>
 )
 
 data class ValidPostMoveAgentTestData (

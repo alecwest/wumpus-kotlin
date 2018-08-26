@@ -13,11 +13,12 @@ class Agent(internal val client: Client, internal val intelligence: Intelligence
     internal val world: World = World(client.getWorldSize())
 
     fun makeNextMove() {
-        val command = chooseNextMove()
-        client.makeMove(command)
+        chooseNextMove().forEach {
+            client.makeMove(it)
+        }
     }
 
-    internal fun chooseNextMove(world: World = this.world, lastMove: CommandResult = client.getMoveResult()): Command {
+    internal fun chooseNextMove(world: World = this.world, lastMove: CommandResult = client.getMoveResult()): List<Command> {
         return intelligence.chooseNextMove(world, lastMove)
     }
 }

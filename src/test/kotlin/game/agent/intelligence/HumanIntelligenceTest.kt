@@ -14,25 +14,25 @@ internal class HumanIntelligenceTest {
     @MethodSource("validHumanIntelligenceTestDataProvider")
     fun `choose next move with human intelligence`(testData: ValidHumanIntelligenceTestData) {
         System.setIn(ByteArrayInputStream(testData.givenInput.toByteArray()))
-        assertEquals(testData.expectedCommand, HumanIntelligence().chooseNextMove(IntelligenceTest.world, IntelligenceTest.commandResult))
+        assertEquals(testData.expectedCommands, HumanIntelligence().chooseNextMove(IntelligenceTest.world, IntelligenceTest.commandResult))
     }
 
     companion object {
         @JvmStatic
         fun validHumanIntelligenceTestDataProvider() = Stream.of(
-                ValidHumanIntelligenceTestData("m", MoveCommand()),
-                ValidHumanIntelligenceTestData("move\nm", MoveCommand()),
-                ValidHumanIntelligenceTestData("r", TurnCommand(Direction.EAST)),
-                ValidHumanIntelligenceTestData("l", TurnCommand(Direction.WEST)),
-                ValidHumanIntelligenceTestData("s", ShootCommand()),
-                ValidHumanIntelligenceTestData("a", GrabCommand(InventoryItem.ARROW)),
-                ValidHumanIntelligenceTestData("f", GrabCommand(InventoryItem.FOOD)),
-                ValidHumanIntelligenceTestData("g", GrabCommand(InventoryItem.GOLD))
+                ValidHumanIntelligenceTestData("m", listOf(MoveCommand())),
+                ValidHumanIntelligenceTestData("move\nm", listOf(MoveCommand())),
+                ValidHumanIntelligenceTestData("r", listOf(TurnCommand(Direction.EAST))),
+                ValidHumanIntelligenceTestData("l", listOf(TurnCommand(Direction.WEST))),
+                ValidHumanIntelligenceTestData("s", listOf(ShootCommand())),
+                ValidHumanIntelligenceTestData("a", listOf(GrabCommand(InventoryItem.ARROW))),
+                ValidHumanIntelligenceTestData("f", listOf(GrabCommand(InventoryItem.FOOD))),
+                ValidHumanIntelligenceTestData("g", listOf(GrabCommand(InventoryItem.GOLD)))
         )
     }
 }
 
 data class ValidHumanIntelligenceTestData (
     val givenInput: String,
-    val expectedCommand: Command
+    val expectedCommands: List<Command>
 )
