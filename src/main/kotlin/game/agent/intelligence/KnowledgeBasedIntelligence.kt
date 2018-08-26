@@ -35,6 +35,16 @@ class KnowledgeBasedIntelligence : Intelligence() {
         return toCommands(playerState, orderOfRoomPreferences.firstOrNull())
     }
 
+    /**
+     * pathToRoom should consider the fact that each turn+move combo costs 2 moves,
+     * meaning the diagonal path is not necessarily the best
+     */
+    fun pathToRoom(point: Point): Set<Point> {
+        val path = mutableSetOf<Point>()
+
+        return path
+    }
+
     internal fun buildRoomPreferences(playerState: PlayerState): Set<Point> {
         val orderOfRoomPreferences = arrayListOf<Point>()
         val knownAndUncertainRooms = splitKnownAndUncertainRooms(getSafeRooms(playerState))
