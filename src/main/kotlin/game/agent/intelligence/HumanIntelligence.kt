@@ -8,8 +8,8 @@ import util.left
 import util.right
 
 class HumanIntelligence: Intelligence() {
-    override fun chooseNextMove(world: World, commandResult: CommandResult): List<Command> {
-        super.chooseNextMove(world, commandResult)
+    override fun chooseNextMoves(world: World, commandResult: CommandResult): List<Command> {
+        super.chooseNextMoves(world, commandResult)
         println(world.getWorldMap(commandResult.getPlayerState()))
         println(commandResult.toString())
         var move = readLine() ?: ""

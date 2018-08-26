@@ -14,7 +14,7 @@ internal class HumanIntelligenceTest {
     @MethodSource("validHumanIntelligenceTestDataProvider")
     fun `choose next move with human intelligence`(testData: ValidHumanIntelligenceTestData) {
         System.setIn(ByteArrayInputStream(testData.givenInput.toByteArray()))
-        assertEquals(testData.expectedCommands, HumanIntelligence().chooseNextMove(IntelligenceTest.world, IntelligenceTest.commandResult))
+        assertEquals(testData.expectedCommands, HumanIntelligence().chooseNextMoves(IntelligenceTest.world, IntelligenceTest.commandResult))
     }
 
     companion object {

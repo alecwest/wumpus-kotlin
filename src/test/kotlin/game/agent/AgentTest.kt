@@ -43,13 +43,13 @@ internal class AgentTest {
     @ParameterizedTest
     @MethodSource("validBasicIntelligenceAgentTestDataProvider")
     fun `choose next move with basic intelligence`(testData: ValidAgentTestData) {
-        assertEquals(testData.expectedCommands, basicIntelligenceAgent.chooseNextMove(testData.givenWorld, testData.givenCommandResult))
+        assertEquals(testData.expectedCommands, basicIntelligenceAgent.chooseNextMoves(testData.givenWorld, testData.givenCommandResult))
     }
 
     @ParameterizedTest
     @MethodSource("validPostMoveBasicIntelligenceAgentTestDataProvider")
     fun `make next move with basic intelligence`(testData: ValidPostMoveAgentTestData) {
-        basicIntelligenceAgent.makeNextMove()
+        basicIntelligenceAgent.makeNextMoves()
         assertEquals(testData.expectedCommandResult, basicIntelligenceAgent.client.getMoveResult())
     }
 

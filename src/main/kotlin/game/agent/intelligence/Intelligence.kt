@@ -8,7 +8,7 @@ import game.world.gameObjectValues
 import game.world.toGameObject
 
 abstract class Intelligence {
-    open fun chooseNextMove(world: World, commandResult: CommandResult): List<Command> {
+    open fun chooseNextMoves(world: World, commandResult: CommandResult): List<Command> {
         processLastMove(world, commandResult)
         return listOf(MoveCommand())
     }

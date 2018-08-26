@@ -14,7 +14,7 @@ class BasicIntelligenceTest {
     @ParameterizedTest
     @MethodSource("validBasicIntelligenceTestDataProvider")
     fun `choose next move with basic intelligence`(testData: ValidBasicIntelligenceTestData) {
-        Assertions.assertEquals(testData.expectedCommands, BasicIntelligence().chooseNextMove(testData.givenWorld, testData.givenCommandResult))
+        Assertions.assertEquals(testData.expectedCommands, BasicIntelligence().chooseNextMoves(testData.givenWorld, testData.givenCommandResult))
     }
 
     companion object {

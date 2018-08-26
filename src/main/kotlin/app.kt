@@ -7,7 +7,7 @@ fun main(args: Array<String>) {
     val agent = Agent(Client("src/main/resources/originalMap.json"), KnowledgeBasedIntelligence())
 
     while (Server.getGame(0).isPlayerAlive()) {
-        agent.makeNextMove()
+        agent.makeNextMoves()
 //        println("Enter to continue: ")
 //        readLine()
     }

@@ -15,8 +15,8 @@ class KnowledgeBasedIntelligence : Intelligence() {
     internal lateinit var world: World
     internal lateinit var commandResult: CommandResult
 
-    override fun chooseNextMove(world: World, commandResult: CommandResult): List<Command> {
-        super.chooseNextMove(world, commandResult)
+    override fun chooseNextMoves(world: World, commandResult: CommandResult): List<Command> {
+        super.chooseNextMoves(world, commandResult)
         processLastMove(world, commandResult)
         println(world.getWorldMap(commandResult.getPlayerState()))
         println(commandResult.toString())
@@ -26,13 +26,13 @@ class KnowledgeBasedIntelligence : Intelligence() {
         return if (inventoryItems.isNotEmpty()) {
             listOf(GrabCommand(inventoryItems.first()!!))
         } else {
-            bestExplorativeMove(commandResult.getPlayerState())
+            bestExplorativeMoves(commandResult.getPlayerState())
         }
     }
 
-    internal fun bestExplorativeMove(playerState: PlayerState): List<Command> {
+    internal fun bestExplorativeMoves(playerState: PlayerState): List<Command> {
         val orderOfRoomPreferences = buildRoomPreferences(playerState)
-        return toCommand(playerState, orderOfRoomPreferences.firstOrNull())
+        return toCommands(playerState, orderOfRoomPreferences.firstOrNull())
     }
 
     internal fun buildRoomPreferences(playerState: PlayerState): Set<Point> {
@@ -74,7 +74,7 @@ class KnowledgeBasedIntelligence : Intelligence() {
         return count
     }
 
-    internal fun toCommand(playerState: PlayerState, point: Point?): List<Command> {
+    internal fun toCommands(playerState: PlayerState, point: Point?): List<Command> {
         val directionOfRoom = point?.directionFrom(playerState.getLocation())
                 ?: playerState.getDirection()
         return listOf(if (directionOfRoom == playerState.getDirection()) {

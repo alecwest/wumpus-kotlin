@@ -12,13 +12,13 @@ import game.world.World
 class Agent(internal val client: Client, internal val intelligence: Intelligence) {
     internal val world: World = World(client.getWorldSize())
 
-    fun makeNextMove() {
-        chooseNextMove().forEach {
+    fun makeNextMoves() {
+        chooseNextMoves().forEach {
             client.makeMove(it)
         }
     }
 
-    internal fun chooseNextMove(world: World = this.world, lastMove: CommandResult = client.getMoveResult()): List<Command> {
-        return intelligence.chooseNextMove(world, lastMove)
+    internal fun chooseNextMoves(world: World = this.world, lastMove: CommandResult = client.getMoveResult()): List<Command> {
+        return intelligence.chooseNextMoves(world, lastMove)
     }
 }
