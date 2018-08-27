@@ -11,7 +11,7 @@ abstract class Command {
 
     abstract fun execute()
 
-    open fun getMoveCost(): Int {
+    open fun getMoveCost(playerState: PlayerState? = null): Int {
         return 1
     }
 

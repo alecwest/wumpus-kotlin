@@ -222,17 +222,6 @@ internal class KnowledgeBasedIntelligenceTest {
     }
 
     @Test
-    fun `get turn count`() {
-        val playerState = Helpers.createPlayerState(location = Point(0, 5),
-                facing = Direction.NORTH)
-        assertEquals(0, intelligence.getTurnCount(playerState, Point(0, 5).north()))
-        assertEquals(1, intelligence.getTurnCount(playerState, Point(0, 5).east()))
-        assertEquals(2, intelligence.getTurnCount(playerState, Point(0, 5).south()))
-        assertEquals(1, intelligence.getTurnCount(playerState, Point(0, 5).west()))
-        assertEquals(null, intelligence.getTurnCount(playerState, Point(0, 5).northEast()))
-    }
-
-    @Test
     fun `can move in direction`() {
         intelligence.processLastMove(world, Helpers.createCommandResult(setOf(Perception.WALL_BUMP),
                 Helpers.createPlayerState(location = Point(4, 4))))

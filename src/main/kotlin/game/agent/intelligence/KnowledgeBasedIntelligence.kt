@@ -49,8 +49,8 @@ class KnowledgeBasedIntelligence : Intelligence() {
         val orderOfRoomPreferences = arrayListOf<Point>()
         val knownAndUncertainRooms = splitKnownAndUncertainRooms(getSafeRooms(playerState))
 
-        knownAndUncertainRooms.first.sortBy { getTurnCount(playerState, it) }
-        knownAndUncertainRooms.second.sortBy { getTurnCount(playerState, it) }
+        knownAndUncertainRooms.first.sortBy { toCommands(playerState, it).map { it.getMoveCost(playerState) }.sum() }
+        knownAndUncertainRooms.second.sortBy { toCommands(playerState, it).map { it.getMoveCost(playerState) }.sum() }
 
          orderOfRoomPreferences.addAll(knownAndUncertainRooms.second + knownAndUncertainRooms.first)
 
@@ -70,18 +70,6 @@ class KnowledgeBasedIntelligence : Intelligence() {
             else knownAndUncertainRooms.second.add(it)
         }
         return knownAndUncertainRooms
-    }
-
-    internal fun getTurnCount(playerState: PlayerState, point: Point): Int? {
-        var count = 0
-        var currentDirection = playerState.getDirection()
-        val targetDirection = point.directionFrom(playerState.getLocation()) ?: return null
-        while (currentDirection != targetDirection) {
-            count++
-            currentDirection = if (currentDirection.left() == targetDirection)
-                currentDirection.left() else currentDirection.right()
-        }
-        return count
     }
 
     internal fun toCommands(playerState: PlayerState, point: Point?): List<Command> {
