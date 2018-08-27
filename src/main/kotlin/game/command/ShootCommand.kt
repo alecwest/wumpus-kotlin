@@ -11,30 +11,40 @@ class ShootCommand: Command() {
     private val perceptionList = mutableSetOf<Perception>()
 
     override fun execute() {
-        if (game.playerHasItem(InventoryItem.ARROW)) {
-            var currentRoom = game.getPlayerLocation().adjacent(game.getPlayerDirection())
-            game.removeFromPlayerInventory(InventoryItem.ARROW)
-            loop@ while (game.roomIsValid(currentRoom)) {
-                val destructables = getDestructablesFromRoom(currentRoom)
-                for (destructable in destructables) {
-                    if ((destructable.getFeature(Destructable()) as Destructable).weaknesses.contains(GameObject.ARROW)) {
-                        kill(currentRoom, destructable)
-                        break@loop
+        game?.let { game ->
+            if (game.playerHasItem(InventoryItem.ARROW)) {
+                var currentRoom = game.getPlayerLocation().adjacent(game.getPlayerDirection())
+                game.removeFromPlayerInventory(InventoryItem.ARROW)
+                loop@ while (game.roomIsValid(currentRoom)) {
+                    val destructables = getDestructablesFromRoom(currentRoom)
+                    for (destructable in destructables) {
+                        if ((destructable.getFeature(Destructable()) as Destructable).weaknesses.contains(GameObject.ARROW)) {
+                            kill(currentRoom, destructable)
+                            break@loop
+                        }
                     }
+                    currentRoom = currentRoom.adjacent(game.getPlayerDirection())
                 }
-                currentRoom = currentRoom.adjacent(game.getPlayerDirection())
             }
+            game.setCommandResult(createCommandResult(perceptionList))
         }
-        game.setCommandResult(createCommandResult(perceptionList))
     }
 
-    private fun getDestructablesFromRoom(room: Point) = game.getGameObjects(room).filter {
-        it.hasFeature(Destructable())
-    } as ArrayList<GameObject>
+    private fun getDestructablesFromRoom(room: Point): ArrayList<GameObject> {
+        val destructables = arrayListOf<GameObject>()
+        game?.let { game ->
+            destructables.addAll(game.getGameObjects(room).filter {
+                it.hasFeature(Destructable())
+            } as ArrayList<GameObject>)
+        }
+        return destructables
+    }
 
     private fun kill(room: Point, gameObject: GameObject) {
-        game.removeFromRoom(room, gameObject)
+        game?.let { game ->
+            game.removeFromRoom(room, gameObject)
         perceptionList.add(Perception.SCREAM)
+        }
     }
 
     override fun equals(other: Any?): Boolean {

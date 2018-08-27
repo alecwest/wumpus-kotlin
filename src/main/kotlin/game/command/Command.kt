@@ -7,7 +7,7 @@ import game.world.GameObjectFeature.*
 import game.world.Perception
 
 abstract class Command {
-    internal lateinit var game: Game
+    internal var game: Game? = null
 
     abstract fun execute()
 
@@ -20,15 +20,17 @@ abstract class Command {
     }
 
     fun createCommandResult(perceptions: Set<Perception> = createPerceptions(),
-                            playerState: PlayerState = game.getPlayerState()): CommandResult {
+                            playerState: PlayerState = game?.getPlayerState() ?: PlayerState()): CommandResult {
         return CommandResult(perceptions, playerState)
     }
 
     fun createPerceptions(): Set<Perception> {
-        val location = game.getPlayerLocation()
         val perceptionList = mutableSetOf<Perception>()
-        for (content in game.getGameObjects(location).filter { it.hasFeature(Perceptable()) }) {
-            (content.getFeature(Perceptable()) as Perceptable).perception?.let { perceptionList.add(it) }
+        if (game != null) {
+            val location = game!!.getPlayerLocation()
+            for (content in game!!.getGameObjects(location).filter { it.hasFeature(Perceptable()) }) {
+                (content.getFeature(Perceptable()) as Perceptable).perception?.let { perceptionList.add(it) }
+            }
         }
         return perceptionList
     }

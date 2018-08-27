@@ -7,45 +7,52 @@ import java.awt.Point
 
 class MoveCommand: Command() {
     override fun execute() {
-        val direction = game.getPlayerDirection()
-        val targetLocation = game.getPlayerLocation().adjacent(direction)
-        val perceptionList = mutableSetOf<Perception>()
-        when {
-            canEnterRoom(targetLocation) -> {
-                deferExecution(direction)
-                for (gameObject in game.getGameObjects(targetLocation).filter { it.hasFeature(Perceptable()) }) {
-                    val perceptable = (gameObject.getFeature(Perceptable()) as Perceptable).perception ?: continue
-                    perceptionList.add(perceptable)
+        game?.let { game ->
+            val direction = game.getPlayerDirection()
+            val targetLocation = game.getPlayerLocation().adjacent(direction)
+            val perceptionList = mutableSetOf<Perception>()
+            when {
+                canEnterRoom(targetLocation) -> {
+                    deferExecution(direction)
+                    for (gameObject in game.getGameObjects(targetLocation).filter { it.hasFeature(Perceptable()) }) {
+                        val perceptable = (gameObject.getFeature(Perceptable()) as Perceptable).perception ?: continue
+                        perceptionList.add(perceptable)
+                    }
                 }
-            }
-            game.roomIsValid(targetLocation) -> {
-                for (gameObject in game.getGameObjects(targetLocation).filter { it.hasFeature(Blocking()) }) {
-                    val perception = (gameObject.getFeature(Perceptable()) as Perceptable).perception
-                    if (perception != null) perceptionList.add(perception)
+                game.roomIsValid(targetLocation) -> {
+                    for (gameObject in game.getGameObjects(targetLocation).filter { it.hasFeature(Blocking()) }) {
+                        val perception = (gameObject.getFeature(Perceptable()) as Perceptable).perception
+                        if (perception != null) perceptionList.add(perception)
+                    }
                 }
+                else -> perceptionList.add(Perception.WALL_BUMP)
             }
-            else -> perceptionList.add(Perception.WALL_BUMP)
-        }
 
-        game.setCommandResult(createCommandResult(perceptionList))
+            game.setCommandResult(createCommandResult(perceptionList))
+        }
     }
 
     private fun canEnterRoom(point: Point): Boolean {
-        if(game.getGameObjects(point).any { it.hasFeature(Blocking()) } || !game.roomIsValid(point)) {
-            return false
+        game?.let { game ->
+            if(game.getGameObjects(point).any { it.hasFeature(Blocking()) } || !game.roomIsValid(point)) {
+                return false
+            }
         }
         return true
     }
 
     private fun deferExecution(direction: Direction) {
-        val command = when(direction) {
-            Direction.NORTH -> MoveNorthCommand()
-            Direction.EAST -> MoveEastCommand()
-            Direction.SOUTH -> MoveSouthCommand()
-            Direction.WEST -> MoveWestCommand()
+        game?.let { game ->
+            val command = when(direction) {
+                Direction.NORTH -> MoveNorthCommand()
+                Direction.EAST -> MoveEastCommand()
+                Direction.SOUTH -> MoveSouthCommand()
+                Direction.WEST -> MoveWestCommand()
+            }
+
+            command.setGame(game)
+            command.execute()
         }
-        command.setGame(this.game)
-        command.execute()
     }
 
     override fun equals(other: Any?): Boolean {
@@ -61,24 +68,24 @@ class MoveCommand: Command() {
 
 private class MoveNorthCommand: Command() {
     override fun execute() {
-        game.setPlayerLocation(game.getPlayerLocation().north())
+        game!!.setPlayerLocation(game!!.getPlayerLocation().north())
     }
 }
 
 private class MoveEastCommand: Command() {
     override fun execute() {
-        game.setPlayerLocation(game.getPlayerLocation().east())
+        game!!.setPlayerLocation(game!!.getPlayerLocation().east())
     }
 }
 
-class MoveSouthCommand: Command() {
+private class MoveSouthCommand: Command() {
     override fun execute() {
-        game.setPlayerLocation(game.getPlayerLocation().south())
+        game!!.setPlayerLocation(game!!.getPlayerLocation().south())
     }
 }
 
-class MoveWestCommand: Command() {
+private class MoveWestCommand: Command() {
     override fun execute() {
-        game.setPlayerLocation(game.getPlayerLocation().west())
+        game!!.setPlayerLocation(game!!.getPlayerLocation().west())
     }
 }

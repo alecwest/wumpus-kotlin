@@ -5,14 +5,17 @@ import game.world.GameObject
 
 class GrabCommand(private val inventoryItem: InventoryItem): Command() {
     override fun execute() {
-        var command = when(inventoryItem){
-            InventoryItem.ARROW -> GrabArrowCommand()
-            InventoryItem.FOOD -> GrabFoodCommand()
-            InventoryItem.GOLD -> GrabGoldCommand()
+        game?.let { game ->
+            var command = when(inventoryItem){
+                InventoryItem.ARROW -> GrabArrowCommand()
+                InventoryItem.FOOD -> GrabFoodCommand()
+                InventoryItem.GOLD -> GrabGoldCommand()
+            }
+
+            command.setGame(game)
+            command.execute()
+            game.setCommandResult(createCommandResult())
         }
-        command.setGame(this.game)
-        command.execute()
-        game.setCommandResult(createCommandResult())
     }
 
     override fun equals(other: Any?): Boolean {
@@ -31,30 +34,30 @@ class GrabCommand(private val inventoryItem: InventoryItem): Command() {
 
 private class GrabArrowCommand: Command() {
     override fun execute() {
-        val playerLocation = game.getPlayerLocation()
-        if (game.hasGameObject(playerLocation, GameObject.ARROW)) {
-            game.addToPlayerInventory(InventoryItem.ARROW)
-            game.removeFromRoom(playerLocation, GameObject.ARROW)
+        val playerLocation = game!!.getPlayerLocation()
+        if (game!!.hasGameObject(playerLocation, GameObject.ARROW)) {
+            game!!.addToPlayerInventory(InventoryItem.ARROW)
+            game!!.removeFromRoom(playerLocation, GameObject.ARROW)
         }
     }
 }
 
 private class GrabFoodCommand: Command() {
     override fun execute() {
-        val playerLocation = game.getPlayerLocation()
-        if (game.hasGameObject(playerLocation, GameObject.FOOD)) {
-            game.addToPlayerInventory(InventoryItem.FOOD)
-            game.removeFromRoom(playerLocation, GameObject.FOOD)
+        val playerLocation = game!!.getPlayerLocation()
+        if (game!!.hasGameObject(playerLocation, GameObject.FOOD)) {
+            game!!.addToPlayerInventory(InventoryItem.FOOD)
+            game!!.removeFromRoom(playerLocation, GameObject.FOOD)
         }
     }
 }
 
 private class GrabGoldCommand: Command() {
     override fun execute() {
-        val playerLocation = game.getPlayerLocation()
-        if (game.hasGameObject(playerLocation, GameObject.GOLD)) {
-            game.addToPlayerInventory(InventoryItem.GOLD)
-            game.removeFromRoom(playerLocation, GameObject.GOLD)
+        val playerLocation = game!!.getPlayerLocation()
+        if (game!!.hasGameObject(playerLocation, GameObject.GOLD)) {
+            game!!.addToPlayerInventory(InventoryItem.GOLD)
+            game!!.removeFromRoom(playerLocation, GameObject.GOLD)
         }
     }
 }
