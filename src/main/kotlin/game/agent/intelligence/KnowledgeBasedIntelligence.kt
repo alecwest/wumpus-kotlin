@@ -41,47 +41,57 @@ class KnowledgeBasedIntelligence : Intelligence() {
      */
     fun pathToRoom(point: Point): Set<Point> {
         val path = mutableSetOf<Point>()
-
+        dijkstra(commandResult.getPlayerState())
         return path
     }
 
-    private fun dijkstra(playerLocation: Point) {
+    private fun dijkstra(playerState: PlayerState) {
+        val startingLocation = playerState.getLocation()
+        val startingDirection = playerState.getDirection()
         val vertices = mutableSetOf<Point>()
-        val distances = arrayListOf<Int>()
-        val previous = arrayListOf<Point>()
+        val distances = arrayListOf<Pair<Int, Direction?>>()
+        val previous = arrayListOf<Pair<Point, Direction>?>()
 
-        for (i in 1..world.getNumberRooms()) {
-            distances.add(Int.MAX_VALUE)
+        for (i in 0 until world.getNumberRooms()) {
+            distances.add(Pair(Int.MAX_VALUE, null))
             vertices.add(world.getRoomPoint(i))
+            previous.add(null)
         }
 
-        distances[world.getRoomIndex(playerLocation)] = 0
+        distances[world.getRoomIndex(startingLocation)] = Pair(0, startingDirection)
 
         while (vertices.isNotEmpty()) {
-            val leastDistantRoom = getClosestRoom(distances)
+            val leastDistantRoom = getClosestRoom(vertices, distances)
 
             vertices.remove(leastDistantRoom)
 
-            for (neighbor in leastDistantRoom.adjacents()) {
-                val leastDistantIndex = world.getRoomIndex(leastDistantRoom)
-                val alt = distances[leastDistantIndex] + 1
-                if (alt < distances[leastDistantIndex]) {
-                    distances[leastDistantIndex] = alt
-                    previous[leastDistantIndex] = leastDistantRoom
+            for (neighbor in leastDistantRoom.adjacents().filter { world.roomIsValid(it) }) {
+                val currentIndex = world.getRoomIndex(leastDistantRoom)
+                val neighborIndex = world.getRoomIndex(neighbor)
+                val currentDirection = distances[currentIndex].second
+                val alt = distances[currentIndex].first + costOfMoveToRoom(neighbor, leastDistantRoom, currentDirection)
+                if (alt < distances[neighborIndex].first) {
+                    distances[neighborIndex] = Pair(alt, neighbor.directionFrom(leastDistantRoom))
+                    previous[neighborIndex] = Pair(leastDistantRoom, neighbor.directionFrom(leastDistantRoom)!!)
                 }
             }
         }
     }
 
-    private fun getClosestRoom(distances: ArrayList<Int>): Point {
-        return world.getRoomPoint(distances.min() ?: -1)
+    private fun getClosestRoom(vertices: MutableSet<Point>, distances: ArrayList<Pair<Int, Direction?>>): Point {
+        return vertices.minBy { point ->
+            distances[world.getRoomIndex(point)].first
+        } ?: Point(-1, -1)
     }
 
-    internal fun costOfMoveToRoom(targetRoom: Point, currRoom: Point, currDirection: Direction): Int {
-        val targetDirection = targetRoom.directionFrom(currRoom) ?: return -1
-        val playerState = PlayerState(location = currRoom, facing = currDirection)
-        return TurnCommand(targetDirection).getMoveCost(playerState) +
-                MoveCommand().getMoveCost(playerState)
+    internal fun costOfMoveToRoom(targetRoom: Point, currRoom: Point, currDirection: Direction?): Int {
+        currDirection?.let {
+            val targetDirection = targetRoom.directionFrom(currRoom) ?: return -1
+            val playerState = PlayerState(location = currRoom, facing = it)
+            return TurnCommand(targetDirection).getMoveCost(playerState) +
+                    MoveCommand().getMoveCost(playerState)
+        }
+        return -1
     }
 
     internal fun buildRoomPreferences(playerState: PlayerState): Set<Point> {
