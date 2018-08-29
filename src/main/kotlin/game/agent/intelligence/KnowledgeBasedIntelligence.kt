@@ -40,9 +40,21 @@ class KnowledgeBasedIntelligence : Intelligence() {
      * meaning the diagonal path is not necessarily the best
      */
     fun pathToRoom(point: Point): Set<Point> {
-        val path = mutableSetOf<Point>()
         val distancePreviousPair = dijkstra(commandResult.getPlayerState())
-        return path
+        return generatePath(point, distancePreviousPair.second)
+    }
+
+    private fun generatePath(target: Point, previous: ArrayList<Pair<Point, Direction>?>): Set<Point> {
+        val path = arrayListOf<Point>()
+        path.add(0, target)
+        var targetIndex = world.getRoomIndex(target)
+        while (previous[targetIndex] != null) {
+            val targetRoom = previous[targetIndex]!!.first
+            path.add(0, targetRoom)
+            targetIndex = world.getRoomIndex(targetRoom)
+        }
+        path.removeAt(0) // TODO Do I really need to remove the starting point?
+        return path.toSet()
     }
 
     private fun dijkstra(playerState: PlayerState): Pair<ArrayList<Pair<Int, Direction?>>, ArrayList<Pair<Point, Direction>?>> {
