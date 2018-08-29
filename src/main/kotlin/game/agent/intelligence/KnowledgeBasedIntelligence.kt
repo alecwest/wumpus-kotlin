@@ -45,7 +45,7 @@ class KnowledgeBasedIntelligence : Intelligence() {
         return path
     }
 
-    private fun dijkstra(playerLocation: Point) {
+    private fun dijkstra(playerLocation: Point): Pair<ArrayList<Int>, ArrayList<Point>> {
         val vertices = mutableSetOf<Point>()
         val distances = arrayListOf<Int>()
         val previous = arrayListOf<Point>()
@@ -71,6 +71,7 @@ class KnowledgeBasedIntelligence : Intelligence() {
                 }
             }
         }
+        return Pair(distances, previous)
     }
 
     private fun getClosestRoom(distances: ArrayList<Int>): Point {
