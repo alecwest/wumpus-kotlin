@@ -48,6 +48,14 @@ data class WorldState(private val rooms: ArrayList<Room> = arrayListOf()) {
         return result
     }
 
+    fun getRoomPoint(index: Int): Point {
+        var result = Point(index % size, index / size)
+        if (index < 0 || index >= getNumberRooms()) {
+            result = Point(-1, -1)
+        }
+        return result
+    }
+
     fun getWorldMap(playerState: PlayerState? = null): String {
         val result: MutableList<String> = mutableListOf()
         var row: MutableList<String> = mutableListOf()

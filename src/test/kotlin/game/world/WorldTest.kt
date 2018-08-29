@@ -176,6 +176,15 @@ class WorldTest {
     }
 
     @Test
+    fun `get point of room`() {
+        assertEquals(Point(0, 0), world.getRoomPoint(0))
+        assertEquals(Point(1, 0), world.getRoomPoint(1))
+        assertEquals(Point(0, 1), world.getRoomPoint(4))
+        assertEquals(Point(1, 1), world.getRoomPoint(5))
+        assertEquals(Point(-1, -1), world.getRoomPoint(102))
+    }
+
+    @Test
     fun `get out of range indices`() {
         assertEquals(-1, world.getRoomIndex(Point(4, 1)))
         assertEquals(-1, world.getRoomIndex(Point(1, 4)))
