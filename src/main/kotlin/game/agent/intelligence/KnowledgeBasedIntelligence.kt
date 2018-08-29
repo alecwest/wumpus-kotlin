@@ -41,11 +41,11 @@ class KnowledgeBasedIntelligence : Intelligence() {
      */
     fun pathToRoom(point: Point): Set<Point> {
         val path = mutableSetOf<Point>()
-        dijkstra(commandResult.getPlayerState())
+        val distancePreviousPair = dijkstra(commandResult.getPlayerState())
         return path
     }
 
-    private fun dijkstra(playerState: PlayerState) {
+    private fun dijkstra(playerState: PlayerState): Pair<ArrayList<Pair<Int, Direction?>>, ArrayList<Pair<Point, Direction>?>> {
         val startingLocation = playerState.getLocation()
         val startingDirection = playerState.getDirection()
         val vertices = mutableSetOf<Point>()
@@ -76,6 +76,7 @@ class KnowledgeBasedIntelligence : Intelligence() {
                 }
             }
         }
+        return Pair(distances, previous)
     }
 
     private fun getClosestRoom(vertices: MutableSet<Point>, distances: ArrayList<Pair<Int, Direction?>>): Point {
