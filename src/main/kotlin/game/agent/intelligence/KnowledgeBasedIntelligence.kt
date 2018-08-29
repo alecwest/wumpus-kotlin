@@ -45,6 +45,42 @@ class KnowledgeBasedIntelligence : Intelligence() {
         return path
     }
 
+    private fun dijkstra(playerLocation: Point) {
+        val vertices = mutableSetOf<Point>()
+        val distances = arrayListOf<Int>()
+        val previous = arrayListOf<Point>()
+
+        for (i in 1..world.getNumberRooms()) {
+            distances.add(Int.MAX_VALUE)
+            vertices.add(world.getRoomPoint(i))
+        }
+
+        distances[world.getRoomIndex(playerLocation)] = 0
+
+        while (vertices.isNotEmpty()) {
+            val leastDistantRoom = getClosestRoom(distances)
+
+            vertices.remove(leastDistantRoom)
+
+            for (neighbor in leastDistantRoom.adjacents()) {
+                val leastDistantIndex = world.getRoomIndex(leastDistantRoom)
+                val alt = distances[leastDistantIndex] + costOfMoveToRoom()
+                if (alt < distances[leastDistantIndex]) {
+                    distances[leastDistantIndex] = alt
+                    previous[leastDistantIndex] = leastDistantRoom
+                }
+            }
+        }
+    }
+
+    private fun getClosestRoom(distances: ArrayList<Int>): Point {
+        return world.getRoomPoint(distances.min() ?: -1)
+    }
+
+    private fun costOfMoveToRoom(): Int {
+        return 1
+    }
+
     internal fun buildRoomPreferences(playerState: PlayerState): Set<Point> {
         val orderOfRoomPreferences = arrayListOf<Point>()
         val knownAndUncertainRooms = splitKnownAndUncertainRooms(getSafeRooms(playerState))
