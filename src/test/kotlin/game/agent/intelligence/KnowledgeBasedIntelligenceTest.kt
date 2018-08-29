@@ -308,4 +308,12 @@ internal class KnowledgeBasedIntelligenceTest {
                 playerState = Helpers.createPlayerState(location = Point(0, 0))))
         assertEquals(setOf(Point(0, 1), Point(0, 2), Point(1, 2), Point(2, 2)), intelligence.pathToRoom(Point(2, 2)))
     }
+
+    @Test
+    fun `get cost of move to room`() {
+        assertEquals(2, intelligence.costOfMoveToRoom(Point(0, 1), Point(0, 0), Direction.EAST))
+        assertEquals(3, intelligence.costOfMoveToRoom(Point(0, 1), Point(0, 0), Direction.SOUTH))
+        assertEquals(1, intelligence.costOfMoveToRoom(Point(0, 1), Point(0, 0), Direction.NORTH))
+        assertEquals(-1, intelligence.costOfMoveToRoom(Point(0, 1), Point(0, 3), Direction.SOUTH))
+    }
 }

@@ -64,7 +64,7 @@ class KnowledgeBasedIntelligence : Intelligence() {
 
             for (neighbor in leastDistantRoom.adjacents()) {
                 val leastDistantIndex = world.getRoomIndex(leastDistantRoom)
-                val alt = distances[leastDistantIndex] + costOfMoveToRoom()
+                val alt = distances[leastDistantIndex] + 1
                 if (alt < distances[leastDistantIndex]) {
                     distances[leastDistantIndex] = alt
                     previous[leastDistantIndex] = leastDistantRoom
@@ -77,8 +77,11 @@ class KnowledgeBasedIntelligence : Intelligence() {
         return world.getRoomPoint(distances.min() ?: -1)
     }
 
-    private fun costOfMoveToRoom(): Int {
-        return 1
+    internal fun costOfMoveToRoom(targetRoom: Point, currRoom: Point, currDirection: Direction): Int {
+        val targetDirection = targetRoom.directionFrom(currRoom) ?: return -1
+        val playerState = PlayerState(location = currRoom, facing = currDirection)
+        return TurnCommand(targetDirection).getMoveCost(playerState) +
+                MoveCommand().getMoveCost(playerState)
     }
 
     internal fun buildRoomPreferences(playerState: PlayerState): Set<Point> {
