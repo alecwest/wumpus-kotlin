@@ -160,20 +160,6 @@ internal class KnowledgeBasedIntelligenceTest {
     }
 
     @Test
-    fun `dangerous effects in room`() {
-        val commandResult1 = Helpers.createCommandResult(
-                setOf(Perception.GLITTER, Perception.FOOD),
-                Helpers.createPlayerState(location = Point(2, 2)))
-        val commandResult2 = Helpers.createCommandResult(
-                setOf(Perception.SCREAM, Perception.BREEZE, Perception.FOOD),
-                Helpers.createPlayerState(location = Point(5, 5)))
-        intelligence.processLastMove(world, commandResult1)
-        assertFalse(intelligence.dangerousEffectsInRoom(commandResult1))
-        intelligence.processLastMove(world, commandResult2)
-        assertTrue(intelligence.dangerousEffectsInRoom(commandResult2))
-    }
-
-    @Test
     fun `perceiving a blocking object should add a fact about it to the forward facing room`() {
         val commandResult = Helpers.createCommandResult(
                 setOf(Perception.WALL_BUMP),
@@ -219,18 +205,6 @@ internal class KnowledgeBasedIntelligenceTest {
         assertNotEquals(listOf(MoveCommand()),
                 intelligence.chooseNextMoves(world, Helpers.createCommandResult(setOf(Perception.BREEZE),
                 Helpers.createPlayerState(location = Point(0, 4)))))
-    }
-
-    @Test
-    fun `can move in direction`() {
-        intelligence.processLastMove(world, Helpers.createCommandResult(setOf(Perception.WALL_BUMP),
-                Helpers.createPlayerState(location = Point(4, 4))))
-        assertFalse(intelligence.canMoveInDirection(Direction.NORTH))
-        assertTrue(intelligence.canMoveInDirection(Direction.EAST))
-        intelligence.processLastMove(world, Helpers.createCommandResult(setOf(Perception.BREEZE),
-                Helpers.createPlayerState(location = Point(4, 3))))
-        assertFalse(intelligence.canMoveInDirection(Direction.WEST))
-        assertTrue(intelligence.canMoveInDirection(Direction.NORTH))
     }
 
     @Test

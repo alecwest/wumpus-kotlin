@@ -134,29 +134,6 @@ class KnowledgeBasedIntelligence : Intelligence() {
         } ?: false
     }
 
-    internal fun canMoveInDirection(direction: Direction): Boolean {
-        val room = commandResult.getPlayerState().getLocation().adjacent(direction)
-        for (gameObject in gameObjectsWithFeatures(setOf(Blocking()))) {
-            if (facts.isTrue(room, HAS, gameObject) == TRUE) {
-                return false
-            }
-        }
-        return world.roomIsValid(room)
-                && (facts.roomIsSafe(room) == TRUE || !dangerousEffectsInRoom(commandResult))
-    }
-
-    internal fun dangerousEffectsInRoom(commandResult: CommandResult): Boolean {
-        return facts.getEffectsInRoom(commandResult.getPlayerState().getLocation()).any { effect ->
-                    effect.objectsThatCreateThis().any {
-                        // Effect is not "dangerous" if the object creating it is in the
-                        // same room, otherwise we'd be dead already
-                        !(it.getFeature(WorldAffecting()) as WorldAffecting)
-                                .effects.contains(HereEffect(effect))
-                                && it.hasFeature(Dangerous())
-                    }
-        }
-    }
-
     override fun processLastMove(world: World, commandResult: CommandResult) {
         super.processLastMove(world, commandResult)
         this.world = world
