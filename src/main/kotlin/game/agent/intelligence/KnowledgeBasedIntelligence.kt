@@ -39,9 +39,9 @@ class KnowledgeBasedIntelligence : Intelligence() {
      * pathToRoom should consider the fact that each turn+move combo costs 2 moves,
      * meaning the diagonal path is not necessarily the best
      */
-    fun pathToRoom(point: Point): Set<Point> {
-        val distancePreviousPair = dijkstra(commandResult.getPlayerState())
-        return generatePath(point, distancePreviousPair.second)
+    fun pathToRoom(point: Point? = null): Set<Point> {
+        val pointPathsPair = dijkstra(commandResult.getPlayerState(), point)
+        return generatePath(pointPathsPair.first, pointPathsPair.second)
     }
 
     private fun generatePath(target: Point, previous: ArrayList<Pair<Point, Direction>?>): Set<Point> {
@@ -57,12 +57,13 @@ class KnowledgeBasedIntelligence : Intelligence() {
         return path.toSet()
     }
 
-    private fun dijkstra(playerState: PlayerState): Pair<ArrayList<Pair<Int, Direction?>>, ArrayList<Pair<Point, Direction>?>> {
+    private fun dijkstra(playerState: PlayerState, target: Point?): Pair<Point, ArrayList<Pair<Point, Direction>?>> {
         val startingLocation = playerState.getLocation()
         val startingDirection = playerState.getDirection()
         val vertices = mutableSetOf<Point>()
         val distances = arrayListOf<Pair<Int, Direction?>>()
         val previous = arrayListOf<Pair<Point, Direction>?>()
+        var endingLocation = startingLocation
 
         for (i in 0 until world.getNumberRooms()) {
             distances.add(Pair(Int.MAX_VALUE, null))
@@ -76,8 +77,18 @@ class KnowledgeBasedIntelligence : Intelligence() {
             val leastDistantRoom = getClosestRoom(vertices, distances)
 
             vertices.remove(leastDistantRoom)
+            /**
+             * If target is given, terminate when path to target is reached
+             * Otherwise continue until first unknown, accessible room is found
+             */
+            if (leastDistantRoom == target ||
+                    (target == null && !facts.featureFullyKnownInRoom(leastDistantRoom, Perceptable()))) {
+                endingLocation = leastDistantRoom
+                break
+            }
 
-            for (neighbor in leastDistantRoom.adjacents().filter { world.roomIsValid(it) && facts.roomIsSafe(it) == TRUE }) {
+            for (neighbor in leastDistantRoom.adjacents().filter {
+                world.roomIsValid(it) && facts.roomIsSafe(it) == TRUE && facts.canEnterRoom(it) != FALSE }) {
                 val currentIndex = world.getRoomIndex(leastDistantRoom)
                 val neighborIndex = world.getRoomIndex(neighbor)
                 val currentDirection = distances[currentIndex].second
@@ -88,7 +99,7 @@ class KnowledgeBasedIntelligence : Intelligence() {
                 }
             }
         }
-        return Pair(distances, previous)
+        return Pair(endingLocation, previous)
     }
 
     private fun getClosestRoom(vertices: MutableSet<Point>, distances: ArrayList<Pair<Int, Direction?>>): Point {

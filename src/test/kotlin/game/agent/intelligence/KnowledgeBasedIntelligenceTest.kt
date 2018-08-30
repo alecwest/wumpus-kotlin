@@ -304,8 +304,11 @@ internal class KnowledgeBasedIntelligenceTest {
 
     @Test
     fun `get path to room`() {
-        intelligence.processLastMove(world, Helpers.createCommandResult(
-                playerState = Helpers.createPlayerState(location = Point(0, 0))))
+        for (i in 2 downTo 0) {
+            for (j in 2 downTo 0) {
+                processSafeRoom(Point(i, j))
+            }
+        }
         assertEquals(setOf(Point(0, 1), Point(0, 2), Point(1, 2), Point(2, 2)), intelligence.pathToRoom(Point(2, 2)))
     }
 
@@ -337,5 +340,32 @@ internal class KnowledgeBasedIntelligenceTest {
         assertEquals(3, intelligence.costOfMoveToRoom(Point(0, 1), Point(0, 0), Direction.SOUTH))
         assertEquals(1, intelligence.costOfMoveToRoom(Point(0, 1), Point(0, 0), Direction.NORTH))
         assertEquals(-1, intelligence.costOfMoveToRoom(Point(0, 1), Point(0, 3), Direction.SOUTH))
+    }
+
+    @Test
+    fun `get path to closest unknown room`() {
+        // (0-2, 1) are safe, (3, 1) has a blockade, (4-9, 1) are safe
+        // Simulate blockades at (0-2, 2)
+        for (i in 0..2) {
+            intelligence.processLastMove(world, Helpers.createCommandResult(setOf(Perception.BLOCKADE_BUMP),
+                    Helpers.createPlayerState(location = Point(i, 1), facing = Direction.NORTH)))
+        }
+        intelligence.processLastMove(world, Helpers.createCommandResult(setOf(Perception.BLOCKADE_BUMP),
+                Helpers.createPlayerState(location = Point(2, 1), facing = Direction.EAST)))
+        for (i in 4..9) {
+            processSafeRoom(Point(i, 1))
+        }
+        // (0-9, 0) are all safe
+        for (i in 1..9) {
+            processSafeRoom(Point(i, 0))
+        }
+        processSafeRoom(Point(0, 0))
+        assertEquals(setOf(Point(1, 0), Point(2, 0), Point(3, 0), Point(4, 0), Point(4, 1), Point(4, 2)),
+                intelligence.pathToRoom())
+    }
+
+    private fun processSafeRoom(point: Point) {
+        intelligence.processLastMove(world, Helpers.createCommandResult(setOf(),
+                Helpers.createPlayerState(location = point, facing = Direction.NORTH)))
     }
 }
