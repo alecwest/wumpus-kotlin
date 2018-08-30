@@ -59,6 +59,21 @@ internal class FactMapTest {
     }
 
     @Test
+    fun `test room can be entered`() {
+        factMap.addFact(Point(2, 2), HAS, BLOCKADE)
+        assertEquals(FALSE, factMap.canEnterRoom(Point(2, 2)))
+        factMap.addFact(Point(0, 5), HAS, WALL)
+        assertEquals(FALSE, factMap.canEnterRoom(Point(0, 5)))
+        factMap.addFact(Point(0, 3), HAS_NO, BLOCKADE)
+        assertEquals(UNKNOWN, factMap.canEnterRoom(Point(0, 3)))
+        gameObjectsWithFeatures(setOf(GameObjectFeature.Blocking())).forEach {
+            factMap.addFact(Point(4, 4), HAS_NO, it)
+        }
+        assertEquals(TRUE, factMap.canEnterRoom(Point(4, 4)))
+    }
+
+
+    @Test
     fun `test everything about room is known`() {
         for (gameObject in gameObjectValues()) {
             factMap.addFact(Point(2, 2), HAS_NO, gameObject)
