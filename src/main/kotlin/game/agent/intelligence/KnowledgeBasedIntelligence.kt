@@ -77,7 +77,7 @@ class KnowledgeBasedIntelligence : Intelligence() {
 
             vertices.remove(leastDistantRoom)
 
-            for (neighbor in leastDistantRoom.adjacents().filter { world.roomIsValid(it) }) {
+            for (neighbor in leastDistantRoom.adjacents().filter { world.roomIsValid(it) && facts.roomIsSafe(it) == TRUE }) {
                 val currentIndex = world.getRoomIndex(leastDistantRoom)
                 val neighborIndex = world.getRoomIndex(neighbor)
                 val currentDirection = distances[currentIndex].second

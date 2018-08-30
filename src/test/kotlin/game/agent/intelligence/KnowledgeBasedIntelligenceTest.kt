@@ -311,23 +311,24 @@ internal class KnowledgeBasedIntelligenceTest {
 
     @Test
     fun `get safe path to room`() {
+        // Simulate existence of pit at (0, 2)
         intelligence.processLastMove(world, Helpers.createCommandResult(
                 playerState = Helpers.createPlayerState(location = Point(1, 0))))
         intelligence.processLastMove(world, Helpers.createCommandResult(
                 playerState = Helpers.createPlayerState(location = Point(2, 0))))
         intelligence.processLastMove(world, Helpers.createCommandResult(setOf(Perception.BREEZE),
-                Helpers.createPlayerState(location = Point(0, 1))))
+                playerState = Helpers.createPlayerState(location = Point(0, 1))))
         intelligence.processLastMove(world, Helpers.createCommandResult(
                 playerState = Helpers.createPlayerState(location = Point(1, 1))))
         intelligence.processLastMove(world, Helpers.createCommandResult(
                 playerState = Helpers.createPlayerState(location = Point(2, 1))))
-        intelligence.processLastMove(world, Helpers.createCommandResult(
+        intelligence.processLastMove(world, Helpers.createCommandResult(setOf(Perception.BREEZE),
                 playerState = Helpers.createPlayerState(location = Point(1, 2))))
         intelligence.processLastMove(world, Helpers.createCommandResult(
                 playerState = Helpers.createPlayerState(location = Point(2, 2))))
         intelligence.processLastMove(world, Helpers.createCommandResult(
                 playerState = Helpers.createPlayerState(location = Point(0, 0))))
-        assertEquals(setOf(Point(1, 0), Point(2, 0), Point(2, 1), Point(2, 2)), intelligence.pathToRoom(Point(2, 2)))
+        assertEquals(setOf(Point(0, 1), Point(1, 1), Point(2, 1), Point(2, 2)), intelligence.pathToRoom(Point(2, 2)))
     }
 
     @Test
