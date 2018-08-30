@@ -37,6 +37,8 @@ data class GameState(private val active: Boolean = true,
     fun getPlayerInventory() = player.getInventory()
     fun playerHasItem(inventoryItem: InventoryItem) = player.hasItem(inventoryItem)
 
+    fun getScore() = score
+
     fun copyThis(active: Boolean = this.active,
                  world: World = this.world,
                  player: Player = this.player,

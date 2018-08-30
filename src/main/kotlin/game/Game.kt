@@ -23,76 +23,78 @@ data class Game(private var gameState: GameState = GameState()) {
         this.lastCommandResult = commandResult
     }
 
-    fun getActive() = gameState.getActive()
-    fun gameOver() = gameState.gameOver()
+    fun getActive() = getGameState().getActive()
+    fun gameOver() = getGameState().gameOver()
 
-    fun getWorld() = gameState.getWorld()
-    fun getWorldSize() = gameState.getWorldSize()
-    fun getRooms() = gameState.getRooms()
-    fun getGameObjects(point: Point = getPlayerLocation()) = gameState.getGameObjects(point)
-    fun hasGameObject(point: Point, content: GameObject) = gameState.hasGameObject(point, content)
-    fun roomIsValid(point: Point) = gameState.roomIsValid(point)
-    fun roomIsEmpty(point: Point) = gameState.roomIsEmpty(point)
-    fun getRoomIndex(point: Point) = gameState.getRoomIndex(point)
-    fun getWorldMap() = gameState.getWorldMap()
-    fun getRoom(point: Point) = gameState.getRoom(point)
-    fun getNumberRooms() = gameState.getNumberRooms()
-    fun getAmountOfObjectsInRoom(point: Point) = gameState.getAmountOfObjectsInRoom(point)
-
+    fun getWorld() = getGameState().getWorld()
+    fun getWorldSize() = getGameState().getWorldSize()
+    fun getRooms() = getGameState().getRooms()
+    fun getGameObjects(point: Point = getPlayerLocation()) = getGameState().getGameObjects(point)
+    fun hasGameObject(point: Point, content: GameObject) = getGameState().hasGameObject(point, content)
+    fun roomIsValid(point: Point) = getGameState().roomIsValid(point)
+    fun roomIsEmpty(point: Point) = getGameState().roomIsEmpty(point)
+    fun getRoomIndex(point: Point) = getGameState().getRoomIndex(point)
+    fun getWorldMap() = getGameState().getWorldMap()
+    fun getRoom(point: Point) = getGameState().getRoom(point)
+    fun getNumberRooms() = getGameState().getNumberRooms()
+    fun getAmountOfObjectsInRoom(point: Point) = getGameState().getAmountOfObjectsInRoom(point)
+    fun getScore() = getGameState().getScore()
+    
+    
     fun addToRoom(point: Point, gameObject: GameObject) {
-        val newWorld = gameState.getWorld()
+        val newWorld = getGameState().getWorld()
         newWorld.addGameObject(point, gameObject)
-        gameState = gameState.copyThis(world = newWorld)
+        gameState = getGameState().copyThis(world = newWorld)
     }
 
     fun removeFromRoom(point: Point, gameObject: GameObject) {
-        val newWorld = gameState.getWorld()
+        val newWorld = getGameState().getWorld()
         newWorld.removeGameObject(point, gameObject)
-        gameState = gameState.copyThis(world = newWorld)
+        gameState = getGameState().copyThis(world = newWorld)
     }
 
-    fun getPlayer() = gameState.getPlayer()
-    fun getPlayerState() = gameState.getPlayerState()
-    fun isPlayerAlive() = gameState.isPlayerAlive()
-    fun getPlayerLocation() = gameState.getPlayerLocation()
-    fun getPlayerDirection() = gameState.getPlayerDirection()
-    fun getPlayerInventory() = gameState.getPlayerInventory()
-    fun playerHasItem(inventoryItem: InventoryItem) = gameState.playerHasItem(inventoryItem)
+    fun getPlayer() = getGameState().getPlayer()
+    fun getPlayerState() = getGameState().getPlayerState()
+    fun isPlayerAlive() = getGameState().isPlayerAlive()
+    fun getPlayerLocation() = getGameState().getPlayerLocation()
+    fun getPlayerDirection() = getGameState().getPlayerDirection()
+    fun getPlayerInventory() = getGameState().getPlayerInventory()
+    fun playerHasItem(inventoryItem: InventoryItem) = getGameState().playerHasItem(inventoryItem)
 
     fun addToPlayerInventory(inventoryItem: InventoryItem) {
-        val newPlayer = gameState.getPlayer()
+        val newPlayer = getGameState().getPlayer()
         newPlayer.addToInventory(inventoryItem)
-        gameState = gameState.copyThis(player = newPlayer)
+        gameState = getGameState().copyThis(player = newPlayer)
     }
     fun removeFromPlayerInventory(inventoryItem: InventoryItem) {
-        val newPlayer = gameState.getPlayer()
+        val newPlayer = getGameState().getPlayer()
         newPlayer.removeFromInventory(inventoryItem)
-        gameState = gameState.copyThis(player = newPlayer)
+        gameState = getGameState().copyThis(player = newPlayer)
     }
 
     fun setPlayerAlive(alive: Boolean) {
-        val newPlayer = gameState.getPlayer()
+        val newPlayer = getGameState().getPlayer()
         newPlayer.setAlive(alive)
-        gameState = gameState.copyThis(player = newPlayer)
+        gameState = getGameState().copyThis(player = newPlayer)
     }
     fun setPlayerLocation(location: Point) {
-        val newPlayer = gameState.getPlayer()
+        val newPlayer = getGameState().getPlayer()
         newPlayer.setLocation(location)
         if (getGameObjects(location).any { it.hasFeature(Dangerous()) }) {
             newPlayer.setAlive(false)
         }
-        gameState = gameState.copyThis(player = newPlayer)
+        gameState = getGameState().copyThis(player = newPlayer)
     }
 
     fun setPlayerDirection(direction: Direction) {
-        val newPlayer = gameState.getPlayer()
+        val newPlayer = getGameState().getPlayer()
         newPlayer.setFacing(direction)
-        gameState = gameState.copyThis(player = newPlayer)
+        gameState = getGameState().copyThis(player = newPlayer)
     }
 
     fun setPlayerInventory(inventory: PlayerInventory) {
-        val newPlayer = gameState.getPlayer()
+        val newPlayer = getGameState().getPlayer()
         newPlayer.setInventory(inventory)
-        gameState = gameState.copyThis(player = newPlayer)
+        gameState = getGameState().copyThis(player = newPlayer)
     }
 }
