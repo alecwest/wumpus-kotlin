@@ -325,6 +325,8 @@ internal class KnowledgeBasedIntelligenceTest {
                 playerState = Helpers.createPlayerState(location = Point(1, 2))))
         intelligence.processLastMove(world, Helpers.createCommandResult(
                 playerState = Helpers.createPlayerState(location = Point(2, 2))))
+        intelligence.processLastMove(world, Helpers.createCommandResult(
+                playerState = Helpers.createPlayerState(location = Point(0, 0))))
         assertEquals(setOf(Point(1, 0), Point(2, 0), Point(2, 1), Point(2, 2)), intelligence.pathToRoom(Point(2, 2)))
     }
 
