@@ -102,7 +102,7 @@ class KnowledgeBasedIntelligence : Intelligence() {
     private fun getClosestRoom(vertices: MutableSet<Point>, distances: ArrayList<Pair<Int, Direction?>>): Point {
         return vertices.minBy { point ->
             distances[world.getRoomIndex(point)].first
-        } ?: Point(-1, -1)
+        }!!
     }
 
     internal fun costOfMoveToRoom(targetRoom: Point, currRoom: Point, currDirection: Direction?): Int {
