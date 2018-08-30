@@ -94,7 +94,7 @@ internal class KnowledgeBasedIntelligenceTest {
         intelligence.processLastMove(world, Helpers.createCommandResult(
                 setOf(), Helpers.createPlayerState(location = Point(7, 2),
                 facing = Direction.EAST)))
-        assertEquals(listOf(TurnCommand(Direction.WEST), MoveCommand()), intelligence.chooseNextMoves(world,
+        assertEquals(listOf(TurnCommand(Direction.WEST), MoveCommand(), MoveCommand()), intelligence.chooseNextMoves(world,
                 Helpers.createCommandResult(setOf(Perception.STENCH),
                         Helpers.createPlayerState(location = Point(8, 2),
                                 facing = Direction.EAST))))
@@ -105,7 +105,7 @@ internal class KnowledgeBasedIntelligenceTest {
         intelligence.processLastMove(world, Helpers.createCommandResult(
                 setOf(),
                 Helpers.createPlayerState(location = Point(2, 1))))
-        assertEquals(listOf(TurnCommand(Direction.SOUTH), MoveCommand()), intelligence.chooseNextMoves(world,
+        assertEquals(listOf(TurnCommand(Direction.SOUTH), MoveCommand(), MoveCommand()), intelligence.chooseNextMoves(world,
                 Helpers.createCommandResult(setOf(Perception.STENCH),
                         Helpers.createPlayerState(location = Point(2, 2),
                                 facing = Direction.EAST))))
@@ -116,7 +116,7 @@ internal class KnowledgeBasedIntelligenceTest {
         intelligence.processLastMove(world, Helpers.createCommandResult(
                 setOf(),
                 Helpers.createPlayerState(location = Point(2, 2))))
-        assertEquals(listOf(MoveCommand()), intelligence.chooseNextMoves(world, Helpers.createCommandResult(
+        assertEquals(listOf(MoveCommand(), MoveCommand()), intelligence.chooseNextMoves(world, Helpers.createCommandResult(
                 setOf(Perception.BREEZE),
                 Helpers.createPlayerState(location = Point(2, 1), facing = Direction.NORTH))))
     }
@@ -256,50 +256,21 @@ internal class KnowledgeBasedIntelligenceTest {
     }
 
     @Test
-    fun `get safe rooms`() {
-        var playerState = Helpers.createPlayerState(location = Point(4, 4))
-        intelligence.processLastMove(world, Helpers.createCommandResult(playerState = playerState))
-        assertEquals(4, intelligence.getSafeRooms(playerState).size)
-        playerState = Helpers.createPlayerState(location = Point(4, 3))
-        intelligence.processLastMove(world, Helpers.createCommandResult(
-                setOf(Perception.BREEZE), playerState))
-        assertEquals(setOf(Point(4, 4)), intelligence.getSafeRooms(playerState))
-    }
-
-    @Test
-    fun `split adjacent rooms into known and uncertain rooms`() {
-        var result = intelligence.splitKnownAndUncertainRooms(Point(4, 4).adjacents())
-        assertEquals(0, result.first.size)
-        assertEquals(4, result.second.size)
-        intelligence.processLastMove(world, Helpers.createCommandResult(setOf(Perception.BREEZE),
-                Helpers.createPlayerState(location = Point(4, 5))
-        ))
-        result = intelligence.splitKnownAndUncertainRooms(Point(4, 4).adjacents())
-        assertEquals(1, result.first.size)
-        assertEquals(3, result.second.size)
-    }
-
-    @Test
-    fun `build room preferences`() {
-        intelligence.facts.addFact(Point(4, 3), HAS, PIT)
-        val result = intelligence.buildRoomPreferences(Helpers.createPlayerState(
-                location = Point(4, 4)))
-        assertFalse(result.contains(Point(4, 3)))
-        assertTrue(result.contains(Point(4, 5)))
-    }
-
-    @Test
     fun `get best explorative moves`() {
-        intelligence.facts.addFact(Point(4, 5), HAS, PIT)
-        intelligence.commandResult = Helpers.createCommandResult(setOf(Perception.BREEZE),
-                Helpers.createPlayerState(location = Point(4, 4), facing = Direction.NORTH))
-        intelligence.facts.addFact(Point(4, 4), HAS, BREEZE)
-        for (gameObject in gameObjectValues()) {
-            intelligence.facts.addFact(Point(4, 3), HAS_NO, gameObject)
-        }
-        assertEquals(listOf(TurnCommand(Direction.SOUTH), MoveCommand()), intelligence.bestExplorativeMoves(intelligence.commandResult.getPlayerState()))
-        assertEquals(listOf(MoveCommand()), intelligence.bestExplorativeMoves(Helpers.createPlayerState(
+        processSafeRoom(Point(4, 3))
+        intelligence.processLastMove(world, Helpers.createCommandResult(setOf(Perception.BREEZE),
+                Helpers.createPlayerState(location = Point(4, 4))))
+
+        assertEquals(listOf(TurnCommand(Direction.SOUTH), MoveCommand(), MoveCommand()), intelligence.bestExplorativeMoves(intelligence.commandResult.getPlayerState()))
+        assertEquals(listOf(MoveCommand(), MoveCommand()), intelligence.bestExplorativeMoves(Helpers.createPlayerState(
                 location = Point(4, 4), facing = Direction.SOUTH)))
+    }
+
+    @Test
+    fun `get best explorative moves when surrounded by already known rooms`() {
+        for (i in 2 downTo 0) for (j in 2 downTo 0) processSafeRoom(Point(i, j))
+        processSafeRoom(Point(1, 1)) // Set player location to (1, 1)
+        assertEquals(listOf(MoveCommand(), MoveCommand()), intelligence.bestExplorativeMoves(intelligence.commandResult.getPlayerState()))
     }
 
     @Test

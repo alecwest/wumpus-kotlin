@@ -31,8 +31,9 @@ class KnowledgeBasedIntelligence : Intelligence() {
     }
 
     internal fun bestExplorativeMoves(playerState: PlayerState): List<Command> {
-        val orderOfRoomPreferences = buildRoomPreferences(playerState)
-        return toCommands(playerState, orderOfRoomPreferences.firstOrNull())
+        val commands = mutableListOf<Command>()
+        pathToRoom().forEach { commands.addAll(toCommands(playerState, it)) }
+        return commands
     }
 
     fun pathToRoom(point: Point? = null): Set<Point> {
@@ -112,33 +113,6 @@ class KnowledgeBasedIntelligence : Intelligence() {
                     MoveCommand().getMoveCost(playerState)
         }
         return -1
-    }
-
-    internal fun buildRoomPreferences(playerState: PlayerState): Set<Point> {
-        val orderOfRoomPreferences = arrayListOf<Point>()
-        val knownAndUncertainRooms = splitKnownAndUncertainRooms(getSafeRooms(playerState))
-
-        knownAndUncertainRooms.first.sortBy { toCommands(playerState, it).map { it.getMoveCost(playerState) }.sum() }
-        knownAndUncertainRooms.second.sortBy { toCommands(playerState, it).map { it.getMoveCost(playerState) }.sum() }
-
-         orderOfRoomPreferences.addAll(knownAndUncertainRooms.second + knownAndUncertainRooms.first)
-
-        return orderOfRoomPreferences.toSet()
-    }
-
-    internal fun getSafeRooms(playerState: PlayerState): Set<Point> {
-        return Direction.values().filter { canMoveInDirection(it) }
-                .map{ playerState.getLocation().adjacent(it) }.toSet()
-    }
-
-    internal fun splitKnownAndUncertainRooms(rooms: Set<Point>): Pair<ArrayList<Point>, ArrayList<Point>> {
-        val knownAndUncertainRooms = Pair(arrayListOf<Point>(), arrayListOf<Point>())
-        rooms.forEach {
-            val result = facts.featureFullyKnownInRoom(it, Perceptable())
-            if (result) knownAndUncertainRooms.first.add(it)
-            else knownAndUncertainRooms.second.add(it)
-        }
-        return knownAndUncertainRooms
     }
 
     internal fun toCommands(playerState: PlayerState, point: Point?): List<Command> {
