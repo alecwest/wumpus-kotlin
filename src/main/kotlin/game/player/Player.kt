@@ -15,6 +15,7 @@ data class Player(private var playerState: PlayerState = PlayerState()) {
     fun getInventory() = getPlayerState().getInventory()
     fun hasItem(item: InventoryItem) = getNumberOf(item) > 0
     fun getNumberOf(item: InventoryItem) = getInventory().getOrDefault(item, 0)
+    fun getScore() = getPlayerState().getScore()
 
     fun addToInventory(inventoryItem: InventoryItem) {
         val newMap = getPlayerState().getInventory().toMutableMap()

@@ -230,13 +230,6 @@ class GameTest {
         game.setPlayerInventory(PlayerInventory(newInventory))
         assertEquals(newInventory, game.getPlayerInventory())
     }
-
-    @Test
-    fun `get score`() {
-        assertEquals(0, Helpers.createGame().getGameState().getScore())
-        assertEquals(0, Helpers.createGame().getScore())
-        assertEquals(12, Helpers.createGame(score = 12).getScore())
-    }
 }
 
 data class ValidGameTestData (

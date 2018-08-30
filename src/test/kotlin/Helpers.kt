@@ -40,16 +40,18 @@ class Helpers {
                          location: Point = Point(0, 0),
                          facing: Direction = Direction.NORTH,
                          inventoryContent: Map<InventoryItem, Int> =
-                                 mapOf(InventoryItem.ARROW to 2)): Player {
-            return Player(PlayerState(alive, location, facing, PlayerInventory(inventoryContent)))
+                                 mapOf(InventoryItem.ARROW to 2),
+                         score: Int = 0): Player {
+            return Player(PlayerState(alive, location, facing, PlayerInventory(inventoryContent), score))
         }
 
         fun createPlayerState(alive: Boolean = true,
                               location: Point = Point(0, 0),
                               facing: Direction = Direction.NORTH,
                               inventoryContent: Map<InventoryItem, Int> =
-                                    mapOf(InventoryItem.ARROW to 2)): PlayerState {
-            return PlayerState(alive, location, facing, Helpers.createPlayerInventory(inventoryContent))
+                                    mapOf(InventoryItem.ARROW to 2),
+                              score: Int = 0): PlayerState {
+            return PlayerState(alive, location, facing, Helpers.createPlayerInventory(inventoryContent), score)
         }
 
         fun createPlayerInventory(inventoryContent: Map<InventoryItem, Int> =
@@ -59,9 +61,8 @@ class Helpers {
 
         fun createGame(active: Boolean = true,
                        world: World = createWorld(),
-                       player: Player = createPlayer(),
-                       score: Int = 0): Game {
-            return Game(GameState(active, world, player, score))
+                       player: Player = createPlayer()): Game {
+            return Game(GameState(active, world, player))
         }
 
         fun createServerSession(fileName: String = Helpers.testFilePath + "testFile.json",

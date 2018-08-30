@@ -11,8 +11,7 @@ import java.awt.Point
  */
 data class GameState(private val active: Boolean = true,
                      private val world: World = World(),
-                     private val player: Player = Player(),
-                     private val score: Int = 0) {
+                     private val player: Player = Player()) {
     fun getActive() = active
     fun gameOver() = !active
 
@@ -37,10 +36,7 @@ data class GameState(private val active: Boolean = true,
     fun getPlayerInventory() = player.getInventory()
     fun playerHasItem(inventoryItem: InventoryItem) = player.hasItem(inventoryItem)
 
-    fun getScore() = score
-
     fun copyThis(active: Boolean = this.active,
                  world: World = this.world,
-                 player: Player = this.player,
-                 score: Int = this.score) = GameState(active, world, player, score)
+                 player: Player = this.player) = GameState(active, world, player)
 }
