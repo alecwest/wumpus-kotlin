@@ -59,8 +59,9 @@ class Helpers {
 
         fun createGame(active: Boolean = true,
                        world: World = createWorld(),
-                       player: Player = createPlayer()): Game {
-            return Game(GameState(active, world, player))
+                       player: Player = createPlayer(),
+                       score: Int = 0): Game {
+            return Game(GameState(active, world, player, score))
         }
 
         fun createServerSession(fileName: String = Helpers.testFilePath + "testFile.json",
