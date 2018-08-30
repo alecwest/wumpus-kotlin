@@ -35,10 +35,6 @@ class KnowledgeBasedIntelligence : Intelligence() {
         return toCommands(playerState, orderOfRoomPreferences.firstOrNull())
     }
 
-    /**
-     * pathToRoom should consider the fact that each turn+move combo costs 2 moves,
-     * meaning the diagonal path is not necessarily the best
-     */
     fun pathToRoom(point: Point? = null): Set<Point> {
         val pointPathsPair = dijkstra(commandResult.getPlayerState(), point)
         return generatePath(pointPathsPair.first, pointPathsPair.second)
