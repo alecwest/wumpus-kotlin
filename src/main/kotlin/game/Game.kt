@@ -71,6 +71,10 @@ data class Game(private var gameState: GameState = GameState()) {
         gameState = getGameState().copyThis(player = newPlayer)
     }
 
+    fun setActive(active: Boolean) {
+        gameState = getGameState().copyThis(active)
+    }
+
     fun setPlayerAlive(alive: Boolean) {
         val newPlayer = getGameState().getPlayer()
         newPlayer.setAlive(alive)

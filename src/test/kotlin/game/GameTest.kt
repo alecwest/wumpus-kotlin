@@ -238,6 +238,13 @@ class GameTest {
         game.setPlayerScore(newScore)
         assertEquals(newScore, game.getScore())
     }
+
+    @Test
+    fun `check game active on change`() {
+        assertEquals(true, game.getActive())
+        game.setActive(false)
+        assertEquals(false, game.getActive())
+    }
 }
 
 data class ValidGameTestData (
