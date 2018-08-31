@@ -24,13 +24,21 @@ class KnowledgeBasedIntelligence : Intelligence() {
         val inventoryItems = gameObjectsWithFeatures(setOf(Grabbable()))
                 .filter { objectOrHereEffectInRoom(it) }.map { it.toInventoryItem() }
 
-        return if (commandResult.getPlayerState().getInventory().containsKey(InventoryItem.GOLD)) {
-            listOf()
-        } else if (inventoryItems.isNotEmpty()) {
-            listOf(GrabCommand(inventoryItems.first()!!))
-        } else {
-            bestExplorativeMoves(commandResult.getPlayerState())
+        return when {
+            // TODO add has item functions to commandResult
+            commandResult.getPlayerState().getInventory().containsKey(InventoryItem.GOLD) -> exit(commandResult.getPlayerState())
+            inventoryItems.isNotEmpty() -> listOf(GrabCommand(inventoryItems.first()!!))
+            else -> bestExplorativeMoves(commandResult.getPlayerState())
         }
+    }
+
+    private fun exit(playerState: PlayerState): List<Command> {
+        val commands = mutableListOf<Command>()
+        pathToRoom(facts.roomsWithObject(GameObject.EXIT)).forEach {
+            commands.addAll(toCommands(playerState, it))
+        }
+        commands.add(ExitCommand())
+        return commands
     }
 
     internal fun bestExplorativeMoves(playerState: PlayerState): List<Command> {
