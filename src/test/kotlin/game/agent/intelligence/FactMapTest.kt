@@ -101,4 +101,12 @@ internal class FactMapTest {
         assertEquals(setOf(GameObject.BREEZE, GameObject.GLITTER), factMap.getEffectsInRoom(Point(3, 3)))
         assertEquals(setOf<GameObject>(), factMap.getEffectsInRoom(Point(5, 5)))
     }
+
+    @Test
+    fun `get all rooms with object`() {
+        factMap.addFact(Point(3, 3), HAS, EXIT)
+        factMap.addFact(Point(3, 2), HAS_NO, EXIT)
+        factMap.addFact(Point(3, 1), HAS, EXIT)
+        assertEquals(setOf(Point(3, 3), Point(3, 1)), factMap.roomsWithObject(EXIT))
+    }
 }

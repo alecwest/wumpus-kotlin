@@ -75,6 +75,11 @@ class FactMap(private val factMap: MutableMap<Point, MutableSet<Pair<GameObject,
             fact -> fact.first
         }.toSet()
     }
+
+    fun roomsWithObject(gameObject: GameObject): Set<Point> {
+        return getMap().filter { isTrue(it.key, HAS, gameObject) == TRUE }
+                .map { it.key }.toSet()
+    }
 }
 
 enum class Fact {
