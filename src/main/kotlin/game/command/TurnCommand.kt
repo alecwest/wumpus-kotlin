@@ -10,6 +10,7 @@ class TurnCommand(private val targetDirection: Direction): Command() {
 
     override fun execute() {
         game?.let { game ->
+            game.setPlayerScore(game.getScore() + getMoveCost(game.getPlayerState()))
             startingDirection = game.getPlayerDirection()
             var currentDirection = startingDirection!!
             while (currentDirection != targetDirection) {
@@ -21,6 +22,7 @@ class TurnCommand(private val targetDirection: Direction): Command() {
                 }
                 command.setGame(game)
                 command.execute()
+
                 game.setCommandResult(createCommandResult())
                 currentDirection = game.getPlayerDirection()
             }

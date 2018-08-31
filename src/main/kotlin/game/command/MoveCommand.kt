@@ -11,6 +11,8 @@ class MoveCommand: Command() {
             val direction = game.getPlayerDirection()
             val targetLocation = game.getPlayerLocation().adjacent(direction)
             val perceptionList = mutableSetOf<Perception>()
+
+            game.setPlayerScore(game.getScore() + getMoveCost(game.getPlayerState()))
             when {
                 canEnterRoom(targetLocation) -> {
                     deferExecution(direction)

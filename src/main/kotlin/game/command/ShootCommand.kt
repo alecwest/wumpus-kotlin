@@ -26,6 +26,8 @@ class ShootCommand: Command() {
                     currentRoom = currentRoom.adjacent(game.getPlayerDirection())
                 }
             }
+
+            game.setPlayerScore(game.getScore() + getMoveCost(game.getPlayerState()))
             game.setCommandResult(createCommandResult(perceptionList))
         }
     }

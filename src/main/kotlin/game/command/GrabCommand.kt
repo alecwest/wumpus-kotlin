@@ -14,6 +14,8 @@ class GrabCommand(private val inventoryItem: InventoryItem): Command() {
 
             command.setGame(game)
             command.execute()
+
+            game.setPlayerScore(game.getScore() + getMoveCost(game.getPlayerState()))
             game.setCommandResult(createCommandResult())
         }
     }
