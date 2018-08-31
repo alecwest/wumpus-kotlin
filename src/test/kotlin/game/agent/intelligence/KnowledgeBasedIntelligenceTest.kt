@@ -319,6 +319,21 @@ internal class KnowledgeBasedIntelligenceTest {
                 intelligence.pathToRoom())
     }
 
+    @Test
+    fun `exit world when not in room with exit`() {
+        val playerState = Helpers.createPlayerState(
+                location = Point(1, 1), facing = Direction.SOUTH,
+                inventoryContent = mapOf(InventoryItem.GOLD to 1))
+        processSafeRoom(Point(0, 0))
+        intelligence.facts.addFact(Point(0, 0), HAS, EXIT)
+        processSafeRoom(Point(0, 1))
+        processSafeRoom(Point(1, 0))
+        intelligence.processLastMove(world, Helpers.createCommandResult(
+                playerState = playerState))
+        assertEquals(listOf(MoveCommand(), TurnCommand(Direction.WEST), MoveCommand(), ExitCommand()),
+                intelligence.exit(playerState))
+    }
+
     private fun processSafeRoom(point: Point) {
         intelligence.processLastMove(world, Helpers.createCommandResult(setOf(),
                 Helpers.createPlayerState(location = point, facing = Direction.NORTH)))

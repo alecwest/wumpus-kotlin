@@ -31,10 +31,15 @@ class KnowledgeBasedIntelligence : Intelligence() {
         }
     }
 
-    private fun exit(playerState: PlayerState): List<Command> {
+    internal fun exit(playerState: PlayerState): List<Command> {
         val commands = mutableListOf<Command>()
+        var currPlayerState = playerState
         pathToRoom(facts.roomsWithObject(GameObject.EXIT)).forEach {
-            commands.addAll(toCommands(playerState, it))
+            commands.addAll(toCommands(currPlayerState, it))
+            currPlayerState = currPlayerState.copyThis(
+                    location = it,
+                    facing = it.directionFrom(currPlayerState.getLocation())
+                            ?: currPlayerState.getDirection())
         }
         commands.add(ExitCommand())
         return commands
@@ -42,7 +47,12 @@ class KnowledgeBasedIntelligence : Intelligence() {
 
     internal fun bestExplorativeMoves(playerState: PlayerState): List<Command> {
         val commands = mutableListOf<Command>()
-        pathToRoom().forEach { commands.addAll(toCommands(playerState, it)) }
+        pathToRoom().forEach {
+            /**
+             * TODO passing the same playerState every time is most-likely causing funky stuff
+             * See exit() for possible solution and refactoring source
+             */
+            commands.addAll(toCommands(playerState, it)) }
         return commands
     }
 
