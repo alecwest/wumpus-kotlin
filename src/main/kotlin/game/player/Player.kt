@@ -13,8 +13,8 @@ data class Player(private var playerState: PlayerState = PlayerState()) {
     fun getLocation() = getPlayerState().getLocation()
     fun getDirection() = getPlayerState().getDirection()
     fun getInventory() = getPlayerState().getInventory()
-    fun hasItem(item: InventoryItem) = getNumberOf(item) > 0
-    fun getNumberOf(item: InventoryItem) = getInventory().getOrDefault(item, 0)
+    fun hasItem(item: InventoryItem) = getPlayerState().hasItem(item)
+    fun getNumberOf(item: InventoryItem) = getPlayerState().getNumberOf(item)
     fun getScore() = getPlayerState().getScore()
 
     fun addToInventory(inventoryItem: InventoryItem) {

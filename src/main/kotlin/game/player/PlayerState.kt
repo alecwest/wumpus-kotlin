@@ -14,6 +14,8 @@ data class PlayerState(private val alive: Boolean = true,
     fun getLocation() = location
     fun getDirection() = facing
     fun getInventory() = inventory.getInventory()
+    fun hasItem(item: InventoryItem) = getNumberOf(item) > 0
+    fun getNumberOf(item: InventoryItem) = getInventory().getOrDefault(item, 0)
     fun getScore() = score
 
     internal fun copyThis(alive: Boolean = this.alive,
