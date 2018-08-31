@@ -8,6 +8,7 @@ sealed class GameObject(val features: Set<GameObjectFeature> = setOf()) {
     object ARROW : GameObject(setOf(Shootable(), Grabbable(InventoryItem.ARROW)))
     object BLOCKADE : GameObject(setOf(Blocking(), Mappable("X"), Perceptable(Perception.BLOCKADE_BUMP), RoomFilling()))
     object BREEZE : GameObject(setOf(Mappable("="), Perceptable(Perception.BREEZE)))
+    object EXIT : GameObject(setOf(Mappable("E"), Perceptable(Perception.EXIT)))
     object FOOD : GameObject(setOf(Mappable("F"), Grabbable(InventoryItem.FOOD), Perceptable(Perception.FOOD)))
     object GLITTER : GameObject(setOf(Mappable("*"), Perceptable(Perception.GLITTER)))
     object GOLD : GameObject(setOf(Mappable("G"), Grabbable(InventoryItem.GOLD), WorldAffecting(arrayListOf(HereEffect(GameObject.GLITTER)))))

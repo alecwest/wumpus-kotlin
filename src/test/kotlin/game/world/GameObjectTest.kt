@@ -16,7 +16,7 @@ internal class GameObjectTest {
 
     @Test
     fun `filter game object values by feature`() {
-        assertTrue(setOf(BREEZE, GLITTER, MOO, STENCH, BLOCKADE, FOOD, WALL).containsAll(
+        assertTrue(setOf(BREEZE, GLITTER, MOO, STENCH, BLOCKADE, FOOD, WALL, EXIT).containsAll(
                         gameObjectsWithFeatures(setOf(Perceptable()))))
     }
 
