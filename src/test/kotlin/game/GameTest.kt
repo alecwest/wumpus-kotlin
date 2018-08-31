@@ -252,6 +252,8 @@ class GameTest {
         assertEquals(setOf(GameObject.EXIT), game.getGameObjects(game.getPlayerLocation()))
         assertEquals(setOf(GameObject.EXIT),
                 gameWithDifferentStart.getGameObjects(gameWithDifferentStart.getPlayerLocation()))
+        assertEquals(1, game.getRooms().count { it.hasGameObject(GameObject.EXIT) })
+        assertEquals(1, gameWithDifferentStart.getRooms().count { it.hasGameObject(GameObject.EXIT) })
     }
 }
 
