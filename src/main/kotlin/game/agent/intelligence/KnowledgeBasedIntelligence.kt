@@ -3,6 +3,7 @@ package game.agent.intelligence
 import game.agent.intelligence.Answer.*
 import game.agent.intelligence.Fact.*
 import game.command.*
+import game.player.InventoryItem
 import game.player.PlayerState
 import game.world.*
 import game.world.GameObjectFeature.*
@@ -23,7 +24,9 @@ class KnowledgeBasedIntelligence : Intelligence() {
         val inventoryItems = gameObjectsWithFeatures(setOf(Grabbable()))
                 .filter { objectOrHereEffectInRoom(it) }.map { it.toInventoryItem() }
 
-        return if (inventoryItems.isNotEmpty()) {
+        return if (commandResult.getPlayerState().getInventory().containsKey(InventoryItem.GOLD)) {
+            listOf()
+        } else if (inventoryItems.isNotEmpty()) {
             listOf(GrabCommand(inventoryItems.first()!!))
         } else {
             bestExplorativeMoves(commandResult.getPlayerState())

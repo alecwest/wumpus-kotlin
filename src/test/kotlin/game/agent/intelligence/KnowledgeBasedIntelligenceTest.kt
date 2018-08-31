@@ -2,6 +2,7 @@ package game.agent.intelligence
 
 import game.agent.intelligence.Answer.*
 import game.agent.intelligence.Fact.*
+import game.command.ExitCommand
 import game.command.GrabCommand
 import game.command.MoveCommand
 import game.command.TurnCommand
@@ -136,6 +137,12 @@ internal class KnowledgeBasedIntelligenceTest {
         assertEquals(listOf(GrabCommand(InventoryItem.GOLD)), intelligence.chooseNextMoves(world, Helpers.createCommandResult(
                 setOf(Perception.GLITTER, Perception.STENCH, Perception.BREEZE),
                 Helpers.createPlayerState(location = Point(2, 1), facing = Direction.NORTH))))
+    }
+
+    @Test
+    fun `leave with gold in inventory`() {
+        assertEquals(listOf(ExitCommand()), intelligence.chooseNextMoves(world, Helpers.createCommandResult(
+                setOf(Perception.EXIT), Helpers.createPlayerState(inventoryContent = mapOf(InventoryItem.GOLD to 1)))))
     }
 
     @Test
