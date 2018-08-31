@@ -29,7 +29,8 @@ internal class ExitCommandTest {
 
     @Test
     fun `execute exit command in un-exitable room`() {
-        val game = Helpers.createGame(player = Helpers.createPlayer(location = Point(1, 1)))
+        val game = Helpers.createGame(player = Helpers.createPlayer(location = Point(0, 0)))
+        game.setPlayerLocation(Point(1, 1))
         val command = ExitCommand()
         command.setGame(game)
         command.execute()

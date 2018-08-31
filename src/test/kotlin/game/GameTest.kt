@@ -87,7 +87,7 @@ class GameTest {
 
     @Test
     fun `check room is empty`() {
-        assertTrue(game.roomIsEmpty(Point(0, 0)))
+        assertTrue(game.roomIsEmpty(Point(0, 1)))
         assertFalse(game.roomIsEmpty(pitRoomPoint))
     }
 
@@ -118,7 +118,7 @@ class GameTest {
     @Test
     fun `check amount of content in room`() {
         assertEquals(1, game.getAmountOfObjectsInRoom(pitRoomPoint))
-        assertEquals(0, game.getAmountOfObjectsInRoom(Point(0, 0)))
+        assertEquals(0, game.getAmountOfObjectsInRoom(Point(0, 1)))
     }
 
     @Test

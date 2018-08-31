@@ -74,7 +74,8 @@ internal class MoveCommandTest {
             ValidMoveCommandTestData(initialGame, MoveCommand(),
                     CommandResult(playerState = initialPlayer.getPlayerState().copyThis(location = Point(1, 4), facing = Direction.NORTH, score = 5))),
             ValidMoveCommandTestData(initialGame, MoveCommand(),
-                    CommandResult(playerState = initialPlayer.getPlayerState().copyThis(location = Point(2, 4), facing = Direction.EAST, score = 7))),
+                    CommandResult(setOf(Perception.EXIT),
+                            initialPlayer.getPlayerState().copyThis(location = Point(2, 4), facing = Direction.EAST, score = 7))),
             ValidMoveCommandTestData(playerInCornerGame, MoveCommand(),
                     CommandResult(setOf(Perception.WALL_BUMP), initialPlayerInCorner.getPlayerState().copyThis(
                             location = Point(0, 0), facing = Direction.SOUTH, score = 1))),
