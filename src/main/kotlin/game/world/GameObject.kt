@@ -8,7 +8,7 @@ sealed class GameObject(val features: Set<GameObjectFeature> = setOf()) {
     object ARROW : GameObject(setOf(Shootable(), Grabbable(InventoryItem.ARROW)))
     object BLOCKADE : GameObject(setOf(Blocking(), Mappable("X"), Perceptable(Perception.BLOCKADE_BUMP), RoomFilling()))
     object BREEZE : GameObject(setOf(Mappable("="), Perceptable(Perception.BREEZE)))
-    object EXIT : GameObject(setOf(Mappable("E"), Perceptable(Perception.EXIT)))
+    object EXIT : GameObject(setOf(Exitable(), Mappable("E"), Perceptable(Perception.EXIT)))
     object FOOD : GameObject(setOf(Mappable("F"), Grabbable(InventoryItem.FOOD), Perceptable(Perception.FOOD)))
     object GLITTER : GameObject(setOf(Mappable("*"), Perceptable(Perception.GLITTER)))
     object GOLD : GameObject(setOf(Mappable("G"), Grabbable(InventoryItem.GOLD), WorldAffecting(arrayListOf(HereEffect(GameObject.GLITTER)))))
@@ -76,6 +76,7 @@ sealed class GameObjectFeature {
     class Blocking: GameObjectFeature() // For things that block a player from entering
     class Dangerous: GameObjectFeature()
     class Destructable(val weaknesses: Set<GameObject> = setOf()): GameObjectFeature()
+    class Exitable: GameObjectFeature()
     class Grabbable(val inventoryItem: InventoryItem? = null): GameObjectFeature()
     class Mappable(val character: String = ""): GameObjectFeature()
     class Perceptable(val perception: Perception? = null): GameObjectFeature()

@@ -1,12 +1,14 @@
 package game.command
 
-import game.world.GameObject;
+import game.world.gameObjectsWithFeatures
+import game.world.GameObjectFeature.Exitable
 
 class ExitCommand: Command() {
     override fun execute() {
         game?.let { game ->
             game.setPlayerScore(game.getScore() + getMoveCost(game.getPlayerState()))
-            if (game.hasGameObject(game.getPlayerLocation(), GameObject.EXIT)) {
+            if (gameObjectsWithFeatures(setOf(Exitable())).any {
+                        game.hasGameObject(game.getPlayerLocation(), it) }) {
                 game.setActive(false)
             }
             game.setCommandResult(createCommandResult())
