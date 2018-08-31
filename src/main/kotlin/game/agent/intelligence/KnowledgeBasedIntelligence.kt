@@ -26,7 +26,7 @@ class KnowledgeBasedIntelligence : Intelligence() {
 
         return when {
             // TODO add has item functions to commandResult
-            commandResult.getPlayerState().getInventory().containsKey(InventoryItem.GOLD) -> exit(commandResult.getPlayerState())
+            commandResult.getPlayerState().hasItem(InventoryItem.GOLD) -> exit(commandResult.getPlayerState())
             inventoryItems.isNotEmpty() -> listOf(GrabCommand(inventoryItems.first()!!))
             else -> bestExplorativeMoves(commandResult.getPlayerState())
         }
