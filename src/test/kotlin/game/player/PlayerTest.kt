@@ -122,6 +122,8 @@ class PlayerTest {
     fun `get player score`() {
         assertEquals(0, player.getScore())
         assertEquals(12, Helpers.createPlayer(score = 12).getScore())
+        player.setScore(666)
+        assertEquals(666, player.getScore())
     }
 }
 

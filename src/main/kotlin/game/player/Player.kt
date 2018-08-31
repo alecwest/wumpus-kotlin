@@ -50,4 +50,8 @@ data class Player(private var playerState: PlayerState = PlayerState()) {
     fun setInventory(inventory: PlayerInventory) {
         playerState = getPlayerState().copyThis(inventory = inventory)
     }
+
+    fun setScore(score: Int) {
+        playerState = getPlayerState().copyThis(score = score)
+    }
 }

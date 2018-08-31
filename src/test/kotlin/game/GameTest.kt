@@ -230,6 +230,14 @@ class GameTest {
         game.setPlayerInventory(PlayerInventory(newInventory))
         assertEquals(newInventory, game.getPlayerInventory())
     }
+
+    @Test
+    fun `check score of player on change`() {
+        val newScore = 16
+        assertEquals(0, game.getScore())
+        game.setPlayerScore(newScore)
+        assertEquals(newScore, game.getScore())
+    }
 }
 
 data class ValidGameTestData (

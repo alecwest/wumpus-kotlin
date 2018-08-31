@@ -76,6 +76,7 @@ data class Game(private var gameState: GameState = GameState()) {
         newPlayer.setAlive(alive)
         gameState = getGameState().copyThis(player = newPlayer)
     }
+
     fun setPlayerLocation(location: Point) {
         val newPlayer = getGameState().getPlayer()
         newPlayer.setLocation(location)
@@ -94,6 +95,12 @@ data class Game(private var gameState: GameState = GameState()) {
     fun setPlayerInventory(inventory: PlayerInventory) {
         val newPlayer = getGameState().getPlayer()
         newPlayer.setInventory(inventory)
+        gameState = getGameState().copyThis(player = newPlayer)
+    }
+
+    fun setPlayerScore(score: Int) {
+        val newPlayer = getGameState().getPlayer()
+        newPlayer.setScore(score)
         gameState = getGameState().copyThis(player = newPlayer)
     }
 }
