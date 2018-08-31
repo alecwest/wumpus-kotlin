@@ -18,7 +18,7 @@ data class CommandResult(private val perceptions: Set<Perception> = setOf(),
                  gameActive: Boolean = this.gameActive) = CommandResult(perceptions, playerState, gameActive)
 
     override fun toString(): String {
-        return "Perceptions: $perceptions\n$playerState\n"
+        return "Perceptions: $perceptions\nGame active: $gameActive\n$playerState\n"
     }
 
 
