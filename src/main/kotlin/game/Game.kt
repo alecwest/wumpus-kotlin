@@ -38,7 +38,7 @@ data class Game(private var gameState: GameState = GameState()) {
     fun getRoom(point: Point) = getGameState().getRoom(point)
     fun getNumberRooms() = getGameState().getNumberRooms()
     fun getAmountOfObjectsInRoom(point: Point) = getGameState().getAmountOfObjectsInRoom(point)
-
+    fun getScore() = getGameState().getScore()
     
     fun addToRoom(point: Point, gameObject: GameObject) {
         val newWorld = getGameState().getWorld()
