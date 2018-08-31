@@ -39,8 +39,8 @@ class KnowledgeBasedIntelligence : Intelligence() {
         return commands
     }
 
-    fun pathToRoom(point: Point? = null): Set<Point> {
-        val pointPathsPair = dijkstra(commandResult.getPlayerState(), point)
+    fun pathToRoom(possibleTargets: Set<Point> = setOf()): Set<Point> {
+        val pointPathsPair = dijkstra(commandResult.getPlayerState(), possibleTargets)
         return generatePath(pointPathsPair.first, pointPathsPair.second)
     }
 
@@ -57,7 +57,7 @@ class KnowledgeBasedIntelligence : Intelligence() {
         return path.toSet()
     }
 
-    private fun dijkstra(playerState: PlayerState, target: Point?): Pair<Point, ArrayList<Pair<Point, Direction>?>> {
+    private fun dijkstra(playerState: PlayerState, targets: Set<Point> = setOf()): Pair<Point, ArrayList<Pair<Point, Direction>?>> {
         val startingLocation = playerState.getLocation()
         val startingDirection = playerState.getDirection()
         val vertices = mutableSetOf<Point>()
@@ -81,8 +81,8 @@ class KnowledgeBasedIntelligence : Intelligence() {
              * If target is given, terminate when path to target is reached
              * Otherwise continue until first unknown, accessible room is found
              */
-            if (leastDistantRoom == target ||
-                    (target == null && !facts.featureFullyKnownInRoom(leastDistantRoom, Perceptable()))) {
+            if (targets.contains(leastDistantRoom) ||
+                    (targets.isEmpty() && !facts.featureFullyKnownInRoom(leastDistantRoom, Perceptable()))) {
                 endingLocation = leastDistantRoom
                 break
             }

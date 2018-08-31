@@ -261,7 +261,8 @@ internal class KnowledgeBasedIntelligenceTest {
                 processSafeRoom(Point(i, j))
             }
         }
-        assertEquals(setOf(Point(0, 1), Point(0, 2), Point(1, 2), Point(2, 2)), intelligence.pathToRoom(Point(2, 2)))
+        assertEquals(setOf(Point(0, 1), Point(0, 2), Point(1, 2), Point(2, 2)),
+                intelligence.pathToRoom(setOf(Point(2, 2))))
     }
 
     @Test
@@ -283,7 +284,8 @@ internal class KnowledgeBasedIntelligenceTest {
                 playerState = Helpers.createPlayerState(location = Point(2, 2))))
         intelligence.processLastMove(world, Helpers.createCommandResult(
                 playerState = Helpers.createPlayerState(location = Point(0, 0))))
-        assertEquals(setOf(Point(0, 1), Point(1, 1), Point(2, 1), Point(2, 2)), intelligence.pathToRoom(Point(2, 2)))
+        assertEquals(setOf(Point(0, 1), Point(1, 1), Point(2, 1), Point(2, 2)),
+                intelligence.pathToRoom(setOf(Point(2, 2))))
     }
 
     @Test
