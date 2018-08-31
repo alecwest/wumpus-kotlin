@@ -2,7 +2,6 @@ package game.command
 
 import game.Game
 import game.player.PlayerState
-import game.world.GameObject
 import game.world.GameObjectFeature.*
 import game.world.Perception
 
@@ -20,8 +19,9 @@ abstract class Command {
     }
 
     fun createCommandResult(perceptions: Set<Perception> = createPerceptions(),
-                            playerState: PlayerState = game?.getPlayerState() ?: PlayerState()): CommandResult {
-        return CommandResult(perceptions, playerState)
+                            playerState: PlayerState = game?.getPlayerState() ?: PlayerState(),
+                            gameActive: Boolean = game?.getActive() ?: true): CommandResult {
+        return CommandResult(perceptions, playerState, gameActive)
     }
 
     fun createPerceptions(): Set<Perception> {

@@ -2,7 +2,6 @@ package game.command
 
 import game.player.PlayerState
 import game.world.Perception
-import game.world.GameObject
 import org.junit.jupiter.api.Test
 import java.awt.Point
 import kotlin.test.assertEquals

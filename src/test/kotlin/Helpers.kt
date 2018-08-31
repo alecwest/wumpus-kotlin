@@ -71,8 +71,9 @@ class Helpers {
         }
 
         fun createCommandResult(perceptions: Set<Perception> = setOf(),
-                                playerState: PlayerState = Helpers.createPlayerState()): CommandResult {
-            return CommandResult(perceptions, playerState)
+                                playerState: PlayerState = Helpers.createPlayerState(),
+                                gameActive: Boolean = true): CommandResult {
+            return CommandResult(perceptions, playerState, gameActive)
         }
 
         fun createClient(fileName: String = "",

@@ -1,11 +1,12 @@
 package game.command
 
 import game.player.PlayerState
-import game.world.GameObject
 import game.world.Perception
 
 data class CommandResult(private val perceptions: Set<Perception> = setOf(),
-                         private val playerState: PlayerState = PlayerState()) {
+                         private val playerState: PlayerState = PlayerState(),
+                         private val gameActive: Boolean = true) {
+    fun getActive() = gameActive
     fun getPerceptions() = perceptions
     fun getPlayerState() = playerState
     fun blockadeHit() = getPerceptions().contains(Perception.BLOCKADE_BUMP)
@@ -13,7 +14,8 @@ data class CommandResult(private val perceptions: Set<Perception> = setOf(),
     fun moveRejected() = blockadeHit() || wallHit()
 
     fun copyThis(perceptions: Set<Perception> = this.perceptions,
-                 playerState: PlayerState = this.playerState.copyThis()) = CommandResult(perceptions, playerState)
+                 playerState: PlayerState = this.playerState.copyThis(),
+                 gameActive: Boolean = this.gameActive) = CommandResult(perceptions, playerState, gameActive)
 
     override fun toString(): String {
         return "Perceptions: $perceptions\n$playerState\n"

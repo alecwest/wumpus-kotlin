@@ -76,16 +76,16 @@ internal class AgentTest {
         @JvmStatic
         fun validPostMoveBasicIntelligenceAgentTestDataProvider() = Stream.of(
                 ValidPostMoveAgentTestData(commandResult.copyThis(
-                                playerState = commandResult.getPlayerState().copyThis(location = Point(0, 3), score = 1)
+                        playerState = commandResult.getPlayerState().copyThis(location = Point(0, 3), score = 1)
                         )),
                 ValidPostMoveAgentTestData(commandResult.copyThis(
-                                perceptions = setOf(Perception.BLOCKADE_BUMP),
-                                playerState = commandResult.getPlayerState().copyThis(
-                                        location = Point(0, 3), score = 2)
+                        perceptions = setOf(Perception.BLOCKADE_BUMP),
+                        playerState = commandResult.getPlayerState().copyThis(
+                                location = Point(0, 3), score = 2)
                         )),
                 ValidPostMoveAgentTestData(commandResult.copyThis(
-                                playerState = commandResult.getPlayerState().copyThis(
-                                        location = Point(0, 3), facing = Direction.EAST, score = 3)
+                        playerState = commandResult.getPlayerState().copyThis(
+                                location = Point(0, 3), facing = Direction.EAST, score = 3)
                         )),
                 ValidPostMoveAgentTestData(commandResult.copyThis(
                                 setOf(Perception.BREEZE),
