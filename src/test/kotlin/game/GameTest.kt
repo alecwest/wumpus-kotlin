@@ -245,6 +245,14 @@ class GameTest {
         game.setActive(false)
         assertEquals(false, game.getActive())
     }
+
+    @Test
+    fun `check exit is added to player starting location`() {
+        val gameWithDifferentStart = Helpers.createGame(player = Helpers.createPlayer(location = Point(4, 4)))
+        assertEquals(setOf(GameObject.EXIT), game.getGameObjects(game.getPlayerLocation()))
+        assertEquals(setOf(GameObject.EXIT),
+                gameWithDifferentStart.getGameObjects(gameWithDifferentStart.getPlayerLocation()))
+    }
 }
 
 data class ValidGameTestData (

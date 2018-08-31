@@ -12,6 +12,10 @@ import java.awt.Point
  * Game retrieves the GameState and facilitates its manipulation
  */
 data class Game(private var gameState: GameState = GameState()) {
+    init {
+        addToRoom(getPlayerLocation(), GameObject.EXIT)
+    }
+
     private var lastCommandResult: CommandResult = CommandResult(
             perceptions = setOf(),
             playerState = getPlayerState())
