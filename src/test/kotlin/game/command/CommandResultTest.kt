@@ -10,7 +10,7 @@ import kotlin.test.assertTrue
 
 internal class CommandResultTest {
     private val commandResult = CommandResult(setOf(Perception.BLOCKADE_BUMP),
-            PlayerState(location = Point(44, 23)))
+            PlayerState(location = Point(44, 23)), false)
     private val plainCommandResult = CommandResult()
 
     @Test
@@ -23,6 +23,13 @@ internal class CommandResultTest {
     fun `get player state`() {
         assertEquals(PlayerState(location = Point(44, 23)), commandResult.getPlayerState())
         assertEquals(PlayerState(), plainCommandResult.getPlayerState())
+    }
+
+    @Test
+    fun `get active`() {
+        assertEquals(false, commandResult.getActive())
+        assertEquals(true, plainCommandResult.getActive())
+
     }
 
     @Test
