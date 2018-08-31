@@ -44,19 +44,24 @@ internal class ShootCommandTest {
         fun validShootCommandTestDataProvider() = Stream.of(
                 ValidShootCommandTestData(initialGame, ShootCommand(),
                         CommandResult(setOf(Perception.SCREAM),
-                                initialGame.getPlayerState().copyThis(inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 3))))),
+                                initialGame.getPlayerState().copyThis(
+                                        inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 3)), score = 1))),
                  ValidShootCommandTestData(initialGame, ShootCommand(),
                         CommandResult(setOf(Perception.SCREAM),
-                                initialGame.getPlayerState().copyThis(inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 2))))),
+                                initialGame.getPlayerState().copyThis(
+                                        inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 2)), score = 2))),
                  ValidShootCommandTestData(initialGame, ShootCommand(),
                         CommandResult(setOf(Perception.SCREAM),
-                                initialGame.getPlayerState().copyThis(inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 1))))),
+                                initialGame.getPlayerState().copyThis(
+                                        inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 1)), score = 3))),
                 ValidShootCommandTestData(initialGame, ShootCommand(),
                         CommandResult(setOf(),
-                                initialGame.getPlayerState().copyThis(inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 0))))),
+                                initialGame.getPlayerState().copyThis(
+                                        inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 0)), score = 4))),
                 ValidShootCommandTestData(initialGame, ShootCommand(),
                         CommandResult(setOf(),
-                                initialGame.getPlayerState().copyThis(inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 0)))))
+                                initialGame.getPlayerState().copyThis(
+                                        inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 0)), score = 5)))
         )
     }
 }

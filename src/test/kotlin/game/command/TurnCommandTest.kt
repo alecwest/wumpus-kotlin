@@ -42,22 +42,22 @@ internal class TurnCommandTest {
         fun validTurnCommandTestDataProvider() = Stream.of(
                 ValidTurnCommandTestData(initialGame, TurnCommand(Direction.EAST),
                         1, CommandResult(setOf(Perception.BREEZE),
-                        initialPlayer.getPlayerState().copyThis(facing = Direction.EAST))),
+                        initialPlayer.getPlayerState().copyThis(facing = Direction.EAST, score = 1))),
                 ValidTurnCommandTestData(initialGame, TurnCommand(Direction.NORTH),
                         1, CommandResult(setOf(Perception.BREEZE),
-                        initialPlayer.getPlayerState().copyThis(facing = Direction.NORTH))),
+                        initialPlayer.getPlayerState().copyThis(facing = Direction.NORTH, score = 2))),
                 ValidTurnCommandTestData(initialGame, TurnCommand(Direction.EAST),
                         1, CommandResult(setOf(Perception.BREEZE),
-                        initialPlayer.getPlayerState().copyThis(facing = Direction.EAST))),
+                        initialPlayer.getPlayerState().copyThis(facing = Direction.EAST, score = 3))),
                 ValidTurnCommandTestData(initialGame, TurnCommand(Direction.SOUTH),
                         1, CommandResult(setOf(Perception.BREEZE),
-                        initialPlayer.getPlayerState().copyThis(facing = Direction.SOUTH))),
+                        initialPlayer.getPlayerState().copyThis(facing = Direction.SOUTH, score = 4))),
                 ValidTurnCommandTestData(initialGame, TurnCommand(Direction.NORTH),
                         2, CommandResult(setOf(Perception.BREEZE),
-                        initialPlayer.getPlayerState().copyThis(facing = Direction.NORTH))),
+                        initialPlayer.getPlayerState().copyThis(facing = Direction.NORTH, score = 5))),
                 ValidTurnCommandTestData(initialGame, TurnCommand(Direction.NORTH),
                         0, CommandResult(setOf(Perception.BREEZE),
-                        initialPlayer.getPlayerState().copyThis(facing = Direction.NORTH)))
+                        initialPlayer.getPlayerState().copyThis(facing = Direction.NORTH, score = 6)))
         )
     }
 }

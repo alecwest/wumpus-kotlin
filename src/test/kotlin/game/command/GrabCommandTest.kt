@@ -57,21 +57,23 @@ class GrabCommandTest {
                 ValidGrabCommandTestData(initialGame, GrabCommand(InventoryItem.FOOD),
                         GameObject.FOOD, CommandResult(setOf(Perception.GLITTER),
                         PlayerState(location = initialGame.getPlayerLocation(), facing = initialGame.getPlayerDirection(),
-                                inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 2, InventoryItem.FOOD to 1))))),
+                                inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 2, InventoryItem.FOOD to 1)),
+                                score = 1))),
                 ValidGrabCommandTestData(initialGame, GrabCommand(InventoryItem.FOOD),
                         GameObject.FOOD, CommandResult(setOf(Perception.GLITTER),
                         PlayerState(location = initialGame.getPlayerLocation(), facing = initialGame.getPlayerDirection(),
-                                inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 2, InventoryItem.FOOD to 1))))),
+                                inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 2, InventoryItem.FOOD to 1)),
+                                score = 2))),
                 ValidGrabCommandTestData(initialGame, GrabCommand(InventoryItem.GOLD),
                         GameObject.FOOD, CommandResult(setOf(),
                         PlayerState(location = initialGame.getPlayerLocation(), facing = initialGame.getPlayerDirection(),
                                 inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 2, InventoryItem.FOOD to 1,
-                                        InventoryItem.GOLD to 1))))),
+                                        InventoryItem.GOLD to 1)), score = 3))),
                 ValidGrabCommandTestData(initialGame, GrabCommand(InventoryItem.ARROW),
                         GameObject.FOOD, CommandResult(setOf(),
                         PlayerState(location = initialGame.getPlayerLocation(), facing = initialGame.getPlayerDirection(),
                                 inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 3, InventoryItem.FOOD to 1,
-                                        InventoryItem.GOLD to 1)))))
+                                        InventoryItem.GOLD to 1)), score = 4)))
         )
     }
 }
