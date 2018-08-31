@@ -13,18 +13,18 @@ class FactProcessor {
                 markEdgeRooms(facts, world, commandResult)
             }
             assessCurrentRoom(facts, world, commandResult)
-            assessNearbyRooms(facts, commandResult.getPlayerState().getLocation())
+            assessNearbyRooms(facts, commandResult.getLocation())
             reassessForNewInsight(facts)
         }
 
         internal fun playerOnEdge(world: World, commandResult: CommandResult): Boolean {
-            return commandResult.getPlayerState().getLocation().adjacents().any {
+            return commandResult.getLocation().adjacents().any {
                 !world.roomIsValid(it)
             }
         }
 
         internal fun markEdgeRooms(facts: FactMap, world: World, commandResult: CommandResult) {
-            val edgeRooms = commandResult.getPlayerState().getLocation().adjacents().filter { !world.roomIsValid(it) }
+            val edgeRooms = commandResult.getLocation().adjacents().filter { !world.roomIsValid(it) }
             edgeRooms.forEach { edgeRoom ->
                 gameObjectValues().forEach { gameObject ->
                     facts.addFact(edgeRoom, Fact.HAS_NO, gameObject)
@@ -34,7 +34,7 @@ class FactProcessor {
 
         internal fun assessCurrentRoom(facts: FactMap, world: World, commandResult: CommandResult) {
             val perceivedObjects = toGameObjects(commandResult.getPerceptions())
-            val playerLocation = commandResult.getPlayerState().getLocation()
+            val playerLocation = commandResult.getLocation()
             gameObjectValues().forEach { gameObject ->
                 if (gameObject.hasFeature(GameObjectFeature.Blocking()) && perceivedObjects.contains(gameObject)) {
                     addBlockingObject(facts, world, commandResult, gameObject)
@@ -49,8 +49,8 @@ class FactProcessor {
 
         internal fun addBlockingObject(facts: FactMap, world: World, commandResult: CommandResult, gameObject: GameObject) {
             if (!gameObject.hasFeature(GameObjectFeature.Blocking())) return
-            val playerLocation = commandResult.getPlayerState().getLocation()
-            val blockerLocation = playerLocation.adjacent(commandResult.getPlayerState().getDirection())
+            val playerLocation = commandResult.getLocation()
+            val blockerLocation = playerLocation.adjacent(commandResult.getDirection())
             facts.addFact(playerLocation, Fact.HAS_NO, gameObject)
             facts.addFact(blockerLocation, Fact.HAS, gameObject)
             world.addGameObject(blockerLocation, gameObject)

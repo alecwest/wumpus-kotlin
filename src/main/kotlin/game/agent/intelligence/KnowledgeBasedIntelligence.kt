@@ -25,8 +25,7 @@ class KnowledgeBasedIntelligence : Intelligence() {
                 .filter { objectOrHereEffectInRoom(it) }.map { it.toInventoryItem() }
 
         return when {
-            // TODO add has item functions to commandResult
-            commandResult.getPlayerState().hasItem(InventoryItem.GOLD) -> exit(commandResult.getPlayerState())
+            commandResult.hasItem(InventoryItem.GOLD) -> exit(commandResult.getPlayerState())
             inventoryItems.isNotEmpty() -> listOf(GrabCommand(inventoryItems.first()!!))
             else -> bestExplorativeMoves(commandResult.getPlayerState())
         }
@@ -138,10 +137,10 @@ class KnowledgeBasedIntelligence : Intelligence() {
 
     internal fun objectOrHereEffectInRoom(gameObject: GameObject): Boolean {
         val worldEffects = gameObject.getFeature(WorldAffecting()) as WorldAffecting?
-        return facts.isTrue(commandResult.getPlayerState().getLocation(), HAS, gameObject) == TRUE
+        return facts.isTrue(commandResult.getLocation(), HAS, gameObject) == TRUE
                 || worldEffects?.effects?.any { effect ->
             effect::class == HereEffect::class
-                    && facts.isTrue(commandResult.getPlayerState().getLocation(), HAS, effect.gameObject) == TRUE
+                    && facts.isTrue(commandResult.getLocation(), HAS, effect.gameObject) == TRUE
         } ?: false
     }
 

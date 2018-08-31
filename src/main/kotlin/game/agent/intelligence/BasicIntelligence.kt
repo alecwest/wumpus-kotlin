@@ -14,7 +14,7 @@ class BasicIntelligence : Intelligence() {
     override fun chooseNextMoves(world: World, commandResult: CommandResult): List<Command> {
         super.chooseNextMoves(world, commandResult)
         return listOf(if (commandResult.moveRejected()) {
-            TurnCommand(commandResult.getPlayerState().getDirection().right())
+            TurnCommand(commandResult.getDirection().right())
         } else {
             MoveCommand()
         })

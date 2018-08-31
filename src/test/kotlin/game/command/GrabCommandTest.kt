@@ -31,7 +31,7 @@ class GrabCommandTest {
         assertEquals(testData.command.game, testData.givenGame)
 
         testData.command.execute()
-        assertEquals(testData.expectedCommandResult.getPlayerState().getInventory(),
+        assertEquals(testData.expectedCommandResult.getInventory(),
                 testData.givenGame.getPlayerInventory())
         assertEquals(testData.expectedCommandResult, testData.givenGame.getCommandResult())
 
