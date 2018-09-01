@@ -1,5 +1,6 @@
 package game.server
 
+import game.Game
 import game.player.InventoryItem
 import game.player.PlayerInventory
 import game.world.GameObject
@@ -7,6 +8,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import game.command.*
 import game.world.Perception
+import org.junit.jupiter.api.Assertions.assertTrue
 import util.*
 import java.awt.Point
 
@@ -67,6 +69,23 @@ class ServerTest {
         val sessionId = Helpers.createServerSession(Helpers.testFilePath + "testFile.json")
         Server.makeMove(sessionId, MoveCommand())
         assertEquals(arrayListOf(Perception.BREEZE).toString(), Server.getCommandResult(sessionId).getPerceptions().toString())
+    }
+
+    @Test
+    fun `check for mandatory world properties on create without file`() {
+        val game = Server.createGame("", 10)
+        checkWorldProperties(game)
+    }
+
+    @Test
+    fun `check for mandatory world properties on create with file`() {
+        val game = Server.createGame(Helpers.testFilePath + "testFile.json", 10)
+        checkWorldProperties(game)
+    }
+
+    private fun checkWorldProperties(game: Game) {
+        assertTrue(game.hasGameObject(game.getPlayerLocation(), GameObject.EXIT))
+        assertEquals(1, game.getAmountOfObjectsInRoom(game.getPlayerLocation()))
     }
 }
 

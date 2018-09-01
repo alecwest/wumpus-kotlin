@@ -34,7 +34,7 @@ object Server {
         return id
     }
 
-    private fun createGame(fileName: String, worldSize: Int): Game {
+    internal fun createGame(fileName: String, worldSize: Int): Game {
         return if (fileName.isBlank()) {
             Game(GameState(world = World(size = worldSize)))
         } else {
