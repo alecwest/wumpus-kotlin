@@ -1,7 +1,9 @@
 package game.command
 
+import game.Game
 import game.player.InventoryItem
 import game.player.PlayerState
+import game.world.GameObjectFeature
 import game.world.Perception
 
 data class CommandResult(private val perceptions: Set<Perception> = setOf(),
@@ -31,5 +33,21 @@ data class CommandResult(private val perceptions: Set<Perception> = setOf(),
         return "Perceptions: $perceptions\nGame active: $gameActive\n$playerState\n"
     }
 
+    companion object {
+        fun createCommandResult(game: Game,
+                                perceptions: Set<Perception>? = null): CommandResult {
+            return CommandResult(perceptions ?: createPerceptions(game),
+                    game.getPlayerState(), game.getActive())
+        }
 
+        internal fun createPerceptions(game: Game): Set<Perception> {
+            val perceptionList = mutableSetOf<Perception>()
+            val location = game.getPlayerLocation()
+            for (content in game.getGameObjects(location).filter { it.hasFeature(GameObjectFeature.Perceptable()) }) {
+                (content.getFeature(GameObjectFeature.Perceptable()) as GameObjectFeature.Perceptable)
+                        .perception?.let { perceptionList.add(it) }
+            }
+            return perceptionList
+        }
+    }
 }

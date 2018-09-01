@@ -1,5 +1,6 @@
 package game.command
 
+import game.command.CommandResult.Companion.createCommandResult
 import game.world.Perception
 import game.world.GameObjectFeature.*
 import util.*
@@ -30,7 +31,7 @@ class MoveCommand: Command() {
                 else -> perceptionList.add(Perception.WALL_BUMP)
             }
 
-            game.setCommandResult(createCommandResult(perceptionList))
+            game.setCommandResult(createCommandResult(game, perceptionList))
         }
     }
 

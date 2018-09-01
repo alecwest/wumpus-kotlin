@@ -1,5 +1,6 @@
 package game.command
 
+import game.command.CommandResult.Companion.createCommandResult
 import game.player.InventoryItem
 import game.world.GameObject
 
@@ -16,7 +17,7 @@ class GrabCommand(private val inventoryItem: InventoryItem): Command() {
             command.execute()
 
             game.setPlayerScore(game.getScore() + getMoveCost(game.getPlayerState()))
-            game.setCommandResult(createCommandResult())
+            game.setCommandResult(createCommandResult(game))
         }
     }
 

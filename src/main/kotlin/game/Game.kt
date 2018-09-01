@@ -16,9 +16,7 @@ data class Game(private var gameState: GameState = GameState()) {
         addToRoom(getPlayerLocation(), GameObject.EXIT)
     }
 
-    private var lastCommandResult: CommandResult = CommandResult(
-            perceptions = setOf(),
-            playerState = getPlayerState())
+    private var lastCommandResult: CommandResult = CommandResult.createCommandResult(this)
 
     fun getGameState() = gameState
 

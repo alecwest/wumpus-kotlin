@@ -1,5 +1,6 @@
 package game.command
 
+import game.command.CommandResult.Companion.createCommandResult
 import game.player.InventoryItem
 import game.world.Perception
 import game.world.GameObject
@@ -28,7 +29,7 @@ class ShootCommand: Command() {
             }
 
             game.setPlayerScore(game.getScore() + getMoveCost(game.getPlayerState()))
-            game.setCommandResult(createCommandResult(perceptionList))
+            game.setCommandResult(createCommandResult(game, perceptionList))
         }
     }
 

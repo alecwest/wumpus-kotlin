@@ -6,6 +6,7 @@ import Helpers.createWorld
 import game.player.InventoryItem
 import game.player.PlayerInventory
 import game.world.GameObject
+import game.world.Perception
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
@@ -254,6 +255,7 @@ class GameTest {
                 gameWithDifferentStart.getGameObjects(gameWithDifferentStart.getPlayerLocation()))
         assertEquals(1, game.getRooms().count { it.hasGameObject(GameObject.EXIT) })
         assertEquals(1, gameWithDifferentStart.getRooms().count { it.hasGameObject(GameObject.EXIT) })
+        assertTrue(game.getCommandResult().getPerceptions().contains(Perception.EXIT))
     }
 }
 

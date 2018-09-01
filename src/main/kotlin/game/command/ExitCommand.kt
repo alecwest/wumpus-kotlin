@@ -1,5 +1,6 @@
 package game.command
 
+import game.command.CommandResult.Companion.createCommandResult
 import game.world.gameObjectsWithFeatures
 import game.world.GameObjectFeature.Exitable
 
@@ -11,7 +12,7 @@ class ExitCommand: Command() {
                         game.hasGameObject(game.getPlayerLocation(), it) }) {
                 game.setActive(false)
             }
-            game.setCommandResult(createCommandResult())
+            game.setCommandResult(createCommandResult(game))
         }
     }
 
