@@ -242,16 +242,19 @@ internal class KnowledgeBasedIntelligenceTest {
         intelligence.processLastMove(world, Helpers.createCommandResult(setOf(Perception.BREEZE),
                 Helpers.createPlayerState(location = Point(4, 4))))
 
-        assertEquals(listOf(TurnCommand(Direction.SOUTH), MoveCommand(), MoveCommand()), intelligence.bestExplorativeMoves(intelligence.commandResult.getPlayerState()))
+        assertEquals(listOf(TurnCommand(Direction.SOUTH), MoveCommand(), MoveCommand()),
+                intelligence.bestExplorativeMoves(intelligence.commandResult.getPlayerState()))
         assertEquals(listOf(MoveCommand(), MoveCommand()), intelligence.bestExplorativeMoves(Helpers.createPlayerState(
                 location = Point(4, 4), facing = Direction.SOUTH)))
     }
 
     @Test
     fun `get best explorative moves when surrounded by already known rooms`() {
-        for (i in 2 downTo 0) for (j in 2 downTo 0) processSafeRoom(Point(i, j))
+        for (i in 9 downTo 0) for (j in 9 downTo 1) processSafeRoom(Point(i, j))
+        for (i in 9 downTo 1) processSafeRoom(Point(i, 0))
         processSafeRoom(Point(1, 1)) // Set player location to (1, 1)
-        assertEquals(listOf(MoveCommand(), MoveCommand()), intelligence.bestExplorativeMoves(intelligence.commandResult.getPlayerState()))
+        assertEquals(listOf(TurnCommand(Direction.WEST), MoveCommand(), TurnCommand(Direction.SOUTH), MoveCommand()),
+                intelligence.bestExplorativeMoves(intelligence.commandResult.getPlayerState()))
     }
 
     @Test
