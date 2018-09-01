@@ -3,7 +3,7 @@ package game.world
 import game.world.GameObjectFeature.*
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
-import Helpers.Companion.createRoom
+import Helpers.createRoom
 
 class RoomTest {
     private val room: Room = createRoom()

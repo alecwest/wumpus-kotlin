@@ -1,8 +1,8 @@
 package game
 
-import Helpers.Companion.createGame
-import Helpers.Companion.createPlayer
-import Helpers.Companion.createWorld
+import Helpers.createGame
+import Helpers.createPlayer
+import Helpers.createWorld
 import game.player.InventoryItem
 import game.player.PlayerInventory
 import game.world.GameObject
