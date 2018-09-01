@@ -6,7 +6,7 @@ import game.world.World
 import game.command.Command
 import game.command.CommandInvoker
 import game.command.CommandResult
-import util.JsonParser.Companion.buildFromJsonFile
+import util.JsonParser.buildFromJsonFile
 
 /**
  * GameState is an observable object that exists in the server
