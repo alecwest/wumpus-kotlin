@@ -34,6 +34,18 @@ internal class MoveCommandTest {
         }
     }
 
+    @Test
+    fun `kill player when walking into a dangerous room`() {
+        val command = MoveCommand()
+        val game = Helpers.createGame(true,
+                Helpers.createWorld(10, mapOf(Point(0, 1) to setOf(GameObject.PIT))))
+        command.setGame(game)
+        command.execute()
+        assertFalse(game.isPlayerAlive())
+        assertTrue(game.gameOver())
+        assertEquals(1001, game.getScore())
+    }
+
     @ParameterizedTest
     @MethodSource("validMoveCommandTestDataProvider")
     fun `execute move command and turn right`(testData: ValidMoveCommandTestData) {

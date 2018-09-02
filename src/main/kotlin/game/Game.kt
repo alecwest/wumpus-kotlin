@@ -26,7 +26,7 @@ data class Game(private var gameState: GameState = GameState()) {
     }
 
     fun getActive() = getGameState().getActive()
-    fun gameOver() = getGameState().gameOver()
+    fun gameOver() = getGameState().gameOver() || !isPlayerAlive()
 
     fun getWorld() = getGameState().getWorld()
     fun getWorldSize() = getGameState().getWorldSize()
@@ -87,7 +87,7 @@ data class Game(private var gameState: GameState = GameState()) {
         val newPlayer = getGameState().getPlayer()
         newPlayer.setLocation(location)
         if (getGameObjects(location).any { it.hasFeature(Dangerous()) }) {
-            newPlayer.setAlive(false)
+            setPlayerAlive(false)
         }
         gameState = getGameState().copyThis(player = newPlayer)
     }

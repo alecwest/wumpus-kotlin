@@ -1,6 +1,7 @@
 package game.command
 
 import game.command.CommandResult.Companion.createCommandResult
+import game.player.PlayerState
 import game.world.Perception
 import game.world.GameObjectFeature.*
 import util.*
@@ -13,7 +14,6 @@ class MoveCommand: Command() {
             val targetLocation = game.getPlayerLocation().adjacent(direction)
             val perceptionList = mutableSetOf<Perception>()
 
-            game.setPlayerScore(game.getScore() + getMoveCost(game.getPlayerState()))
             when {
                 canEnterRoom(targetLocation) -> {
                     deferExecution(direction)
@@ -27,8 +27,18 @@ class MoveCommand: Command() {
                 else -> perceptionList.add(Perception.WALL_BUMP)
             }
 
+            game.setPlayerScore(game.getScore() + getMoveCost(game.getPlayerState()))
             game.setCommandResult(createCommandResult(game, perceptionList))
         }
+    }
+
+    override fun getMoveCost(playerState: PlayerState?): Int {
+        game?.let { game ->
+            if (!game.isPlayerAlive())
+                // TODO death cost should probably be somewhere else
+                return super.getMoveCost(playerState) + 1000
+        }
+        return super.getMoveCost(playerState)
     }
 
     private fun canEnterRoom(point: Point): Boolean {
