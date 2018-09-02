@@ -58,22 +58,22 @@ class GrabCommandTest {
                         GameObject.FOOD, CommandResult(setOf(Perception.EXIT, Perception.GLITTER),
                         PlayerState(location = initialGame.getPlayerLocation(), facing = initialGame.getPlayerDirection(),
                                 inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 2, InventoryItem.FOOD to 1)),
-                                score = 1))),
+                                score = -99))),
                 ValidGrabCommandTestData(initialGame, GrabCommand(InventoryItem.FOOD),
                         GameObject.FOOD, CommandResult(setOf(Perception.EXIT, Perception.GLITTER),
                         PlayerState(location = initialGame.getPlayerLocation(), facing = initialGame.getPlayerDirection(),
                                 inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 2, InventoryItem.FOOD to 1)),
-                                score = 2))),
+                                score = -98))),
                 ValidGrabCommandTestData(initialGame, GrabCommand(InventoryItem.GOLD),
                         GameObject.FOOD, CommandResult(setOf(Perception.EXIT),
                         PlayerState(location = initialGame.getPlayerLocation(), facing = initialGame.getPlayerDirection(),
                                 inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 2, InventoryItem.FOOD to 1,
-                                        InventoryItem.GOLD to 1)), score = 3))),
+                                        InventoryItem.GOLD to 1)), score = -1097))),
                 ValidGrabCommandTestData(initialGame, GrabCommand(InventoryItem.ARROW),
                         GameObject.FOOD, CommandResult(setOf(Perception.EXIT),
                         PlayerState(location = initialGame.getPlayerLocation(), facing = initialGame.getPlayerDirection(),
                                 inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 3, InventoryItem.FOOD to 1,
-                                        InventoryItem.GOLD to 1)), score = 4)))
+                                        InventoryItem.GOLD to 1)), score = -1096)))
         )
     }
 }

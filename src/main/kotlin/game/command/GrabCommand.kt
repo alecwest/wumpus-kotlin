@@ -2,11 +2,15 @@ package game.command
 
 import game.command.CommandResult.Companion.createCommandResult
 import game.player.InventoryItem
+import game.player.PlayerState
 import game.world.GameObject
+import game.world.GameObjectFeature.*
+import game.world.toGameObject
 
 class GrabCommand(private val inventoryItem: InventoryItem): Command() {
     override fun execute() {
         game?.let { game ->
+            game.setPlayerScore(game.getScore() + getMoveCost(game.getPlayerState()))
             var command = when(inventoryItem){
                 InventoryItem.ARROW -> GrabArrowCommand()
                 InventoryItem.FOOD -> GrabFoodCommand()
@@ -16,9 +20,18 @@ class GrabCommand(private val inventoryItem: InventoryItem): Command() {
             command.setGame(game)
             command.execute()
 
-            game.setPlayerScore(game.getScore() + getMoveCost(game.getPlayerState()))
             game.setCommandResult(createCommandResult(game))
         }
+    }
+
+    override fun getMoveCost(playerState: PlayerState?): Int {
+        game?.let { game ->
+            if (game.hasGameObject(game.getPlayerLocation(), inventoryItem.toGameObject())) {
+                return -(inventoryItem.toGameObject().getFeature(Grabbable()) as Grabbable).value +
+                        super.getMoveCost(playerState)
+            }
+        }
+        return super.getMoveCost(playerState)
     }
 
     override fun equals(other: Any?): Boolean {
