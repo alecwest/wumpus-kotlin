@@ -43,23 +43,23 @@ internal class ShootCommandTest {
         @JvmStatic
         fun validShootCommandTestDataProvider() = Stream.of(
                 ValidShootCommandTestData(initialGame, ShootCommand(),
-                        CommandResult(setOf(Perception.SCREAM),
+                        CommandResult(setOf(Perception.SCREAM, Perception.EXIT),
                                 initialGame.getPlayerState().copyThis(
                                         inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 3)), score = 1))),
                  ValidShootCommandTestData(initialGame, ShootCommand(),
-                        CommandResult(setOf(Perception.SCREAM),
+                        CommandResult(setOf(Perception.SCREAM, Perception.EXIT),
                                 initialGame.getPlayerState().copyThis(
                                         inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 2)), score = 2))),
                  ValidShootCommandTestData(initialGame, ShootCommand(),
-                        CommandResult(setOf(Perception.SCREAM),
+                        CommandResult(setOf(Perception.SCREAM, Perception.EXIT),
                                 initialGame.getPlayerState().copyThis(
                                         inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 1)), score = 3))),
                 ValidShootCommandTestData(initialGame, ShootCommand(),
-                        CommandResult(setOf(),
+                        CommandResult(setOf(Perception.EXIT),
                                 initialGame.getPlayerState().copyThis(
                                         inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 0)), score = 4))),
                 ValidShootCommandTestData(initialGame, ShootCommand(),
-                        CommandResult(setOf(),
+                        CommandResult(setOf(Perception.EXIT),
                                 initialGame.getPlayerState().copyThis(
                                         inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 0)), score = 5)))
         )

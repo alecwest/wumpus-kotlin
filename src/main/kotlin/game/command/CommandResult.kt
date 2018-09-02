@@ -35,9 +35,10 @@ data class CommandResult(private val perceptions: Set<Perception> = setOf(),
 
     companion object {
         fun createCommandResult(game: Game,
-                                perceptions: Set<Perception>? = null): CommandResult {
-            return CommandResult(perceptions ?: createPerceptions(game),
-                    game.getPlayerState(), game.getActive())
+                                perceptions: Set<Perception> = emptySet()): CommandResult {
+            val allPerceptions = perceptions.toMutableSet()
+            allPerceptions.addAll(createPerceptions(game))
+            return CommandResult(allPerceptions.toSet(), game.getPlayerState(), game.getActive())
         }
 
         internal fun createPerceptions(game: Game): Set<Perception> {

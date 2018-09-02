@@ -77,13 +77,13 @@ internal class MoveCommandTest {
                     CommandResult(setOf(Perception.EXIT),
                             initialPlayer.getPlayerState().copyThis(location = Point(2, 4), facing = Direction.EAST, score = 7))),
             ValidMoveCommandTestData(playerInCornerGame, MoveCommand(),
-                    CommandResult(setOf(Perception.WALL_BUMP), initialPlayerInCorner.getPlayerState().copyThis(
+                    CommandResult(setOf(Perception.WALL_BUMP, Perception.EXIT), initialPlayerInCorner.getPlayerState().copyThis(
                             location = Point(0, 0), facing = Direction.SOUTH, score = 1))),
             ValidMoveCommandTestData(playerInCornerGame, MoveCommand(),
-                    CommandResult(setOf(Perception.WALL_BUMP), initialPlayerInCorner.getPlayerState().copyThis(
+                    CommandResult(setOf(Perception.WALL_BUMP, Perception.EXIT), initialPlayerInCorner.getPlayerState().copyThis(
                             location = Point(0, 0), facing = Direction.WEST, score = 3))),
             ValidMoveCommandTestData(playerInCornerGame, MoveCommand(),
-                    CommandResult(setOf(Perception.BLOCKADE_BUMP), initialPlayerInCorner.getPlayerState().copyThis(
+                    CommandResult(setOf(Perception.BLOCKADE_BUMP, Perception.EXIT), initialPlayerInCorner.getPlayerState().copyThis(
                             location = Point(0, 0), facing = Direction.NORTH, score = 5))),
             ValidMoveCommandTestData(playerInCornerGame, MoveCommand(),
                     CommandResult(setOf(Perception.GLITTER), initialPlayerInCorner.getPlayerState().copyThis(
