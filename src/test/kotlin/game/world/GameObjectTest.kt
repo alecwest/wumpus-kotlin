@@ -78,6 +78,13 @@ internal class GameObjectTest {
     }
 
     @Test
+    fun `convert inventory item to object`() {
+        assertEquals(GameObject.ARROW, InventoryItem.ARROW.toGameObject())
+        assertEquals(GameObject.FOOD, InventoryItem.FOOD.toGameObject())
+        assertEquals(GameObject.GOLD, InventoryItem.GOLD.toGameObject())
+    }
+
+    @Test
     fun `convert perception to game object`() {
         assertEquals(GameObject.BREEZE, Perception.BREEZE.toGameObject())
         assertEquals(GameObject.FOOD, Perception.FOOD.toGameObject())

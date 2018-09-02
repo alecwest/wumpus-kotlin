@@ -76,6 +76,12 @@ fun Perception.toGameObject(): GameObject? {
     return null
 }
 
+fun InventoryItem.toGameObject(): GameObject {
+    return gameObjectsWithFeatures(setOf(Grabbable())).first {
+        (it.getFeature(Grabbable()) as Grabbable).inventoryItem == this
+    }
+}
+
 sealed class GameObjectFeature {
     class Blocking: GameObjectFeature() // For things that block a player from entering
     class Dangerous: GameObjectFeature()
