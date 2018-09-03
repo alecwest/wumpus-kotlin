@@ -17,13 +17,13 @@ abstract class Intelligence {
         resetRoom(world, commandResult)
         for (perception in commandResult.getPerceptions()) {
             val gameObject = perception.toGameObject() ?: continue
-            world.addGameObject(commandResult.getPlayerState().getLocation(), gameObject)
+            world.addGameObject(commandResult.getLocation(), gameObject)
         }
     }
 
     internal fun resetRoom(world: World, commandResult: CommandResult) {
-        for (gameObject in world.getGameObjects(commandResult.getPlayerState().getLocation())) {
-            world.removeGameObject(commandResult.getPlayerState().getLocation(), gameObject)
+        for (gameObject in world.getGameObjects(commandResult.getLocation())) {
+            world.removeGameObject(commandResult.getLocation(), gameObject)
         }
     }
 }

@@ -5,20 +5,25 @@ import game.world.GameObjectFeature.*
 import game.world.effect.*
 
 sealed class GameObject(val features: Set<GameObjectFeature> = setOf()) {
-    object ARROW : GameObject(setOf(Shootable(), Grabbable(InventoryItem.ARROW)))
-    object BLOCKADE : GameObject(setOf(Blocking(), Mappable("X"), Perceptable(Perception.BLOCKADE_BUMP), RoomFilling()))
+    object ARROW : GameObject(setOf(Shootable(10), Grabbable(InventoryItem.ARROW)))
+    object BLOCKADE : GameObject(setOf(Blocking(), Mappable("X"), Perceptable(Perception.BLOCKADE_BUMP),
+            RoomFilling()))
     object BREEZE : GameObject(setOf(Mappable("="), Perceptable(Perception.BREEZE)))
-    object FOOD : GameObject(setOf(Mappable("F"), Grabbable(InventoryItem.FOOD), Perceptable(Perception.FOOD)))
+    object EXIT : GameObject(setOf(Exitable(), Mappable("E"), Perceptable(Perception.EXIT)))
+    object FOOD : GameObject(setOf(Mappable("F"), Grabbable(InventoryItem.FOOD, 100), Perceptable(Perception.FOOD)))
     object GLITTER : GameObject(setOf(Mappable("*"), Perceptable(Perception.GLITTER)))
-    object GOLD : GameObject(setOf(Mappable("G"), Grabbable(InventoryItem.GOLD), WorldAffecting(arrayListOf(HereEffect(GameObject.GLITTER)))))
+    object GOLD : GameObject(setOf(Mappable("G"), Grabbable(InventoryItem.GOLD, 1000),
+            WorldAffecting(arrayListOf(HereEffect(GameObject.GLITTER)))))
     object MOO : GameObject(setOf(Mappable("!"), Perceptable(Perception.MOO)))
-    object PIT : GameObject(setOf(Dangerous(), Mappable("P"), WorldAffecting(arrayListOf(AdjacentEffect(GameObject.BREEZE)))))
+    object PIT : GameObject(setOf(Dangerous(), Mappable("P"),
+            WorldAffecting(arrayListOf(AdjacentEffect(GameObject.BREEZE)))))
     object STENCH : GameObject(setOf(Mappable("~"), Perceptable(Perception.STENCH)))
-    object SUPMUW : GameObject(setOf(Dangerous(), Destructable(setOf(GameObject.ARROW)), Mappable("S"), WorldAffecting(
-            arrayListOf(AdjacentEffect(GameObject.MOO), DiagonalEffect(GameObject.MOO), HereEffect(GameObject.FOOD)))))
+    object SUPMUW : GameObject(setOf(Dangerous(), Destructable(setOf(GameObject.ARROW)),
+            Mappable("S"), WorldAffecting(arrayListOf(AdjacentEffect(GameObject.MOO),
+            DiagonalEffect(GameObject.MOO), HereEffect(GameObject.FOOD)))))
     object WALL : GameObject(setOf(Blocking(), Perceptable(Perception.WALL_BUMP), RoomFilling()))
-    object WUMPUS : GameObject(setOf(Dangerous(), Destructable(setOf(GameObject.ARROW)), Mappable("W"), WorldAffecting(
-            arrayListOf(AdjacentEffect(GameObject.STENCH)))))
+    object WUMPUS : GameObject(setOf(Dangerous(), Destructable(setOf(GameObject.ARROW)), Mappable("W"),
+            WorldAffecting(arrayListOf(AdjacentEffect(GameObject.STENCH)))))
 
     fun getFeature(feature: GameObjectFeature): GameObjectFeature? {
         return this.features.find { it::class == feature::class }
@@ -71,15 +76,23 @@ fun Perception.toGameObject(): GameObject? {
     return null
 }
 
+fun InventoryItem.toGameObject(): GameObject {
+    return gameObjectsWithFeatures(setOf(Grabbable())).first {
+        (it.getFeature(Grabbable()) as Grabbable).inventoryItem == this
+    }
+}
+
 sealed class GameObjectFeature {
     class Blocking: GameObjectFeature() // For things that block a player from entering
-    class Dangerous: GameObjectFeature()
+    open class Dangerous: GameObjectFeature()
+    class ConditionallyDangerous(val proximityTo: GameObject): Dangerous()
     class Destructable(val weaknesses: Set<GameObject> = setOf()): GameObjectFeature()
-    class Grabbable(val inventoryItem: InventoryItem? = null): GameObjectFeature()
+    class Exitable: GameObjectFeature()
+    class Grabbable(val inventoryItem: InventoryItem? = null, val value: Int = 0): GameObjectFeature()
     class Mappable(val character: String = ""): GameObjectFeature()
     class Perceptable(val perception: Perception? = null): GameObjectFeature()
     class RoomFilling: GameObjectFeature() // For things that must exist in a Room alone
-    class Shootable : GameObjectFeature()
+    class Shootable(val cost: Int = 1) : GameObjectFeature()
     class WorldAffecting(val effects: ArrayList<WorldEffect> = arrayListOf()): GameObjectFeature() {
         fun hasEffect(worldEffect: WorldEffect): Boolean {
             return effects.any {

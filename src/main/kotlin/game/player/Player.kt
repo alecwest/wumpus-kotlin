@@ -8,45 +8,50 @@ import java.awt.Point
  * only by the server.
  */
 data class Player(private var playerState: PlayerState = PlayerState()) {
-    fun isAlive() = playerState.isAlive()
+    fun isAlive() = getPlayerState().isAlive()
     fun getPlayerState() = playerState
-    fun getLocation() = playerState.getLocation()
-    fun getDirection() = playerState.getDirection()
-    fun getInventory() = playerState.getInventory()
-    fun hasItem(item: InventoryItem) = getNumberOf(item) > 0
-    fun getNumberOf(item: InventoryItem) = getInventory().getOrDefault(item, 0)
+    fun getLocation() = getPlayerState().getLocation()
+    fun getDirection() = getPlayerState().getDirection()
+    fun getInventory() = getPlayerState().getInventory()
+    fun hasItem(item: InventoryItem) = getPlayerState().hasItem(item)
+    fun getNumberOf(item: InventoryItem) = getPlayerState().getNumberOf(item)
+    fun getScore() = getPlayerState().getScore()
 
     fun addToInventory(inventoryItem: InventoryItem) {
-        val newMap = playerState.getInventory().toMutableMap()
-        if (inventoryItem in playerState.getInventory().keys) {
-            newMap[inventoryItem] = playerState.getInventory().getValue(inventoryItem) + 1
+        val newMap = getPlayerState().getInventory().toMutableMap()
+        if (inventoryItem in getPlayerState().getInventory().keys) {
+            newMap[inventoryItem] = getPlayerState().getInventory().getValue(inventoryItem) + 1
         } else {
             newMap[inventoryItem] = 1
         }
-        playerState = playerState.copyThis(inventory = PlayerInventory(newMap.toMap()))
+        playerState = getPlayerState().copyThis(inventory = PlayerInventory(newMap.toMap()))
     }
 
     fun removeFromInventory(inventoryItem: InventoryItem) {
-        val newMap = playerState.getInventory().toMutableMap()
+        val newMap = getPlayerState().getInventory().toMutableMap()
         if (getNumberOf(inventoryItem) > 0) {
             newMap[inventoryItem] = newMap.getValue(inventoryItem) - 1
         }
-        playerState = playerState.copyThis(inventory = PlayerInventory(newMap.toMap()))
+        playerState = getPlayerState().copyThis(inventory = PlayerInventory(newMap.toMap()))
     }
 
     fun setAlive(alive: Boolean) {
-        playerState = playerState.copyThis(alive = alive)
+        playerState = getPlayerState().copyThis(alive = alive)
     }
 
     fun setLocation(location: Point) {
-        playerState = playerState.copyThis(location = location)
+        playerState = getPlayerState().copyThis(location = location)
     }
 
     fun setFacing(direction: Direction) {
-        playerState = playerState.copyThis(facing = direction)
+        playerState = getPlayerState().copyThis(facing = direction)
     }
 
     fun setInventory(inventory: PlayerInventory) {
-        playerState = playerState.copyThis(inventory = inventory)
+        playerState = getPlayerState().copyThis(inventory = inventory)
+    }
+
+    fun setScore(score: Int) {
+        playerState = getPlayerState().copyThis(score = score)
     }
 }

@@ -3,6 +3,7 @@ package game.world
 enum class Perception {
     BLOCKADE_BUMP,
     BREEZE,
+    EXIT,
     FOOD,
     GLITTER,
     MOO,

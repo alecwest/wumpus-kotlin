@@ -23,6 +23,29 @@ internal class MoveCommandTest {
         assertEquals(command, MoveCommand())
     }
 
+    @Test
+    fun `increment score on each move`() {
+        val command = MoveCommand()
+        val game = Helpers.createGame()
+        command.setGame(game)
+        for (i in 1..3) {
+            command.execute()
+            assertEquals(i, game.getScore())
+        }
+    }
+
+    @Test
+    fun `kill player when walking into a dangerous room`() {
+        val command = MoveCommand()
+        val game = Helpers.createGame(true,
+                Helpers.createWorld(10, mapOf(Point(0, 1) to setOf(GameObject.PIT))))
+        command.setGame(game)
+        command.execute()
+        assertFalse(game.isPlayerAlive())
+        assertTrue(game.gameOver())
+        assertEquals(1001, game.getScore())
+    }
+
     @ParameterizedTest
     @MethodSource("validMoveCommandTestDataProvider")
     fun `execute move command and turn right`(testData: ValidMoveCommandTestData) {
@@ -57,25 +80,26 @@ internal class MoveCommandTest {
         fun validMoveCommandTestDataProvider() = Stream.of(
             ValidMoveCommandTestData(initialGame, MoveCommand(),
                     CommandResult(setOf(Perception.BREEZE),
-                            initialPlayer.getPlayerState().copyThis(location = Point(2, 3), facing = Direction.SOUTH))),
+                            initialPlayer.getPlayerState().copyThis(location = Point(2, 3), facing = Direction.SOUTH, score = 1))),
             ValidMoveCommandTestData(initialGame, MoveCommand(),
-                    CommandResult(playerState = initialPlayer.getPlayerState().copyThis(location = Point(1, 3), facing = Direction.WEST))),
+                    CommandResult(playerState = initialPlayer.getPlayerState().copyThis(location = Point(1, 3), facing = Direction.WEST, score = 3))),
             ValidMoveCommandTestData(initialGame, MoveCommand(),
-                    CommandResult(playerState = initialPlayer.getPlayerState().copyThis(location = Point(1, 4), facing = Direction.NORTH))),
+                    CommandResult(playerState = initialPlayer.getPlayerState().copyThis(location = Point(1, 4), facing = Direction.NORTH, score = 5))),
             ValidMoveCommandTestData(initialGame, MoveCommand(),
-                    CommandResult(playerState = initialPlayer.getPlayerState().copyThis(location = Point(2, 4), facing = Direction.EAST))),
+                    CommandResult(setOf(Perception.EXIT),
+                            initialPlayer.getPlayerState().copyThis(location = Point(2, 4), facing = Direction.EAST, score = 7))),
             ValidMoveCommandTestData(playerInCornerGame, MoveCommand(),
-                    CommandResult(setOf(Perception.WALL_BUMP), initialPlayerInCorner.getPlayerState().copyThis(
-                            location = Point(0, 0), facing = Direction.SOUTH))),
+                    CommandResult(setOf(Perception.WALL_BUMP, Perception.EXIT), initialPlayerInCorner.getPlayerState().copyThis(
+                            location = Point(0, 0), facing = Direction.SOUTH, score = 1))),
             ValidMoveCommandTestData(playerInCornerGame, MoveCommand(),
-                    CommandResult(setOf(Perception.WALL_BUMP), initialPlayerInCorner.getPlayerState().copyThis(
-                            location = Point(0, 0), facing = Direction.WEST))),
+                    CommandResult(setOf(Perception.WALL_BUMP, Perception.EXIT), initialPlayerInCorner.getPlayerState().copyThis(
+                            location = Point(0, 0), facing = Direction.WEST, score = 3))),
             ValidMoveCommandTestData(playerInCornerGame, MoveCommand(),
-                    CommandResult(setOf(Perception.BLOCKADE_BUMP), initialPlayerInCorner.getPlayerState().copyThis(
-                            location = Point(0, 0), facing = Direction.NORTH))),
+                    CommandResult(setOf(Perception.BLOCKADE_BUMP, Perception.EXIT), initialPlayerInCorner.getPlayerState().copyThis(
+                            location = Point(0, 0), facing = Direction.NORTH, score = 5))),
             ValidMoveCommandTestData(playerInCornerGame, MoveCommand(),
                     CommandResult(setOf(Perception.GLITTER), initialPlayerInCorner.getPlayerState().copyThis(
-                            location = Point(1, 0), facing = Direction.EAST)))
+                            location = Point(1, 0), facing = Direction.EAST, score = 7)))
         )
     }
 }

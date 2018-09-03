@@ -1,11 +1,12 @@
 package game
 
-import Helpers.Companion.createGame
-import Helpers.Companion.createPlayer
-import Helpers.Companion.createWorld
+import Helpers.createGame
+import Helpers.createPlayer
+import Helpers.createWorld
 import game.player.InventoryItem
 import game.player.PlayerInventory
 import game.world.GameObject
+import game.world.Perception
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
@@ -87,7 +88,7 @@ class GameTest {
 
     @Test
     fun `check room is empty`() {
-        assertTrue(game.roomIsEmpty(Point(0, 0)))
+        assertTrue(game.roomIsEmpty(Point(0, 1)))
         assertFalse(game.roomIsEmpty(pitRoomPoint))
     }
 
@@ -118,7 +119,7 @@ class GameTest {
     @Test
     fun `check amount of content in room`() {
         assertEquals(1, game.getAmountOfObjectsInRoom(pitRoomPoint))
-        assertEquals(0, game.getAmountOfObjectsInRoom(Point(0, 0)))
+        assertEquals(0, game.getAmountOfObjectsInRoom(Point(0, 1)))
     }
 
     @Test
@@ -229,6 +230,32 @@ class GameTest {
         assertEquals(mapOf(InventoryItem.ARROW to 2), game.getPlayerInventory())
         game.setPlayerInventory(PlayerInventory(newInventory))
         assertEquals(newInventory, game.getPlayerInventory())
+    }
+
+    @Test
+    fun `check score of player on change`() {
+        val newScore = 16
+        assertEquals(0, game.getScore())
+        game.setPlayerScore(newScore)
+        assertEquals(newScore, game.getScore())
+    }
+
+    @Test
+    fun `check game active on change`() {
+        assertEquals(true, game.getActive())
+        game.setActive(false)
+        assertEquals(false, game.getActive())
+    }
+
+    @Test
+    fun `check exit is added to player starting location`() {
+        val gameWithDifferentStart = Helpers.createGame(player = Helpers.createPlayer(location = Point(4, 4)))
+        assertEquals(setOf(GameObject.EXIT), game.getGameObjects(game.getPlayerLocation()))
+        assertEquals(setOf(GameObject.EXIT),
+                gameWithDifferentStart.getGameObjects(gameWithDifferentStart.getPlayerLocation()))
+        assertEquals(1, game.getRooms().count { it.hasGameObject(GameObject.EXIT) })
+        assertEquals(1, gameWithDifferentStart.getRooms().count { it.hasGameObject(GameObject.EXIT) })
+        assertTrue(game.getCommandResult().getPerceptions().contains(Perception.EXIT))
     }
 }
 

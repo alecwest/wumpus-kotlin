@@ -2,6 +2,7 @@ package game.agent.intelligence
 
 import game.agent.intelligence.Answer.*
 import game.agent.intelligence.Fact.*
+import game.command.ExitCommand
 import game.command.GrabCommand
 import game.command.MoveCommand
 import game.command.TurnCommand
@@ -94,7 +95,7 @@ internal class KnowledgeBasedIntelligenceTest {
         intelligence.processLastMove(world, Helpers.createCommandResult(
                 setOf(), Helpers.createPlayerState(location = Point(7, 2),
                 facing = Direction.EAST)))
-        assertEquals(listOf(TurnCommand(Direction.WEST), MoveCommand()), intelligence.chooseNextMoves(world,
+        assertEquals(listOf(TurnCommand(Direction.WEST), MoveCommand(), MoveCommand()), intelligence.chooseNextMoves(world,
                 Helpers.createCommandResult(setOf(Perception.STENCH),
                         Helpers.createPlayerState(location = Point(8, 2),
                                 facing = Direction.EAST))))
@@ -105,7 +106,7 @@ internal class KnowledgeBasedIntelligenceTest {
         intelligence.processLastMove(world, Helpers.createCommandResult(
                 setOf(),
                 Helpers.createPlayerState(location = Point(2, 1))))
-        assertEquals(listOf(TurnCommand(Direction.SOUTH), MoveCommand()), intelligence.chooseNextMoves(world,
+        assertEquals(listOf(TurnCommand(Direction.SOUTH), MoveCommand(), MoveCommand()), intelligence.chooseNextMoves(world,
                 Helpers.createCommandResult(setOf(Perception.STENCH),
                         Helpers.createPlayerState(location = Point(2, 2),
                                 facing = Direction.EAST))))
@@ -116,7 +117,7 @@ internal class KnowledgeBasedIntelligenceTest {
         intelligence.processLastMove(world, Helpers.createCommandResult(
                 setOf(),
                 Helpers.createPlayerState(location = Point(2, 2))))
-        assertEquals(listOf(MoveCommand()), intelligence.chooseNextMoves(world, Helpers.createCommandResult(
+        assertEquals(listOf(MoveCommand(), MoveCommand()), intelligence.chooseNextMoves(world, Helpers.createCommandResult(
                 setOf(Perception.BREEZE),
                 Helpers.createPlayerState(location = Point(2, 1), facing = Direction.NORTH))))
     }
@@ -139,6 +140,12 @@ internal class KnowledgeBasedIntelligenceTest {
     }
 
     @Test
+    fun `leave with gold in inventory`() {
+        assertEquals(listOf(ExitCommand()), intelligence.chooseNextMoves(world, Helpers.createCommandResult(
+                setOf(Perception.EXIT), Helpers.createPlayerState(inventoryContent = mapOf(InventoryItem.GOLD to 1)))))
+    }
+
+    @Test
     fun `grab multiple items in room`() {
         assertEquals(listOf(GrabCommand(InventoryItem.FOOD)), intelligence.chooseNextMoves(world, Helpers.createCommandResult(
                 setOf(Perception.GLITTER, Perception.STENCH, Perception.FOOD, Perception.BREEZE),
@@ -157,20 +164,6 @@ internal class KnowledgeBasedIntelligenceTest {
         assertTrue(intelligence.objectOrHereEffectInRoom(GameObject.GLITTER))
         assertTrue(intelligence.objectOrHereEffectInRoom(GameObject.FOOD))
         assertFalse(intelligence.objectOrHereEffectInRoom(GameObject.PIT))
-    }
-
-    @Test
-    fun `dangerous effects in room`() {
-        val commandResult1 = Helpers.createCommandResult(
-                setOf(Perception.GLITTER, Perception.FOOD),
-                Helpers.createPlayerState(location = Point(2, 2)))
-        val commandResult2 = Helpers.createCommandResult(
-                setOf(Perception.SCREAM, Perception.BREEZE, Perception.FOOD),
-                Helpers.createPlayerState(location = Point(5, 5)))
-        intelligence.processLastMove(world, commandResult1)
-        assertFalse(intelligence.dangerousEffectsInRoom(commandResult1))
-        intelligence.processLastMove(world, commandResult2)
-        assertTrue(intelligence.dangerousEffectsInRoom(commandResult2))
     }
 
     @Test
@@ -222,18 +215,6 @@ internal class KnowledgeBasedIntelligenceTest {
     }
 
     @Test
-    fun `can move in direction`() {
-        intelligence.processLastMove(world, Helpers.createCommandResult(setOf(Perception.WALL_BUMP),
-                Helpers.createPlayerState(location = Point(4, 4))))
-        assertFalse(intelligence.canMoveInDirection(Direction.NORTH))
-        assertTrue(intelligence.canMoveInDirection(Direction.EAST))
-        intelligence.processLastMove(world, Helpers.createCommandResult(setOf(Perception.BREEZE),
-                Helpers.createPlayerState(location = Point(4, 3))))
-        assertFalse(intelligence.canMoveInDirection(Direction.WEST))
-        assertTrue(intelligence.canMoveInDirection(Direction.NORTH))
-    }
-
-    @Test
     fun `convert target room to command`() {
         assertEquals(listOf(MoveCommand()), intelligence.toCommands(
                 Helpers.createPlayerState(location = Point(4, 4), facing = Direction.NORTH),
@@ -256,56 +237,108 @@ internal class KnowledgeBasedIntelligenceTest {
     }
 
     @Test
-    fun `get safe rooms`() {
-        var playerState = Helpers.createPlayerState(location = Point(4, 4))
-        intelligence.processLastMove(world, Helpers.createCommandResult(playerState = playerState))
-        assertEquals(4, intelligence.getSafeRooms(playerState).size)
-        playerState = Helpers.createPlayerState(location = Point(4, 3))
-        intelligence.processLastMove(world, Helpers.createCommandResult(
-                setOf(Perception.BREEZE), playerState))
-        assertEquals(setOf(Point(4, 4)), intelligence.getSafeRooms(playerState))
-    }
-
-    @Test
-    fun `split adjacent rooms into known and uncertain rooms`() {
-        var result = intelligence.splitKnownAndUncertainRooms(Point(4, 4).adjacents())
-        assertEquals(0, result.first.size)
-        assertEquals(4, result.second.size)
-        intelligence.processLastMove(world, Helpers.createCommandResult(setOf(Perception.BREEZE),
-                Helpers.createPlayerState(location = Point(4, 5))
-        ))
-        result = intelligence.splitKnownAndUncertainRooms(Point(4, 4).adjacents())
-        assertEquals(1, result.first.size)
-        assertEquals(3, result.second.size)
-    }
-
-    @Test
-    fun `build room preferences`() {
-        intelligence.facts.addFact(Point(4, 3), HAS, PIT)
-        val result = intelligence.buildRoomPreferences(Helpers.createPlayerState(
-                location = Point(4, 4)))
-        assertFalse(result.contains(Point(4, 3)))
-        assertTrue(result.contains(Point(4, 5)))
-    }
-
-    @Test
     fun `get best explorative moves`() {
-        intelligence.facts.addFact(Point(4, 5), HAS, PIT)
-        intelligence.commandResult = Helpers.createCommandResult(setOf(Perception.BREEZE),
-                Helpers.createPlayerState(location = Point(4, 4), facing = Direction.NORTH))
-        intelligence.facts.addFact(Point(4, 4), HAS, BREEZE)
-        for (gameObject in gameObjectValues()) {
-            intelligence.facts.addFact(Point(4, 3), HAS_NO, gameObject)
-        }
-        assertEquals(listOf(TurnCommand(Direction.SOUTH), MoveCommand()), intelligence.bestExplorativeMoves(intelligence.commandResult.getPlayerState()))
-        assertEquals(listOf(MoveCommand()), intelligence.bestExplorativeMoves(Helpers.createPlayerState(
+        processSafeRoom(Point(4, 3))
+        intelligence.processLastMove(world, Helpers.createCommandResult(setOf(Perception.BREEZE),
+                Helpers.createPlayerState(location = Point(4, 4))))
+
+        assertEquals(listOf(TurnCommand(Direction.SOUTH), MoveCommand(), MoveCommand()),
+                intelligence.bestExplorativeMoves(intelligence.commandResult.getPlayerState()))
+        assertEquals(listOf(MoveCommand(), MoveCommand()), intelligence.bestExplorativeMoves(Helpers.createPlayerState(
                 location = Point(4, 4), facing = Direction.SOUTH)))
     }
 
     @Test
+    fun `get best explorative moves when surrounded by already known rooms`() {
+        for (i in 9 downTo 0) for (j in 9 downTo 1) processSafeRoom(Point(i, j))
+        for (i in 9 downTo 1) processSafeRoom(Point(i, 0))
+        processSafeRoom(Point(1, 1)) // Set player location to (1, 1)
+        assertEquals(listOf(TurnCommand(Direction.WEST), MoveCommand(), TurnCommand(Direction.SOUTH), MoveCommand()),
+                intelligence.bestExplorativeMoves(intelligence.commandResult.getPlayerState()))
+    }
+
+    @Test
+    fun `get path to room`() {
+        for (i in 2 downTo 0) {
+            for (j in 2 downTo 0) {
+                processSafeRoom(Point(i, j))
+            }
+        }
+        assertEquals(setOf(Point(0, 1), Point(0, 2), Point(1, 2), Point(2, 2)),
+                intelligence.pathToRoom(setOf(Point(2, 2))))
+    }
+
+    @Test
     fun `get safe path to room`() {
+        // Simulate existence of pit at (0, 2)
+        intelligence.processLastMove(world, Helpers.createCommandResult(
+                playerState = Helpers.createPlayerState(location = Point(1, 0))))
+        intelligence.processLastMove(world, Helpers.createCommandResult(
+                playerState = Helpers.createPlayerState(location = Point(2, 0))))
+        intelligence.processLastMove(world, Helpers.createCommandResult(setOf(Perception.BREEZE),
+                playerState = Helpers.createPlayerState(location = Point(0, 1))))
+        intelligence.processLastMove(world, Helpers.createCommandResult(
+                playerState = Helpers.createPlayerState(location = Point(1, 1))))
+        intelligence.processLastMove(world, Helpers.createCommandResult(
+                playerState = Helpers.createPlayerState(location = Point(2, 1))))
+        intelligence.processLastMove(world, Helpers.createCommandResult(setOf(Perception.BREEZE),
+                playerState = Helpers.createPlayerState(location = Point(1, 2))))
+        intelligence.processLastMove(world, Helpers.createCommandResult(
+                playerState = Helpers.createPlayerState(location = Point(2, 2))))
         intelligence.processLastMove(world, Helpers.createCommandResult(
                 playerState = Helpers.createPlayerState(location = Point(0, 0))))
-        assertEquals(setOf(Point(0, 1), Point(0, 2), Point(1, 2), Point(2, 2)), intelligence.pathToRoom(Point(2, 2)))
+        assertEquals(setOf(Point(0, 1), Point(1, 1), Point(2, 1), Point(2, 2)),
+                intelligence.pathToRoom(setOf(Point(2, 2))))
+    }
+
+    @Test
+    fun `get cost of move to room`() {
+        assertEquals(2, intelligence.costOfMoveToRoom(Point(0, 1), Point(0, 0), Direction.EAST))
+        assertEquals(3, intelligence.costOfMoveToRoom(Point(0, 1), Point(0, 0), Direction.SOUTH))
+        assertEquals(1, intelligence.costOfMoveToRoom(Point(0, 1), Point(0, 0), Direction.NORTH))
+        assertEquals(-1, intelligence.costOfMoveToRoom(Point(0, 1), Point(0, 3), Direction.SOUTH))
+        assertEquals(-1, intelligence.costOfMoveToRoom(Point(0, 1), Point(0, 3), null))
+    }
+
+    @Test
+    fun `get path to closest unknown room`() {
+        // (0-2, 1) are safe, (3, 1) has a blockade, (4-9, 1) are safe
+        // Simulate blockades at (0-2, 2)
+        for (i in 0..2) {
+            intelligence.processLastMove(world, Helpers.createCommandResult(setOf(Perception.BLOCKADE_BUMP),
+                    Helpers.createPlayerState(location = Point(i, 1), facing = Direction.NORTH)))
+        }
+        intelligence.processLastMove(world, Helpers.createCommandResult(setOf(Perception.BLOCKADE_BUMP),
+                Helpers.createPlayerState(location = Point(2, 1), facing = Direction.EAST)))
+        for (i in 4..9) {
+            processSafeRoom(Point(i, 1))
+        }
+        // (0-9, 0) are all safe
+        for (i in 1..9) {
+            processSafeRoom(Point(i, 0))
+        }
+        processSafeRoom(Point(0, 0))
+        assertEquals(setOf(Point(1, 0), Point(2, 0), Point(3, 0), Point(4, 0), Point(4, 1), Point(4, 2)),
+                intelligence.pathToRoom())
+    }
+
+    @Test
+    fun `exit world when not in room with exit`() {
+        val playerState = Helpers.createPlayerState(
+                location = Point(1, 1), facing = Direction.SOUTH,
+                inventoryContent = mapOf(InventoryItem.GOLD to 1))
+        processSafeRoom(Point(0, 0))
+        intelligence.facts.addFact(Point(0, 0), HAS, EXIT)
+        processSafeRoom(Point(0, 1))
+        processSafeRoom(Point(1, 0))
+        intelligence.processLastMove(world, Helpers.createCommandResult(
+                playerState = playerState))
+        assertEquals(listOf(MoveCommand(), TurnCommand(Direction.WEST), MoveCommand(), ExitCommand()),
+                intelligence.exit(playerState))
+    }
+
+    private fun processSafeRoom(point: Point) {
+        intelligence.processLastMove(world, Helpers.createCommandResult(setOf(),
+                Helpers.createPlayerState(location = point, facing = Direction.NORTH)))
     }
 }

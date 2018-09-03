@@ -39,8 +39,18 @@ class FactMap(private val factMap: MutableMap<Point, MutableSet<Pair<GameObject,
                 TRUE -> true
                 FALSE -> false
                 UNKNOWN -> return FALSE
-            }
-        }) return FALSE else return TRUE
+            }}) return FALSE else return TRUE
+    }
+
+    fun canEnterRoom(point: Point): Answer {
+        val blockingObjects = gameObjectsWithFeatures(setOf(Blocking()))
+        var numFalse = 0
+        blockingObjects.forEach {
+            val hasBlockingObject = isTrue(point, HAS, it)
+            if (hasBlockingObject == TRUE) return FALSE
+            else if (hasBlockingObject == FALSE) numFalse++
+        }
+        return if (numFalse == blockingObjects.size) TRUE else UNKNOWN
     }
 
     // TODO knowing everything about a room in KnowledgeBasedIntelligence is currently impossible since only facts about perceptables are created upon assessment
@@ -64,6 +74,11 @@ class FactMap(private val factMap: MutableMap<Point, MutableSet<Pair<GameObject,
         }.map {
             fact -> fact.first
         }.toSet()
+    }
+
+    fun roomsWithObject(gameObject: GameObject): Set<Point> {
+        return getMap().filter { isTrue(it.key, HAS, gameObject) == TRUE }
+                .map { it.key }.toSet()
     }
 }
 

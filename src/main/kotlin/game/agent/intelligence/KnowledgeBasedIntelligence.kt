@@ -3,6 +3,7 @@ package game.agent.intelligence
 import game.agent.intelligence.Answer.*
 import game.agent.intelligence.Fact.*
 import game.command.*
+import game.player.InventoryItem
 import game.player.PlayerState
 import game.world.*
 import game.world.GameObjectFeature.*
@@ -23,90 +24,114 @@ class KnowledgeBasedIntelligence : Intelligence() {
         val inventoryItems = gameObjectsWithFeatures(setOf(Grabbable()))
                 .filter { objectOrHereEffectInRoom(it) }.map { it.toInventoryItem() }
 
-        return if (inventoryItems.isNotEmpty()) {
-            listOf(GrabCommand(inventoryItems.first()!!))
-        } else {
-            bestExplorativeMoves(commandResult.getPlayerState())
+        return when {
+            commandResult.hasItem(InventoryItem.GOLD) -> exit(commandResult.getPlayerState())
+            inventoryItems.isNotEmpty() -> listOf(GrabCommand(inventoryItems.first()!!))
+            else -> bestExplorativeMoves(commandResult.getPlayerState())
         }
+    }
+
+    internal fun exit(playerState: PlayerState): List<Command> {
+        val commands = buildCommandSequence(playerState,
+                facts.roomsWithObject(GameObject.EXIT)).toMutableList()
+        commands.add(ExitCommand())
+        return commands
     }
 
     internal fun bestExplorativeMoves(playerState: PlayerState): List<Command> {
-        val orderOfRoomPreferences = buildRoomPreferences(playerState)
-        return toCommands(playerState, orderOfRoomPreferences.firstOrNull())
+        return buildCommandSequence(playerState, emptySet())
     }
 
-    /**
-     * pathToRoom should consider the fact that each turn+move combo costs 2 moves,
-     * meaning the diagonal path is not necessarily the best
-     */
-    fun pathToRoom(point: Point): Set<Point> {
-        val path = mutableSetOf<Point>()
-
-        return path
+    private fun buildCommandSequence(playerState: PlayerState, targetRooms: Set<Point>): List<Command> {
+        val commands = mutableListOf<Command>()
+        var currPlayerState = playerState
+        pathToRoom(targetRooms).forEach {
+            commands.addAll(toCommands(currPlayerState, it))
+            currPlayerState = currPlayerState.copyThis(
+                    location = it,
+                    facing = it.directionFrom(currPlayerState.getLocation())
+                            ?: currPlayerState.getDirection())
+        }
+        return commands
     }
 
-    private fun dijkstra(playerLocation: Point): Pair<ArrayList<Int>, ArrayList<Point>> {
+    fun pathToRoom(possibleTargets: Set<Point> = setOf()): Set<Point> {
+        val pointPathsPair = dijkstra(commandResult.getPlayerState(), possibleTargets)
+        return generatePath(pointPathsPair.first, pointPathsPair.second)
+    }
+
+    private fun generatePath(target: Point, previous: ArrayList<Pair<Point, Direction>?>): Set<Point> {
+        val path = arrayListOf<Point>()
+        path.add(0, target)
+        var targetIndex = world.getRoomIndex(target)
+        while (previous[targetIndex] != null) {
+            val targetRoom = previous[targetIndex]!!.first
+            path.add(0, targetRoom)
+            targetIndex = world.getRoomIndex(targetRoom)
+        }
+        path.removeAt(0) // TODO Do I really need to remove the starting point?
+        return path.toSet()
+    }
+
+    private fun dijkstra(playerState: PlayerState, targets: Set<Point> = setOf()): Pair<Point, ArrayList<Pair<Point, Direction>?>> {
+        val startingLocation = playerState.getLocation()
+        val startingDirection = playerState.getDirection()
         val vertices = mutableSetOf<Point>()
-        val distances = arrayListOf<Int>()
-        val previous = arrayListOf<Point>()
+        val distances = arrayListOf<Pair<Int, Direction?>>()
+        val previous = arrayListOf<Pair<Point, Direction>?>()
+        var endingLocation = startingLocation
 
-        for (i in 1..world.getNumberRooms()) {
-            distances.add(Int.MAX_VALUE)
+        for (i in 0 until world.getNumberRooms()) {
+            distances.add(Pair(Int.MAX_VALUE, null))
             vertices.add(world.getRoomPoint(i))
+            previous.add(null)
         }
 
-        distances[world.getRoomIndex(playerLocation)] = 0
+        distances[world.getRoomIndex(startingLocation)] = Pair(0, startingDirection)
 
         while (vertices.isNotEmpty()) {
-            val leastDistantRoom = getClosestRoom(distances)
+            val leastDistantRoom = getClosestRoom(vertices, distances)
 
             vertices.remove(leastDistantRoom)
+            /**
+             * If target is given, terminate when path to target is reached
+             * Otherwise continue until first unknown, accessible room is found
+             */
+            if (targets.contains(leastDistantRoom) ||
+                    (targets.isEmpty() && !facts.featureFullyKnownInRoom(leastDistantRoom, Perceptable()))) {
+                endingLocation = leastDistantRoom
+                break
+            }
 
-            for (neighbor in leastDistantRoom.adjacents()) {
-                val leastDistantIndex = world.getRoomIndex(leastDistantRoom)
-                val alt = distances[leastDistantIndex] + costOfMoveToRoom()
-                if (alt < distances[leastDistantIndex]) {
-                    distances[leastDistantIndex] = alt
-                    previous[leastDistantIndex] = leastDistantRoom
+            for (neighbor in leastDistantRoom.adjacents().filter {
+                world.roomIsValid(it) && facts.roomIsSafe(it) == TRUE && facts.canEnterRoom(it) != FALSE }) {
+                val currentIndex = world.getRoomIndex(leastDistantRoom)
+                val neighborIndex = world.getRoomIndex(neighbor)
+                val currentDirection = distances[currentIndex].second
+                val alt = distances[currentIndex].first + costOfMoveToRoom(neighbor, leastDistantRoom, currentDirection)
+                if (alt < distances[neighborIndex].first) {
+                    distances[neighborIndex] = Pair(alt, neighbor.directionFrom(leastDistantRoom))
+                    previous[neighborIndex] = Pair(leastDistantRoom, neighbor.directionFrom(leastDistantRoom)!!)
                 }
             }
         }
-        return Pair(distances, previous)
+        return Pair(endingLocation, previous)
     }
 
-    private fun getClosestRoom(distances: ArrayList<Int>): Point {
-        return world.getRoomPoint(distances.min() ?: -1)
+    private fun getClosestRoom(vertices: MutableSet<Point>, distances: ArrayList<Pair<Int, Direction?>>): Point {
+        return vertices.minBy { point ->
+            distances[world.getRoomIndex(point)].first
+        }!!
     }
 
-    private fun costOfMoveToRoom(): Int {
-        return 1
-    }
-
-    internal fun buildRoomPreferences(playerState: PlayerState): Set<Point> {
-        val orderOfRoomPreferences = arrayListOf<Point>()
-        val knownAndUncertainRooms = splitKnownAndUncertainRooms(getSafeRooms(playerState))
-
-        knownAndUncertainRooms.first.sortBy { toCommands(playerState, it).map { it.getMoveCost(playerState) }.sum() }
-        knownAndUncertainRooms.second.sortBy { toCommands(playerState, it).map { it.getMoveCost(playerState) }.sum() }
-
-         orderOfRoomPreferences.addAll(knownAndUncertainRooms.second + knownAndUncertainRooms.first)
-
-        return orderOfRoomPreferences.toSet()
-    }
-
-    internal fun getSafeRooms(playerState: PlayerState): Set<Point> {
-        return Direction.values().filter { canMoveInDirection(it) }
-                .map{ playerState.getLocation().adjacent(it) }.toSet()
-    }
-
-    internal fun splitKnownAndUncertainRooms(rooms: Set<Point>): Pair<ArrayList<Point>, ArrayList<Point>> {
-        val knownAndUncertainRooms = Pair(arrayListOf<Point>(), arrayListOf<Point>())
-        rooms.forEach {
-            val result = facts.featureFullyKnownInRoom(it, Perceptable())
-            if (result) knownAndUncertainRooms.first.add(it)
-            else knownAndUncertainRooms.second.add(it)
+    internal fun costOfMoveToRoom(targetRoom: Point, currRoom: Point, currDirection: Direction?): Int {
+        currDirection?.let {
+            val targetDirection = targetRoom.directionFrom(currRoom) ?: return -1
+            val playerState = PlayerState(location = currRoom, facing = it)
+            return TurnCommand(targetDirection).getMoveCost(playerState) +
+                    MoveCommand().getMoveCost(playerState)
         }
-        return knownAndUncertainRooms
+        return -1
     }
 
     internal fun toCommands(playerState: PlayerState, point: Point?): List<Command> {
@@ -121,34 +146,11 @@ class KnowledgeBasedIntelligence : Intelligence() {
 
     internal fun objectOrHereEffectInRoom(gameObject: GameObject): Boolean {
         val worldEffects = gameObject.getFeature(WorldAffecting()) as WorldAffecting?
-        return facts.isTrue(commandResult.getPlayerState().getLocation(), HAS, gameObject) == TRUE
+        return facts.isTrue(commandResult.getLocation(), HAS, gameObject) == TRUE
                 || worldEffects?.effects?.any { effect ->
             effect::class == HereEffect::class
-                    && facts.isTrue(commandResult.getPlayerState().getLocation(), HAS, effect.gameObject) == TRUE
+                    && facts.isTrue(commandResult.getLocation(), HAS, effect.gameObject) == TRUE
         } ?: false
-    }
-
-    internal fun canMoveInDirection(direction: Direction): Boolean {
-        val room = commandResult.getPlayerState().getLocation().adjacent(direction)
-        for (gameObject in gameObjectsWithFeatures(setOf(Blocking()))) {
-            if (facts.isTrue(room, HAS, gameObject) == TRUE) {
-                return false
-            }
-        }
-        return world.roomIsValid(room)
-                && (facts.roomIsSafe(room) == TRUE || !dangerousEffectsInRoom(commandResult))
-    }
-
-    internal fun dangerousEffectsInRoom(commandResult: CommandResult): Boolean {
-        return facts.getEffectsInRoom(commandResult.getPlayerState().getLocation()).any { effect ->
-                    effect.objectsThatCreateThis().any {
-                        // Effect is not "dangerous" if the object creating it is in the
-                        // same room, otherwise we'd be dead already
-                        !(it.getFeature(WorldAffecting()) as WorldAffecting)
-                                .effects.contains(HereEffect(effect))
-                                && it.hasFeature(Dangerous())
-                    }
-        }
     }
 
     override fun processLastMove(world: World, commandResult: CommandResult) {

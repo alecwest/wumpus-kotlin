@@ -16,7 +16,7 @@ internal class GameObjectTest {
 
     @Test
     fun `filter game object values by feature`() {
-        assertTrue(setOf(BREEZE, GLITTER, MOO, STENCH, BLOCKADE, FOOD, WALL).containsAll(
+        assertTrue(setOf(BREEZE, GLITTER, MOO, STENCH, BLOCKADE, FOOD, WALL, EXIT).containsAll(
                         gameObjectsWithFeatures(setOf(Perceptable()))))
     }
 
@@ -75,6 +75,13 @@ internal class GameObjectTest {
         assertEquals(InventoryItem.FOOD, GameObject.FOOD.toInventoryItem())
         assertEquals(InventoryItem.ARROW, GameObject.ARROW.toInventoryItem())
         assertEquals(null, GameObject.SUPMUW.toInventoryItem())
+    }
+
+    @Test
+    fun `convert inventory item to object`() {
+        assertEquals(GameObject.ARROW, InventoryItem.ARROW.toGameObject())
+        assertEquals(GameObject.FOOD, InventoryItem.FOOD.toGameObject())
+        assertEquals(GameObject.GOLD, InventoryItem.GOLD.toGameObject())
     }
 
     @Test

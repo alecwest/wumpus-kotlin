@@ -7,12 +7,12 @@ import game.command.CommandResult
 import game.command.MoveCommand
 import game.command.TurnCommand
 import game.player.InventoryItem
-import Helpers.Companion.assertContains
-import Helpers.Companion.createAgent
-import Helpers.Companion.createClient
-import Helpers.Companion.createCommandResult
-import Helpers.Companion.createPlayerState
-import Helpers.Companion.createWorld
+import Helpers.assertContains
+import Helpers.createAgent
+import Helpers.createClient
+import Helpers.createCommandResult
+import Helpers.createPlayerState
+import Helpers.createWorld
 import game.world.*
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
@@ -76,21 +76,21 @@ internal class AgentTest {
         @JvmStatic
         fun validPostMoveBasicIntelligenceAgentTestDataProvider() = Stream.of(
                 ValidPostMoveAgentTestData(commandResult.copyThis(
-                                playerState = commandResult.getPlayerState().copyThis(location = Point(0, 3))
+                        playerState = commandResult.getPlayerState().copyThis(location = Point(0, 3), score = 1)
                         )),
                 ValidPostMoveAgentTestData(commandResult.copyThis(
-                                perceptions = setOf(Perception.BLOCKADE_BUMP),
-                                playerState = commandResult.getPlayerState().copyThis(
-                                        location = Point(0, 3))
+                        perceptions = setOf(Perception.BLOCKADE_BUMP),
+                        playerState = commandResult.getPlayerState().copyThis(
+                                location = Point(0, 3), score = 2)
                         )),
                 ValidPostMoveAgentTestData(commandResult.copyThis(
-                                playerState = commandResult.getPlayerState().copyThis(
-                                        location = Point(0, 3), facing = Direction.EAST)
+                        playerState = commandResult.getPlayerState().copyThis(
+                                location = Point(0, 3), facing = Direction.EAST, score = 3)
                         )),
                 ValidPostMoveAgentTestData(commandResult.copyThis(
                                 setOf(Perception.BREEZE),
                                 commandResult.getPlayerState().copyThis(
-                                        location = Point(1, 3), facing = Direction.EAST)
+                                        location = Point(1, 3), facing = Direction.EAST, score = 4)
                         ))
         )
     }

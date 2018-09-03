@@ -16,10 +16,20 @@ import java.util.stream.Stream
 internal class ShootCommandTest {
     @Test
     fun `shoot commands are equal`() {
-        val command = ShootCommand()
+        val command = ShootCommand(InventoryItem.ARROW)
         assertEquals(command, command)
         assertNotEquals(command, Direction.EAST)
-        assertEquals(command, ShootCommand())
+        assertEquals(command, ShootCommand(InventoryItem.ARROW))
+    }
+
+    @Test
+    fun `try to shoot something not shootable`() {
+        val command = ShootCommand(InventoryItem.GOLD)
+        val game = Helpers.createGame(player = Helpers.createPlayer(inventoryContent = mapOf(InventoryItem.GOLD to 1)))
+        command.setGame(game)
+        command.execute()
+        assertEquals(1, game.getScore())
+        assertTrue(game.playerHasItem(InventoryItem.GOLD))
     }
 
     @ParameterizedTest
@@ -42,21 +52,26 @@ internal class ShootCommandTest {
 
         @JvmStatic
         fun validShootCommandTestDataProvider() = Stream.of(
-                ValidShootCommandTestData(initialGame, ShootCommand(),
-                        CommandResult(setOf(Perception.SCREAM),
-                                initialGame.getPlayerState().copyThis(inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 3))))),
-                 ValidShootCommandTestData(initialGame, ShootCommand(),
-                        CommandResult(setOf(Perception.SCREAM),
-                                initialGame.getPlayerState().copyThis(inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 2))))),
-                 ValidShootCommandTestData(initialGame, ShootCommand(),
-                        CommandResult(setOf(Perception.SCREAM),
-                                initialGame.getPlayerState().copyThis(inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 1))))),
-                ValidShootCommandTestData(initialGame, ShootCommand(),
-                        CommandResult(setOf(),
-                                initialGame.getPlayerState().copyThis(inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 0))))),
-                ValidShootCommandTestData(initialGame, ShootCommand(),
-                        CommandResult(setOf(),
-                                initialGame.getPlayerState().copyThis(inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 0)))))
+                ValidShootCommandTestData(initialGame, ShootCommand(InventoryItem.ARROW),
+                        CommandResult(setOf(Perception.SCREAM, Perception.EXIT),
+                                initialGame.getPlayerState().copyThis(
+                                        inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 3)), score = 10))),
+                 ValidShootCommandTestData(initialGame, ShootCommand(InventoryItem.ARROW),
+                        CommandResult(setOf(Perception.SCREAM, Perception.EXIT),
+                                initialGame.getPlayerState().copyThis(
+                                        inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 2)), score = 20))),
+                 ValidShootCommandTestData(initialGame, ShootCommand(InventoryItem.ARROW),
+                        CommandResult(setOf(Perception.SCREAM, Perception.EXIT),
+                                initialGame.getPlayerState().copyThis(
+                                        inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 1)), score = 30))),
+                ValidShootCommandTestData(initialGame, ShootCommand(InventoryItem.ARROW),
+                        CommandResult(setOf(Perception.EXIT),
+                                initialGame.getPlayerState().copyThis(
+                                        inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 0)), score = 40))),
+                ValidShootCommandTestData(initialGame, ShootCommand(InventoryItem.ARROW),
+                        CommandResult(setOf(Perception.EXIT),
+                                initialGame.getPlayerState().copyThis(
+                                        inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 0)), score = 50)))
         )
     }
 }

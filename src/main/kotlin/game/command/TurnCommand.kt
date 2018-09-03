@@ -1,5 +1,6 @@
 package game.command
 
+import game.command.CommandResult.Companion.createCommandResult
 import game.player.PlayerState
 import util.Direction
 import util.left
@@ -10,6 +11,7 @@ class TurnCommand(private val targetDirection: Direction): Command() {
 
     override fun execute() {
         game?.let { game ->
+            game.setPlayerScore(game.getScore() + getMoveCost(game.getPlayerState()))
             startingDirection = game.getPlayerDirection()
             var currentDirection = startingDirection!!
             while (currentDirection != targetDirection) {
@@ -21,7 +23,8 @@ class TurnCommand(private val targetDirection: Direction): Command() {
                 }
                 command.setGame(game)
                 command.execute()
-                game.setCommandResult(createCommandResult())
+
+                game.setCommandResult(createCommandResult(game))
                 currentDirection = game.getPlayerDirection()
             }
         }

@@ -4,15 +4,14 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
-import Helpers.Companion.assertContains
-import Helpers.Companion.createWorld
+import Helpers.assertContains
+import Helpers.createWorld
 import game.player.PlayerState
 import game.world.GameObjectFeature.*
 import util.*
 import java.awt.Point
 import java.util.stream.Stream
 
-// TODO use @ParameterizedTest and @MethodSource
 class WorldTest {
     private val world: World = World(4)
 

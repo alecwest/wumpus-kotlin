@@ -6,7 +6,7 @@ import game.world.World
 import game.command.Command
 import game.command.CommandInvoker
 import game.command.CommandResult
-import util.JsonParser.Companion.buildFromJsonFile
+import util.JsonParser.buildFromJsonFile
 
 /**
  * GameState is an observable object that exists in the server
@@ -34,7 +34,7 @@ object Server {
         return id
     }
 
-    private fun createGame(fileName: String, worldSize: Int): Game {
+    internal fun createGame(fileName: String, worldSize: Int): Game {
         return if (fileName.isBlank()) {
             Game(GameState(world = World(size = worldSize)))
         } else {

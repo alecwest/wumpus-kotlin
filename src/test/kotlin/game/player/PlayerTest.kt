@@ -117,6 +117,14 @@ class PlayerTest {
         player.setInventory(PlayerInventory(mapOf(InventoryItem.GOLD to 12)))
         assertEquals(mapOf(InventoryItem.GOLD to 12), player.getInventory())
     }
+
+    @Test
+    fun `get player score`() {
+        assertEquals(0, player.getScore())
+        assertEquals(12, Helpers.createPlayer(score = 12).getScore())
+        player.setScore(666)
+        assertEquals(666, player.getScore())
+    }
 }
 
 data class ValidPlayerTestData (

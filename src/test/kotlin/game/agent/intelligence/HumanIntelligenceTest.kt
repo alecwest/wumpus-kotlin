@@ -24,7 +24,7 @@ internal class HumanIntelligenceTest {
                 ValidHumanIntelligenceTestData("move\nm", listOf(MoveCommand())),
                 ValidHumanIntelligenceTestData("r", listOf(TurnCommand(Direction.EAST))),
                 ValidHumanIntelligenceTestData("l", listOf(TurnCommand(Direction.WEST))),
-                ValidHumanIntelligenceTestData("s", listOf(ShootCommand())),
+                ValidHumanIntelligenceTestData("s", listOf(ShootCommand(InventoryItem.ARROW))),
                 ValidHumanIntelligenceTestData("a", listOf(GrabCommand(InventoryItem.ARROW))),
                 ValidHumanIntelligenceTestData("f", listOf(GrabCommand(InventoryItem.FOOD))),
                 ValidHumanIntelligenceTestData("g", listOf(GrabCommand(InventoryItem.GOLD)))

@@ -15,82 +15,83 @@ import game.world.*
 import util.Direction
 import java.awt.Point
 
-class Helpers {
-    companion object {
-        const val testFilePath = "src/test/resources/"
+object Helpers {
+    const val testFilePath = "src/test/resources/"
 
-        fun createRoom(gameObject: MutableSet<GameObject>
-                       = mutableSetOf(GameObject.BREEZE, GameObject.STENCH)): Room {
-            return Room(gameObject)
-        }
+    fun createRoom(gameObject: MutableSet<GameObject>
+                   = mutableSetOf(GameObject.BREEZE, GameObject.STENCH)): Room {
+        return Room(gameObject)
+    }
 
-        fun createWorld(size: Int = 10,
-                        gameObject: Map<Point, Set<out GameObject>> =
-                                mapOf(Point(2, 2) to setOf(GameObject.PIT))): World {
-            val world = World(size)
-            for (point in gameObject.keys) {
-                for (content in gameObject.getValue(point)) {
-                    world.addGameObject(point, content)
-                }
+    fun createWorld(size: Int = 10,
+                    gameObject: Map<Point, Set<GameObject>> =
+                            mapOf(Point(2, 2) to setOf(GameObject.PIT))): World {
+        val world = World(size)
+        for (point in gameObject.keys) {
+            for (content in gameObject.getValue(point)) {
+                world.addGameObject(point, content)
             }
-            return world
         }
+        return world
+    }
 
-        fun createPlayer(alive: Boolean = true,
-                         location: Point = Point(0, 0),
-                         facing: Direction = Direction.NORTH,
-                         inventoryContent: Map<InventoryItem, Int> =
-                                 mapOf(InventoryItem.ARROW to 2)): Player {
-            return Player(PlayerState(alive, location, facing, PlayerInventory(inventoryContent)))
-        }
+    fun createPlayer(alive: Boolean = true,
+                     location: Point = Point(0, 0),
+                     facing: Direction = Direction.NORTH,
+                     inventoryContent: Map<InventoryItem, Int> =
+                             mapOf(InventoryItem.ARROW to 2),
+                     score: Int = 0): Player {
+        return Player(PlayerState(alive, location, facing, PlayerInventory(inventoryContent), score))
+    }
 
-        fun createPlayerState(alive: Boolean = true,
-                              location: Point = Point(0, 0),
-                              facing: Direction = Direction.NORTH,
-                              inventoryContent: Map<InventoryItem, Int> =
-                                    mapOf(InventoryItem.ARROW to 2)): PlayerState {
-            return PlayerState(alive, location, facing, Helpers.createPlayerInventory(inventoryContent))
-        }
+    fun createPlayerState(alive: Boolean = true,
+                          location: Point = Point(0, 0),
+                          facing: Direction = Direction.NORTH,
+                          inventoryContent: Map<InventoryItem, Int> =
+                                mapOf(InventoryItem.ARROW to 2),
+                          score: Int = 0): PlayerState {
+        return PlayerState(alive, location, facing, Helpers.createPlayerInventory(inventoryContent), score)
+    }
 
-        fun createPlayerInventory(inventoryContent: Map<InventoryItem, Int> =
-                                          mapOf(InventoryItem.ARROW to 2)): PlayerInventory {
-            return PlayerInventory(inventoryContent)
-        }
+    fun createPlayerInventory(inventoryContent: Map<InventoryItem, Int> =
+                                      mapOf(InventoryItem.ARROW to 2)): PlayerInventory {
+        return PlayerInventory(inventoryContent)
+    }
 
-        fun createGame(active: Boolean = true,
-                       world: World = createWorld(),
-                       player: Player = createPlayer()): Game {
-            return Game(GameState(active, world, player))
-        }
+    fun createGame(active: Boolean = true,
+                   world: World = createWorld(),
+                   player: Player = createPlayer()): Game {
+        return Game(GameState(active, world, player))
+    }
 
-        fun createServerSession(fileName: String = Helpers.testFilePath + "testFile.json",
-                                worldSize: Int = 10): Int {
-            return Server.newSession(fileName = fileName, worldSize = worldSize)
-        }
+    fun createServerSession(fileName: String = Helpers.testFilePath + "testFile.json",
+                            worldSize: Int = 10): Int {
+        return Server.newSession(fileName = fileName, worldSize = worldSize)
+    }
 
-        fun createCommandResult(perceptions: Set<Perception> = setOf(),
-                                playerState: PlayerState = Helpers.createPlayerState()): CommandResult {
-            return CommandResult(perceptions, playerState)
-        }
+    fun createCommandResult(perceptions: Set<Perception> = setOf(),
+                            playerState: PlayerState = Helpers.createPlayerState(),
+                            gameActive: Boolean = true): CommandResult {
+        return CommandResult(perceptions, playerState, gameActive)
+    }
 
-        fun createClient(fileName: String = "",
-                         worldSize: Int = 10): Client {
-            return Client(fileName, worldSize)
-        }
+    fun createClient(fileName: String = "",
+                     worldSize: Int = 10): Client {
+        return Client(fileName, worldSize)
+    }
 
-        fun createAgent(client: Client = Helpers.createClient(),
-                        intelligence: Intelligence = BasicIntelligence()): Agent {
-            return Agent(client, intelligence)
-        }
+    fun createAgent(client: Client = Helpers.createClient(),
+                    intelligence: Intelligence = BasicIntelligence()): Agent {
+        return Agent(client, intelligence)
+    }
 
-        fun assertContains(content: String, subString: String, numExpected: Int) {
-            val numFound = content.sumBy {
-                if (subString.contains(it))
-                    1
-                else
-                    0
-            }
-            assertEquals(numExpected, numFound)
+    fun assertContains(content: String, subString: String, numExpected: Int) {
+        val numFound = content.sumBy {
+            if (subString.contains(it))
+                1
+            else
+                0
         }
+        assertEquals(numExpected, numFound)
     }
 }
