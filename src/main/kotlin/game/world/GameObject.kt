@@ -1,8 +1,11 @@
 package game.world
 
+import game.Game
 import game.player.InventoryItem
 import game.world.GameObjectFeature.*
 import game.world.effect.*
+import util.adjacents
+import util.diagonals
 
 sealed class GameObject(val features: Set<GameObjectFeature> = setOf()) {
     object ARROW : GameObject(setOf(Shootable(10), Grabbable(InventoryItem.ARROW)))
@@ -84,8 +87,19 @@ fun InventoryItem.toGameObject(): GameObject {
 
 sealed class GameObjectFeature {
     class Blocking: GameObjectFeature() // For things that block a player from entering
-    open class Dangerous: GameObjectFeature()
-    class ConditionallyDangerous(val proximityTo: GameObject): Dangerous()
+    open class Dangerous: GameObjectFeature() {
+        open fun killsPlayer(game: Game): Boolean {
+            return true
+        }
+    }
+    class ConditionallyDangerous(val proximityTo: GameObject): Dangerous() {
+        override fun killsPlayer(game: Game): Boolean {
+            val playerLocation = game.getPlayerLocation()
+            return (playerLocation.adjacents() + playerLocation.diagonals()).any {
+                game.hasGameObject(it, proximityTo)
+            }
+        }
+    }
     class Destructable(val weaknesses: Set<GameObject> = setOf()): GameObjectFeature()
     class Exitable: GameObjectFeature()
     class Grabbable(val inventoryItem: InventoryItem? = null, val value: Int = 0): GameObjectFeature()
