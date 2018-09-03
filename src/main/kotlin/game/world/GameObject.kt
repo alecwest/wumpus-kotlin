@@ -84,7 +84,8 @@ fun InventoryItem.toGameObject(): GameObject {
 
 sealed class GameObjectFeature {
     class Blocking: GameObjectFeature() // For things that block a player from entering
-    class Dangerous: GameObjectFeature()
+    open class Dangerous: GameObjectFeature()
+    class ConditionallyDangerous(val proximityTo: GameObject): Dangerous()
     class Destructable(val weaknesses: Set<GameObject> = setOf()): GameObjectFeature()
     class Exitable: GameObjectFeature()
     class Grabbable(val inventoryItem: InventoryItem? = null, val value: Int = 0): GameObjectFeature()
