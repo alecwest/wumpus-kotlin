@@ -10,12 +10,12 @@ import game.world.toGameObject
 import util.adjacent
 import java.awt.Point
 
-class ShootCommand: Command() {
+class ShootCommand(private val inventoryItem: InventoryItem): Command() {
     private val perceptionList = mutableSetOf<Perception>()
 
     override fun execute() {
         game?.let { game ->
-            if (game.playerHasItem(InventoryItem.ARROW)) {
+            if (game.playerHasItem(inventoryItem) && inventoryItem.toGameObject().hasFeature(Shootable())) {
                 var currentRoom = game.getPlayerLocation().adjacent(game.getPlayerDirection())
                 game.removeFromPlayerInventory(InventoryItem.ARROW)
                 loop@ while (game.roomIsValid(currentRoom)) {
@@ -36,7 +36,8 @@ class ShootCommand: Command() {
     }
 
     override fun getMoveCost(playerState: PlayerState?): Int {
-        return (InventoryItem.ARROW.toGameObject().getFeature(Shootable()) as Shootable).cost
+        return (inventoryItem.toGameObject().getFeature(Shootable()) as Shootable?)?.cost
+                ?: super.getMoveCost(playerState)
     }
 
     private fun getDestructablesFromRoom(room: Point): ArrayList<GameObject> {
@@ -61,11 +62,12 @@ class ShootCommand: Command() {
         if (other !is ShootCommand) return false
 
         if (perceptionList != other.perceptionList) return false
+        if (inventoryItem != other.inventoryItem) return false
 
         return true
     }
 
     override fun toString(): String {
-        return "ShootCommand(perceptionList=$perceptionList)"
+        return "ShootCommand(inventoryItem=$inventoryItem)"
     }
 }

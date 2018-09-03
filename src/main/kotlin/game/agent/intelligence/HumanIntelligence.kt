@@ -28,7 +28,7 @@ class HumanIntelligence: Intelligence() {
             "m" -> MoveCommand()
             "r" -> TurnCommand(playerState.getDirection().right())
             "l" -> TurnCommand(playerState.getDirection().left())
-            "s" -> ShootCommand()
+            "s" -> ShootCommand(InventoryItem.ARROW)
             "a" -> GrabCommand(InventoryItem.ARROW)
             "f" -> GrabCommand(InventoryItem.FOOD)
             "g" -> GrabCommand(InventoryItem.GOLD)
