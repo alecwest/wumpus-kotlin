@@ -45,23 +45,23 @@ internal class ShootCommandTest {
                 ValidShootCommandTestData(initialGame, ShootCommand(),
                         CommandResult(setOf(Perception.SCREAM, Perception.EXIT),
                                 initialGame.getPlayerState().copyThis(
-                                        inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 3)), score = 1))),
+                                        inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 3)), score = 10))),
                  ValidShootCommandTestData(initialGame, ShootCommand(),
                         CommandResult(setOf(Perception.SCREAM, Perception.EXIT),
                                 initialGame.getPlayerState().copyThis(
-                                        inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 2)), score = 2))),
+                                        inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 2)), score = 20))),
                  ValidShootCommandTestData(initialGame, ShootCommand(),
                         CommandResult(setOf(Perception.SCREAM, Perception.EXIT),
                                 initialGame.getPlayerState().copyThis(
-                                        inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 1)), score = 3))),
+                                        inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 1)), score = 30))),
                 ValidShootCommandTestData(initialGame, ShootCommand(),
                         CommandResult(setOf(Perception.EXIT),
                                 initialGame.getPlayerState().copyThis(
-                                        inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 0)), score = 4))),
+                                        inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 0)), score = 40))),
                 ValidShootCommandTestData(initialGame, ShootCommand(),
                         CommandResult(setOf(Perception.EXIT),
                                 initialGame.getPlayerState().copyThis(
-                                        inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 0)), score = 5)))
+                                        inventory = PlayerInventory(mapOf(InventoryItem.ARROW to 0)), score = 50)))
         )
     }
 }

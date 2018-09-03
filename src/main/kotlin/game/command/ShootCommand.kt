@@ -2,9 +2,11 @@ package game.command
 
 import game.command.CommandResult.Companion.createCommandResult
 import game.player.InventoryItem
+import game.player.PlayerState
 import game.world.Perception
 import game.world.GameObject
 import game.world.GameObjectFeature.*
+import game.world.toGameObject
 import util.adjacent
 import java.awt.Point
 
@@ -31,6 +33,10 @@ class ShootCommand: Command() {
             game.setPlayerScore(game.getScore() + getMoveCost(game.getPlayerState()))
             game.setCommandResult(createCommandResult(game, perceptionList))
         }
+    }
+
+    override fun getMoveCost(playerState: PlayerState?): Int {
+        return (InventoryItem.ARROW.toGameObject().getFeature(Shootable()) as Shootable).cost
     }
 
     private fun getDestructablesFromRoom(room: Point): ArrayList<GameObject> {
