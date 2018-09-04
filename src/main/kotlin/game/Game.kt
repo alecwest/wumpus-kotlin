@@ -87,7 +87,7 @@ data class Game(private var gameState: GameState = GameState()) {
         val newPlayer = getGameState().getPlayer()
         newPlayer.setLocation(location)
         if (getGameObjects(location).any { it.hasFeature(Dangerous())
-                        && (it.getFeature(Dangerous()) as Dangerous).killsPlayer(this)}) {
+                        && (it.getFeature(Dangerous()) as Dangerous).killsPlayer(location, getWorld())}) {
             setPlayerAlive(false)
         }
         gameState = getGameState().copyThis(player = newPlayer)
