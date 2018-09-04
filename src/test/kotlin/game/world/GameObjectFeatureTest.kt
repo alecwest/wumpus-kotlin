@@ -23,4 +23,16 @@ internal class GameObjectFeatureTest {
         game.addToRoom(game.getPlayerLocation().northEast(), GameObject.GLITTER)
         assertTrue(ConditionallyDangerous(GameObject.GLITTER).killsPlayer(game))
     }
+
+    @Test
+    fun `world affecting object creates effect`() {
+        assertTrue(WorldAffecting().createsEffect(game))
+    }
+
+    @Test
+    fun `conditionally affecting object creates effect on condition`() {
+        assertFalse(ConditionallyWorldAffecting(proximityTo = GameObject.WUMPUS).createsEffect(game))
+        game.addToRoom(game.getPlayerLocation().northEast(), GameObject.WUMPUS)
+        assertTrue(ConditionallyWorldAffecting(proximityTo = GameObject.WUMPUS).createsEffect(game))
+    }
 }

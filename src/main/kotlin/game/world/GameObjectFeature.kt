@@ -15,10 +15,7 @@ sealed class GameObjectFeature {
     }
     class ConditionallyDangerous(val proximityTo: GameObject): Dangerous() {
         override fun killsPlayer(game: Game): Boolean {
-            val playerLocation = game.getPlayerLocation()
-            return (playerLocation.adjacents() + playerLocation.diagonals()).any {
-                game.hasGameObject(it, proximityTo)
-            }
+            return proximityTo(proximityTo, game)
         }
     }
     class Destructable(val weaknesses: Set<GameObject> = setOf()): GameObjectFeature()
@@ -28,7 +25,7 @@ sealed class GameObjectFeature {
     class Perceptable(val perception: Perception? = null): GameObjectFeature()
     class RoomFilling: GameObjectFeature() // For things that must exist in a Room alone
     class Shootable(val cost: Int = 1) : GameObjectFeature()
-    class WorldAffecting(val effects: ArrayList<WorldEffect> = arrayListOf()): GameObjectFeature() {
+    open class WorldAffecting(val effects: ArrayList<WorldEffect> = arrayListOf()): GameObjectFeature() {
         fun hasEffect(worldEffect: WorldEffect): Boolean {
             return effects.any {
                 worldEffect::class == it::class && worldEffect.gameObject.toString() == it.gameObject.toString()
@@ -39,6 +36,23 @@ sealed class GameObjectFeature {
             return effects.any {
                 it.gameObject.toString() == gameObject.toString()
             }
+        }
+
+        open fun createsEffect(game: Game): Boolean {
+            return true
+        }
+    }
+    class ConditionallyWorldAffecting(effects: ArrayList<WorldEffect> = arrayListOf(),
+                                      val proximityTo: GameObject): WorldAffecting(effects) {
+        override fun createsEffect(game: Game): Boolean {
+            return proximityTo(proximityTo, game)
+        }
+    }
+
+    internal fun proximityTo(gameObject: GameObject, game: Game): Boolean {
+        val playerLocation = game.getPlayerLocation()
+        return (playerLocation.adjacents() + playerLocation.diagonals()).any {
+            game.hasGameObject(it, gameObject)
         }
     }
 }
