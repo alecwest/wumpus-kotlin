@@ -19,9 +19,10 @@ sealed class GameObject(val features: Set<GameObjectFeature> = setOf()) {
     object PIT : GameObject(setOf(Dangerous(), Mappable("P"),
             WorldAffecting(arrayListOf(AdjacentEffect(GameObject.BREEZE)))))
     object STENCH : GameObject(setOf(Mappable("~"), Perceptable(Perception.STENCH)))
-    object SUPMUW : GameObject(setOf(ConditionallyDangerous(GameObject.WUMPUS), Destructable(setOf(GameObject.ARROW)),
-            Mappable("S"), WorldAffecting(arrayListOf(AdjacentEffect(GameObject.MOO),
-            DiagonalEffect(GameObject.MOO), HereEffect(GameObject.FOOD)))))
+    object SUPMUW : GameObject(setOf(
+            ConditionallyDangerous(GameObject.WUMPUS), Destructable(setOf(GameObject.ARROW)), Mappable("S"),
+            WorldAffecting(arrayListOf(AdjacentEffect(GameObject.MOO), DiagonalEffect(GameObject.MOO))),
+            ConditionallyWorldAffecting(arrayListOf(HereEffect(GameObject.FOOD)), GameObject.WUMPUS)))
     object WALL : GameObject(setOf(Blocking(), Perceptable(Perception.WALL_BUMP), RoomFilling()))
     object WUMPUS : GameObject(setOf(Dangerous(), Destructable(setOf(GameObject.ARROW)), Mappable("W"),
             WorldAffecting(arrayListOf(AdjacentEffect(GameObject.STENCH)))))
