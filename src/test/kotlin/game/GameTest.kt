@@ -257,6 +257,25 @@ class GameTest {
         assertEquals(1, gameWithDifferentStart.getRooms().count { it.hasGameObject(GameObject.EXIT) })
         assertTrue(game.getCommandResult().getPerceptions().contains(Perception.EXIT))
     }
+
+    @Test
+    fun `walk into a room with a friendly supmuw`() {
+        val game = Helpers.createGame(world = Helpers.createWorld(
+                gameObject = mapOf(Point(0, 1) to setOf(GameObject.SUPMUW))))
+        game.setPlayerLocation(Point(0, 1))
+        assertTrue(game.isPlayerAlive())
+        assertTrue(game.hasGameObject(Point(0, 1), GameObject.FOOD))
+    }
+
+    @Test
+    fun `walk into a room with a dangerous supmuw`() {
+        val game = Helpers.createGame(world = Helpers.createWorld(
+                gameObject = mapOf(Point(0, 1) to setOf(GameObject.SUPMUW),
+                        Point(0, 2) to setOf(GameObject.WUMPUS))))
+        game.setPlayerLocation(Point(0, 1))
+        assertFalse(game.isPlayerAlive())
+        assertFalse(game.hasGameObject(Point(0, 1), GameObject.FOOD))
+    }
 }
 
 data class ValidGameTestData (
