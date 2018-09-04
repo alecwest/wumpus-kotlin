@@ -34,6 +34,7 @@ internal class GameObjectTest {
     @Test
     fun `get feature from game object`() {
         assertEquals("X", (BLOCKADE.getFeature(Mappable()) as Mappable).character)
+        assertTrue((SUPMUW.getFeature(Dangerous()) as Dangerous) is ConditionallyDangerous)
     }
 
     @Test
