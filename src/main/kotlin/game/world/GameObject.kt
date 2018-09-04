@@ -3,6 +3,7 @@ package game.world
 import game.player.InventoryItem
 import game.world.GameObjectFeature.*
 import game.world.effect.*
+import kotlin.reflect.full.isSubclassOf
 
 sealed class GameObject(val features: Set<GameObjectFeature> = setOf()) {
     object ARROW : GameObject(setOf(Shootable(10), Grabbable(InventoryItem.ARROW)))
@@ -26,11 +27,11 @@ sealed class GameObject(val features: Set<GameObjectFeature> = setOf()) {
             WorldAffecting(arrayListOf(AdjacentEffect(GameObject.STENCH)))))
 
     fun getFeature(feature: GameObjectFeature): GameObjectFeature? {
-        return this.features.find { it::class == feature::class }
+        return this.features.find { it::class.isSubclassOf(feature::class) }
     }
 
     fun hasFeature(feature: GameObjectFeature): Boolean {
-        return this.features.any { it::class == feature::class }
+        return this.features.any { it::class.isSubclassOf(feature::class) }
     }
 
     fun objectsThatCreateThis(): List<GameObject> {
