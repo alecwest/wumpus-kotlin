@@ -4,35 +4,38 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import game.world.GameObjectFeature.*
 import util.northEast
+import java.awt.Point
 
 internal class GameObjectFeatureTest {
     val game = Helpers.createGame()
 
     @Test
     fun `dangerous objects kill player`() {
-        assertTrue(Dangerous().killsPlayer(game))
+        assertTrue(Dangerous().killsPlayer(game.getPlayerLocation(), game.getWorld()))
         game.addToRoom(game.getPlayerLocation(), GameObject.PIT)
         assertTrue((game.getGameObjects(game.getPlayerLocation())
                 .first { it.hasFeature(Dangerous()) }.getFeature(Dangerous()) as Dangerous)
-                .killsPlayer(game))
+                .killsPlayer(game.getPlayerLocation(), game.getWorld()))
     }
 
     @Test
     fun `conditionally dangerous objects kill player on condition`() {
-        assertFalse(ConditionallyDangerous(GameObject.GLITTER).killsPlayer(game))
+        assertFalse(ConditionallyDangerous(GameObject.GLITTER).killsPlayer(game.getPlayerLocation(), game.getWorld()))
         game.addToRoom(game.getPlayerLocation().northEast(), GameObject.GLITTER)
-        assertTrue(ConditionallyDangerous(GameObject.GLITTER).killsPlayer(game))
+        assertTrue(ConditionallyDangerous(GameObject.GLITTER).killsPlayer(game.getPlayerLocation(), game.getWorld()))
     }
 
     @Test
     fun `world affecting object creates effect`() {
-        assertTrue(WorldAffecting().createsEffect(game))
+        assertTrue(WorldAffecting().createsEffect(game.getPlayerLocation(), game.getWorld()))
     }
 
     @Test
     fun `conditionally affecting object creates effect on condition`() {
-        assertTrue(ConditionallyWorldAffecting(proximityTo = GameObject.WUMPUS).createsEffect(game))
+        assertTrue(ConditionallyWorldAffecting(proximityTo = GameObject.WUMPUS)
+                .createsEffect(game.getPlayerLocation(), game.getWorld()))
         game.addToRoom(game.getPlayerLocation().northEast(), GameObject.WUMPUS)
-        assertFalse(ConditionallyWorldAffecting(proximityTo = GameObject.WUMPUS).createsEffect(game))
+        assertFalse(ConditionallyWorldAffecting(proximityTo = GameObject.WUMPUS)
+                .createsEffect(game.getPlayerLocation(), game.getWorld()))
     }
 }

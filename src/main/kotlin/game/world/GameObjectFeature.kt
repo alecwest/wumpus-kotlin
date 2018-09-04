@@ -1,21 +1,21 @@
 package game.world
 
-import game.Game
 import game.player.InventoryItem
 import game.world.effect.WorldEffect
 import util.adjacents
 import util.diagonals
+import java.awt.Point
 
 sealed class GameObjectFeature {
     class Blocking: GameObjectFeature() // For things that block a player from entering
     open class Dangerous: GameObjectFeature() {
-        open fun killsPlayer(game: Game): Boolean {
+        open fun killsPlayer(objectLocation: Point, world: World): Boolean {
             return true
         }
     }
     class ConditionallyDangerous(val proximityTo: GameObject): Dangerous() {
-        override fun killsPlayer(game: Game): Boolean {
-            return proximityTo(proximityTo, game)
+        override fun killsPlayer(objectLocation: Point, world: World): Boolean {
+            return proximityTo(proximityTo, objectLocation, world)
         }
     }
     class Destructable(val weaknesses: Set<GameObject> = setOf()): GameObjectFeature()
@@ -38,24 +38,23 @@ sealed class GameObjectFeature {
             }
         }
 
-        open fun createsEffect(game: Game): Boolean {
+        open fun createsEffect(currLocation: Point, world: World): Boolean {
             return true
         }
     }
     class ConditionallyWorldAffecting(effects: ArrayList<WorldEffect> = arrayListOf(),
                                       val proximityTo: GameObject? = null): WorldAffecting(effects) {
-        override fun createsEffect(game: Game): Boolean {
+        override fun createsEffect(currLocation: Point, world: World): Boolean {
             proximityTo?.let {
-                return !proximityTo(it, game)
+                return !proximityTo(it, currLocation, world)
             }
-            return super.createsEffect(game)
+            return super.createsEffect(currLocation, world)
         }
     }
 
-    internal fun proximityTo(gameObject: GameObject, game: Game): Boolean {
-        val playerLocation = game.getPlayerLocation()
-        return (playerLocation.adjacents() + playerLocation.diagonals()).any {
-            game.hasGameObject(it, gameObject)
+    internal fun proximityTo(target: GameObject, currLocation: Point, world: World): Boolean {
+        return (currLocation.adjacents() + currLocation.diagonals()).any {
+            world.hasGameObject(it, target)
         }
     }
 }
