@@ -86,7 +86,8 @@ data class Game(private var gameState: GameState = GameState()) {
     fun setPlayerLocation(location: Point) {
         val newPlayer = getGameState().getPlayer()
         newPlayer.setLocation(location)
-        if (getGameObjects(location).any { it.hasFeature(Dangerous()) }) {
+        if (getGameObjects(location).any { it.hasFeature(Dangerous())
+                        && (it.getFeature(Dangerous()) as Dangerous).killsPlayer(this)}) {
             setPlayerAlive(false)
         }
         gameState = getGameState().copyThis(player = newPlayer)
