@@ -2,6 +2,9 @@ package game.world
 
 import game.player.PlayerState
 import game.world.effect.*
+import game.world.GameObjectFeature.*
+import util.adjacents
+import util.diagonals
 import java.awt.Point
 
 /**
@@ -85,6 +88,28 @@ data class World(private var size: Int = 10) {
                 if (worldAffectingFeature != null) addWorldEffects(point, worldAffectingFeature.effects)
             } catch (e: ArrayIndexOutOfBoundsException) { }
         })
+        // TODO affect should take place only when NOT near an object
+        // TODO maybe add something similar to HAS and HAS_NO (ConditionallyWorldAffecting([...], ProximityCondition(HAS_NO, WUMPUS))
+        // TODO use ConditionalAdjacent, ConditionalDiagonal, ConditionalHere effects?
+        (point.adjacents() + point.diagonals()).forEach { neighbor ->
+            /**
+             * Each neighbor checks through content in their room.
+             * If that content has a feature that is conditional on the proximity of the object being added,
+             * add or remove the feature
+             */
+            getGameObjects(neighbor)
+                    .filter { it.hasFeature(ConditionallyWorldAffecting()) }
+                    .map { it.getFeature(ConditionallyWorldAffecting()) as ConditionallyWorldAffecting }
+                    .forEach { neighborGameObjectConditionalEffect ->
+                        if (neighborGameObjectConditionalEffect.createsEffect(neighbor, this)) {
+                            if (!neighborGameObjectConditionalEffect.effects.all { hasGameObject(neighbor, it.gameObject) }) {
+                                addWorldEffects(neighbor, neighborGameObjectConditionalEffect.effects)
+                            }
+                        } else {
+                            removeWorldEffects(neighbor, neighborGameObjectConditionalEffect.effects)
+                        }
+                    }
+        }
     }
 
     private fun addWorldEffects(point: Point, worldEffects: ArrayList<WorldEffect>) {
