@@ -1,7 +1,8 @@
 package game.agent.intelligence
 
-import game.agent.intelligence.Answer.*
-import game.agent.intelligence.Fact.*
+import facts.Answer.*
+import facts.Fact.*
+import facts.FactMap
 import game.command.*
 import game.player.InventoryItem
 import game.player.PlayerState

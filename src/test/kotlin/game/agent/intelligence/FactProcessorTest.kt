@@ -1,5 +1,8 @@
 package game.agent.intelligence
 
+import facts.FactMap
+import facts.Fact
+import facts.Answer
 import game.world.GameObject
 import game.world.Perception
 import game.world.gameObjectValues

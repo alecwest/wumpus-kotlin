@@ -1,11 +1,11 @@
-package game.agent.intelligence
+package facts
 
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.awt.Point
 
-import game.agent.intelligence.Answer.*
-import game.agent.intelligence.Fact.*
+import facts.Answer.*
+import facts.Fact.*
 import game.world.GameObject
 import game.world.GameObject.*
 import game.world.GameObjectFeature

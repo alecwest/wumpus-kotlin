@@ -1,7 +1,7 @@
 package game.agent.intelligence
 
-import game.agent.intelligence.Answer.*
-import game.agent.intelligence.Fact.*
+import facts.Answer.*
+import facts.Fact.*
 import game.command.ExitCommand
 import game.command.GrabCommand
 import game.command.MoveCommand
@@ -10,7 +10,6 @@ import game.player.InventoryItem
 import game.world.GameObject
 import game.world.GameObject.*
 import game.world.Perception
-import game.world.gameObjectValues
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import util.*

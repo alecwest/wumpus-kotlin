@@ -1,5 +1,8 @@
 package game.agent.intelligence
 
+import facts.Answer
+import facts.Fact
+import facts.FactMap
 import game.command.CommandResult
 import game.world.*
 import util.adjacent

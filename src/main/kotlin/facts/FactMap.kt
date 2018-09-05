@@ -1,7 +1,7 @@
-package game.agent.intelligence
+package facts
 
-import game.agent.intelligence.Answer.*
-import game.agent.intelligence.Fact.*
+import facts.Answer.*
+import facts.Fact.*
 import game.world.GameObject
 import game.world.GameObjectFeature
 import game.world.GameObjectFeature.*
@@ -80,15 +80,4 @@ class FactMap(private val factMap: MutableMap<Point, MutableSet<Pair<GameObject,
         return getMap().filter { isTrue(it.key, HAS, gameObject) == TRUE }
                 .map { it.key }.toSet()
     }
-}
-
-enum class Fact {
-    HAS,
-    HAS_NO
-}
-
-enum class Answer {
-    TRUE,
-    FALSE,
-    UNKNOWN
 }
