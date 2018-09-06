@@ -14,7 +14,7 @@ class NoEffectTest {
 
     @Test
     fun `add nothing to rooms as effect of blockade`() {
-        world.addGameObject(pointToAddTo, GameObject.BLOCKADE)
+        world.addGameObjectAndEffects(pointToAddTo, GameObject.BLOCKADE)
         for(point in pointToAddTo.adjacents() + pointToAddTo.diagonals()) {
             assertTrue(world.roomIsEmpty(point))
         }

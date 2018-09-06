@@ -55,7 +55,7 @@ object FactProcessor {
         val blockerLocation = playerLocation.adjacent(commandResult.getDirection())
         facts.addFact(playerLocation, Fact.HAS_NO, gameObject)
         facts.addFact(blockerLocation, Fact.HAS, gameObject)
-        world.addGameObject(blockerLocation, gameObject)
+        world.addGameObjectAndEffects(blockerLocation, gameObject)
     }
 
     internal fun assessNearbyRooms(facts: FactMap, playerLocation: Point) {

@@ -29,7 +29,7 @@ object JsonParser {
         for (room in r.data) {
             for (gameObjectString in room.content) {
                 val gameObject = gameObjectString.toMappableGameObject()
-                if (gameObject != null) world.addGameObject(Point(room.x, room.y), gameObject)
+                if (gameObject != null) world.addGameObjectAndEffects(Point(room.x, room.y), gameObject)
             }
         }
         for (inventoryItemString in r.player.inventory) {

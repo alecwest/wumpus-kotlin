@@ -22,14 +22,14 @@ internal class ConditionalEffectTest {
         conditionalEffect.applyEffect(world, Point(0, 4))
         assertFalse(world.hasGameObject(Point(0, 4), GameObject.BREEZE))
 
-        world.addGameObject(Point(0, 3), GameObject.GOLD)
+        world.addGameObjectAndEffects(Point(0, 3), GameObject.GOLD)
         conditionalEffect.applyEffect(world, Point(0, 4))
         assertTrue(world.hasGameObject(Point(0, 4), GameObject.BREEZE))
     }
 
     @Test
     fun `remove conditional effect`() {
-        world.addGameObject(Point(0, 4), GameObject.BREEZE)
+        world.addGameObjectAndEffects(Point(0, 4), GameObject.BREEZE)
         conditionalEffect.removeEffect(world, Point(0, 4))
         assertFalse(world.hasGameObject(Point(0, 4), GameObject.BREEZE))
     }

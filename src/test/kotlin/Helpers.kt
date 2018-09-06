@@ -29,7 +29,7 @@ object Helpers {
         val world = World(size)
         for (point in gameObject.keys) {
             for (content in gameObject.getValue(point)) {
-                world.addGameObject(point, content)
+                world.addGameObjectAndEffects(point, content)
             }
         }
         return world

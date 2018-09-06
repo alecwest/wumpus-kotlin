@@ -11,7 +11,7 @@ class AdjacentEffect(gameObject: GameObject): WorldEffect(gameObject) {
     }
 
     override fun applyEffect(world: World, point: Point) {
-        for (adjacentPoint in roomsAffected(point)) {
+        for (adjacentPoint in roomsAffected(point).filter { world.roomIsValid(it) }) {
             world.addGameObject(adjacentPoint, gameObject)
         }
     }

@@ -15,7 +15,7 @@ class AdjacentEffectTest {
 
     @Test
     fun `add breeze to adjacent rooms as effect of pit`() {
-        world.addGameObject(point, GameObject.PIT)
+        world.addGameObjectAndEffects(point, GameObject.PIT)
         for (point in point.adjacents()) {
             assertTrue(world.hasGameObject(point, GameObject.BREEZE))
         }

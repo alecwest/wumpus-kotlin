@@ -80,17 +80,13 @@ data class World(private var size: Int = 10) {
 
     fun getGameObjects(point: Point) = worldState.getGameObjects(point)
 
-    fun addGameObject(point: Point, content: GameObject) {
-        worldState = worldState.copyThis(rooms = worldState.getRooms().apply {
+    fun addGameObjectAndEffects(point: Point, content: GameObject) {
             try {
-                this[getRoomIndex(point)].addGameObject(content)
+                addGameObject(point, content)
                 val worldAffectingFeature = (content.getFeature(GameObjectFeature.WorldAffecting()) as GameObjectFeature.WorldAffecting?)
                 if (worldAffectingFeature != null) addWorldEffects(point, worldAffectingFeature.effects)
             } catch (e: ArrayIndexOutOfBoundsException) { }
-        })
-        // TODO affect should take place only when NOT near an object
-        // TODO maybe add something similar to HAS and HAS_NO (ConditionallyWorldAffecting([...], ProximityCondition(HAS_NO, WUMPUS))
-        // TODO use ConditionalAdjacent, ConditionalDiagonal, ConditionalHere effects?
+
         (point.adjacents() + point.diagonals()).forEach { neighbor ->
             /**
              * Each neighbor checks through content in their room.
@@ -110,6 +106,13 @@ data class World(private var size: Int = 10) {
                         }
                     }
         }
+    }
+
+    // Add a game object with no consideration for its world effects
+    fun addGameObject(point: Point, gameObject: GameObject) {
+        worldState = worldState.copyThis(rooms = worldState.getRooms().apply {
+            this[getRoomIndex(point)].addGameObject(gameObject)
+        })
     }
 
     private fun addWorldEffects(point: Point, worldEffects: ArrayList<WorldEffect>) {

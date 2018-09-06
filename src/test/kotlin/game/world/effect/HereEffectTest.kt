@@ -13,7 +13,7 @@ class HereEffectTest {
 
     @Test
     fun `add glitter to current room as result of gold`() {
-        world.addGameObject(point, GameObject.GOLD)
+        world.addGameObjectAndEffects(point, GameObject.GOLD)
         assertTrue(world.hasGameObject(point, GameObject.GLITTER))
     }
 

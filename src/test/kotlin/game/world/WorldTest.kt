@@ -33,7 +33,7 @@ class WorldTest {
     fun `get room content`() {
         val point = Point(0, 0)
         assertEquals(setOf<GameObject>(), world.getGameObjects(point))
-        world.addGameObject(point, GameObject.BLOCKADE)
+        world.addGameObjectAndEffects(point, GameObject.BLOCKADE)
         assertEquals(setOf(GameObject.BLOCKADE), world.getGameObjects(point))
     }
 
@@ -81,7 +81,7 @@ class WorldTest {
     @MethodSource("validAddGameObjectProvider")
     fun `add content to room`(testData: ValidGameObjectTestData) {
         for (gameObject in testData.contentToAddOrRemove) {
-            world.addGameObject(Point(1, 1), gameObject)
+            world.addGameObjectAndEffects(Point(1, 1), gameObject)
         }
         assertEquals(testData.finalContent.size, world.getAmountOfObjectsInRoom(Point(1, 1)))
         for (gameObject in testData.finalContent) {
@@ -91,8 +91,8 @@ class WorldTest {
 
     @Test
     fun `add content to out-of-bounds room`() {
-        world.addGameObject(Point(-1, 1), GameObject.STENCH)
-        world.addGameObject(Point(2, -4), GameObject.SUPMUW)
+        world.addGameObjectAndEffects(Point(-1, 1), GameObject.STENCH)
+        world.addGameObjectAndEffects(Point(2, -4), GameObject.SUPMUW)
     }
 
     @ParameterizedTest
@@ -114,7 +114,7 @@ class WorldTest {
     fun `ensure world effects stay on remove if nearby rooms contain associated content`(testData: ValidSimilarGameObjectWithEffectsTestData) {
         val world = Helpers.createWorld()
         for (point in testData.locationsOfContent) {
-            world.addGameObject(point, testData.contentTested)
+            world.addGameObjectAndEffects(point, testData.contentTested)
         }
 
         world.removeGameObject(testData.locationToRemoveContent, testData.contentTested)
@@ -132,8 +132,8 @@ class WorldTest {
 
     @Test
     fun `check room for content`() {
-        world.addGameObject(Point(1, 1), GameObject.BREEZE)
-        world.addGameObject(Point(1, 1), GameObject.STENCH)
+        world.addGameObjectAndEffects(Point(1, 1), GameObject.BREEZE)
+        world.addGameObjectAndEffects(Point(1, 1), GameObject.STENCH)
 
         assertTrue(world.hasGameObject(Point(1, 1), GameObject.BREEZE))
         assertFalse(world.hasGameObject(Point(1, 1), GameObject.FOOD))
@@ -155,7 +155,7 @@ class WorldTest {
 
     @Test
     fun `check room is empty`() {
-        world.addGameObject(Point(1, 1), GameObject.BREEZE)
+        world.addGameObjectAndEffects(Point(1, 1), GameObject.BREEZE)
         assertTrue(world.roomIsEmpty(Point(0, 0)))
         assertFalse(world.roomIsEmpty(Point(1, 1)))
     }
@@ -199,7 +199,7 @@ class WorldTest {
 
     @Test
     fun `check for room content in world map`() {
-        world.addGameObject(Point(2, 2), GameObject.PIT)
+        world.addGameObjectAndEffects(Point(2, 2), GameObject.PIT)
         val worldMap = world.getWorldMap()
         val target1 = (GameObject.PIT.getFeature(Mappable()) as Mappable).character
         val target2 = (GameObject.BREEZE.getFeature(Mappable()) as Mappable).character
@@ -209,7 +209,7 @@ class WorldTest {
 
     @Test
     fun `check for room content on world map edge`() {
-        world.addGameObject(Point(0, 0), GameObject.SUPMUW)
+        world.addGameObjectAndEffects(Point(0, 0), GameObject.SUPMUW)
         val worldMap = world.getWorldMap()
         val target1 = (GameObject.SUPMUW.getFeature(Mappable()) as Mappable).character
         val target2 = (GameObject.MOO.getFeature(Mappable()) as Mappable).character
@@ -219,7 +219,7 @@ class WorldTest {
 
     @Test
     fun `check for room content when added out of bounds`() {
-        world.addGameObject(Point(-1,0), GameObject.WUMPUS)
+        world.addGameObjectAndEffects(Point(-1,0), GameObject.WUMPUS)
         val worldMap = world.getWorldMap()
         val target1 = (GameObject.WUMPUS.getFeature(Mappable()) as Mappable).character
         val target2 = (GameObject.STENCH.getFeature(Mappable()) as Mappable).character

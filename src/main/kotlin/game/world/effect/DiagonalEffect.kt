@@ -11,7 +11,7 @@ class DiagonalEffect(gameObject: GameObject): WorldEffect(gameObject) {
     }
 
     override fun applyEffect(world: World, point: Point) {
-        for (diagonalPoint in roomsAffected(point)) {
+        for (diagonalPoint in roomsAffected(point).filter { world.roomIsValid(it) }) {
             world.addGameObject(diagonalPoint, gameObject)
         }
     }

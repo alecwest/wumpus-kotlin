@@ -44,7 +44,7 @@ data class Game(private var gameState: GameState = GameState()) {
     
     fun addToRoom(point: Point, gameObject: GameObject) {
         val newWorld = getGameState().getWorld()
-        newWorld.addGameObject(point, gameObject)
+        newWorld.addGameObjectAndEffects(point, gameObject)
         gameState = getGameState().copyThis(world = newWorld)
     }
 

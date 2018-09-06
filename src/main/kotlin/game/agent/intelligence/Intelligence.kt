@@ -4,7 +4,6 @@ import game.command.Command
 import game.command.CommandResult
 import game.command.MoveCommand
 import game.world.World
-import game.world.gameObjectValues
 import game.world.toGameObject
 
 abstract class Intelligence {
@@ -17,7 +16,7 @@ abstract class Intelligence {
         resetRoom(world, commandResult)
         for (perception in commandResult.getPerceptions()) {
             val gameObject = perception.toGameObject() ?: continue
-            world.addGameObject(commandResult.getLocation(), gameObject)
+            world.addGameObjectAndEffects(commandResult.getLocation(), gameObject)
         }
     }
 

@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test
 import util.adjacents
 import util.diagonals
 import game.world.World
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.*
 import java.awt.Point
 import kotlin.test.assertFalse
@@ -16,7 +15,7 @@ class DiagonalEffectTest {
 
     @Test
     fun `add moo to surrounding rooms as effect of supmuw`() {
-        world.addGameObject(point, GameObject.SUPMUW)
+        world.addGameObjectAndEffects(point, GameObject.SUPMUW)
         for (point in point.adjacents() + point.diagonals()) {
             assertTrue(world.hasGameObject(point, GameObject.MOO))
         }
