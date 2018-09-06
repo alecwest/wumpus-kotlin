@@ -81,11 +81,10 @@ data class World(private var size: Int = 10) {
     fun getGameObjects(point: Point) = worldState.getGameObjects(point)
 
     fun addGameObjectAndEffects(point: Point, content: GameObject) {
-            try {
-                addGameObject(point, content)
-                val worldAffectingFeature = (content.getFeature(GameObjectFeature.WorldAffecting()) as GameObjectFeature.WorldAffecting?)
-                if (worldAffectingFeature != null) addWorldEffects(point, worldAffectingFeature.effects)
-            } catch (e: ArrayIndexOutOfBoundsException) { }
+        if (!roomIsValid(point)) return
+        addGameObject(point, content)
+        val worldAffectingFeature = (content.getFeature(GameObjectFeature.WorldAffecting()) as GameObjectFeature.WorldAffecting?)
+        if (worldAffectingFeature != null) addWorldEffects(point, worldAffectingFeature.effects)
 
         (point.adjacents() + point.diagonals()).forEach { neighbor ->
             /**
