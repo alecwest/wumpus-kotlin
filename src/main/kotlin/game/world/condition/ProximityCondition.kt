@@ -12,11 +12,11 @@ class ProximityCondition(private val fact: Fact, private val thing: GameObject) 
     override fun conditionSatisfied(targetLocation: Point, world: World): Boolean {
         return if (fact == HAS) {
             (targetLocation.adjacents() + targetLocation.diagonals()).any {
-                world.hasGameObject(targetLocation, thing)
+                world.hasGameObject(it, thing)
             }
         } else {
             (targetLocation.adjacents() + targetLocation.diagonals()).all {
-                !world.hasGameObject(targetLocation, thing)
+                !world.hasGameObject(it, thing)
             }
         }
     }
