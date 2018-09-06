@@ -276,6 +276,25 @@ class GameTest {
         assertFalse(game.isPlayerAlive())
         assertFalse(game.hasGameObject(Point(0, 1), GameObject.FOOD))
     }
+
+    @Test
+    fun `remove conditional effect after adding an object that the proximity condition wants none of`() {
+        for (i in 0..2) for (j in 0..2) {
+            game.addToRoom(Point(i, j), GameObject.SUPMUW)
+            assertTrue(game.hasGameObject(Point(i, j), GameObject.FOOD))
+        }
+
+        // TODO remove this after passing
+        game.getGameObjects(Point(1, 1)).forEach {
+            game.removeFromRoom(Point(1, 1), it)
+        }
+
+        game.addToRoom(Point(1,1), GameObject.WUMPUS)
+
+        for (i in 0..2) for (j in 0..2) {
+            assertFalse(game.hasGameObject(Point(i, j), GameObject.FOOD))
+        }
+    }
 }
 
 data class ValidGameTestData (
