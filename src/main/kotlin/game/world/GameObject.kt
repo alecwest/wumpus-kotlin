@@ -1,7 +1,9 @@
 package game.world
 
+import facts.Fact
 import game.player.InventoryItem
 import game.world.GameObjectFeature.*
+import game.world.condition.ProximityCondition
 import game.world.effect.*
 import kotlin.reflect.full.isSubclassOf
 
@@ -11,7 +13,8 @@ sealed class GameObject(val features: Set<GameObjectFeature> = setOf()) {
             RoomFilling()))
     object BREEZE : GameObject(setOf(Mappable("="), Perceptable(Perception.BREEZE)))
     object EXIT : GameObject(setOf(Exitable(), Mappable("E"), Perceptable(Perception.EXIT)))
-    object FOOD : GameObject(setOf(Mappable("F"), Grabbable(InventoryItem.FOOD, 100), Perceptable(Perception.FOOD)))
+    object FOOD : GameObject(setOf(Mappable("F"), Grabbable(InventoryItem.FOOD, 100),
+            Perceptable(Perception.FOOD)))
     object GLITTER : GameObject(setOf(Mappable("*"), Perceptable(Perception.GLITTER)))
     object GOLD : GameObject(setOf(Mappable("G"), Grabbable(InventoryItem.GOLD, 1000),
             WorldAffecting(arrayListOf(HereEffect(GameObject.GLITTER)))))
@@ -21,8 +24,9 @@ sealed class GameObject(val features: Set<GameObjectFeature> = setOf()) {
     object STENCH : GameObject(setOf(Mappable("~"), Perceptable(Perception.STENCH)))
     object SUPMUW : GameObject(setOf(
             ConditionallyDangerous(GameObject.WUMPUS), Destructable(setOf(GameObject.ARROW)), Mappable("S"),
-            WorldAffecting(arrayListOf(AdjacentEffect(GameObject.MOO), DiagonalEffect(GameObject.MOO))),
-            ConditionallyWorldAffecting(arrayListOf(HereEffect(GameObject.FOOD)), GameObject.WUMPUS)))
+            WorldAffecting(arrayListOf(AdjacentEffect(GameObject.MOO), DiagonalEffect(GameObject.MOO),
+                    ConditionalEffect(HereEffect(GameObject.FOOD),
+                            ProximityCondition(Fact.HAS_NO, GameObject.WUMPUS))))))
     object WALL : GameObject(setOf(Blocking(), Perceptable(Perception.WALL_BUMP), RoomFilling()))
     object WUMPUS : GameObject(setOf(Dangerous(), Destructable(setOf(GameObject.ARROW)), Mappable("W"),
             WorldAffecting(arrayListOf(AdjacentEffect(GameObject.STENCH)))))
