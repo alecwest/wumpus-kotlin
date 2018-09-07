@@ -10,12 +10,6 @@ class AdjacentEffect(gameObject: GameObject): WorldEffect(gameObject) {
         return point.adjacents().toSet()
     }
 
-    override fun applyEffect(world: World, point: Point) {
-        for (adjacentPoint in roomsAffected(point).filter { world.roomIsValid(it) }) {
-            world.addGameObject(adjacentPoint, gameObject)
-        }
-    }
-
     override fun removeEffect(world: World, point: Point) {
         for (adjacentPoint in roomsAffected(point)) {
             if (!nearbyContentHasAssociatedEffect(world, adjacentPoint)) {

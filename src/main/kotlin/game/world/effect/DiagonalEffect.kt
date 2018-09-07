@@ -10,12 +10,6 @@ class DiagonalEffect(gameObject: GameObject): WorldEffect(gameObject) {
         return point.diagonals().toSet()
     }
 
-    override fun applyEffect(world: World, point: Point) {
-        for (diagonalPoint in roomsAffected(point).filter { world.roomIsValid(it) }) {
-            world.addGameObject(diagonalPoint, gameObject)
-        }
-    }
-
     override fun removeEffect(world: World, point: Point) {
         for (adjacentPoint in roomsAffected(point)) {
             if (!nearbyContentHasAssociatedEffect(world, adjacentPoint)) {

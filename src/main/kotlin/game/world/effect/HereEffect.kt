@@ -9,12 +9,6 @@ class HereEffect(gameObject: GameObject): WorldEffect(gameObject) {
         return setOf(point)
     }
 
-    override fun applyEffect(world: World, point: Point) {
-        for (herePoint in roomsAffected(point)) {
-            world.addGameObject(herePoint, gameObject)
-        }
-    }
-
     override fun removeEffect(world: World, point: Point) {
         for (herePoint in roomsAffected(point)) {
             world.removeGameObject(herePoint, gameObject)
