@@ -114,8 +114,8 @@ data class World(private var size: Int = 10) {
         })
     }
 
-    private fun addWorldEffects(point: Point, worldEffects: ArrayList<WorldEffect>) {
-        for (worldEffect in worldEffects) {
+    internal fun addWorldEffects(point: Point, worldEffects: ArrayList<WorldEffect>): Int {
+        return worldEffects.count { worldEffect ->
             worldEffect.applyEffect(this, point)
         }
     }
