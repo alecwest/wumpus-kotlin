@@ -11,9 +11,6 @@ import java.awt.Point
 import java.util.stream.Stream
 
 internal class WorldEffectTest {
-    val world = Helpers.createWorld()
-    val point = Point(1, 1)
-
     @ParameterizedTest
     @MethodSource("validWorldEffectTestDataProvider")
     fun `apply affect`(testData: ValidWorldEffectTestData) {
