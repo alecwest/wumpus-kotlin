@@ -24,8 +24,7 @@ object Helpers {
     }
 
     fun createWorld(size: Int = 10,
-                    gameObject: Map<Point, Set<GameObject>> =
-                            mapOf(Point(2, 2) to setOf(GameObject.PIT))): World {
+                    gameObject: Map<Point, Set<GameObject>> = mapOf()): World {
         val world = World(size)
         for (point in gameObject.keys) {
             for (content in gameObject.getValue(point)) {

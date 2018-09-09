@@ -66,7 +66,8 @@ internal class MoveCommandTest {
     companion object {
         private val initialPlayer = Helpers.createPlayer(
                 location = Point(2, 4), facing = Direction.SOUTH, inventoryContent = mapOf(InventoryItem.ARROW to 2))
-        private val initialGame = Helpers.createGame(player = initialPlayer)
+        private val initialWorld = Helpers.createWorld(gameObject = mapOf(Point(2, 2) to setOf(GameObject.PIT)))
+        private val initialGame = Helpers.createGame(player = initialPlayer, world = initialWorld)
         private val initialPlayerInCorner = Helpers.createPlayer(
                 location = Point(0, 0), facing = Direction.SOUTH, inventoryContent = mapOf(InventoryItem.ARROW to 2))
         private val initialPlayerInCornerWorld = Helpers.createWorld(

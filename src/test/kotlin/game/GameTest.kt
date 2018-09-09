@@ -16,9 +16,9 @@ import java.awt.Point
 import java.util.stream.Stream
 
 class GameTest {
-    private val game = createGame()
+    private val game = createGame(world = createWorld(gameObject = mapOf(Point(2, 2) to setOf(GameObject.PIT))))
     private val player = createPlayer()
-    private val world = createWorld()
+    private val world = createWorld(gameObject = mapOf(Point(2, 2) to setOf(GameObject.PIT)))
     private val pitRoomPoint = Point(2, 2)
 
     @ParameterizedTest
@@ -133,7 +133,7 @@ class GameTest {
 
     @Test
     fun `remove content from room`() {
-        val world = createWorld()
+        val world = createWorld(gameObject = mapOf(Point(2, 2) to setOf(GameObject.PIT)))
         val game = createGame(world = world)
         assertTrue(world.hasGameObject(pitRoomPoint, GameObject.PIT))
         game.removeFromRoom(pitRoomPoint, GameObject.PIT)
