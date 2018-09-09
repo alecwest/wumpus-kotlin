@@ -27,27 +27,24 @@ internal class WorldEffectTest {
     }
 
     companion object {
-        val world = Helpers.createWorld()
-        val point = Point(1, 1)
-
         @JvmStatic
         fun validWorldEffectTestDataProvider() = Stream.of(
-                ValidWorldEffectTestData(world, point, AdjacentEffect(GameObject.GOLD),
-                        true, true),
-                ValidWorldEffectTestData(Helpers.createWorld(1), point, AdjacentEffect(GameObject.GOLD),
-                        false, false),
-                ValidWorldEffectTestData(world, point, DiagonalEffect(GameObject.GOLD),
-                        true, true),
-                ValidWorldEffectTestData(Helpers.createWorld(1), point, AdjacentEffect(GameObject.GOLD),
-                        false, false),
-                ValidWorldEffectTestData(world, point, HereEffect(GameObject.GOLD),
-                        true, true),
+                ValidWorldEffectTestData(Helpers.createWorld(), Point(1, 1),
+                        AdjacentEffect(GameObject.GOLD),true, true),
+                ValidWorldEffectTestData(Helpers.createWorld(1), Point(0, 0),
+                        AdjacentEffect(GameObject.GOLD), false, false),
+                ValidWorldEffectTestData(Helpers.createWorld(), Point(1, 1),
+                        DiagonalEffect(GameObject.GOLD), true, true),
+                ValidWorldEffectTestData(Helpers.createWorld(1), Point(0, 0),
+                        DiagonalEffect(GameObject.GOLD), false, false),
+                ValidWorldEffectTestData(Helpers.createWorld(), Point(1, 1),
+                        HereEffect(GameObject.GOLD), true, true),
                 ValidWorldEffectTestData(Helpers.createWorld(
-                        gameObject = mapOf(Point(2, 2) to setOf(GameObject.PIT))), point,
+                        gameObject = mapOf(Point(2, 2) to setOf(GameObject.PIT))), Point(1, 1),
                         ConditionalEffect(HereEffect(GameObject.GOLD), ProximityCondition(HAS, GameObject.PIT)),
                         true, true),
-                ValidWorldEffectTestData(world, point, ConditionalEffect(HereEffect(GameObject.GOLD),
-                        ProximityCondition(HAS, GameObject.PIT)),
+                ValidWorldEffectTestData(Helpers.createWorld(), Point(1, 1),
+                        ConditionalEffect(HereEffect(GameObject.GOLD), ProximityCondition(HAS, GameObject.PIT)),
                         false, false)
         )
     }
