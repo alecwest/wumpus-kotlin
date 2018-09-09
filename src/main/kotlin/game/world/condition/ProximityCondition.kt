@@ -9,7 +9,7 @@ import util.diagonals
 import java.awt.Point
 
 class ProximityCondition(fact: Fact, thing: GameObject) : GameObjectCondition(fact, thing) {
-    override fun conditionSatisfied(targetLocation: Point, world: World): Boolean {
+    override fun conditionSatisfied(world: World, targetLocation: Point): Boolean {
         return if (fact == HAS) {
             (targetLocation.adjacents() + targetLocation.diagonals()).any {
                 world.hasGameObject(it, thing)

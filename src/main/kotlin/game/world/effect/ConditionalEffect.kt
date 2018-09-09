@@ -7,7 +7,7 @@ import java.awt.Point
 class ConditionalEffect(private val worldEffect: WorldEffect, private val condition: GameObjectCondition):
         WorldEffect(worldEffect.gameObject) {
     override fun applyEffect(world: World, point: Point): Boolean {
-        if (condition.conditionSatisfied(point, world)) {
+        if (condition.conditionSatisfied(world, point)) {
             return worldEffect.applyEffect(world, point)
         }
         return false

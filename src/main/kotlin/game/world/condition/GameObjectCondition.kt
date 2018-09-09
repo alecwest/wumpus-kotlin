@@ -7,5 +7,5 @@ import game.world.World
 import java.awt.Point
 
 abstract class GameObjectCondition(fact: Fact, thing: GameObject) : Condition<GameObject>(fact, thing) {
-    abstract fun conditionSatisfied(targetLocation: Point, world: World): Boolean
+    abstract fun conditionSatisfied(world: World, targetLocation: Point): Boolean
 }
