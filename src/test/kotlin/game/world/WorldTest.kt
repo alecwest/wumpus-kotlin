@@ -8,6 +8,9 @@ import Helpers.assertContains
 import Helpers.createWorld
 import game.player.PlayerState
 import game.world.GameObjectFeature.*
+import game.world.effect.AdjacentEffect
+import game.world.effect.DiagonalEffect
+import game.world.effect.HereEffect
 import util.*
 import java.awt.Point
 import java.util.stream.Stream
@@ -231,6 +234,20 @@ class WorldTest {
     fun `check for player when PlayerState added`() {
         val worldMap = world.getWorldMap(playerState = PlayerState(facing = Direction.EAST))
         assertContains(worldMap, Direction.EAST.toPlayerMapRepresentation(), 1)
+    }
+
+    @Test
+    fun `add world effects`() {
+        assertEquals(3, world.addWorldEffects(Point(3, 3), arrayListOf(HereEffect(GameObject.GOLD),
+                AdjacentEffect(GameObject.EXIT), DiagonalEffect(GameObject.BLOCKADE))))
+    }
+
+    @Test
+    fun `remove world effects`() {
+        world.addWorldEffects(Point(3, 3), arrayListOf(HereEffect(GameObject.GOLD),
+                AdjacentEffect(GameObject.EXIT), DiagonalEffect(GameObject.BLOCKADE)))
+        assertEquals(2, world.removeWorldEffects(Point(3, 3), arrayListOf(HereEffect(GameObject.SUPMUW),
+                AdjacentEffect(GameObject.EXIT), DiagonalEffect(GameObject.BLOCKADE))))
     }
 }
 
