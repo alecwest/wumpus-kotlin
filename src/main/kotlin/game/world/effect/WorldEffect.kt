@@ -10,13 +10,23 @@ abstract class WorldEffect(internal val gameObject: GameObject) {
     open fun applyEffect(world: World, point: Point): Boolean {
         val roomsAffected = roomsAffected(point).filter { world.roomIsValid(it) }
         if (roomsAffected.isEmpty()) return false
-        for (affectedPoint in roomsAffected) {
+        roomsAffected.forEach { affectedPoint ->
             world.addGameObject(affectedPoint, gameObject)
         }
         return true
     }
 
-    abstract fun removeEffect(world: World, point: Point)
+    open fun removeEffect(world: World, point: Point): Boolean {
+        val roomsAffected = roomsAffected(point).filter { world.roomIsValid(it) }
+        if (roomsAffected.isEmpty()) return false
+        roomsAffected.forEach { affectedPoint ->
+            if (!nearbyContentHasAssociatedEffect(world, affectedPoint)) {
+                world.removeGameObject(affectedPoint, gameObject)
+            }
+        }
+        return true
+    }
+
     abstract fun roomsAffected(point: Point): Set<Point>
 
     fun nearbyContentHasAssociatedEffect(world: World, point: Point): Boolean {

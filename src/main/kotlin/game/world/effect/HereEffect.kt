@@ -9,12 +9,6 @@ class HereEffect(gameObject: GameObject): WorldEffect(gameObject) {
         return setOf(point)
     }
 
-    override fun removeEffect(world: World, point: Point) {
-        for (herePoint in roomsAffected(point)) {
-            world.removeGameObject(herePoint, gameObject)
-        }
-    }
-
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is HereEffect) return false
