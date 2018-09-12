@@ -13,7 +13,7 @@ import java.util.stream.Stream
 internal class WorldEffectTest {
     @ParameterizedTest
     @MethodSource("validAddWorldEffectTestDataProvider")
-    fun `apply affect`(testData: ValidWorldEffectTestData) {
+    fun `apply effect`(testData: ValidWorldEffectTestData) {
         val world = testData.givenWorld
         val point = testData.givenPoint
         val effect = testData.givenWorldEffect
@@ -25,7 +25,7 @@ internal class WorldEffectTest {
 
     @ParameterizedTest
     @MethodSource("validRemoveWorldEffectTestDataProvider")
-    fun `remove affect`(testData: ValidWorldEffectTestData) {
+    fun `remove effect`(testData: ValidWorldEffectTestData) {
         val world = testData.givenWorld
         val point = testData.givenPoint
         val effect = testData.givenWorldEffect
