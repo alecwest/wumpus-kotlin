@@ -9,8 +9,8 @@ import Helpers.createWorld
 import game.player.PlayerState
 import game.world.GameObjectFeature.*
 import game.world.effect.AdjacentEffect
+import game.world.effect.DiagonalEffect
 import game.world.effect.HereEffect
-import game.world.effect.WorldEffect
 import util.*
 import java.awt.Point
 import java.util.stream.Stream
@@ -238,8 +238,16 @@ class WorldTest {
 
     @Test
     fun `add world effects`() {
-        val worldEffects = arrayListOf(HereEffect(GameObject.PIT), AdjacentEffect(GameObject.GOLD))
-        assertEquals(2, world.addWorldEffects(Point(3, 3), worldEffects))
+        assertEquals(3, world.addWorldEffects(Point(3, 3), arrayListOf(HereEffect(GameObject.GOLD),
+                AdjacentEffect(GameObject.EXIT), DiagonalEffect(GameObject.BLOCKADE))))
+    }
+
+    @Test
+    fun `remove world effects`() {
+        world.addWorldEffects(Point(3, 3), arrayListOf(HereEffect(GameObject.GOLD),
+                AdjacentEffect(GameObject.EXIT), DiagonalEffect(GameObject.BLOCKADE)))
+        assertEquals(2, world.removeWorldEffects(Point(3, 3), arrayListOf(HereEffect(GameObject.SUPMUW),
+                AdjacentEffect(GameObject.EXIT), DiagonalEffect(GameObject.BLOCKADE))))
     }
 }
 

@@ -13,8 +13,9 @@ class ConditionalEffect(private val worldEffect: WorldEffect, private val condit
         return false
     }
 
-    override fun removeEffect(world: World, point: Point) {
-        worldEffect.removeEffect(world, point)
+    // TODO delete this?
+    override fun removeEffect(world: World, point: Point): Boolean {
+        return worldEffect.removeEffect(world, point)
     }
 
     override fun roomsAffected(point: Point): Set<Point> {
