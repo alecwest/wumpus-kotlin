@@ -5,6 +5,7 @@ import game.world.GameObject
 import game.world.World
 import game.world.condition.ProximityCondition
 import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
 import java.awt.Point
@@ -33,6 +34,11 @@ internal class WorldEffectTest {
         effect.roomsAffected(point).forEach { roomAffected ->
             assertEquals(testData.effectObjectInAffectedRooms, world.hasGameObject(roomAffected, effect.gameObject))
         }
+    }
+
+    @Test
+    fun `remove effect that was never applied`() {
+        assertFalse(HereEffect(GameObject.FOOD).removeEffect(Helpers.createWorld(), Point(4, 4)))
     }
 
     companion object {
@@ -70,12 +76,13 @@ internal class WorldEffectTest {
                 ValidWorldEffectTestData(Helpers.createWorld(gameObject = mapOf(Point(1, 1) to setOf(GameObject.GOLD))),
                         Point(1, 1), HereEffect(GameObject.GOLD), true, false),
                 ValidWorldEffectTestData(Helpers.createWorld(
-                        gameObject = mapOf(Point(2, 2) to setOf(GameObject.PIT))), Point(1, 1),
+                        gameObject = mapOf(Point(2, 2) to setOf(GameObject.PIT),
+                                Point(1, 1) to setOf(GameObject.GOLD))), Point(1, 1),
                         ConditionalEffect(HereEffect(GameObject.GOLD), ProximityCondition(HAS, GameObject.PIT)),
                         true, false),
                 ValidWorldEffectTestData(Helpers.createWorld(), Point(1, 1),
                         ConditionalEffect(HereEffect(GameObject.GOLD), ProximityCondition(HAS, GameObject.PIT)),
-                        true, false)
+                        false, false)
         )
     }
 }
