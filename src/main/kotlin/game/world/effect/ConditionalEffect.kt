@@ -9,8 +9,10 @@ class ConditionalEffect(private val worldEffect: WorldEffect, private val condit
     override fun applyEffect(world: World, point: Point): Boolean {
         if (condition.conditionSatisfied(world, point)) {
             return worldEffect.applyEffect(world, point)
+        } else {
+            // TODO test this
+            return worldEffect.removeEffect(world, point)
         }
-        return false
     }
 
     // TODO delete this?

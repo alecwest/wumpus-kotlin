@@ -90,24 +90,14 @@ data class World(private var size: Int = 10) {
         while (numberEffectsApplied > 0) {
             numberEffectsApplied = 0
             (point.adjacents() + point.diagonals()).forEach { neighbor ->
-                /**
-                 * Each neighbor checks through content in their room.
-                 * If that content has a feature that is conditional on the proximity of the object being added,
-                 * add or remove the feature
-                 */
                 getGameObjects(neighbor)
                         .filter { it.hasFeature(WorldAffecting()) }
                         .map { it.getFeature(WorldAffecting()) as WorldAffecting }
-                        .forEach { neighborGameObjectConditionalEffect ->
-                            if (neighborGameObjectConditionalEffect.createsEffect(neighbor, this)) {
-                                if (!neighborGameObjectConditionalEffect.effects.all { hasGameObject(neighbor, it.gameObject) }) {
-                                    numberEffectsApplied +=
-                                            addWorldEffects(neighbor, neighborGameObjectConditionalEffect.effects)
-                                }
-                            } else {
-                                numberEffectsApplied +=
-                                        removeWorldEffects(neighbor, neighborGameObjectConditionalEffect.effects)
-                            }
+                        .filter { it.hasEffectClass(ConditionalEffect::class) }
+                        .forEach { neighborObjectWithConditionalEffect ->
+                            val conditionals = neighborObjectWithConditionalEffect.effects
+                                    .filter { it is ConditionalEffect } as ArrayList
+                            numberEffectsApplied += addWorldEffects(neighbor, conditionals)
                         }
             }
 
