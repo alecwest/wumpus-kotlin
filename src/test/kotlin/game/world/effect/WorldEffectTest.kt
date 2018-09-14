@@ -1,6 +1,7 @@
 package game.world.effect
 
 import facts.Fact.*
+import game.Game
 import game.world.GameObject
 import game.world.World
 import game.world.condition.ProximityCondition
@@ -12,6 +13,8 @@ import java.awt.Point
 import java.util.stream.Stream
 
 internal class WorldEffectTest {
+    val world = Helpers.createWorld(3)
+
     @ParameterizedTest
     @MethodSource("validAddWorldEffectTestDataProvider")
     fun `apply effect`(testData: ValidWorldEffectTestData) {
@@ -22,6 +25,14 @@ internal class WorldEffectTest {
         for (roomAffected in effect.roomsAffected(point)) {
             assertEquals(testData.effectObjectInAffectedRooms, world.hasGameObject(roomAffected, effect.gameObject))
         }
+    }
+
+    @Test
+    fun `apply effect that already exists`() {
+        val effect = HereEffect(GameObject.ARROW)
+        effect.applyEffect(world, Point(1, 1))
+
+        assertFalse(effect.applyEffect(world, Point(1, 1)))
     }
 
     @ParameterizedTest
@@ -38,7 +49,7 @@ internal class WorldEffectTest {
 
     @Test
     fun `remove effect that was never applied`() {
-        assertFalse(HereEffect(GameObject.FOOD).removeEffect(Helpers.createWorld(), Point(4, 4)))
+        assertFalse(HereEffect(GameObject.FOOD).removeEffect(world, Point(1, 1)))
     }
 
     companion object {

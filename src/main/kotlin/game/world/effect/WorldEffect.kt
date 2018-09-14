@@ -10,6 +10,7 @@ abstract class WorldEffect(internal val gameObject: GameObject) {
     open fun applyEffect(world: World, point: Point): Boolean {
         val roomsAffected = roomsAffected(point).filter { world.roomIsValid(it) }
         if (roomsAffected.isEmpty()) return false
+        if (roomsAffected.all { world.hasGameObject(it, gameObject) }) return false
         roomsAffected.forEach { affectedPoint ->
             world.addGameObject(affectedPoint, gameObject)
         }
