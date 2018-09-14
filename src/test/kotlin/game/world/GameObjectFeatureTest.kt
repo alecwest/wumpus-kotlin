@@ -26,11 +26,6 @@ internal class GameObjectFeatureTest {
     }
 
     @Test
-    fun `world affecting object creates effect`() {
-        assertTrue(WorldAffecting().createsEffect(game.getPlayerLocation(), game.getWorld()))
-    }
-
-    @Test
     fun `world affecting feature contains certain world effect class`() {
         val effect = WorldAffecting(arrayListOf(DiagonalEffect(GameObject.GOLD)))
         assertTrue(effect.hasEffectClass(DiagonalEffect::class))
