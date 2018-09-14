@@ -1,10 +1,12 @@
 package game.world
 
 import game.player.InventoryItem
+import game.world.effect.DiagonalEffect
 import game.world.effect.WorldEffect
 import util.adjacents
 import util.diagonals
 import java.awt.Point
+import kotlin.reflect.KClass
 
 sealed class GameObjectFeature {
     class Blocking: GameObjectFeature() // For things that block a player from entering
@@ -26,6 +28,10 @@ sealed class GameObjectFeature {
     class RoomFilling: GameObjectFeature() // For things that must exist in a Room alone
     class Shootable(val cost: Int = 1) : GameObjectFeature()
     open class WorldAffecting(val effects: ArrayList<WorldEffect> = arrayListOf()): GameObjectFeature() {
+        fun hasEffectClass(worldEffect: KClass<out WorldEffect>): Boolean {
+            return effects.any { worldEffect == it::class }
+        }
+
         fun hasExactEffect(worldEffect: WorldEffect): Boolean {
             return effects.any {
                 worldEffect::class == it::class && worldEffect.gameObject.toString() == it.gameObject.toString()

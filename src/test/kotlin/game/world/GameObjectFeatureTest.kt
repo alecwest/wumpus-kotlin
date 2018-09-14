@@ -2,9 +2,9 @@ package game.world
 
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
+import game.world.effect.*
 import game.world.GameObjectFeature.*
 import util.northEast
-import java.awt.Point
 
 internal class GameObjectFeatureTest {
     val game = Helpers.createGame()
@@ -28,5 +28,12 @@ internal class GameObjectFeatureTest {
     @Test
     fun `world affecting object creates effect`() {
         assertTrue(WorldAffecting().createsEffect(game.getPlayerLocation(), game.getWorld()))
+    }
+
+    @Test
+    fun `world affecting feature contains certain world effect class`() {
+        val effect = WorldAffecting(arrayListOf(DiagonalEffect(GameObject.GOLD)))
+        assertTrue(effect.hasEffectClass(DiagonalEffect::class))
+        assertFalse(effect.hasEffectClass(AdjacentEffect::class))
     }
 }
