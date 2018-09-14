@@ -26,7 +26,7 @@ sealed class GameObjectFeature {
     class RoomFilling: GameObjectFeature() // For things that must exist in a Room alone
     class Shootable(val cost: Int = 1) : GameObjectFeature()
     open class WorldAffecting(val effects: ArrayList<WorldEffect> = arrayListOf()): GameObjectFeature() {
-        fun hasEffect(worldEffect: WorldEffect): Boolean {
+        fun hasExactEffect(worldEffect: WorldEffect): Boolean {
             return effects.any {
                 worldEffect::class == it::class && worldEffect.gameObject.toString() == it.gameObject.toString()
             }
