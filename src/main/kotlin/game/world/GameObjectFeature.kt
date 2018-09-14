@@ -43,10 +43,6 @@ sealed class GameObjectFeature {
                 it.gameObject.toString() == gameObject.toString()
             }
         }
-
-        open fun createsEffect(currLocation: Point, world: World): Boolean {
-            return true
-        }
     }
 
     internal fun proximityTo(target: GameObject, currLocation: Point, world: World): Boolean {
