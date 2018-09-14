@@ -29,13 +29,4 @@ internal class GameObjectFeatureTest {
     fun `world affecting object creates effect`() {
         assertTrue(WorldAffecting().createsEffect(game.getPlayerLocation(), game.getWorld()))
     }
-
-    @Test
-    fun `conditionally affecting object creates effect on condition`() {
-        assertTrue(ConditionallyWorldAffecting(proximityTo = GameObject.WUMPUS)
-                .createsEffect(game.getPlayerLocation(), game.getWorld()))
-        game.addToRoom(game.getPlayerLocation().northEast(), GameObject.WUMPUS)
-        assertFalse(ConditionallyWorldAffecting(proximityTo = GameObject.WUMPUS)
-                .createsEffect(game.getPlayerLocation(), game.getWorld()))
-    }
 }

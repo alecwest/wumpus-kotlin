@@ -96,8 +96,8 @@ data class World(private var size: Int = 10) {
                  * add or remove the feature
                  */
                 getGameObjects(neighbor)
-                        .filter { it.hasFeature(ConditionallyWorldAffecting()) }
-                        .map { it.getFeature(ConditionallyWorldAffecting()) as ConditionallyWorldAffecting }
+                        .filter { it.hasFeature(WorldAffecting()) }
+                        .map { it.getFeature(WorldAffecting()) as WorldAffecting }
                         .forEach { neighborGameObjectConditionalEffect ->
                             if (neighborGameObjectConditionalEffect.createsEffect(neighbor, this)) {
                                 if (!neighborGameObjectConditionalEffect.effects.all { hasGameObject(neighbor, it.gameObject) }) {

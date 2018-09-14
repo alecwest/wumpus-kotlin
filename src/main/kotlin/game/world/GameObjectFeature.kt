@@ -42,15 +42,6 @@ sealed class GameObjectFeature {
             return true
         }
     }
-    class ConditionallyWorldAffecting(effects: ArrayList<WorldEffect> = arrayListOf(),
-                                      val proximityTo: GameObject? = null): WorldAffecting(effects) {
-        override fun createsEffect(currLocation: Point, world: World): Boolean {
-            proximityTo?.let {
-                return !proximityTo(it, currLocation, world)
-            }
-            return super.createsEffect(currLocation, world)
-        }
-    }
 
     internal fun proximityTo(target: GameObject, currLocation: Point, world: World): Boolean {
         return (currLocation.adjacents() + currLocation.diagonals()).any {
