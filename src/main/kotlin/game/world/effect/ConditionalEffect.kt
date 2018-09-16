@@ -7,17 +7,23 @@ import java.awt.Point
 class ConditionalEffect(private val worldEffect: WorldEffect, private val condition: GameObjectCondition):
         WorldEffect(worldEffect.gameObject) {
     override fun applyEffect(world: World, point: Point): Boolean {
-        if (condition.conditionSatisfied(world, point)) {
-            return worldEffect.applyEffect(world, point)
+        return if (condition.conditionSatisfied(world, point)) {
+            worldEffect.applyEffect(world, point)
         } else {
-            // TODO test this
-            return worldEffect.removeEffect(world, point)
+            removeEffect(world, point)
         }
     }
 
-    // TODO delete this?
+    // ConditionalEffect removeEffect should not care about nearby content
+    // All that matters is whether or not the GameObjectCondition is satisfied
     override fun removeEffect(world: World, point: Point): Boolean {
-        return worldEffect.removeEffect(world, point)
+        if (noEffectToRemove(world, point)) return false
+        var result = false
+        getRoomsAffected(world, point).forEach { affectedPoint ->
+            world.removeGameObject(affectedPoint, gameObject)
+            result = true
+        }
+        return result
     }
 
     override fun roomsAffected(point: Point): Set<Point> {
