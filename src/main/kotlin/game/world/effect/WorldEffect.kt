@@ -24,9 +24,10 @@ abstract class WorldEffect(internal val gameObject: GameObject) {
         roomsAffected.forEach { affectedPoint ->
             if (!nearbyContentHasAssociatedEffect(world, affectedPoint)) {
                 world.removeGameObject(affectedPoint, gameObject)
+                return true
             }
         }
-        return true
+        return false
     }
 
     abstract fun roomsAffected(point: Point): Set<Point>
