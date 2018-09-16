@@ -20,13 +20,14 @@ abstract class WorldEffect(internal val gameObject: GameObject) {
     open fun removeEffect(world: World, point: Point): Boolean {
         val roomsAffected = getRoomsAffected(world, point)
         if (noEffectToRemove(world, point)) return false
+        var result = false
         roomsAffected.forEach { affectedPoint ->
             if (!nearbyContentHasAssociatedEffect(world, affectedPoint)) {
                 world.removeGameObject(affectedPoint, gameObject)
-                return true
+                result = true
             }
         }
-        return false
+        return result
     }
 
     abstract fun roomsAffected(point: Point): Set<Point>
