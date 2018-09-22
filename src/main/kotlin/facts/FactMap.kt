@@ -9,6 +9,12 @@ import game.world.gameObjectValues
 import game.world.gameObjectsWithFeatures
 import java.awt.Point
 
+/**
+ * A mapping of facts
+ *
+ * This class holds a collection of facts, allowing more
+ * information to be gathered and inferred
+ */
 class FactMap(private val factMap: MutableMap<Point, MutableSet<Pair<GameObject, Fact>>> = mutableMapOf()) {
     fun getMap(): Map<Point, Set<Pair<GameObject, Fact>>> {
         return factMap.map {
