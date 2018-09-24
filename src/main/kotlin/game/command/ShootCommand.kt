@@ -10,6 +10,9 @@ import game.world.toGameObject
 import util.adjacent
 import java.awt.Point
 
+/**
+ * ShootCommand shoots the specified [InventoryItem] only if it is [Shootable] and in the player's inventory.
+ */
 class ShootCommand(private val inventoryItem: InventoryItem): Command() {
     private val perceptionList = mutableSetOf<Perception>()
 

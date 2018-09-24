@@ -6,6 +6,9 @@ import game.player.PlayerState
 import game.world.GameObjectFeature.*
 import game.world.toGameObject
 
+/**
+ * GrabCommand grabs the specified [InventoryItem] from the room if it exists
+ */
 class GrabCommand(private val inventoryItem: InventoryItem): Command() {
     override fun execute() {
         game?.let { game ->

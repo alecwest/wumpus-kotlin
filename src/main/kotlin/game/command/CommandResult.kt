@@ -6,6 +6,11 @@ import game.player.PlayerState
 import game.world.GameObjectFeature
 import game.world.Perception
 
+/**
+ * @param perceptions list of current [Perception]
+ * @param playerState state of the player
+ * @param gameActive whether or not the game is still active
+ */
 data class CommandResult(private val perceptions: Set<Perception> = setOf(),
                          private val playerState: PlayerState = PlayerState(),
                          private val gameActive: Boolean = true) {
@@ -34,6 +39,12 @@ data class CommandResult(private val perceptions: Set<Perception> = setOf(),
     }
 
     companion object {
+        /**
+         * @param game to base the CommandResult off of
+         * @param perceptions set of perceptions
+         *
+         * @return [CommandResult] containing list of perceptions and anything else gathered from the given game
+         */
         fun createCommandResult(game: Game,
                                 perceptions: Set<Perception> = emptySet()): CommandResult {
             val allPerceptions = perceptions.toMutableSet()

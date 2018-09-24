@@ -4,6 +4,9 @@ import game.command.CommandResult.Companion.createCommandResult
 import game.world.gameObjectsWithFeatures
 import game.world.GameObjectFeature.Exitable
 
+/**
+ * ExitCommand ends the game if the player is an [Exitable] room
+ */
 class ExitCommand: Command() {
     override fun execute() {
         game?.let { game ->

@@ -7,6 +7,9 @@ import game.world.GameObjectFeature.*
 import util.*
 import java.awt.Point
 
+/**
+ * MoveCommand moves the player in the direction they are facing
+ */
 class MoveCommand: Command() {
     override fun execute() {
         game?.let { game ->

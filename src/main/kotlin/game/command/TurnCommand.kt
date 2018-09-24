@@ -6,6 +6,9 @@ import util.Direction
 import util.left
 import util.right
 
+/**
+ * TurnCommand turns the player to face the given [Direction]
+ */
 class TurnCommand(private val targetDirection: Direction): Command() {
     private var startingDirection: Direction? = null // For record keeping
 
