@@ -12,6 +12,9 @@ import game.world.effect.HereEffect
 import util.*
 import java.awt.Point
 
+/**
+ * An Intelligence implementation that uses a knowledge base to discover the next best moves
+ */
 class KnowledgeBasedIntelligence : Intelligence() {
     internal val facts = FactMap()
     internal lateinit var world: World
@@ -32,6 +35,10 @@ class KnowledgeBasedIntelligence : Intelligence() {
         }
     }
 
+    /**
+     * @param playerState information on the player's location
+     * @return [List] of [commands][Command] leading to the nearest room with an [EXIT][GameObject.EXIT]
+     */
     internal fun exit(playerState: PlayerState): List<Command> {
         val commands = buildCommandSequence(playerState,
                 facts.roomsWithObject(GameObject.EXIT)).toMutableList()
@@ -39,10 +46,19 @@ class KnowledgeBasedIntelligence : Intelligence() {
         return commands
     }
 
+    /**
+     * @param playerState information on the player's location
+     * @return [List] of [commands][Command] leading to the closest safe and unexplored room
+     */
     internal fun bestExplorativeMoves(playerState: PlayerState): List<Command> {
         return buildCommandSequence(playerState, emptySet())
     }
 
+    /**
+     * @param playerState information on the player's location
+     * @param targetRooms a [Set] of rooms that are preferred
+     * @return [List] of [commands][Command] leading to the nearest room in the set of targetRooms
+     */
     private fun buildCommandSequence(playerState: PlayerState, targetRooms: Set<Point>): List<Command> {
         val commands = mutableListOf<Command>()
         var currPlayerState = playerState
@@ -56,11 +72,24 @@ class KnowledgeBasedIntelligence : Intelligence() {
         return commands
     }
 
+    /**
+     * @param possibleTargets a [Set] of rooms that are preferred
+     * @return [Set] of points building a path to the nearest room in the set of targets
+     *
+     * Uses path-finding to determine the fastest route to the nearest room in the set
+     */
     fun pathToRoom(possibleTargets: Set<Point> = setOf()): Set<Point> {
         val pointPathsPair = dijkstra(commandResult.getPlayerState(), possibleTargets)
         return generatePath(pointPathsPair.first, pointPathsPair.second)
     }
 
+    /**
+     * @param target the target [Point]
+     * @param previous a list of pairs and directions
+     * @return [Set] of points
+     *
+     * Use results from shortest-path algorithm to generate the path to a target room
+     */
     private fun generatePath(target: Point, previous: ArrayList<Pair<Point, Direction>?>): Set<Point> {
         val path = arrayListOf<Point>()
         path.add(0, target)
@@ -74,6 +103,14 @@ class KnowledgeBasedIntelligence : Intelligence() {
         return path.toSet()
     }
 
+    /**
+     * @param playerState information on the player's location
+     * @param targets a [Set] of preferred rooms to find a path to
+     * @return [Pair] indicating the [Point] a path was found to and the list of points that can be used to lead the
+     * player there
+     *
+     * An implementation of dijkstra's algorithm on the game world
+     */
     private fun dijkstra(playerState: PlayerState, targets: Set<Point> = setOf()): Pair<Point, ArrayList<Pair<Point, Direction>?>> {
         val startingLocation = playerState.getLocation()
         val startingDirection = playerState.getDirection()
@@ -119,12 +156,23 @@ class KnowledgeBasedIntelligence : Intelligence() {
         return Pair(endingLocation, previous)
     }
 
+    /**
+     * @param vertices list of points
+     * @param distances list of distances associated with the points
+     * @return [Point] with the shortest distance
+     */
     private fun getClosestRoom(vertices: MutableSet<Point>, distances: ArrayList<Pair<Int, Direction?>>): Point {
         return vertices.minBy { point ->
             distances[world.getRoomIndex(point)].first
         }!!
     }
 
+    /**
+     * @param targetRoom the room to move to
+     * @param currRoom the room the agent is currently in
+     * @param currDirection the direction the player is currently facing
+     * @return [Int] indicating the cost of moving to the room, -1 if targetRoom is not adjacent
+     */
     internal fun costOfMoveToRoom(targetRoom: Point, currRoom: Point, currDirection: Direction?): Int {
         currDirection?.let {
             val targetDirection = targetRoom.directionFrom(currRoom) ?: return -1
@@ -135,6 +183,11 @@ class KnowledgeBasedIntelligence : Intelligence() {
         return -1
     }
 
+    /**
+     * @param playerState information about the player
+     * @param target adjacent room
+     * @return [List] of commands leading to the target room
+     */
     internal fun toCommands(playerState: PlayerState, point: Point?): List<Command> {
         val directionOfRoom = point?.directionFrom(playerState.getLocation())
                 ?: playerState.getDirection()
@@ -145,6 +198,12 @@ class KnowledgeBasedIntelligence : Intelligence() {
         }
     }
 
+    /**
+     * @param gameObject object being checked for
+     * @return [Boolean]
+     *
+     * Check for a specific [GameObject] or a [HereEffect] that it may have placed in the room
+     */
     internal fun objectOrHereEffectInRoom(gameObject: GameObject): Boolean {
         val worldEffects = gameObject.getFeature(WorldAffecting()) as WorldAffecting?
         return facts.isTrue(commandResult.getLocation(), HAS, gameObject) == TRUE

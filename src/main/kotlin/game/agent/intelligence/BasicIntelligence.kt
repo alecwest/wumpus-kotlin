@@ -8,7 +8,7 @@ import game.world.World
 import util.right
 
 /**
- * BasicIntelligence is a proof on concept intelligence that either moves forward or turns right.
+ * BasicIntelligence is a proof of concept intelligence that either moves forward or turns right.
  */
 class BasicIntelligence : Intelligence() {
     override fun chooseNextMoves(world: World, commandResult: CommandResult): List<Command> {

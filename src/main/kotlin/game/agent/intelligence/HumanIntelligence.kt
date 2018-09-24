@@ -7,6 +7,9 @@ import game.world.World
 import util.left
 import util.right
 
+/**
+ * An Intelligence interface for any human player to interact with from the terminal
+ */
 class HumanIntelligence: Intelligence() {
     override fun chooseNextMoves(world: World, commandResult: CommandResult): List<Command> {
         super.chooseNextMoves(world, commandResult)

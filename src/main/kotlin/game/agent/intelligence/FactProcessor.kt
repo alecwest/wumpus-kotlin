@@ -9,7 +9,17 @@ import util.adjacent
 import util.adjacents
 import java.awt.Point
 
+/**
+ * A static class to create as many facts as possible based off of a given [FactMap], [World], and [CommandResult]
+ */
 object FactProcessor {
+    /**
+     * @param facts existing facts
+     * @param world existing world
+     * @param commandResult result of last move
+     *
+     * Make changes to the given facts and world given the results of the last command
+     */
     fun processLastMove(facts: FactMap, world: World, commandResult: CommandResult) {
         if(playerOnEdge(world, commandResult)) {
             markEdgeRooms(facts, world, commandResult)
@@ -19,12 +29,18 @@ object FactProcessor {
         reassessForNewInsight(facts)
     }
 
+    /**
+     * Determine if the player is is on the edge of the world
+     */
     internal fun playerOnEdge(world: World, commandResult: CommandResult): Boolean {
         return commandResult.getLocation().adjacents().any {
             !world.roomIsValid(it)
         }
     }
 
+    /**
+     * Mark nearby edge rooms as containing nothing
+     */
     internal fun markEdgeRooms(facts: FactMap, world: World, commandResult: CommandResult) {
         val edgeRooms = commandResult.getLocation().adjacents().filter { !world.roomIsValid(it) }
         edgeRooms.forEach { edgeRoom ->
@@ -34,6 +50,9 @@ object FactProcessor {
         }
     }
 
+    /**
+     * Create facts for current room based on commandResult
+     */
     internal fun assessCurrentRoom(facts: FactMap, world: World, commandResult: CommandResult) {
         val perceivedObjects = toGameObjects(commandResult.getPerceptions())
         val playerLocation = commandResult.getLocation()
@@ -49,6 +68,10 @@ object FactProcessor {
         }
     }
 
+    /**
+     * Add facts about blocking objects if they're encountered
+     * This typically means adding a fact about the room in front of the player
+     */
     internal fun addBlockingObject(facts: FactMap, world: World, commandResult: CommandResult, gameObject: GameObject) {
         if (!gameObject.hasFeature(GameObjectFeature.Blocking())) return
         val playerLocation = commandResult.getLocation()
@@ -58,6 +81,9 @@ object FactProcessor {
         world.addGameObjectAndEffects(blockerLocation, gameObject)
     }
 
+    /**
+     * Use knowledge in the [FactMap] to make inferences about other nearby rooms
+     */
     internal fun assessNearbyRooms(facts: FactMap, playerLocation: Point) {
         gameObjectsWithFeatures(setOf(GameObjectFeature.WorldAffecting())).forEach { gameObject ->
             val worldAffecting = gameObject.getFeature(GameObjectFeature.WorldAffecting()) as GameObjectFeature.WorldAffecting
@@ -71,6 +97,9 @@ object FactProcessor {
         }
     }
 
+    /**
+     * After assessing everything, reassess to see if any new inferences can be made about any fact in any room
+     */
     internal fun reassessForNewInsight(facts: FactMap) {
         val factsToAdd = FactMap()
         facts.getMap().forEach { fact ->
