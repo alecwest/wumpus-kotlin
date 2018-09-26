@@ -8,6 +8,10 @@ import util.adjacents
 import util.diagonals
 import java.awt.Point
 
+/**
+ * ProximityCondition is a type of condition that depends on whether or not the given [GameObject] exists
+ * in a [Room] surrounding it
+ */
 class ProximityCondition(fact: Fact, thing: GameObject) : GameObjectCondition(fact, thing) {
     override fun conditionSatisfied(world: World, targetLocation: Point): Boolean {
         return if (fact == HAS) {
