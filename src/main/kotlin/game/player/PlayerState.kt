@@ -4,6 +4,15 @@ import util.Direction
 import util.copyThis
 import java.awt.Point
 
+/**
+ * PlayerState is an immutable instance containing data about the player at a single point in time
+ *
+ * @param alive current alive/dead state of player
+ * @param location current [Point] the player is at
+ * @param facing current [Direction] the player is facing
+ * @param inventory current contents in the player's inventory
+ * @param score current score
+ */
 data class PlayerState(private val alive: Boolean = true,
                        private val location: Point = Point(0, 0),
                        private val facing: Direction = Direction.NORTH,

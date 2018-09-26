@@ -4,8 +4,9 @@ import util.Direction
 import java.awt.Point
 
 /**
- * Player keeps track of all player attributes and is to be accessed through the game class
- * only by the server.
+ * Player keeps track of all player attributes and ultimately maintains the [PlayerState]
+ *
+ * @param playerState initial player state
  */
 data class Player(private var playerState: PlayerState = PlayerState()) {
     fun isAlive() = getPlayerState().isAlive()

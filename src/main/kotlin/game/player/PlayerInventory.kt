@@ -1,5 +1,10 @@
 package game.player
 
+/**
+ * PlayerInventory maintains a map of all items in a player's inventory
+ *
+ * @param inventoryItems initial list of inventory items
+ */
 data class PlayerInventory(private val inventoryItems: Map<InventoryItem, Int> = mapOf()) {
     fun getInventory() = inventoryItems
     fun copyThis(inventoryItem: Map<InventoryItem, Int> =
