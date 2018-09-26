@@ -9,31 +9,34 @@ import game.command.CommandResult
 import util.JsonParser.buildFromJsonFile
 
 /**
- * GameState is an observable object that exists in the server
- *      When the client wants to take an action, they call to the server (using the command
- *      pattern (Command, ShootCommand, GrabCommand, etc)), which forwards the command
- *      to the game state.
- *      The gameState executes the command, which can update data such as:
- *          Location of the player
- *          State of the player (inventoryItems, health, etc)
- *          State of the game (In Progress, Over, Goal Achieved, etc.)
- *      The gameState returns a state for the server to process and update the client with:
- *          ...
- */
-
-/**
  * The server acts as an interface to the game for the client, allowing them to
  * make moves and learn the results of that move.
  */
 object Server {
     private val sessions: HashMap<Int, Game> = hashMapOf()
 
+    /**
+     * Declare a new game session
+     *
+     * @param fileName world file to build off of
+     * @param worldSize size of the world to create (unused if fileName is supplied)
+     *
+     * @return [Int] for id of new session
+     */
     fun newSession(fileName: String = "", worldSize: Int = 10): Int {
         val id = sessions.size
         sessions[id] = createGame(fileName, worldSize)
         return id
     }
 
+    /**
+     * Create a new game
+     *
+     * @param fileName world file to build off of
+     * @param worldSize size of the world to create (unused if fileName is supplied)
+     *
+     * @return [Game] new game
+     */
     internal fun createGame(fileName: String, worldSize: Int): Game {
         return if (fileName.isBlank()) {
             Game(GameState(world = World(size = worldSize)))
@@ -42,14 +45,34 @@ object Server {
         }
     }
 
+    /**
+     * Get game from specific session
+     *
+     * @param id session id
+     *
+     * @return [Game]
+     */
     internal fun getGame(id: Int) = sessions.getValue(id)
 
+    /**
+     * Execute a move on a specific session
+     *
+     * @param id session id
+     * @param command command to execute
+     */
     fun makeMove(id: Int, command: Command) {
         command.setGame(getGame(id))
         CommandInvoker.command = command
         CommandInvoker.performAction()
     }
 
+    /**
+     * Get the [CommandResult] of the last move in a specific session
+     *
+     * @param id session id
+     *
+     * @return [CommandResult]
+     */
     fun getCommandResult(id: Int): CommandResult {
         return getGame(id).getCommandResult()
     }
