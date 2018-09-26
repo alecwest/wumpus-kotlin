@@ -7,6 +7,11 @@ import game.world.condition.ProximityCondition
 import game.world.effect.*
 import kotlin.reflect.full.isSubclassOf
 
+/**
+ * GameObject is an object that can exist in a world
+ *
+ * @param features set of [GameObjectFeature]s
+ */
 sealed class GameObject(val features: Set<GameObjectFeature> = setOf()) {
     object ARROW : GameObject(setOf(Shootable(10), Grabbable(InventoryItem.ARROW)))
     object BLOCKADE : GameObject(setOf(Blocking(), Mappable("X"), Perceptable(Perception.BLOCKADE_BUMP),
@@ -31,25 +36,46 @@ sealed class GameObject(val features: Set<GameObjectFeature> = setOf()) {
     object WUMPUS : GameObject(setOf(Dangerous(), Destructable(setOf(GameObject.ARROW)), Mappable("W"),
             WorldAffecting(arrayListOf(AdjacentEffect(GameObject.STENCH)))))
 
+    /**
+     * @param feature the feature to get from the object
+     * @return [GameObjectFeature] or null if the feature doesn't exist
+     */
     fun getFeature(feature: GameObjectFeature): GameObjectFeature? {
         return this.features.find { it::class.isSubclassOf(feature::class) }
     }
 
+    /**
+     * @param feature the feature to check for
+     * @return [Boolean] indicating the feature exists
+     */
     fun hasFeature(feature: GameObjectFeature): Boolean {
         return this.features.any { it::class.isSubclassOf(feature::class) }
     }
 
+    /**
+     * @return [List] of GameObjects that create this object
+     */
     fun objectsThatCreateThis(): List<GameObject> {
         return gameObjectsWithFeatures(setOf(WorldAffecting())).filter { worldEffector ->
             (worldEffector.getFeature(WorldAffecting()) as WorldAffecting).createsObject(this) }
     }
 
+    /**
+     * Convert object to InventoryItem when applicable
+     *
+     * @return [InventoryItem] or null if this object cannot be converted
+     */
     fun toInventoryItem(): InventoryItem? {
         return ((this.objectsThatCreateThis().firstOrNull { it.hasFeature(Grabbable()) }
                 ?: this).getFeature(Grabbable()) as Grabbable?)?.inventoryItem
     }
 }
 
+/**
+ * @param features features to check for
+ *
+ * @return [List] of GameObjects that contain all of the given features
+ */
 fun gameObjectsWithFeatures(features: Set<GameObjectFeature>): List<GameObject> {
     return gameObjectValues().filter {
         var result = true
@@ -63,16 +89,25 @@ fun gameObjectsWithFeatures(features: Set<GameObjectFeature>): List<GameObject> 
     }
 }
 
+/**
+ * @return [List] of all classes nested under [GameObject]
+ */
 fun gameObjectValues(): List<GameObject> {
     return GameObject::class.nestedClasses.map { it.objectInstance as GameObject }
 }
 
+/**
+ * @return [GameObject] or null if this [String] cannot be converted
+ */
 fun String.toMappableGameObject(): GameObject? {
     return gameObjectsWithFeatures(setOf(Mappable())).find {
         this == (it.getFeature(Mappable()) as Mappable).character
     }
 }
 
+/**
+ * @return [GameObject] or null if this [Perception] cannot be converted
+ */
 fun Perception.toGameObject(): GameObject? {
     for (gameObject in gameObjectsWithFeatures(setOf(Perceptable()))) {
         if ((gameObject.getFeature(Perceptable()) as Perceptable).perception == this) {
@@ -82,6 +117,10 @@ fun Perception.toGameObject(): GameObject? {
     return null
 }
 
+
+/**
+ * @return [GameObject] or null if this [InventoryItem] cannot be converted
+ */
 fun InventoryItem.toGameObject(): GameObject {
     return gameObjectsWithFeatures(setOf(Grabbable())).first {
         (it.getFeature(Grabbable()) as Grabbable).inventoryItem == this

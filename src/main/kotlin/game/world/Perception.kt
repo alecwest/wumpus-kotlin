@@ -1,5 +1,8 @@
 package game.world
 
+/**
+ * An enumeration of everything that can be Perceived by the player
+ */
 enum class Perception {
     BLOCKADE_BUMP,
     BREEZE,
@@ -12,6 +15,13 @@ enum class Perception {
     WALL_BUMP
 }
 
+/**
+ * Convert to GameObjects
+ *
+ * @param perceptions set of perceptions to convert
+ *
+ * @return [Set] of [GameObject]s that could be matched to given Perceptions
+ */
 fun toGameObjects(perceptions: Set<Perception>): Set<GameObject> {
     val gameObjects = mutableSetOf<GameObject>()
     perceptions.forEach { perception ->
