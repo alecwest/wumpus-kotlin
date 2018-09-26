@@ -4,6 +4,11 @@ import game.world.GameObject
 import game.world.World
 import java.awt.Point
 
+/**
+ * HereEffect applies to just the given room
+ *
+ * @param gameObject object to add
+ */
 class HereEffect(gameObject: GameObject): WorldEffect(gameObject) {
     override fun roomsAffected(point: Point): Set<Point> {
         return setOf(point)

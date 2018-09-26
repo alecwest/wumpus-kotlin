@@ -5,6 +5,11 @@ import util.adjacents
 import game.world.World
 import java.awt.Point
 
+/**
+ * AdjacentEffect applies to all valid rooms adjacent to the given room
+ *
+ * @param gameObject object to add
+ */
 class AdjacentEffect(gameObject: GameObject): WorldEffect(gameObject) {
     override fun roomsAffected(point: Point): Set<Point> {
         return point.adjacents().toSet()

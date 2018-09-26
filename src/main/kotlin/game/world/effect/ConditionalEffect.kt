@@ -4,6 +4,13 @@ import game.world.World
 import game.world.condition.GameObjectCondition
 import java.awt.Point
 
+/**
+ * ConditionalEffect acts as a wrapper over another [WorldEffect] and applies it only if a certain [GameObjectCondition]
+ * is met
+ *
+ * @param worldEffect [WorldEffect] to apply
+ * @param condition [GameObjectCondition] to determine application
+ */
 class ConditionalEffect(private val worldEffect: WorldEffect, private val condition: GameObjectCondition):
         WorldEffect(worldEffect.gameObject) {
     override fun applyEffect(world: World, point: Point): Boolean {

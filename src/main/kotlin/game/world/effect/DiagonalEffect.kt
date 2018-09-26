@@ -5,6 +5,11 @@ import util.diagonals
 import game.world.World
 import java.awt.Point
 
+/**
+ * DiagonalEffect applies to all valid rooms diagonal to the given room
+ *
+ * @param gameObject object to add
+ */
 class DiagonalEffect(gameObject: GameObject): WorldEffect(gameObject) {
     override fun roomsAffected(point: Point): Set<Point> {
         return point.diagonals().toSet()
