@@ -19,7 +19,8 @@ class MoveCommand: Command() {
 
             when {
                 canEnterRoom(targetLocation) -> {
-                    deferExecution(direction)
+                    game.setPlayerLocation(
+                            game.getPlayerLocation().adjacent(game.getPlayerDirection()))
                 }
                 game.roomIsValid(targetLocation) -> {
                     for (gameObject in game.getGameObjects(targetLocation).filter { it.hasFeature(Blocking()) }) {
@@ -53,20 +54,6 @@ class MoveCommand: Command() {
         return true
     }
 
-    private fun deferExecution(direction: Direction) {
-        game?.let { game ->
-            val command = when(direction) {
-                Direction.NORTH -> MoveNorthCommand()
-                Direction.EAST -> MoveEastCommand()
-                Direction.SOUTH -> MoveSouthCommand()
-                Direction.WEST -> MoveWestCommand()
-            }
-
-            command.setGame(game)
-            command.execute()
-        }
-    }
-
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is MoveCommand) return false
@@ -75,29 +62,5 @@ class MoveCommand: Command() {
 
     override fun toString(): String {
         return "MoveCommand()"
-    }
-}
-
-private class MoveNorthCommand: Command() {
-    override fun execute() {
-        game!!.setPlayerLocation(game!!.getPlayerLocation().north())
-    }
-}
-
-private class MoveEastCommand: Command() {
-    override fun execute() {
-        game!!.setPlayerLocation(game!!.getPlayerLocation().east())
-    }
-}
-
-private class MoveSouthCommand: Command() {
-    override fun execute() {
-        game!!.setPlayerLocation(game!!.getPlayerLocation().south())
-    }
-}
-
-private class MoveWestCommand: Command() {
-    override fun execute() {
-        game!!.setPlayerLocation(game!!.getPlayerLocation().west())
     }
 }
