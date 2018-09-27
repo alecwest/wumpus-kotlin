@@ -27,17 +27,7 @@ data class World(private val size: Int = 10) {
      * @return [Int] dimensions of the world
      */
     fun getSize() = size
-
-    /**
-     * @return [List] all rooms in the world
-     */
     fun getRooms() = worldState.getRooms()
-
-    /**
-     * @param point room to get objects from
-     *
-     * @return [Set] of all game objects in the room
-     */
     fun getGameObjects(point: Point) = worldState.getGameObjects(point)
 
     /**
@@ -168,22 +158,7 @@ data class World(private val size: Int = 10) {
      */
     fun getWorldMap(playerState: PlayerState? = null) = worldState.getWorldMap(playerState)
 
-    /**
-     * @param point room to get
-     *
-     * @return [Room]
-     */
     fun getRoom(point: Point) = worldState.getRoom(point)
-
-    /**
-     * @return [Int] total number of rooms in world
-     */
     fun getNumberRooms() = worldState.getNumberRooms()
-
-    /**
-     * @param point room to check
-     *
-     * @return [Int] number of objects in the room
-     */
     fun getAmountOfObjectsInRoom(point: Point) = worldState.getAmountOfObjectsInRoom(point)
 }

@@ -8,16 +8,8 @@ import kotlin.math.sqrt
 data class WorldState(private val rooms: ArrayList<Room> = arrayListOf()) {
     private val size = sqrt(rooms.size.toFloat()).toInt()
 
-    /**
-     * @return [List] all rooms in the world
-     */
     fun getRooms() = rooms
 
-    /**
-     * @param point room to get objects from
-     *
-     * @return [Set] of all game objects in the room
-     */
     fun getGameObjects(point: Point) = when {
         roomIsValid(point) -> rooms[getRoomIndex(point)].getGameObjects()
         else -> setOf()
@@ -131,27 +123,14 @@ data class WorldState(private val rooms: ArrayList<Room> = arrayListOf()) {
         return null
     }
 
-    /**
-     * @param point room to get
-     *
-     * @return [Room]
-     */
     fun getRoom(point: Point): Room {
         return rooms[getRoomIndex(point)]
     }
 
-    /**
-     * @return [Int] total number of rooms in world
-     */
     fun getNumberRooms(): Int {
         return rooms.size
     }
 
-    /**
-     * @param point room to check
-     *
-     * @return [Int] number of objects in the room
-     */
     fun getAmountOfObjectsInRoom(point: Point): Int {
         val room = getRoom(point)
         return room.getAmountOfObjects()

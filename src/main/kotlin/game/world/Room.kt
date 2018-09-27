@@ -53,9 +53,6 @@ class Room(private val gameObjects: MutableSet<GameObject> = mutableSetOf()) {
         return gameObjects.contains(content)
     }
 
-    /**
-     * @return [Int] number of objects in the room
-     */
     fun getAmountOfObjects(): Int {
         return gameObjects.size
     }

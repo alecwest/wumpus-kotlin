@@ -137,7 +137,7 @@ data class Game(private var gameState: GameState = GameState()) {
     }
 
     fun setPlayerAlive(alive: Boolean) {
-        val newPlayer = getGameState().getPlayer()
+        val newPlayer = getPlayer()
         newPlayer.setAlive(alive)
         gameState = getGameState().copyThis(player = newPlayer)
     }
@@ -148,7 +148,7 @@ data class Game(private var gameState: GameState = GameState()) {
      * @param location where to set the player
      */
     fun setPlayerLocation(location: Point) {
-        val newPlayer = getGameState().getPlayer()
+        val newPlayer = getPlayer()
         newPlayer.setLocation(location)
         if (getGameObjects(location).any { it.hasFeature(Dangerous())
                         && (it.getFeature(Dangerous()) as Dangerous).killsPlayer(location, getWorld())}) {
@@ -158,19 +158,19 @@ data class Game(private var gameState: GameState = GameState()) {
     }
 
     fun setPlayerDirection(direction: Direction) {
-        val newPlayer = getGameState().getPlayer()
+        val newPlayer = getPlayer()
         newPlayer.setFacing(direction)
         gameState = getGameState().copyThis(player = newPlayer)
     }
 
     fun setPlayerInventory(inventory: PlayerInventory) {
-        val newPlayer = getGameState().getPlayer()
+        val newPlayer = getPlayer()
         newPlayer.setInventory(inventory)
         gameState = getGameState().copyThis(player = newPlayer)
     }
 
     fun setPlayerScore(score: Int) {
-        val newPlayer = getGameState().getPlayer()
+        val newPlayer = getPlayer()
         newPlayer.setScore(score)
         gameState = getGameState().copyThis(player = newPlayer)
     }
