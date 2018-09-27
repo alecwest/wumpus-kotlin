@@ -18,7 +18,15 @@ internal class JsonRoomContent(val x: Int, val y: Int, val content: List<String>
 
 internal class JsonWorld(val `world-size`: Int, val data: List<JsonRoomContent>, val player: JsonPlayer)
 
+/**
+ * Reads json file formatted to define a custom world
+ */
 object JsonParser {
+    /**
+     * @param fileName path of file to build from
+     *
+     * @return [Game] built from the file
+     */
     fun buildFromJsonFile(fileName: String): Game {
         val r = Klaxon().parse<JsonWorld>(File(fileName))
         val world = World(size = r!!.`world-size`)

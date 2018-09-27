@@ -1,5 +1,8 @@
 package util
 
+/**
+ * Enumeration of the four cardinal directions
+ */
 enum class Direction {
     NORTH,
     EAST,
@@ -7,6 +10,9 @@ enum class Direction {
     WEST
 }
 
+/**
+ * @return [Direction] value 90 degrees left
+ */
 fun Direction.left() = when(this) {
     Direction.NORTH -> Direction.WEST
     Direction.EAST -> Direction.NORTH
@@ -14,6 +20,9 @@ fun Direction.left() = when(this) {
     Direction.WEST -> Direction.SOUTH
 }
 
+/**
+ * @return [Direction] value 90 degrees right
+ */
 fun Direction.right() = when(this) {
     Direction.NORTH -> Direction.EAST
     Direction.EAST -> Direction.SOUTH
@@ -21,6 +30,9 @@ fun Direction.right() = when(this) {
     Direction.WEST -> Direction.NORTH
 }
 
+/**
+ * @return [String] character for direction
+ */
 fun Direction.toCharRepresentation() = when(this) {
     Direction.NORTH -> "N"
     Direction.EAST -> "E"
@@ -28,6 +40,9 @@ fun Direction.toCharRepresentation() = when(this) {
     Direction.WEST -> "W"
 }
 
+/**
+ * @return [Direction] represented by the String
+ */
 fun String.toDirection() = when(this) {
     Direction.NORTH.toCharRepresentation() -> Direction.NORTH
     Direction.NORTH.toPlayerMapRepresentation() -> Direction.NORTH
@@ -41,6 +56,9 @@ fun String.toDirection() = when(this) {
     else -> throw Exception("Cannot convert %s to a Direction value".format(this))
 }
 
+/**
+ * @return [String] character for player direction
+ */
 fun Direction.toPlayerMapRepresentation() = when(this) {
     Direction.NORTH -> "^"
     Direction.EAST -> ">"
